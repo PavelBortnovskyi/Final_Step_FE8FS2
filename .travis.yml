@@ -2,9 +2,8 @@ addons:
   sonarcloud:
     organization: "step-project-final-1-twitter"
     token:
-      secure: "0fd478308a0aef8216c450b715e356e6733141ee" # encrypted value of your token
+      secure: "oprxU27srIzl/px1bltETHDT5MJWxmCBuprNQYuVsV8Dn90CLYW+4vjVrSt5f5N5VWbvyH+cEA9wo36FubGtGiSHnGm4Ij0q37o76gdv+T//Kd6iosO/kdbR6EcRL9BhFBl7Da1QAD66otrJtCkOsy0KffHwqKH2s+qhtGZuLr38bybG9zb+bShK+QG7BM20wS8N4VYwLe994d8KyxpK96m1nQgxfcV07yB37tRIOb+rfSV+FQayUE47Kca9NpHh4MkP5k+ohjWrRw4aIsg8O9+unj9WbV+TIY5NIiZAdHeUKw2GmxzzNqAShMJ+4nUC0sVKTKsJvRIsRkGVd3ingIegtTthY1ce8k0XX4FG1JkCHctXkmU/Top5D0JTFeGKh/QENh9TNhwhsHczljhQJj6Q0s+LcY/mXhrdnhSXK2WEy4VZcf7Gev0Phr5EWFU/u9WWfFKlKRGMKD6U7WHN37Wc0zTDi3VksDRMftBsJX39dlZbdRcKj0UcWuoNrCd5/DMLIbmVWuAcbzlwgAAq5bfL6PcGUe/pE4GuJhlaml0ftd+wejpPQ43qyfTaT3G2Jua13cMzgKumhr6sYacSwBnjO5i6kIro1BYb50APfLinMaO3HKrOKilyCcamffRQ0ozmkfbOU3HY5cSGhTGh54bVJ/EKqXCRSwcT+lcUWgA=" # encrypted value of your token
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-  - sonar-scanner
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=PavelBortnovskyi_Final_Step_Full_1
