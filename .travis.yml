@@ -1,0 +1,10 @@
+addons:
+  sonarcloud:
+    organization: "step-project-final-1-twitter"
+    token:
+      secure: "0fd478308a0aef8216c450b715e356e6733141ee" # encrypted value of your token
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - sonar-scanner
