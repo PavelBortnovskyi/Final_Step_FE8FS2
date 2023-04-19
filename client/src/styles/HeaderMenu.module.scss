@@ -1,0 +1,23 @@
+.HeaderMenu {
+  flex: 1 1 auto;
+}
+
+.HeaderMenu__list {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.HeaderMenu__item {
+  list-style: none;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.HeaderMenu__subitem {
+  list-style: none;
+  padding-left: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
