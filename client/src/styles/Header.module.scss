@@ -1,0 +1,53 @@
+.Header__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 12px;
+  flex: 1 1 auto;
+}
+
+.HeaderActions {
+  display: flex;
+  flex-direction: rows;
+  gap: 20px;
+}
+
+.HeaderBasket {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.HeaderFavorites {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.basketValue {
+  font-size: 22px;
+}
+
+.favoritesValue {
+  font-size: 22px;
+}
+
+.ViewSwitch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.ViewLayout {
+  display: flex;
+  align-items: center;
+}
+
+.ViewGrid {
+  display: flex;
+  align-items: center;
+}
+
