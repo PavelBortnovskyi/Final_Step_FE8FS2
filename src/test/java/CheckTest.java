@@ -8,7 +8,7 @@ public class CheckTest {
 
         @Test
         @Order(1)
-        public void getIDTest() {
+        public void runCheckTest() {
             int a = 1;
             int b = 2;
             assertThat(a + b).isEqualTo(3);
