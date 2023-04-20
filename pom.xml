@@ -108,7 +108,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <argLine>@{argLine}</argLine>
                     <forkCount>1</forkCount>
                     <reuseForks>true</reuseForks>
                 </configuration>
@@ -127,7 +126,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.9</version>
                 <executions>
-                    <!-- pre-unit-test execution helps setting up some maven property,
+                    <!-- pre-unit-test execution help setting up some maven property,
                       which will be used later by JaCoCo -->
                     <execution>
                         <id>pre-unit-test</id>
