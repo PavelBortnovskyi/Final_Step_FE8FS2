@@ -108,7 +108,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <argLine>${argLine} -XX:reuseForks=true</argLine>
+                    <argLine>@{argLine} -XX:forkCount=1 -XX:reuseForks=true</argLine>
                 </configuration>
                 <executions>
                     <execution>
