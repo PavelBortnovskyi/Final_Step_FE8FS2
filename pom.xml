@@ -131,6 +131,7 @@
                       which will be used later by JaCoCo -->
                     <execution>
                         <id>pre-unit-test</id>
+                        <phase>test</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
