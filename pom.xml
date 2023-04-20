@@ -114,6 +114,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
+                    <argLine>${argLine}</argLine>
                     <forkCount>1</forkCount>
                     <reuseForks>true</reuseForks>
                 </configuration>
@@ -131,13 +132,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.9</version>
-                <configuration>
-                    <destFile>${project.build.directory}/coverage-reports/code-coverage.exec</destFile>
-                    <dataFile>${project.build.directory}/coverage-reports/code-coverage.exec</dataFile>
-                    <outputDirectory>${project.reporting.outputDirectory}/code-coverage</outputDirectory>
-                    <propertyName>jacocoArgLine</propertyName>
-                    <classDumpDir>${project.build.outputDirectory}</classDumpDir>
-                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
