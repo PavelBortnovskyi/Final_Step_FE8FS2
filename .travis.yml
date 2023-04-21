@@ -1,3 +1,4 @@
+jdk: openjdk17
 addons:
   sonarcloud:
     organization: "step-project-final-1-twitter"
