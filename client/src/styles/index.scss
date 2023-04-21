@@ -1,31 +1,25 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-@layer base {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+html {
+  height: 100%;
+}
 
-  html {
-    height: 100%;
-  }
+body {
+  margin: 0;
+  background-size: 100vw;
+  height: 100%;
+}
 
-  body {
-    margin: 0;
-    background-size: 100vw;
-    height: 100%;
-  }
-
-  #root {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-    min-width: 480px;
-    min-height: 100%;
-    gap: 16px;
-  }
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  min-width: 480px;
+  min-height: 100%;
+  gap: 16px;
 }
