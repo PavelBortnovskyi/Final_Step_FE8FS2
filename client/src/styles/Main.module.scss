@@ -1,5 +1,7 @@
 .Main__row {
+  max-width: 600px;
   display: flex;
+  flex-direction: column;
   gap: 16px;
   flex: 1 0 auto;
 }
