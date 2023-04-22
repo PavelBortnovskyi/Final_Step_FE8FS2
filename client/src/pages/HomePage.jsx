@@ -17,7 +17,7 @@ export const HomePage = () => {
                 padding: "15px",
                 width: "50%",
                 borderRadius: "0",
-                color: "black",
+                color: "rgb(255, 255, 255)",
                 "&:hover": {
                   backgroundColor: "#b3b3b32b",
                 },
