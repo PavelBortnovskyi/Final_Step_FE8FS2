@@ -93,7 +93,7 @@
                         <id>validate</id>
                         <phase>validate</phase>
                         <configuration>
-                            <configLocation>../Final_Step_Full_1/checkstyle_config.xml</configLocation>
+                            <configLocation>../Final_Step_FE8FS2_TW/checkstyle_config.xml</configLocation>
                             <encoding>utf-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
