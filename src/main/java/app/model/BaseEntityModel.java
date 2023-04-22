@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,26 +14,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 public class BaseEntityModel {
-
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence-generator")
+    @SequenceGenerator(
+            name = "sequence-generator",
+            sequenceName = "id_seq",
+            allocationSize = 1
+    )
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "created at")
-    @Nullable
+    @Column(name = "created at", nullable = true)
     private LocalDateTime created_at;
-
-    @Column(name = "updated at")
-    @Nullable
+    @Column(name = "updated at", nullable = true)
     private LocalDateTime updated_at;
-
-    @Column(name = "created by")
-    @Nullable
+    @Column(name = "created by", nullable = true)
     private Long created_by;
-
-    @Column(name = "updated by")
-    @Nullable
-    private long updated_by;
+    @Column(name = "updated by", nullable = true)
+    private Long updated_by;
 }
