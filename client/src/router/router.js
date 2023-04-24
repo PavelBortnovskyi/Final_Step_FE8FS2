@@ -18,11 +18,31 @@ export const router = createBrowserRouter([
       },
       {
         element: <UserPage />,
-        path: 'user',
+        path: 'explore',
       },
       {
-        element: <NewsPage />,
-        path: 'news',
+        element: <UserPage />,
+        path: 'notifications',
+      },
+      {
+        element: <UserPage />,
+        path: 'messages',
+      },
+      {
+        element: <UserPage />,
+        path: 'bookmarks',
+      },
+      {
+        element: <UserPage />,
+        path: 'twitter_blue',
+      },
+      {
+        element: <UserPage />,
+        path: 'verified-orgs',
+      },
+      {
+        element: <UserPage />,
+        path: 'profile',
       },
     ],
   },
