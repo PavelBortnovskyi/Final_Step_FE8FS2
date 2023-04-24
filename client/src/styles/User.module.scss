@@ -1,0 +1,44 @@
+.userHeder {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px;
+}
+
+.imgBlock {
+  position: relative;
+}
+.userBlock {
+  max-width: 600px;
+  padding: 11px 15px;
+}
+.userIcoBlock {
+  display: flex;
+  justify-content: space-between;
+}
+.profileImg {
+  width: 100%;
+  max-height: 200px;
+}
+.nameBlock {
+  margin: 12px 0;
+}
+.nick {
+  color: rgb(139, 152, 165);
+}
+.dateRegistation {
+  color: rgb(139, 152, 165);
+  padding: 14px 0;
+}
+.folowersBlock {
+  display: flex;
+  gap: 14px;
+}
+.folowerGre {
+  color: rgb(139, 152, 165);
+  margin-left: 8px;
+}
+.actions {
+  padding-top: 8px;
+  border-bottom: 1px solid;
+}

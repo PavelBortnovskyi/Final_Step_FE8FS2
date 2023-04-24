@@ -1,0 +1,23 @@
+.modalBg {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(91, 112, 131, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // overflow-y: hidden;
+}
+.modalBody {
+  width: 600px;
+  height: 650px;
+  background: rgb(21, 32, 43);
+  border-radius: 16px;
+}
+.EditFormHeder {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+}

@@ -1,7 +1,15 @@
+import { EditProfileModal } from "../EditProfile/EditProfileModal";
+import { UserAction } from "./UserAction";
+import { UserHeder } from "./UserHeder";
+import { UserInfo } from "./UserInfo";
+
 export const User = () => {
   return (
     <div>
-      <h1>User</h1>
+      <UserHeder />
+      <UserInfo />
+      <UserAction />
+      <EditProfileModal />
     </div>
   );
 };
