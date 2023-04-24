@@ -4,7 +4,9 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "chat_to_users")
@@ -16,4 +18,6 @@ public class ChatsToUsersModel extends BaseEntityModel{
     private Long user_id;
     @Column(name = "body")
     private String body;
+    @ManyToMany
+    private Set<ChatModel> chats;
 }
