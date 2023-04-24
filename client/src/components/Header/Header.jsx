@@ -7,11 +7,14 @@ import styles from 'src/styles/Header.module.scss';
 export const Header = () => {
   return (
     <div className={styles.Header__row}>
-      <TwitterIcon
-        color="primary"
-        fontSize="large"
-      />
-      <HeaderMenu />
+      <div className={styles.Header_wrapper}>
+        <div className={styles.Header_wrapper__logo}>
+          <TwitterIcon sx={{ fontSize: 34 }}/>
+        </div>
+
+        <HeaderMenu />
+      </div>
+
     </div>
   );
 };
