@@ -1,0 +1,48 @@
+@import '../../styles/variables.scss';
+
+.tweetBox {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 100px;
+}
+.addTwitFlex {
+  border-top: 1px solid $border-color-blue-theme;
+  border-bottom: 1px solid $border-color-blue-theme;
+  padding-bottom: 11px;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  display: flex;
+  padding: 20px;
+}
+
+.input > input {
+  flex: 1;
+  margin-left: 20px;
+  font-size: 20px;
+  border: none;
+  background-color: rgb(21, 32, 43);
+  &:focus {
+    outline: none;
+  }
+}
+
+.imageInput {
+  border: none;
+  padding: 10px;
+}
+
+.tweetButton {
+  background-color: $twitter-color-button !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 900 !important;
+  text-transform: inherit !important;
+  border-radius: 30px !important;
+  width: 80px;
+  height: 40px !important;
+  margin-top: 20px !important;
+  margin-left: auto !important;
+}
