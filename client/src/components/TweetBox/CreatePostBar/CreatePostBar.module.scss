@@ -1,0 +1,17 @@
+@import '../../../styles/variables.scss';
+.iconsRow {
+  margin-left: 100px;
+  margin-top: 15px;
+  display: flex;
+  gap: 15px;
+
+  :nth-child(n) {
+    color: $icon-color;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(24, 44, 63);
+      border-radius: 50%;
+    }
+  }
+}
