@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { registerUser } from '../thunk/registerUser';
-import { loginUser } from '../thunk/loginUser';
-import { getUser } from '../thunk/getUser';
+import { registerUser } from '../thunk/registerUser.js';
+import { loginUser } from '../thunk/loginUser.js';
+import { getUser } from '../thunk/getUser.js';
 
 const initialState = {
   login: null,

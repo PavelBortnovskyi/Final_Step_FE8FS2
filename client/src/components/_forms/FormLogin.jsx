@@ -1,26 +1,26 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { Alert, Button, Snackbar, TextField } from '@mui/material';
 
+import { checkIsAuth } from 'src/redux/reducers/authSlice';
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getMessageAuthorization } from 'src/redux/selectors/selectors';
-import { checkIsAuth } from 'src/redux/reducers/authSlice';
 
-import styles from 'src/styles/Form.module.scss';
+import styles from 'src/styles/Forms.module.scss';
 
 // structure data for form
 const SignupSchema = Yup.object().shape({
   login: Yup.string()
-    .min(4, 'має бути більше 3 символів')
-    .max(20, 'має бути не більше 20 символів')
-    .matches(/^[0-9a-zA-Z_\-/.]+$/, 'тільки англійські літери та цифри')
-    .required("обов'язкове поле"),
+    .min(4, 'must be more than 3 characters')
+    .max(20, 'must be no more than 20 characters')
+    .matches(/^[0-9a-zA-Z_\-/.]+$/, 'only English letters and numbers')
+    .required('required field'),
   password: Yup.string()
-    .min(4, 'має бути більше 3 символів')
-    .required("обов'язкове поле"),
+    .min(4, 'must be more than 3 characters')
+    .required('required field'),
 });
 
 // Formik form
@@ -38,10 +38,10 @@ export const FormLogin = () => {
 
   // set view message from server after auth
   useEffect(() => {
-    if (message) toast.success(message);
-    if (error) toast.error(error);
+    // if (message) <Alert severity="success">{message}</Alert>;
+    // if (error) <Alert severity="error">{error}</Alert>;
     if (isAuth) navigate('/');
-  }, [message, error, navigate, isAuth]);
+  }, [navigate, isAuth]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {
@@ -64,48 +64,55 @@ export const FormLogin = () => {
 
   return (
     <>
+      {message && (
+        <Snackbar open={true} autoHideDuration={6000}>
+          <Alert severity="success">{message}</Alert>
+        </Snackbar>
+      )}
+      {error && (
+        <Snackbar open={true} autoHideDuration={6000}>
+          <Alert severity="error">{error}</Alert>
+        </Snackbar>
+      )}
       <Formik
         initialValues={initialValues}
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values, handleChange, handleBlur }) => (
           <Form className={styles.FormBody} autoComplete="off">
             {/* login */}
-            <div className={styles.FieldContainer}>
-              <Field
-                className={
-                  errors.login && touched.login ? `${styles.inputError}` : ''
-                }
-                type="text"
-                name="login"
-                placeholder="Логін"
-              />
-              {errors.login && touched.login ? (
-                <div className={styles.messageError}>{errors.login}</div>
-              ) : null}
-            </div>
+            <TextField
+              fullWidth
+              id="login"
+              name="login"
+              label="Login"
+              type="text"
+              value={values.login}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.login && Boolean(errors.login)}
+              helperText={errors.login && touched.login && errors.login}
+            />
 
             {/* password */}
-            <div className={styles.FieldContainer}>
-              <Field
-                className={
-                  errors.password && touched.password
-                    ? `${styles.inputError}`
-                    : ''
-                }
-                type="password"
-                name="password"
-                placeholder="Пароль"
-              />
-              {errors.password && touched.password ? (
-                <div className={styles.messageError}>{errors.password}</div>
-              ) : null}
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="Password"
+              type="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
+            />
+            <div className={styles.actions}>
+              <Button variant="outlined" color="black" type="submit">
+                Log in
+              </Button>
             </div>
-
-            <button className={styles.FormSubmit} type="submit">
-              Вхід
-            </button>
           </Form>
         )}
       </Formik>

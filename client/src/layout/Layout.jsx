@@ -1,8 +1,9 @@
-import { Header } from "src/components/Header/Header";
-import { Main } from "src/components/Main/Main";
-import { Footer } from "src/components/Footer/Footer";
-import styles from "src/styles/Layout.module.scss";
-import body from "src/styles/Body.module.scss";
+import { Header } from 'src/components/Header/Header';
+import { Main } from 'src/components/Main/Main';
+import { Footer } from 'src/components/Footer/Footer';
+import styles from 'src/styles/Layout.module.scss';
+import body from 'src/styles/Body.module.scss';
+import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 export const Layout = () => {
   return (
     <div className={body.allContainer}>
@@ -24,6 +25,8 @@ export const Layout = () => {
         </footer>
       </div>
       <div></div>
+      {/* Temp need for registration. PortnovDmytro. */}
+      <BottomToolbar />
     </div>
   );
 };

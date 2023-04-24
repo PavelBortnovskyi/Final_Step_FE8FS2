@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
 import { FormLogin } from 'src/components/_forms/FormLogin';
 
 export const LoginPage = () => {
   return (
     <div className="">
-      <h1>Вхід</h1>
+      <Typography variant="h5">Log in</Typography>
+      <br />
       <FormLogin />
-      <Link to="/registration">Реєстрація</Link>
     </div>
   );
 };

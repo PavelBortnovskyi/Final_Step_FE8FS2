@@ -3,53 +3,13 @@
   flex-direction: column;
   position: relative;
   gap: 18px;
+  margin: 20px;
+}
 
-  input {
-    padding: 6px 12px;
-    border: 2px solid transparent;
-    outline: none;
-    width: 100%;
+.whiteLink {
+  color: #fff;
+}
 
-    &::placeholder {
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-  }
-
-  .FieldContainer {
-    position: relative;
-  }
-
-  .inputError,
-  .selectError {
-    border-color: red;
-  }
-
-  .messageError {
-    position: absolute;
-    color: red;
-    font-size: 10px;
-    right: 6px;
-    top: -10px;
-    background-color: #fff;
-    padding: 2px 6px;
-    border: 2px solid red;
-    text-transform: uppercase;
-  }
-
-  .FormSubmit {
-    background: rgba(158, 52, 183, 0.6);
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
-    padding: 8px 16px;
-    font-size: 12px;
-    color: #fff;
-    text-transform: uppercase;
-    transition: all 0.3s;
-  }
-
-  .FormSubmit:hover {
-    filter: contrast(200%);
-  }
+.darkLink {
+  color: #000;
 }

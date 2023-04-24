@@ -1,13 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { Alert, Button, Snackbar, TextField } from '@mui/material';
-
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Alert, Snackbar } from '@mui/material';
 
 import { checkIsAuth } from 'src/redux/reducers/authSlice';
 import { registerUser } from 'src/redux/thunk/registerUser';
@@ -26,9 +22,6 @@ const SignupSchema = Yup.object().shape({
     .min(4, 'must be more than 3 characters')
     .required('required field'),
   email: Yup.string().email('invalid email address').required('required field'),
-  birthday: Yup.date()
-    .max(new Date(), 'Date cannot be greater than current')
-    .required('required field'),
 });
 
 // Formik form
@@ -69,7 +62,7 @@ export const FormRegistration = () => {
     login: '',
     password: '',
     email: '',
-    birthday: new Date(),
+    birthday: '',
   };
 
   return (
@@ -89,66 +82,58 @@ export const FormRegistration = () => {
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched, values, handleChange, handleBlur }) => (
+        {({ errors, touched }) => (
           <Form className={styles.FormBody} autoComplete="off">
             {/* login */}
-            <TextField
-              fullWidth
-              id="login"
-              name="login"
-              label="Login"
-              type="text"
-              value={values.login}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.login && Boolean(errors.login)}
-              helperText={errors.login && touched.login && errors.login}
-            />
+            <div className={styles.FieldContainer}>
+              <Field
+                className={
+                  errors.login && touched.login ? `${styles.inputError}` : ''
+                }
+                type="text"
+                name="login"
+                placeholder="Login"
+              />
+              {errors.login && touched.login ? (
+                <div className={styles.messageError}>{errors.login}</div>
+              ) : null}
+            </div>
 
             {/* password */}
-            <TextField
-              fullWidth
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.password && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
-            />
+            <div className={styles.FieldContainer}>
+              <Field
+                className={
+                  errors.password && touched.password
+                    ? `${styles.inputError}`
+                    : ''
+                }
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              {errors.password && touched.password ? (
+                <div className={styles.messageError}>{errors.password}</div>
+              ) : null}
+            </div>
 
             {/* email */}
-            <TextField
-              fullWidth
-              id="email"
-              name="email"
-              label="Email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.email && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-            />
-
-            {/*  Date */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Basic example"
-                value={values.birthday}
-                onChange={(date) => {
-                  handleChange({ target: { name: 'birthday', value: date } });
-                }}
-                renderInput={(params) => <TextField {...params} />}
+            <div className={styles.FieldContainer}>
+              <Field
+                className={
+                  errors.email && touched.email ? `${styles.inputError}` : ''
+                }
+                type="text"
+                name="email"
+                placeholder="Поштова адреса"
               />
-            </LocalizationProvider>
-
-            <div className={styles.actions}>
-              <Button variant="outlined" color="black" type="submit">
-                Log in
-              </Button>
+              {errors.email && touched.email ? (
+                <div className={styles.messageError}>{errors.email}</div>
+              ) : null}
             </div>
+
+            <button className={styles.FormSubmit} type="submit">
+              Реєстрація
+            </button>
           </Form>
         )}
       </Formik>
