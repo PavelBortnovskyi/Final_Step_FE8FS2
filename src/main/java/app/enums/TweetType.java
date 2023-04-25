@@ -1,4 +1,4 @@
-package app.model;
+package app.enums;
 
 public enum TweetTypeEnum {
     TWEET,
