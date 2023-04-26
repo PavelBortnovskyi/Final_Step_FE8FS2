@@ -1,17 +1,24 @@
-import { AppBar, Grid, Toolbar, Button } from '@mui/material';
+import { AppBar, Grid, Toolbar, Button, Typography, Link } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'src/redux/reducers/modalSlice';
 import { NavLink } from 'react-router-dom';
-
-import styles from 'src/styles/BottomToolbar.module.scss';
+import { FormLogin } from 'src/components/_forms/FormLogin';
 
 export const BottomToolbar = () => {
+  const dispatch = useDispatch();
+
   return (
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
         <Grid container spacing={1}>
           <Grid item xs={0} md={3}></Grid>
           <Grid item xs={6} md={5}>
-            <div className={styles.title}>Stay up to date</div>
-            <div>Chatter users are the first to know the news</div>
+            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+              Stay up to date
+            </Typography>
+            <Typography variant="span">
+              Chatter users are the first to know the news
+            </Typography>
           </Grid>
           <Grid
             item
@@ -20,14 +27,24 @@ export const BottomToolbar = () => {
             sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <Button variant="outlined" color="transparent">
-              <NavLink className={styles.whiteLink} to="/login">
+              <Link
+                component={NavLink}
+                to="/login"
+                color="inherit"
+                underline="none"
+              >
                 Log in
-              </NavLink>
+              </Link>
             </Button>
             <Button variant="outlined" color="gray">
-              <NavLink className={styles.darkLink} to="/registration">
+              <Link
+                component={NavLink}
+                to="/registration"
+                color="inherit"
+                underline="none"
+              >
                 Sign up
-              </NavLink>
+              </Link>
             </Button>
           </Grid>
         </Grid>

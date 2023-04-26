@@ -1,12 +1,16 @@
-import { Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'src/redux/reducers/modalSlice';
+import { Modal } from 'src/components/Modal/Modal';
 import { FormRegistration } from 'src/components/_forms/FormRegistration';
 
 export const RegistrationPage = () => {
+  const dispatch = useDispatch();
+
+  dispatch(openModal());
+
   return (
-    <div className="">
-      <Typography variant="h5">Sign up</Typography>
-      <br />
+    <Modal title="Sign up">
       <FormRegistration />
-    </div>
+    </Modal>
   );
 };

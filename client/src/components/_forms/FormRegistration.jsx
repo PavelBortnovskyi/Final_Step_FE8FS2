@@ -135,7 +135,7 @@ export const FormRegistration = () => {
             {/*  Date */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Basic example"
+                label="Birthday"
                 value={values.birthday}
                 onChange={(date) => {
                   handleChange({ target: { name: 'birthday', value: date } });
@@ -146,7 +146,7 @@ export const FormRegistration = () => {
 
             <div className={styles.actions}>
               <Button variant="outlined" color="black" type="submit">
-                Log in
+                Sign up
               </Button>
             </div>
           </Form>
