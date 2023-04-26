@@ -1,41 +1,81 @@
 package app.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.List;
+
+import java.util.Set;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
+@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class UserModel extends BaseEntityModel{
-    public UserModel() {
-    }
-    @Column (name = "fullname")
-    private String fullname;
-    @Column (name = "user_tag")
-    private String user_tag;
-    @Column(name = "password")
+
+    @Column(name = "fullname", updatable = true, nullable = false)
+    private String fullName;
+    @Column(name = "user_tag", updatable = true, nullable = false)
+    private String userTag;
+    @Column(name = "password", updatable = true, nullable = false)
     private String password;
-    @Column(name = "email")
+    @Column(name = "email", updatable = true, nullable = false)
     private String email;
-    @Column(name = "date_of_birth", nullable = true)
+    @Column(name = "date_of_birth", updatable = false, nullable = true)
     private LocalDate birthdate;
-    @Column(name = "bio", nullable = true)
+    @Column(name = "bio", updatable = true, nullable = true)
     private String bio;
-    @Column(name = "location", nullable = true)
+    @Column(name = "location", updatable = true, nullable = true)
     private String location;
-    @Column(name = "avatar_img_url", nullable = true)
-    private String avatar_img_url;
-    @Column(name = "header_img_url", nullable = true)
-    private String header_img_url;
-    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name = "avatar_img_url", updatable = true, nullable = true)
+    private String avatarImgUrl;
+    @Column(name = "header_img_url", updatable = true, nullable = true)
+    private String headerImgUrl;
+    @Column(name = "is_verified", updatable = true, nullable = false)
+    private boolean isVerified;
+
+    public UserModel(String fullName, String userTag, String password, String email) {
+        this.fullName = fullName;
+        this.userTag = userTag;
+        this.password = password;
+        this.email = email;
+    }
+
+    @OneToMany
+    @JoinTable(name = "followers")
+    private Set<UserModel> following;
+
+    @OneToMany
+    @JoinTable(name = "followers")
+    private Set<UserModel> followers;
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private List<TweetModel> tweets;
+    private Set<Tweet> tweets;
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Set<Tweet> messages;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Chat> chats;
+
+    @OneToOne(mappedBy = "user")
+    private TweetAction tweetAction;
+
+    // Foreign key for chats table to initiator_id column
+    //  @OneToOne(mappedBy = "userId")
+    //  private Chat chat;
 }

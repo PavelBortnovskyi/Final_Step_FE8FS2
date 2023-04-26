@@ -4,10 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import javax.persistence.*;
+
+import javax.persistence.InheritanceType;
+import javax.persistence.GenerationType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Inheritance;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import java.time.LocalDateTime;
 
-@Entity
+@MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
 @NoArgsConstructor
@@ -15,20 +22,15 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class BaseEntityModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence-generator")
-    @SequenceGenerator(
-            name = "sequence-generator",
-            sequenceName = "id_seq",
-            allocationSize = 1
-    )
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, insertable = false, updatable = false)
     private Long id;
-    @Column(name = "created at", nullable = true)
-    private LocalDateTime created_at;
-    @Column(name = "updated at", nullable = true)
-    private LocalDateTime updated_at;
-    @Column(name = "created by", nullable = true)
-    private Long created_by;
-    @Column(name = "updated by", nullable = true)
-    private Long updated_by;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "updated_at", nullable = true)
+    private LocalDateTime updatedAt;
+    @Column(name = "created_by", nullable = true)
+    private Long createdBy;
+    @Column(name = "updated_by", nullable = true)
+    private Long updatedBy;
 }

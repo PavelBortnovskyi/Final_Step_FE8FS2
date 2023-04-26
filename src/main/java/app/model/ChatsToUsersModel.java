@@ -19,5 +19,5 @@ public class ChatsToUsersModel extends BaseEntityModel{
     @Column(name = "body")
     private String body;
     @ManyToMany
-    private Set<ChatModel> chats;
+    private Set<Chat> chats;
 }

@@ -1,6 +1,6 @@
 package app.enums;
 
-public enum NotificationTypeEnum {
+public enum NotificationType {
     LIKE,
     QUOTE_TWEET,
     REPLY,

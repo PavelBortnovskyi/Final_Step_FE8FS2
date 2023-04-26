@@ -1,6 +1,6 @@
 package app.enums;
 
-public enum TweetTypeEnum {
+public enum TweetType {
     TWEET,
     QUOTE_TWEET,
     REPLY
