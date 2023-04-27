@@ -1,44 +1,49 @@
 import React from 'react';
 import styles from './Post.module.scss';
-import { Avatar } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
+import PostIconList from './PostIconGroup/PostIconList';
 
 function Post({ displayName, username, verified, text, image }) {
   return (
-    <div className={styles.post}>
-      <div className={styles.avatar}>
+    <Box
+      sx={{
+        borderBottom: '1px solid rgb(56, 68, 77)',
+      }}
+      padding={2}
+      display="flex"
+    >
+      <Box padding={2}>
         <Avatar src="./img/avatar.JPG" />
-      </div>
-      <div className={styles.body}>
-        <div className="post__header">
-          <div className={styles.headerText}>
-            <h3>
-              {displayName}
-              <span className={styles.headerSpecial}>
-                {verified && (
-                  <VerifiedUserRoundedIcon className={styles.badge} />
-                )}{' '}
-                @{username}
-              </span>
-            </h3>
-          </div>
-          <div className={styles.headerDescription}>
-            <p>{text}</p>
-          </div>
+      </Box>
+
+      <Box padding={1}>
+        <div>
+          <Box display="flex" sx={{ gap: '3px', alignItems: 'center' }}>
+            <Typography variant="body1">{username}</Typography>
+            <div>
+              {verified && (
+                <VerifiedUserRoundedIcon sx={{ fontSize: '15px' }} />
+              )}
+            </div>
+            <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
+              @{displayName} ·
+            </Typography>
+            <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
+              4h
+            </Typography>
+          </Box>
+
+          <Typography variant="body" sx={{ fontSize: '15px' }}>
+            {text}
+          </Typography>
         </div>
-        <img src={image} alt="" />
-        <div className={styles.footer}>
-          <ChatBubbleOutlineOutlinedIcon fontSize="small" />
-          <RepeatOutlinedIcon fontSize="small" />
-          <FavoriteBorderOutlinedIcon fontSize="small" />
-          <PublishOutlinedIcon fontSize="small" />
+        <img className={styles.postImage} src={image} alt="" />
+        <div>
+          <PostIconList />
         </div>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
