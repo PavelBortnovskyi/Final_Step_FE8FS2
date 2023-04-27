@@ -10,8 +10,8 @@ import { UserPage } from 'src/pages/UserPage';
 
 export const router = createBrowserRouter([
   {
-    element: <App />,
     path: '/',
+    element: <App />,
     errorElement: <NotfoundPage />,
     children: [
       {
@@ -19,20 +19,20 @@ export const router = createBrowserRouter([
         index: true,
       },
       {
-        element: <UserPage />,
         path: 'user',
+        element: <UserPage />,
       },
       {
-        element: <NewsPage />,
         path: 'news',
+        element: <NewsPage />,
       },
       {
-        element: <LoginPage />,
         path: 'login',
+        element: <LoginPage />,
       },
       {
-        element: <RegistrationPage />,
         path: 'registration',
+        element: <RegistrationPage />,
       },
     ],
   },

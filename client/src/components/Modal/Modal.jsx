@@ -5,17 +5,22 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { closeModal } from 'src/redux/reducers/modalSlice';
 import { getModalState } from 'src/redux/selectors/selectors';
 
 export const Modal = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // get modal data
   const { isOpen } = useSelector(getModalState);
 
   // function for close modal
-  const handleModalClose = () => dispatch(closeModal());
+  const handleModalClose = () => {
+    navigate(-1);
+    dispatch(closeModal());
+  };
 
   const { title = 'title', children = 'body', actionsBtn = false } = props;
   return (
