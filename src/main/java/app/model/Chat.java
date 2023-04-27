@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 import java.util.List;
 import java.util.Set;
 
@@ -18,21 +19,19 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 public class Chat extends BaseEntityModel{
-    @Column(name = "initiator_user_id", insertable = false, updatable = false)
-    private Long initiatorUserId;
-    @OneToMany(mappedBy = "chat")
-    private List<Message> messages;
-
-    // Foreign key for chats table to initiator_id column
-    //  @OneToOne(targetEntity = TWuser.class)
-    //  @JoinColumn(name = "initiator_user_id")
-    //  private Long userId;
-
-    @ManyToMany
-    private Set<UserModel> users;
-
     public Chat(Long initiatorUserId) {
         this.initiatorUserId = initiatorUserId;
         this.setCreatedBy(initiatorUserId);
     }
+
+    @Column(name = "initiator_user_id", insertable = false, updatable = false)
+    private Long initiatorUserId;
+
+    @ManyToOne(targetEntity = UserModel.class)
+    private Long initiatorUser;
+    @OneToMany(mappedBy = "chat")
+    private List<Message> messages;
+
+    @ManyToMany
+    private Set<UserModel> users;
 }

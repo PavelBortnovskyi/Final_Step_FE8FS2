@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import java.util.Set;
 
 @Entity
@@ -18,12 +20,30 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class Tweet extends BaseEntityModel{
+    public Tweet(String body, Long userId) {
+        this.body = body;
+        this.tweetType = TweetType.TWEET;
+        this.userId = userId;
+        this.setCreatedBy(userId);
+    }
+
+    public Tweet(String body, TweetType tweetType, Long userId, Long parentTweetId) {
+        this.body = body;
+        this.tweetType = tweetType;
+        this.userId = userId;
+        this.setCreatedBy(userId);
+        this.parentTweetId = parentTweetId;
+    }
+
     @Column(name = "body", nullable = false, updatable = true)
     private String body;
-    @Column(name = "tweet_type", nullable = false, updatable = false)
-    private String tweetType;
+
+    @Enumerated(EnumType.STRING)
+    private TweetType tweetType;
+
     @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
+
     @Column(name = "parent_tweet_id", nullable = true, updatable = true)
     private Long parentTweetId;
 
@@ -33,24 +53,9 @@ public class Tweet extends BaseEntityModel{
     @OneToOne(mappedBy = "tweet")
     private Notification notification;
 
-    public Tweet(String body, Long userId) {
-        this.body = body;
-        this.tweetType = TweetType.TWEET.toString();
-        this.userId = userId;
-        this.setCreatedBy(userId);
-    }
-
-    public Tweet(String body, TweetType tweetType, Long userId, Long parentTweetId) {
-        this.body = body;
-        this.tweetType = tweetType.toString();
-        this.userId = userId;
-        this.setCreatedBy(userId);
-        this.parentTweetId = parentTweetId;
-    }
-
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
-    private Set<UserModel> users;
+    private UserModel user;
 
     @OneToMany(mappedBy = "tweet")
     private Set<AttachmentImage> attachmentImages;

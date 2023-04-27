@@ -18,12 +18,22 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 public class Message extends BaseEntityModel{
+    public Message(String body, Long userId) {
+        this.body = body;
+        this.userId = userId;
+        this.setCreatedBy(userId);
+        this.sent = LocalDateTime.now();
+    }
+
     @Column(name = "chat_id", insertable = false, updatable = false)
     private Long chatId;
+
     @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
+
     @Column(name = "body")
     private String body;
+
     @Column(name = "sent_at")
     private LocalDateTime sent;
 
@@ -34,11 +44,4 @@ public class Message extends BaseEntityModel{
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
     private UserModel user;
-
-    public Message(String body, Long userId) {
-        this.body = body;
-        this.userId = userId;
-        this.setCreatedBy(userId);
-        this.sent = LocalDateTime.now();
-    }
 }

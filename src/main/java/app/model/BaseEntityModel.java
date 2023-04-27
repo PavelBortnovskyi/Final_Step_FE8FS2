@@ -25,12 +25,16 @@ public class BaseEntityModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = false, updatable = false)
     private Long id;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
     @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
+
     @Column(name = "created_by", nullable = true)
     private Long createdBy;
+
     @Column(name = "updated_by", nullable = true)
     private Long updatedBy;
 }

@@ -18,18 +18,19 @@ import javax.persistence.JoinColumn;
 @AllArgsConstructor
 @Data
 public class AttachmentImage extends BaseEntityModel{
+    public AttachmentImage(Long tweetId, String imgUrl) {
+        this.tweetId = tweetId;
+        this.imgUrl = imgUrl;
+        //this.setCreatedBy();
+    }
+
     @Column(name = "tweet_id", insertable = false, updatable = false)
     private Long tweetId;
+
     @Column(name = "img_url")
     private String imgUrl;
 
     @ManyToOne(targetEntity = Tweet.class)
     @JoinColumn(name = "tweet_id")
     private Tweet tweet;
-
-    public AttachmentImage(Long tweetId, String imgUrl) {
-        this.tweetId = tweetId;
-        this.imgUrl = imgUrl;
-        //this.setCreatedBy();
-    }
 }
