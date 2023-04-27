@@ -4,12 +4,7 @@ import app.enums.NotificationType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "notifications")
@@ -25,21 +20,18 @@ public class Notification extends BaseEntityModel{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "notification_type", nullable = false, updatable = false)
     private NotificationType notificationType;
-
-    @Column(name = "receiver_id", nullable = false, updatable = false)
+    @OneToOne(targetEntity = UserModel.class)
+    @JoinColumn(name = "receiver_id")
     private Long receiverId;
-
-    @Column(name = "initiator_id", nullable = false, updatable = false)
+    @OneToOne(targetEntity = UserModel.class)
+    @JoinColumn(name = "initiator_id")
     private Long initiatorId;
-
-    @Column(name = "tweet_id", insertable = false, nullable = false, updatable = false)
+    @OneToOne(targetEntity = Tweet.class)
+    @JoinColumn(name = "tweet_id", insertable = false, updatable = false)
     private Long tweetId;
-
     @Column(name = "is_read", nullable = false, updatable = true)
     private boolean isRead;
-
-    @OneToOne(targetEntity = Tweet.class)
-    private Long tweet;
 
 }

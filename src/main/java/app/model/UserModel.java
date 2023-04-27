@@ -69,13 +69,13 @@ public class UserModel extends BaseEntityModel{
     @JoinTable(name = "followers")
     private Set<UserModel> followers;
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Set<Tweet> tweets;
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private Set<Tweet> messages;
+    private Set<Message> messages;
 
     @OneToMany(mappedBy = "initiatorUser")
     private Set<Chat> chat;
@@ -83,7 +83,7 @@ public class UserModel extends BaseEntityModel{
     @ManyToMany(mappedBy = "users")
     private Set<Chat> chats;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "userId")
     private TweetAction tweetAction;
 
 }

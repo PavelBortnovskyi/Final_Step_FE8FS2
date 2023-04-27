@@ -19,19 +19,16 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 public class Chat extends BaseEntityModel{
-    public Chat(Long initiatorUserId) {
-        this.initiatorUserId = initiatorUserId;
-        this.setCreatedBy(initiatorUserId);
-    }
-
-    @Column(name = "initiator_user_id", insertable = false, updatable = false)
-    private Long initiatorUserId;
-
     @ManyToOne(targetEntity = UserModel.class)
     private Long initiatorUser;
-    @OneToMany(mappedBy = "chat")
+    @OneToMany(mappedBy = "chatId")
     private List<Message> messages;
 
     @ManyToMany
     private Set<UserModel> users;
+
+    public Chat(Long initiatorUserId) {
+        this.initiatorUser = initiatorUserId;
+        this.setCreatedBy(initiatorUserId);
+    }
 }

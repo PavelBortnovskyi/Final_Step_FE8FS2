@@ -5,11 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tweet_actions")
@@ -18,16 +14,18 @@ import javax.persistence.EnumType;
 public class TweetAction extends BaseEntityModel{
     public TweetAction(TweetActionType actionType, Long tweetId, Long userId) {
         this.actionType = actionType;
-        this.tweet = tweetId;
-        this.user = userId;
+        this.tweetId = tweetId;
+        this.userId = userId;
         this.setCreatedBy(userId);
     }
     @Enumerated(EnumType.STRING)
     private TweetActionType actionType;
 
     @OneToOne(targetEntity = UserModel.class)
-    private Long user;
+    @JoinColumn(name = "user_id")
+    private Long userId;
 
     @OneToOne(targetEntity = Tweet.class)
-    private Long tweet;
+    @JoinColumn(name = "tweet_id")
+    private Long tweetId;
 }
