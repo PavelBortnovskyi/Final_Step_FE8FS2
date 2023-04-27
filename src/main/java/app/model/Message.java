@@ -43,5 +43,5 @@ public class Message extends BaseEntityModel{
 
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
-    private UserModel user;
+    private Set<UserModel> users;
 }

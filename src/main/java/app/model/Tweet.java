@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "tweets")
 @NoArgsConstructor
 @Data
-public class Tweet extends BaseEntityModel{
+public class Tweet extends BaseEntityModel {
     public Tweet(String body, Long userId) {
         this.body = body;
         this.tweetType = TweetType.TWEET;
@@ -55,7 +55,7 @@ public class Tweet extends BaseEntityModel{
 
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
-    private UserModel user;
+    private Set<UserModel> users;
 
     @OneToMany(mappedBy = "tweet")
     private Set<AttachmentImage> attachmentImages;
