@@ -55,7 +55,7 @@ public class Tweet extends BaseEntityModel {
 
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
-    private Set<UserModel> users;
+    private UserModel users;
 
     @OneToMany(mappedBy = "tweet")
     private Set<AttachmentImage> attachmentImages;
