@@ -1,4 +1,4 @@
-package app.repository;
+package app.repository.temp;
 
 import app.model.AttachmentImage;
 import org.springframework.data.jpa.repository.JpaRepository;
