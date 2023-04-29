@@ -85,5 +85,4 @@ public class UserModel extends BaseEntityModel{
 
     @OneToOne(mappedBy = "userId")
     private TweetAction tweetAction;
-
 }

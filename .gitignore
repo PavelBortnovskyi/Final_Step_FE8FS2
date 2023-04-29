@@ -5,7 +5,7 @@ out/
 .idea
 .project
 .classpath
-.target/
+target/
 .c9/
 *.launch
 .settings/
