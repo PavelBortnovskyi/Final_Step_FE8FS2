@@ -15,7 +15,7 @@ export const Layout = () => {
       </Grid>
       <Grid item xs={8}>
         <Grid container>
-          <Grid item xs={8}>
+          <Grid item xs={8} sx={{ border: "1px solid", borderTop: "none" }}>
             <Main />
           </Grid>
           <Grid item xs={4}>
