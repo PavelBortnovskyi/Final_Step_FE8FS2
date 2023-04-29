@@ -19,8 +19,5 @@ public interface ServiceInterface<E> {
 
   E getOne(Long id);
 
-//
-//  E findEntityById(Long id);
-
   List<E> findAllById(Iterable<Long> listOfIds);
 }

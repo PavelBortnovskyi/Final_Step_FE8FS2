@@ -12,6 +12,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class GeneralService<E extends BaseEntityModel> implements ServiceInterface<E> {
+
   @Autowired
   private RepositoryInterface<E> repo;
 
@@ -33,9 +34,9 @@ public abstract class GeneralService<E extends BaseEntityModel> implements Servi
   @Override
   public void deleteById(Long id) {
     Optional<E> entityOpt = repo.findById(id);
-    if (!entityOpt.isPresent()) {
+    if (entityOpt.isEmpty()) {
       String msg = String.format("Entity with id %d was not found.", id);
-      // throw new DataNotFoundException(msg);
+      // throw new DataNotFoundException(msg);  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
     delete(entityOpt.get());
