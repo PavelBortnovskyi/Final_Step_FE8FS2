@@ -56,7 +56,12 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary</artifactId>
+            <version>1.0.14</version>
         </dependency>
         <!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
