@@ -18,26 +18,26 @@ function Post({ displayName, username, verified, text, image }) {
       </Box>
 
       <Box padding={1}>
-        <div>
-          <Box display="flex" sx={{ gap: '3px', alignItems: 'center' }}>
-            <Typography variant="body1">{username}</Typography>
-            <div>
-              {verified && (
-                <VerifiedUserRoundedIcon sx={{ fontSize: '15px' }} />
-              )}
-            </div>
-            <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
-              @{displayName} ·
-            </Typography>
-            <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
-              4h
-            </Typography>
-          </Box>
-
-          <Typography variant="body" sx={{ fontSize: '15px' }}>
-            {text}
+        <Box
+          display="flex"
+          sx={{ gap: '3px', alignItems: 'center', marginBottom: '10px' }}
+        >
+          <Typography variant="body1">{username}</Typography>
+          <div>
+            {verified && <VerifiedUserRoundedIcon sx={{ fontSize: '15px' }} />}
+          </div>
+          <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
+            @{displayName} ·
           </Typography>
-        </div>
+          <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
+            4h
+          </Typography>
+        </Box>
+
+        <Typography variant="body" sx={{ fontSize: '15px' }}>
+          {text}
+        </Typography>
+
         <img className={styles.postImage} src={image} alt="" />
         <div>
           <PostIconList />

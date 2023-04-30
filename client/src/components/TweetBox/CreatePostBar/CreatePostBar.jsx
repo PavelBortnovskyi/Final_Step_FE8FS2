@@ -6,17 +6,17 @@ import Schedule from './BarItem/Schedule';
 import Location from './BarItem/Location';
 import style from './CreatePostBar.module.scss';
 
-function CreatePostBar() {
+function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
   return (
     <div className={style.iconsRow}>
       <div>
-        <AddImage />
+        <AddImage handleFileSelect={handleFileSelect} />
       </div>
       <div>
         <Gif />
       </div>
       <div>
-        <Emoji />
+        <Emoji handleEmojiSelect={handleEmojiSelect} />
       </div>
       <div>
         <Schedule />
