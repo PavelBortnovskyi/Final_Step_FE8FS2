@@ -118,7 +118,6 @@
                         <phase>validate</phase>
                         <configuration>
                             <configLocation>../Final_Step_FE8FS2/checkstyle_config.xml</configLocation>
-                            <encoding>utf-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
                             <violationSeverity>warning</violationSeverity>

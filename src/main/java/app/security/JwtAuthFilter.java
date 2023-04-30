@@ -3,6 +3,7 @@ package app.security;
 import app.enums.TokenType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @Log4j2
 @Component
@@ -25,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     try {
-      this.tokenService.extractTokenFromRequest(request)
+      this.extractTokenFromRequest(request)
         .flatMap(t -> this.tokenService.extractClaimsFromToken(t, TokenType.ACCESS))
         .flatMap(tokenService::extractIdFromClaims)
         .map(JwtUserDetails::new)
@@ -39,5 +41,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     } catch (Exception e) {
       log.error("Authentication failed with: " + e.getMessage());
     }
+  }
+  private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
+    return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+      .filter(h -> h.startsWith("BEARER"))
+      .map(h -> h.substring("BEARER".length()));
   }
 }

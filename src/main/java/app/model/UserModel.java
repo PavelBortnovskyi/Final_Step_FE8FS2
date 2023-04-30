@@ -61,6 +61,9 @@ public class UserModel extends BaseEntityModel{
     @Column(name = "is_verified", updatable = true, nullable = false)
     private boolean isVerified;
 
+    @Column(name = "refresh_token", updatable = true, nullable = false)
+    private String refreshToken;
+
     @OneToMany
     @JoinTable(name = "followers")
     private Set<UserModel> following;
