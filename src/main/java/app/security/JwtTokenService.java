@@ -18,10 +18,16 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -133,6 +139,11 @@ public class JwtTokenService {
       log.error("Invalid compression for token: " + token);
     }
     return Optional.empty();
+  }
+  protected Optional<String> extractTokenFromRequest(HttpServletRequest request) {
+    return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+      .filter(h -> h.startsWith("BEARER"))
+      .map(h -> h.substring("BEARER".length()));
   }
 
   protected Optional<Long> extractIdFromClaims(Jws<Claims> claims) {
