@@ -5,19 +5,25 @@ import { EditForm } from "./EditForm";
 export function EditFormShema() {
   return (
     <Formik
-      initialValues={{ foto: "", name: "" }}
+      initialValues={{
+        foto: "",
+        logo: "",
+        name: "",
+        bio: "",
+        location: "",
+        website: "",
+      }}
       validationSchema={Yup.object({
         foto: Yup.array().max(1, "select at least 1 file"),
+        logo: Yup.array().max(1, "select at least 1 file"),
         name: Yup.string()
-          .max(15, "Must be 15 characters or less")
+          .min(1, "Must be 1 characters or less")
           .required("Required"),
+        bio: Yup.string().max(160),
+        location: Yup.string().max(30),
+        website: Yup.string().max(100),
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values, null, 2));
-        //   setSubmitting(false);
-        // }, 400);
-      }}
+      onSubmit={(values, { setSubmitting }) => {}}
       component={EditForm}
     />
   );
