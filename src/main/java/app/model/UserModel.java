@@ -23,69 +23,69 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UserModel extends BaseEntityModel{
-    public UserModel(String fullName, String userTag, String password, String email) {
-        this.fullName = fullName;
-        this.userTag = userTag;
-        this.password = password;
-        this.email = email;
-    }
+public class UserModel extends BaseEntityModel {
+  public UserModel(String fullName, String userTag, String password, String email) {
+    this.fullName = fullName;
+    this.userTag = userTag;
+    this.password = password;
+    this.email = email;
+  }
 
-    @Column(name = "fullname", updatable = true, nullable = false)
-    private String fullName;
+  @Column(name = "fullname", updatable = true, nullable = false)
+  private String fullName;
 
-    @Column(name = "user_tag", updatable = true, nullable = false)
-    private String userTag;
+  @Column(name = "user_tag", updatable = true, nullable = false)
+  private String userTag;
 
-    @Column(name = "password", updatable = true, nullable = false)
-    private String password;
+  @Column(name = "password", updatable = true, nullable = false)
+  private String password;
 
-    @Column(name = "email", updatable = true, nullable = false)
-    private String email;
+  @Column(name = "email", updatable = true, nullable = false)
+  private String email;
 
-    @Column(name = "date_of_birth", updatable = false, nullable = true)
-    private LocalDate birthdate;
+  @Column(name = "date_of_birth", updatable = false, nullable = true)
+  private LocalDate birthdate;
 
-    @Column(name = "bio", updatable = true, nullable = true)
-    private String bio;
+  @Column(name = "bio", updatable = true, nullable = true)
+  private String bio;
 
-    @Column(name = "location", updatable = true, nullable = true)
-    private String location;
+  @Column(name = "location", updatable = true, nullable = true)
+  private String location;
 
-    @Column(name = "avatar_img_url", updatable = true, nullable = true)
-    private String avatarImgUrl;
+  @Column(name = "avatar_img_url", updatable = true, nullable = true)
+  private String avatarImgUrl;
 
-    @Column(name = "header_img_url", updatable = true, nullable = true)
-    private String headerImgUrl;
+  @Column(name = "header_img_url", updatable = true, nullable = true)
+  private String headerImgUrl;
 
-    @Column(name = "is_verified", updatable = true, nullable = false)
-    private boolean isVerified;
+  @Column(name = "is_verified", updatable = true, nullable = false)
+  private boolean isVerified;
 
-    @Column(name = "refresh_token", updatable = true, nullable = false)
-    private String refreshToken;
+  @Column(name = "refresh_token", updatable = true, nullable = true)
+  private String refreshToken;
 
-    @OneToMany
-    @JoinTable(name = "followers")
-    private Set<UserModel> following;
+  @OneToMany
+  @JoinTable(name = "followers")
+  private Set<UserModel> following;
 
-    @OneToMany
-    @JoinTable(name = "followers")
-    private Set<UserModel> followers;
+  @OneToMany
+  @JoinTable(name = "followers")
+  private Set<UserModel> followers;
 
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private Set<Tweet> tweets;
+  @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  private Set<Tweet> tweets;
 
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private Set<Message> messages;
+  @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  private Set<Message> messages;
 
-    @OneToMany(mappedBy = "initiatorUser")
-    private Set<Chat> chat;
+  @OneToMany(mappedBy = "initiatorUser")
+  private Set<Chat> chat;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Chat> chats;
+  @ManyToMany(mappedBy = "users")
+  private Set<Chat> chats;
 
-    @OneToOne(mappedBy = "userId")
-    private TweetAction tweetAction;
+  @OneToOne(mappedBy = "userId")
+  private TweetAction tweetAction;
 }

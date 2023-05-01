@@ -31,6 +31,8 @@ public class SecurityConfiguration {
       .antMatchers("/test").authenticated()
       .anyRequest().authenticated();
 
+    httpSec.headers().frameOptions().disable(); //For h2 correct visualization
+
     httpSec.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return httpSec.build();

@@ -2,8 +2,6 @@ package app.security;
 
 import app.enums.TokenType;
 import app.exceptions.JwtAuthenticationException;
-import app.model.UserModel;
-import app.repository.RepositoryInterface;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.CompressionException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,19 +26,19 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
 @Log4j2
 @Service
-@RequiredArgsConstructor
 public class JwtTokenService {
 
   @Autowired
   private final UserDetailsService userDetailsService;
 
   @Value("${jwt.secret}")
-  private String secretAccessKey = "verySecretUniqueKey";
+  private String secretAccessKey;
   @Value("${jwt.secretRefresh}")
   private String secretRefreshKey;
   @Value("${jwt.secretPasswordReset}")
@@ -51,17 +49,20 @@ public class JwtTokenService {
   private String authorizationHeader;
   //All fields below in milliseconds
   @Value("${jwt.expiration}")
-  private long AccessTokenLiveTime = 7200000L;
+  private long AccessTokenLiveTime;
   @Value("${jwt.expirationRefresh}")
-  private long RefreshTokenLiveTime = 604800000L;
+  private long RefreshTokenLiveTime;
   @Value("${jwt.expirationPasswordReset}")
   private long PasswordResetTokenLiveTime;
   @Value("${jwt.expirationPasswordUpdate}")
   private long PasswordUpdateTokenLiveTime;
 
-//  public JwtTokenService(@Qualifier("userDetailsServiceImplementation") UserDetailsService userDetailsService) {
-//    this.userDetailsService = userDetailsService;
-//  }
+  /**
+   * Class constructor with bean injection qualify to avoid NoUniqueBeanDefinitionException
+   */
+  public JwtTokenService(@Qualifier("userDetailsServiceImplementation") UserDetailsService userDetailsService) {
+    this.userDetailsService = userDetailsService;
+  }
 
   /**
    * Encoding of secrets
@@ -69,9 +70,8 @@ public class JwtTokenService {
 
   @PostConstruct
   protected void init() {
-    PasswordEncoder encoder = new Pbkdf2PasswordEncoder();
-    this.secretAccessKey = encoder.encode(secretAccessKey);
-    this.secretRefreshKey = encoder.encode(secretRefreshKey);
+    this.secretAccessKey = Base64.getEncoder().encodeToString(this.secretAccessKey.getBytes());
+    this.secretRefreshKey = Base64.getEncoder().encodeToString(this.secretRefreshKey.getBytes());
   }
 
   /**
@@ -221,24 +221,24 @@ public class JwtTokenService {
     }
   }
 
-//  /**
-//   * Sandbox
-//   */
-//  public static void main(String[] args) {
-//    JwtTokenService jwts = new JwtTokenService();
-//    String access = jwts.createToken(1L, TokenType.ACCESS, "NeoWar", "warlock40k@gmail.com");
-////    String refresh = jwts.createToken(2L, TokenType.REFRESH);
-////    String passwordReset = jwts.createToken(3L, TokenType.PASSWORD_RESET);
-////    String passwordUpdate = jwts.createToken(4L, TokenType.PASSWORD_UPDATE);
-//    System.out.println(String.format("Access token: %s", access));
-////    System.out.println(String.format("Refresh token: %s", refresh));
-////    System.out.println(String.format("PasswordReset token: %s", passwordReset));
-////    System.out.println(String.format("PasswordUpdate token: %s", passwordUpdate));
-//    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
-////    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(refresh, TokenType.REFRESH).get()).get());
-////    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordReset, TokenType.PASSWORD_RESET).get()).get());
-////    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordUpdate, TokenType.PASSWORD_UPDATE).get()).get());
-////    System.out.println(jwts.extractUserNameFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
-////    System.out.println(jwts.extractUserEmailFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
-//  }
+  /**
+   * Sandbox
+   */
+  //  public static void main(String[] args) {
+  //    JwtTokenService jwts = new JwtTokenService();
+  //    String access = jwts.createToken(1L, TokenType.ACCESS, "DUFF", "111@gmail.com");
+  //    String refresh = jwts.createToken(2L, TokenType.REFRESH);
+  //    String passwordReset = jwts.createToken(3L, TokenType.PASSWORD_RESET);
+  //    String passwordUpdate = jwts.createToken(4L, TokenType.PASSWORD_UPDATE);
+  //    System.out.println(String.format("Access token: %s", access));
+  //    System.out.println(String.format("Refresh token: %s", refresh));
+  //    System.out.println(String.format("PasswordReset token: %s", passwordReset));
+  //    System.out.println(String.format("PasswordUpdate token: %s", passwordUpdate));
+  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
+  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(refresh, TokenType.REFRESH).get()).get());
+  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordReset, TokenType.PASSWORD_RESET).get()).get());
+  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordUpdate, TokenType.PASSWORD_UPDATE).get()).get());
+  //    System.out.println(jwts.extractUserNameFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
+  //    System.out.println(jwts.extractUserEmailFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
+  //  }
 }

@@ -1,6 +1,8 @@
 package app.security;
 
 import app.enums.TokenType;
+import app.model.UserModel;
+import app.service.GeneralService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       log.error("Authentication failed with: " + e.getMessage());
     }
   }
+
   private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
       .filter(h -> h.startsWith("BEARER"))
