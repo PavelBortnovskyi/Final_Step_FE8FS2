@@ -13,6 +13,7 @@ function PostIconElement({ icon, quantity, color }) {
         },
       }}
     >
+      {/* на весь цей блок потрібно повісити ховер, колір ховера прилітає з пропсів */}
       {icon}
       {quantity}
     </Box>

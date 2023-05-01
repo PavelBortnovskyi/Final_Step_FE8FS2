@@ -46,5 +46,4 @@ function Emoji({ handleEmojiSelect }) {
     </div>
   );
 }
-
 export default Emoji;

@@ -1,5 +1,6 @@
 import React from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Scale } from '@mui/icons-material';
 
 const imgStyle = {
   width: '100%',
@@ -20,8 +21,11 @@ function AddingFile({ photo, handleCloseFile }) {
             position: 'absolute',
             top: '15px',
             left: '30px',
+            color: 'black',
             '&:hover': {
               cursor: 'pointer',
+              transition: 'linear, 500ms',
+              transform: 'scale(1.3)',
             },
           }}
         />

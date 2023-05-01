@@ -8,15 +8,26 @@ function TweetBox() {
   const [postInputText, setPostInputText] = useState('');
   const [postImage, setPostImage] = useState(null);
 
-  const sendData = (text, image) => {
-    const data = {
-      text,
-      image,
-    };
+  // чи так має збиратись інформація для створення поста??
+  //================================================================================================
+  let data = {
+    postText: postInputText,
+    postImage: postImage,
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', data);
+    const response = await fetch('/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    console.log(response);
     setPostInputText('');
     setPostImage(null);
   };
-
+  //================================================================================================
   const handleEmojiSelect = (emoji) => {
     setPostInputText(postInputText + emoji);
   };
@@ -48,7 +59,7 @@ function TweetBox() {
                 : false
             }
           />
-          {/*я не можу сука зробити нормальний інпут з цим єбаним матіріал юі нахуй
+          {/*При додаванні імпута від матіріала не виходить застилізувати його правильно
             <TextField
             id="standard-basic"
             label="What's happening?"
@@ -97,7 +108,7 @@ function TweetBox() {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
-              sendData(postInputText, postImage);
+              handleSubmit();
             }}
             variant="contained"
             // className={style.tweetButton}
