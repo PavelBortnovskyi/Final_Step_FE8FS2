@@ -13,7 +13,6 @@ function PostIconList() {
       display="flex"
       sx={{ justifyContent: 'space-between', width: '80%', mt: '20px' }}
     >
-      {/* Тут мені потрібно прокинути іконку пропсою, а в дочірньому елементі повісити ховер на блок, щоб зафарбовувалась іконка і цифри які будуть біля неї */}
       <PostIconElement
         icon={<ChatBubbleOutlineOutlinedIcon fontSize="small" />}
         quantity="19"

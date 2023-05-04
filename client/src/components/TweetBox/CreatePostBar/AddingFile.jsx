@@ -1,6 +1,5 @@
 import React from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Scale } from '@mui/icons-material';
 
 const imgStyle = {
   width: '100%',

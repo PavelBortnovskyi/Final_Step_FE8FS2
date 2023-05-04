@@ -1,9 +1,15 @@
 import React from 'react';
-import styles from './Post.module.scss';
 import { Avatar, Box, Typography } from '@mui/material';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import PostIconList from './PostIconGroup/PostIconList';
 
+const ImageStyle = {
+  borderRadius: '20px',
+  maxWidth: '100%',
+  height: 'auto',
+  minWidth: '400px',
+  marginTop: '10px',
+};
 function Post({ displayName, username, verified, text, image }) {
   return (
     <Box
@@ -33,15 +39,12 @@ function Post({ displayName, username, verified, text, image }) {
             4h
           </Typography>
         </Box>
-
         <Typography variant="body" sx={{ fontSize: '15px' }}>
           {text}
         </Typography>
 
-        <img className={styles.postImage} src={image} alt="" />
-        <div>
-          <PostIconList />
-        </div>
+        <img style={ImageStyle} src={image} alt="" />
+        <PostIconList />
       </Box>
     </Box>
   );

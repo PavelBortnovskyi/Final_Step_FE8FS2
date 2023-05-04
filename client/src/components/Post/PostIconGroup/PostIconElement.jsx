@@ -10,10 +10,12 @@ function PostIconElement({ icon, quantity, color }) {
         '&:hover': {
           color: { color },
           cursor: 'pointer',
+          '.MuiSvgIcon-root': {
+            fill: color,
+          },
         },
       }}
     >
-      {/* на весь цей блок потрібно повісити ховер, колір ховера прилітає з пропсів */}
       {icon}
       {quantity}
     </Box>
