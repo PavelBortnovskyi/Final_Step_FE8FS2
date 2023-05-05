@@ -11,21 +11,22 @@ import javax.persistence.*;
 @Table(name = "tweet_actions")
 @NoArgsConstructor
 @Data
-public class TweetAction extends BaseEntityModel{
-    public TweetAction(TweetActionType actionType, Long tweetId, Long userId) {
-        this.actionType = actionType;
-        this.tweetId = tweetId;
-        this.userId = userId;
-        this.setCreatedBy(userId);
-    }
-    @Enumerated(EnumType.STRING)
-    private TweetActionType actionType;
+public class TweetAction extends BaseEntityModel {
+  public TweetAction(TweetActionType actionType, Long tweetId, Long userId) {
+    this.actionType = actionType;
+    this.tweetId = tweetId;
+    this.userId = userId;
+    this.setCreatedBy(userId);
+  }
 
-    @OneToOne(targetEntity = UserModel.class)
-    @JoinColumn(name = "user_id")
-    private Long userId;
+  @Enumerated(EnumType.STRING)
+  private TweetActionType actionType;
 
-    @OneToOne(targetEntity = Tweet.class)
-    @JoinColumn(name = "tweet_id")
-    private Long tweetId;
+  @OneToOne(targetEntity = UserModel.class)
+  @JoinColumn(name = "user_id")
+  private Long userId;
+
+  @OneToOne(targetEntity = Tweet.class)
+  @JoinColumn(name = "tweet_id")
+  private Long tweetId;
 }

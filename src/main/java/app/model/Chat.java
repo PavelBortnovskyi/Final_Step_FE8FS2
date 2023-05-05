@@ -18,17 +18,17 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Chat extends BaseEntityModel{
-    @ManyToOne(targetEntity = UserModel.class)
-    private Long initiatorUser;
-    @OneToMany(mappedBy = "chatId")
-    private List<Message> messages;
+public class Chat extends BaseEntityModel {
+  @ManyToOne(targetEntity = UserModel.class)
+  private Long initiatorUser;
+  @OneToMany(mappedBy = "chatId")
+  private List<Message> messages;
 
-    @ManyToMany
-    private Set<UserModel> users;
+  @ManyToMany
+  private Set<UserModel> users;
 
-    public Chat(Long initiatorUserId) {
-        this.initiatorUser = initiatorUserId;
-        this.setCreatedBy(initiatorUserId);
-    }
+  public Chat(Long initiatorUserId) {
+    this.initiatorUser = initiatorUserId;
+    this.setCreatedBy(initiatorUserId);
+  }
 }

@@ -20,39 +20,39 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class Tweet extends BaseEntityModel {
-    @Column(name = "body", nullable = false, updatable = true)
-    private String body;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tweet_type", nullable = false, updatable = false)
-    private TweetType tweetType;
-    @ManyToOne(targetEntity = UserModel.class)
-    @JoinColumn(name = "user_id")
-    private Long userId;
-    @OneToOne(targetEntity = Tweet.class)
-    @JoinColumn(name = "parent_tweet_id")
-    private Long parentTweetId;
+  @Column(name = "body", nullable = false, updatable = true)
+  private String body;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "tweet_type", nullable = false, updatable = false)
+  private TweetType tweetType;
+  @ManyToOne(targetEntity = UserModel.class)
+  @JoinColumn(name = "user_id")
+  private Long userId;
+  @OneToOne(targetEntity = Tweet.class)
+  @JoinColumn(name = "parent_tweet_id")
+  private Long parentTweetId;
 
-    @OneToOne(mappedBy = "tweetId")
-    private TweetAction tweetAction;
+  @OneToOne(mappedBy = "tweetId")
+  private TweetAction tweetAction;
 
-    @OneToOne(mappedBy = "tweetId")
-    private Notification notification;
+  @OneToOne(mappedBy = "tweetId")
+  private Notification notification;
 
-    public Tweet(String body, Long userId) {
-        this.body = body;
-        this.tweetType = TweetType.TWEET;
-        this.userId = userId;
-        this.setCreatedBy(userId);
-    }
+  public Tweet(String body, Long userId) {
+    this.body = body;
+    this.tweetType = TweetType.TWEET;
+    this.userId = userId;
+    this.setCreatedBy(userId);
+  }
 
-    public Tweet(String body, TweetType tweetType, Long userId, Long parentTweetId) {
-        this.body = body;
-        this.tweetType = tweetType;
-        this.userId = userId;
-        this.setCreatedBy(userId);
-        this.parentTweetId = parentTweetId;
-    }
+  public Tweet(String body, TweetType tweetType, Long userId, Long parentTweetId) {
+    this.body = body;
+    this.tweetType = tweetType;
+    this.userId = userId;
+    this.setCreatedBy(userId);
+    this.parentTweetId = parentTweetId;
+  }
 
-    @OneToMany(mappedBy = "tweetId")
-    private Set<AttachmentImage> attachmentImages;
+  @OneToMany(mappedBy = "tweetId")
+  private Set<AttachmentImage> attachmentImages;
 }

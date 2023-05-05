@@ -30,6 +30,16 @@ spring:
   url:
     server: http://localhost:8080
     client: http://localhost:3000
+jwt:
+  secret: ${JWT_SECRET}
+  secretRefresh: ${JWT_REFRESH_SECRET}
+  secretPasswordReset: ${JWT_PASSWORD_RESET_SECRET}
+  secretPasswordUpdate: ${JWT_PASSWORD_UPDATE_SECRET}
+  expiration: 7200000
+  expirationRefresh: 604800000
+  expirationPasswordReset: 86400000
+  expirationPasswordUpdate: 3600000
+  header: Authorization
 
 
 
