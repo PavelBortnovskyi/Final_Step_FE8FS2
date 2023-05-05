@@ -8,10 +8,6 @@ spring:
     continue-on-error: true
     initialize: true
     initialization-mode: always
-  h2:
-    console:
-      path: /h2-console
-      enabled: true
   output:
     ansi:
       enabled: always
