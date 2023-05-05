@@ -17,22 +17,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Message extends BaseEntityModel{
-    @ManyToOne(targetEntity = Chat.class)
-    @JoinColumn(name = "chat_id")
-    private Long chatId;
-    @ManyToOne(targetEntity = UserModel.class)
-    @JoinColumn(name = "user_id")
-    private Long userId;
-    @Column(name = "body")
-    private String body;
-    @Column(name = "sent_at")
-    private LocalDateTime sent;
+public class Message extends BaseEntityModel {
+  @ManyToOne(targetEntity = Chat.class)
+  @JoinColumn(name = "chat_id")
+  private Long chatId;
+  @ManyToOne(targetEntity = UserModel.class)
+  @JoinColumn(name = "user_id")
+  private Long userId;
+  @Column(name = "body")
+  private String body;
+  @Column(name = "sent_at")
+  private LocalDateTime sent;
 
-    public Message(String body, Long userId) {
-        this.body = body;
-        this.userId = userId;
-        this.setCreatedBy(userId);
-        this.sent = LocalDateTime.now();
-    }
+  public Message(String body, Long userId) {
+    this.body = body;
+    this.userId = userId;
+    this.setCreatedBy(userId);
+    this.sent = LocalDateTime.now();
+  }
 }
