@@ -20,7 +20,6 @@ export const DropdownBtn = ({popupState}) => {
 
             <Typography
                 variant="subtitle1"
-                align="start"
                 sx={{
                     width: '176px',
                     textTransform: 'capitalize',

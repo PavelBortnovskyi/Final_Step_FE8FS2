@@ -6,9 +6,7 @@ import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlin
 import TwitterIcon from '@mui/icons-material/Twitter';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'; 
 import PersonIcon from '@mui/icons-material/Person';
-import ContactSupportOutlinedIcon from '@mui/icons-material/ContactSupportOutlined';
-import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
-import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+
 
 
 export const mainSidebarElemets = [
@@ -68,29 +66,3 @@ export const mainSidebarElemets = [
 
 
 
-export const dropdownElements = [
-    {
-        id: 21,
-        icon: ContactSupportOutlinedIcon,
-        label: 'Topics',
-        route: 'topics',
-    },
-    {
-        id: 21,
-        icon: ListAltOutlinedIcon,
-        label: 'Lists',
-        route: 'lists',
-    },
-    {
-        id: 21,
-        icon: PersonAddAltOutlinedIcon,
-        label: 'Twitter Circle',
-        route: 'members',
-    },
-    {
-        id: 21,
-        icon: VerifiedOutlinedIcon,
-        label: 'Verified Orgs',
-        route: 'verified_orgs_signup',
-    },
-]

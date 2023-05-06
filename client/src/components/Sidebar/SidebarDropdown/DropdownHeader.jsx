@@ -7,11 +7,10 @@ export const DropdownHeader = ({dropdownEl, popupState}) => {
             onClick={popupState.close}
             sx={{
                 width: '286px',
-                padding: '16px',
+                padding: '12px 16px',
                 fontSize: '20px',
                 fontWeight: '700',
                 backgroundColor: "rgb(21,32,43)",
-                // color: 'rgb(139,152,165)',
                 '&:hover': {
                     cursor: 'pointer',
                     backgroundColor: 'rgb(30,39,50)'

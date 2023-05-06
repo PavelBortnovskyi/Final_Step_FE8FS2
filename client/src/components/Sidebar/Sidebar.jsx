@@ -10,16 +10,8 @@ import { mainSidebarElemets } from './sidebarElemets';
 import Link from '@mui/material/Link';
 import { Avatar, Box, Stack, Toolbar } from '@mui/material';
 import { SidebarFooter } from './SidebarFooter/SidebarFooter';
-import { SidebarDropdownMenu } from './SidebarDropdownMenu/SidebarDropdownMenu';
+import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
 import Button from '@mui/material/Button';
-
-
-
-
-
-
-
-
 
 
 
@@ -68,7 +60,7 @@ export const Sidebar = () => {
           }}
           />
         </Link>
-        <Divider />
+        
         <List
           sx={{
             mx: '10px'
@@ -77,6 +69,7 @@ export const Sidebar = () => {
           {mainSidebarElemets.map((navElement) => (
             <Link href={navElement.route}
               underline="none"
+              key={navElement.id}
             >
               <ListItem key={navElement.id} disablePadding>
                 <ListItemButton
@@ -96,36 +89,31 @@ export const Sidebar = () => {
             </Link>
           ))}
 
-          <SidebarDropdownMenu />
+          <SidebarDropdown />
 
-            <Button variant="contained"
+          <Button variant="contained"
             size="large"
-              sx={{
-                fontSize: '20px',
-                fontWeight: '700',
-                width: '230px',
-                height: '50px',
-                marginTop: '20px',
-                marginLeft: '10px',
-                color: '#FFFF',
-                backgroundColor: 'rgb(30,155,240)',
-                borderRadius: "30px",
-                textTransform: 'capitalize',
+            sx={{
+              fontSize: '20px',
+              fontWeight: '700',
+              width: '230px',
+              height: '50px',
+              marginTop: '20px',
+              marginLeft: '10px',
+              color: '#FFFF',
+              backgroundColor: 'rgb(30,155,240)',
+              borderRadius: "30px",
+              textTransform: 'capitalize',
 
-                '&:hover': {
-                  backgroundColor: 'rgb(26, 140, 216)'
-                }
-              }}
-            >
-              Tweet
-            </Button>
+              '&:hover': {
+                backgroundColor: 'rgb(26, 140, 216)'
+              }
+            }}
+          >
+            Tweet
+          </Button>
         </List>
 
-
-
-
-        {/* <Toolbar/>
-        <Divider /> */}
 
         <SidebarFooter
           displayName="Алексей SlaAll00"
