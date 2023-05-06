@@ -1,0 +1,15 @@
+.input {
+  display: none;
+}
+.emoji {
+  cursor: pointer;
+  position: relative;
+}
+.picker {
+  position: absolute;
+}
+.iconImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
