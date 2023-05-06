@@ -60,8 +60,8 @@
         <!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary -->
         <dependency>
             <groupId>com.cloudinary</groupId>
-            <artifactId>cloudinary</artifactId>
-            <version>1.0.14</version>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.31.0</version>
         </dependency>
         <!--  https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
@@ -83,6 +83,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
         <dependency>

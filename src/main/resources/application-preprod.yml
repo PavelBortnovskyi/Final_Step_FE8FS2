@@ -8,10 +8,6 @@ spring:
     continue-on-error: true
     initialize: true
     initialization-mode: always
-  h2:
-    console:
-      path: /h2-console
-      enabled: true
   output:
     ansi:
       enabled: always
@@ -40,6 +36,10 @@ jwt:
   expirationPasswordReset: 86400000
   expirationPasswordUpdate: 3600000
   header: Authorization
+cloudinary:
+  cloudName: dojrbfnaz
+  apiKey: 516471726946834
+  apiSecret: JokricYXIJmtjF29Ptgm2H7FusA
 
 
 
