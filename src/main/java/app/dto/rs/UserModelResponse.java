@@ -25,4 +25,8 @@ public class UserModelResponse {
   private Set<Chat> chat;
   private Set<Chat> chats;
   private TweetAction tweetAction;
+
+
+  private Integer countUserFollowers;
+  private Integer countUserFollowings;
 }
