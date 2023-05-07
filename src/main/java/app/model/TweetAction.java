@@ -2,31 +2,26 @@ package app.model;
 
 import app.enums.TweetActionType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tweet_actions")
 @NoArgsConstructor
 @Data
 public class TweetAction extends BaseEntityModel {
-  public TweetAction(TweetActionType actionType, Long tweetId, Long userId) {
-    this.actionType = actionType;
-    this.tweetId = tweetId;
-    this.userId = userId;
-    this.setCreatedBy(userId);
-  }
-
   @Enumerated(EnumType.STRING)
   private TweetActionType actionType;
 
-  @OneToOne(targetEntity = UserModel.class)
+  @ManyToOne
   @JoinColumn(name = "user_id")
-  private Long userId;
+  private UserModel user;
 
-  @OneToOne(targetEntity = Tweet.class)
+  @ManyToOne
   @JoinColumn(name = "tweet_id")
-  private Long tweetId;
+  private Tweet tweet;
 }
