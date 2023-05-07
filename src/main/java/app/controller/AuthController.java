@@ -6,6 +6,7 @@ import app.service.GeneralService;
 import app.service.UserModelService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,6 @@ public class AuthController {
     }
     Object principal = auth.getPrincipal();
     Optional<User> currentUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
-    return currentUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
+    return currentUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication", HttpStatus.UNAUTHORIZED));
   }
 }

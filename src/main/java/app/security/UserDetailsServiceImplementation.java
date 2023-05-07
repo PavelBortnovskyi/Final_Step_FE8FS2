@@ -1,6 +1,7 @@
 
 package app.security;
 
+import app.exceptions.AuthErrorException;
 import app.exceptions.JwtAuthenticationException;
 import app.model.UserModel;
 import app.repository.RepositoryInterface;
@@ -41,7 +42,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
     log.info(userMail);
     return this.userModelRepository.findBy(example, FluentQuery.FetchableFluentQuery::first)
       .map(this::mapper)
-      .orElseThrow(() -> new JwtAuthenticationException(String.format("User with email: `%s` not found", userMail), HttpStatus.UNAUTHORIZED
+      .orElseThrow(() -> new AuthErrorException(String.format("User with email: `%s` not found", userMail), HttpStatus.UNAUTHORIZED
       ));
   }
 }
