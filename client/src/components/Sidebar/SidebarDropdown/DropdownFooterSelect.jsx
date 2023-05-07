@@ -27,9 +27,47 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
         >
             <Select
                 displayEmpty
+                sx={{
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                        
+                        '& .MuiPaper': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+                        '& .MuiPaper-root': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+
+                        '& .MuiMenu': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+                        '& .MuiMenu-paper': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+                        '& .MuiPopover': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+                        '& .MuiPopover-paper': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+
+
+                        '& .Mui-selected': {
+                            backgroundColor: "rgb(21,32,43)",
+                            border: 'none',
+                        },
+                    }}
                 value={mainLabel}
                 onChange={handleChange}
-                input={<OutlinedInput/>}
+                input={<OutlinedInput
+                    
+                />}
 
             >
 
