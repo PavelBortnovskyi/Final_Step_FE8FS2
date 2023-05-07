@@ -1,10 +1,15 @@
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import style from "src/styles/User.module.scss";
+import { Box, Typography } from "@mui/material";
 
 export function UserDateRegistration() {
   return (
-    <div>
-      <p className={style.dateRegistation}>
+    <Box>
+      <Typography
+        sx={{
+          color: "rgb(139, 152, 165)",
+          padding: "14px 0",
+        }}
+      >
         <CalendarMonthOutlinedIcon
           sx={{
             fill: "rgb(139, 152, 165)",
@@ -14,7 +19,7 @@ export function UserDateRegistration() {
           }}
         />
         date registration
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 }

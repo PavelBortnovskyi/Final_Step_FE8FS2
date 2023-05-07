@@ -1,11 +1,18 @@
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import style from "src/styles/User.module.scss";
 import { UserName } from "./UserName";
 import { UserTweetsNumber } from "./UserTweensNumber";
+import { Box } from "@mui/material";
 
 export function UserHeder() {
   return (
-    <div className={style.userHeder}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: "14px",
+        padding: "8px",
+      }}
+    >
       <ArrowBackOutlinedIcon
         sx={{
           fill: "rgb(139, 152, 165)",
@@ -17,10 +24,10 @@ export function UserHeder() {
           },
         }}
       />
-      <div>
+      <Box>
         <UserName />
         <UserTweetsNumber />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

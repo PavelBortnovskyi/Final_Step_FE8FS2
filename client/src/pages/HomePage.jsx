@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import homeHeder from "src/styles/HomePageHeder.module.scss";
 import { NavLink } from "react-router-dom";
 import { Grid } from "@mui/material";
 
@@ -14,9 +13,7 @@ export const HomePage = () => {
       // sx={{ border: "1px solid" }}
     >
       <Grid item xs={8}>
-        <NavLink to="/" className={homeHeder.hed}>
-          Home
-        </NavLink>
+        <NavLink to="/">Home</NavLink>
       </Grid>
       <Grid item xs={8}>
         <Box

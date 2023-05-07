@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material";
+
 export function UserName() {
-  return <h2>Firstname Lastname</h2>;
+  return <Typography variant="h4">Firstname Lastname</Typography>;
 }

@@ -1,4 +1,3 @@
-import style from "src/styles/User.module.scss";
 import { UserPageFoto } from "./UserPageFoto";
 import { UserPageAvatar } from "./UserPageAvatar";
 import { ButtonEditProfile } from "./ButtonEditProfile";
@@ -6,23 +5,37 @@ import { UserName } from "./UserName";
 import { UserDateRegistration } from "./UserDateRegistration";
 import { UserFolower } from "./UserFolower";
 import { UserNick } from "./UserNIck";
+import { Box } from "@mui/material";
 
 export function UserInfo() {
   return (
-    <div className={style.imgBlock}>
+    <Box
+      sx={{
+        position: "relative",
+      }}
+    >
       <UserPageFoto />
-      <div className={style.userBlock}>
-        <div className={style.userIcoBlock}>
+      <Box
+        sx={{
+          padding: "11px 15px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <UserPageAvatar />
           <ButtonEditProfile />
-        </div>
-        <div className={style.nameBlock}>
+        </Box>
+        <Box sx={{ margin: "12px 0" }}>
           <UserName />
           <UserNick />
-        </div>
+        </Box>
         <UserDateRegistration />
         <UserFolower />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

@@ -1,5 +1,7 @@
-import style from "src/styles/User.module.scss";
+import { Typography } from "@mui/material";
 
 export function UserNick() {
-  return <span className={style.nick}>@nickname</span>;
+  return (
+    <Typography sx={{ color: "rgb(139, 152, 165)" }}>@nickname</Typography>
+  );
 }

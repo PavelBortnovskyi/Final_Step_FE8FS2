@@ -5,7 +5,7 @@ export function EditProfileModal() {
     <>
       <Modal
         hideBackdrop={true}
-        open={false} //щоб відкрити модалку треба змінити на trye
+        open={true} //щоб відкрити модалку треба змінити на trye
         sx={{
           backgroundColor: "rgba(91, 112, 131, 0.4)",
         }}

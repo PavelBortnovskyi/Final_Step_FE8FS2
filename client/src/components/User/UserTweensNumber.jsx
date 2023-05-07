@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material";
+
 export function UserTweetsNumber() {
-  return <p>tweets</p>;
+  return <Typography>tweets</Typography>;
 }

@@ -1,10 +1,9 @@
 import Box from "@mui/material/Box";
 import { UserActionButton } from "./UserActionButton";
-import style from "src/styles/User.module.scss";
 
 export function UserAction() {
   return (
-    <div className={style.actions}>
+    <Box>
       <Box
         sx={{
           "& button": {
@@ -23,6 +22,6 @@ export function UserAction() {
         <UserActionButton textButton="Media" />
         <UserActionButton textButton="Likes" />
       </Box>
-    </div>
+    </Box>
   );
 }

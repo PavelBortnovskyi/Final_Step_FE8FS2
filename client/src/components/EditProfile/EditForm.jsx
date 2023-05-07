@@ -2,9 +2,13 @@ import { Form } from "formik";
 import { EditFormHeder } from "./EditFormHeder";
 import { UserPageFoto } from "../User/UserPageFoto";
 import { UserPageAvatar } from "../User/UserPageAvatar";
-import { TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { ImgInputAvatar } from "./ImgInputAvatar";
+import { UserPageFotoInput } from "./UserPageFotoInput";
+import { ClearPageFoto } from "./ClearPageFoto";
+import { EditBirthDate } from "./EditBirthDate";
 
 const RedditTextField = styled((props) => (
   <TextField InputProps={{ disableUnderline: true }} {...props} />
@@ -36,8 +40,37 @@ export function EditForm() {
   return (
     <Form>
       <EditFormHeder />
-      <UserPageFoto />
-      <UserPageAvatar />
+      <Box
+        sx={{
+          position: "relative",
+        }}
+      >
+        <UserPageFoto />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "14px",
+            height: "64px",
+            position: "absolute",
+            bottom: "calc(50% - 32px)",
+            left: "calc(50% - 50px)",
+          }}
+        >
+          <UserPageFotoInput />
+          <ClearPageFoto />
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          position: "relative",
+        }}
+      >
+        <UserPageAvatar />
+        <Box sx={{ position: "absolute", bottom: "36px", left: "50px" }}>
+          <ImgInputAvatar />
+        </Box>
+      </Box>
 
       <Box
         sx={{
@@ -77,25 +110,21 @@ export function EditForm() {
           style={{ marginTop: 11 }}
         />
         <Box>
-          <Typography>Birth date</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography style={{ color: "rgb(139, 152, 165)" }}>
+              Birth date
+            </Typography>
+            <EditBirthDate />
+          </Box>
+
           <Typography>Birth date</Typography>
         </Box>
       </Box>
-
-      {/* <Field
-        name="email"
-        type="email"
-        label="email address"
-        component={Input}
-      />
-      <ErrorMessage name="email" />
-
-      <Field name="phone" type="phone" label="Phone" component={Input} />
-      <ErrorMessage name="phone" />
-
-      <label htmlFor="message">Message</label>
-      <Field name="message" type="textarea" />
-      <ErrorMessage name="message" /> */}
     </Form>
   );
 }

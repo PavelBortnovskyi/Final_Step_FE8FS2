@@ -1,17 +1,17 @@
-import style from "src/styles/EditProfile.module.scss";
 import { SaveButton } from "./SaveButton";
+import { Box, Typography } from "@mui/material";
 export function EditFormHeder() {
   return (
-    <div className={style.EditFormHeder}>
-      <div>x</div>
-      <p>Edit profile</p>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "8px 12px",
+      }}
+    >
+      <Box>x</Box>
+      <Typography>Edit profile</Typography>
       <SaveButton />
-      {/* <button
-        type="submit"
-        // disabled={props.isSubmitting}
-      >
-        Save
-      </button> */}
-    </div>
+    </Box>
   );
 }
