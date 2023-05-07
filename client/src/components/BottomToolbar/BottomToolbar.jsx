@@ -1,12 +1,7 @@
 import { AppBar, Grid, Toolbar, Button, Typography, Link } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { openModal } from 'src/redux/reducers/modalSlice';
 import { NavLink } from 'react-router-dom';
-import { FormLogin } from 'src/components/_forms/FormLogin';
 
 export const BottomToolbar = () => {
-  const dispatch = useDispatch();
-
   return (
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>

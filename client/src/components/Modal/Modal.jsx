@@ -5,7 +5,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { closeModal } from 'src/redux/reducers/modalSlice';
 import { getModalState } from 'src/redux/selectors/selectors';
 
@@ -24,10 +24,12 @@ export const Modal = (props) => {
 
   const { title = 'title', children = 'body', actionsBtn = false } = props;
   return (
-    <Dialog open={isOpen} onClose={handleModalClose}>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent dividers>{children}</DialogContent>
-      {actionsBtn && <DialogActions dividers>{actionsBtn}</DialogActions>}
-    </Dialog>
+    <>
+      <Dialog open={isOpen} onClose={handleModalClose}>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent dividers>{children}</DialogContent>
+        {actionsBtn && <DialogActions dividers>{actionsBtn}</DialogActions>}
+      </Dialog>
+    </>
   );
 };
