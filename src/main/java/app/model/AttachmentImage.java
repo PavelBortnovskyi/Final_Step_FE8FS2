@@ -17,9 +17,10 @@ import javax.persistence.JoinColumn;
 @AllArgsConstructor
 @Data
 public class AttachmentImage extends BaseEntityModel {
-  @ManyToOne(targetEntity = Tweet.class)
+  @ManyToOne
   @JoinColumn(name = "tweet_id")
-  private Long tweetId;
+  private Tweet tweet;
+
   @Column(name = "img_url")
   private String imgUrl;
 }
