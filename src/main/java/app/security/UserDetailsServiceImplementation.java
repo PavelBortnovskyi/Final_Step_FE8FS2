@@ -27,6 +27,10 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
       .build();
   }
 
+  /**
+   * Method returns User Details object for Spring Security authentication procedure using user email as login parameter
+   * @throws UsernameNotFoundException
+   */
   @Override
   public UserDetails loadUserByUsername(String userMail) throws UsernameNotFoundException {
     UserModel sample = new UserModel();

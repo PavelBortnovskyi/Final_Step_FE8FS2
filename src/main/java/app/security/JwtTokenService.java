@@ -53,6 +53,7 @@ public class JwtTokenService {
   private String secretPasswordUpdateKey;
   @Value("${jwt.header}")
   private String authorizationHeader;
+
   //All fields below in milliseconds
   @Value("${jwt.expiration}")
   private long AccessTokenLiveTime;
@@ -140,12 +141,19 @@ public class JwtTokenService {
     }
     return Optional.empty();
   }
+
+  /**
+   * Method for extraction token from request (JWT Bearer type)
+   */
   protected Optional<String> extractTokenFromRequest(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
       .filter(h -> h.startsWith("BEARER"))
       .map(h -> h.substring("BEARER".length()));
   }
 
+  /**
+   * Method for extraction user id value from JWT Claims
+   */
   protected Optional<Long> extractIdFromClaims(Jws<Claims> claims) {
     try {
       return Optional.of(claims.getBody().getSubject()).map(Long::parseLong);
@@ -155,6 +163,9 @@ public class JwtTokenService {
     }
   }
 
+  /**
+   * Method for extraction username value from JWT Claims
+   */
   public Optional<String> extractUserNameFromClaims(Jws<Claims> claims) {
     try {
       return Optional.of((String) claims.getBody().get("username"));
@@ -164,6 +175,9 @@ public class JwtTokenService {
     }
   }
 
+  /**
+   * Method for extraction user email value from JWT Claims
+   */
   protected Optional<String> extractUserEmailFromClaims(Jws<Claims> claims) {
     try {
       return Optional.of((String) claims.getBody().get("email"));
@@ -187,10 +201,16 @@ public class JwtTokenService {
     }
   }
 
+  /**
+   * Method returns string value of authorization header from request
+   */
   protected String resolveToken(HttpServletRequest request) {
     return request.getHeader(authorizationHeader);
   }
 
+  /**
+   * Method returns string value of secret depending token type
+   */
   private String getSignKey(TokenType tokenType) {
     switch (tokenType) {
       case ACCESS -> {
@@ -211,6 +231,9 @@ public class JwtTokenService {
     }
   }
 
+  /**
+   * Method returns date expiration value depending token type
+   */
   private Date getExpirationDate(TokenType tokenType) {
     Date now = new Date();
     switch (tokenType) {
