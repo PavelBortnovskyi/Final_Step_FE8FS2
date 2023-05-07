@@ -258,21 +258,21 @@ public class JwtTokenService {
   /**
    * Sandbox
    */
-  //  public static void main(String[] args) {
-  //    JwtTokenService jwts = new JwtTokenService();
-  //    String access = jwts.createToken(1L, TokenType.ACCESS, "DUFF", "111@gmail.com");
-  //    String refresh = jwts.createToken(2L, TokenType.REFRESH);
-  //    String passwordReset = jwts.createToken(3L, TokenType.PASSWORD_RESET);
-  //    String passwordUpdate = jwts.createToken(4L, TokenType.PASSWORD_UPDATE);
-  //    System.out.println(String.format("Access token: %s", access));
-  //    System.out.println(String.format("Refresh token: %s", refresh));
-  //    System.out.println(String.format("PasswordReset token: %s", passwordReset));
-  //    System.out.println(String.format("PasswordUpdate token: %s", passwordUpdate));
-  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
-  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(refresh, TokenType.REFRESH).get()).get());
-  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordReset, TokenType.PASSWORD_RESET).get()).get());
-  //    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordUpdate, TokenType.PASSWORD_UPDATE).get()).get());
-  //    System.out.println(jwts.extractUserNameFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
-  //    System.out.println(jwts.extractUserEmailFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
-  //  }
+//  public static void main(String[] args) {
+//    JwtTokenService jwts = new JwtTokenService();
+//    String access = jwts.createToken(1L, TokenType.ACCESS, "DUFF", "111@gmail.com");
+//    String refresh = jwts.createToken(2L, TokenType.REFRESH);
+//    String passwordReset = jwts.createToken(3L, TokenType.PASSWORD_RESET);
+//    String passwordUpdate = jwts.createToken(4L, TokenType.PASSWORD_UPDATE);
+//    System.out.println(String.format("Access token: %s", access));
+//    System.out.println(String.format("Refresh token: %s", refresh));
+//    System.out.println(String.format("PasswordReset token: %s", passwordReset));
+//    System.out.println(String.format("PasswordUpdate token: %s", passwordUpdate));
+//    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
+//    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(refresh, TokenType.REFRESH).get()).get());
+//    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordReset, TokenType.PASSWORD_RESET).get()).get());
+//    System.out.println(jwts.extractIdFromClaims(jwts.extractClaimsFromToken(passwordUpdate, TokenType.PASSWORD_UPDATE).get()).get());
+//    System.out.println(jwts.extractUserNameFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
+//    System.out.println(jwts.extractUserEmailFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
+//  }
 }

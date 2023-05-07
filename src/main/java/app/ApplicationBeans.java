@@ -36,19 +36,19 @@ public class ApplicationBeans {
     mm.getConfiguration().setFieldMatchingEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
     return mm;
   }
-  //
-  //  @Profile("local")
-  //  @Bean
-  //  Server h2Server() {
-  //    Server server = new Server();
-  //    try {
-  //      server.runTool("-tcp");
-  //      server.runTool("-tcpAllowOthers");
-  //    } catch (Exception e) {
-  //      e.printStackTrace();
-  //    }
-  //    return server;
-  //  }
+
+//  @Profile("local")
+//  @Bean
+//  Server h2Server() {
+//    Server server = new Server();
+//    try {
+//      server.runTool("-tcp");
+//      server.runTool("-tcpAllowOthers");
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//    return server;
+//  }
 
   @Bean
   public Cloudinary cloudinaryConfig() throws IOException {

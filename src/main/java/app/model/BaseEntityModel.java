@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
