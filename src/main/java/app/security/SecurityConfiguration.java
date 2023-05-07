@@ -26,7 +26,7 @@ public class SecurityConfiguration {
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
       .authorizeRequests()
-      .antMatchers("/api/v1/auth/**").permitAll() //end points need to specified
+      .antMatchers("/api/v1/auth/**").authenticated() //end points need to specified
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/test").authenticated()       //need to be replaced for specified end points later
       .anyRequest().authenticated();

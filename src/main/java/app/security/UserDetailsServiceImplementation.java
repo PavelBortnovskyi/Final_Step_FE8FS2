@@ -36,7 +36,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
     UserModel sample = new UserModel();
     sample.setEmail(userMail);
     Example<UserModel> example = Example.of(sample);
-    return userModelRepository.findBy(example, FluentQuery.FetchableFluentQuery::first)
+    return this.userModelRepository.findBy(example, FluentQuery.FetchableFluentQuery::first)
       .map(this::mapper)
       .orElseThrow(() -> new JwtAuthenticationException(String.format("User with email: `%s` not found", userMail), HttpStatus.UNAUTHORIZED
       ));

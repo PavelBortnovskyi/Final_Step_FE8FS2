@@ -123,7 +123,7 @@ public class JwtTokenService {
   protected Optional<Jws<Claims>> extractClaimsFromToken(String token, TokenType tokenType) {
     String signKey = this.getSignKey(tokenType);
     try {
-      return Optional.of(Jwts.parser()
+      return Optional.ofNullable(Jwts.parser()
         .setSigningKey(signKey)
         .parseClaimsJws(token));
     } catch (SignatureException x) {
@@ -156,7 +156,7 @@ public class JwtTokenService {
    */
   protected Optional<Long> extractIdFromClaims(Jws<Claims> claims) {
     try {
-      return Optional.of(claims.getBody().getSubject()).map(Long::parseLong);
+      return Optional.ofNullable(claims.getBody().getSubject()).map(Long::parseLong);
     } catch (Exception e) {
       log.error(String.format("Claims id: %s id parsing went wrong: %s", claims.getBody().getId(), claims.getBody().getSubject()));
       return Optional.empty();
@@ -168,7 +168,7 @@ public class JwtTokenService {
    */
   public Optional<String> extractUserNameFromClaims(Jws<Claims> claims) {
     try {
-      return Optional.of((String) claims.getBody().get("username"));
+      return Optional.ofNullable((String) claims.getBody().get("username"));
     } catch (Exception e) {
       log.error(String.format("Claims id: %s username parsing went wrong: %s", claims.getBody().getId(), claims.getBody().getSubject()));
       return Optional.empty();
@@ -180,7 +180,7 @@ public class JwtTokenService {
    */
   protected Optional<String> extractUserEmailFromClaims(Jws<Claims> claims) {
     try {
-      return Optional.of((String) claims.getBody().get("email"));
+      return Optional.ofNullable((String) claims.getBody().get("email"));
     } catch (Exception e) {
       log.error(String.format("Claims id: %s username parsing went wrong: %s", claims.getBody().getId(), claims.getBody().getSubject()));
       return Optional.empty();
@@ -191,7 +191,7 @@ public class JwtTokenService {
    * Method for token expiration time validation. Returns true if token not expired
    */
   protected boolean validateToken(String token, TokenType tokenType) {
-    String signKey = getSignKey(tokenType);
+    String signKey = this.getSignKey(tokenType);
     try {
       Jws<Claims> claimsJws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(token);
       return !claimsJws.getBody().getExpiration().before(new Date());
