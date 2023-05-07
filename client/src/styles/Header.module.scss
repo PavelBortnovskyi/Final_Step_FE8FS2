@@ -1,17 +1,22 @@
 .Header__row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 12px;
-  flex: 1 1 auto;
+  min-height: 100vh;
+  padding: 0 8px;
 }
 
-.HeaderActions {
-  display: flex;
-  flex-direction: rows;
-  gap: 20px;
+.Header_wrapper{
+  padding: 10px 0 0 0;
+}
+
+.Header_wrapper__logo {
+  padding-left: 10px;
+  width: 52px;
+  height: 52px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(39,51,64);
+    border-radius: 50%;
+  }
 }
 
 .HeaderBasket {

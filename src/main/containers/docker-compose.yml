@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:9.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: 'fe8fs2tw'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'dbTW1991'
+    ports:
+        - '165.232.125.235:8080:5432'
+    volumes:
+        - ../../../ro:/ro:ro
+        - ../../../rw:/rw
+        - ../../../Downloads:/dl:ro
+        - ../.data/pg96:/var/lib/postgresql/data/
+    container_name: fe8fs2db
+
