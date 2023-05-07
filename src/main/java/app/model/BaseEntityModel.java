@@ -1,7 +1,9 @@
 package app.model;
 
+import app.utils.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -12,28 +14,15 @@ import javax.persistence.Inheritance;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Data
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder
-public class BaseEntityModel {
+public abstract class BaseEntityModel extends Auditable<String> implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, insertable = false, updatable = false)
   private Long id;
-
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt = LocalDateTime.now();
-
-  @Column(name = "updated_at", nullable = true)
-  private LocalDateTime updatedAt;
-
-  @Column(name = "created_by", nullable = true)
-  private Long createdBy;
-
-  @Column(name = "updated_by", nullable = true)
-  private Long updatedBy;
 }

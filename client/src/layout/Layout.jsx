@@ -1,4 +1,4 @@
-import { Header } from "src/components/Header/Header";
+import { Sidebar } from "src/components/Sidebar/Sidebar";
 import { Main } from "src/components/Main/Main";
 import { Footer } from "src/components/Footer/Footer";
 import styles from "src/styles/Layout.module.scss";
@@ -8,7 +8,7 @@ export const Layout = () => {
     <div className={body.allContainer}>
       <header className={styles.Header}>
         <div className={styles.container}>
-          <Header />
+          <Sidebar />
         </div>
       </header>
       <div className={styles.mainContainr}>

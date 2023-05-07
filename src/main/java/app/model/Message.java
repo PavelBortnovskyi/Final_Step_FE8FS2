@@ -2,6 +2,7 @@ package app.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -12,27 +13,24 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Message extends BaseEntityModel {
-  @ManyToOne(targetEntity = Chat.class)
+  @ManyToOne
   @JoinColumn(name = "chat_id")
-  private Long chatId;
-  @ManyToOne(targetEntity = UserModel.class)
+  private Chat chat;
+
+  @ManyToOne
   @JoinColumn(name = "user_id")
-  private Long userId;
+  private UserModel user;
+
   @Column(name = "body")
   private String body;
+
   @Column(name = "sent_at")
   private LocalDateTime sent;
-
-  public Message(String body, Long userId) {
-    this.body = body;
-    this.userId = userId;
-    this.setCreatedBy(userId);
-    this.sent = LocalDateTime.now();
-  }
 }

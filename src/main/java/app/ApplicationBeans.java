@@ -1,23 +1,11 @@
 package app;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.Files;
-import jdk.swing.interop.SwingInterOpUtils;
-import org.h2.tools.Server;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class ApplicationBeans {
@@ -36,7 +24,7 @@ public class ApplicationBeans {
     mm.getConfiguration().setFieldMatchingEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
     return mm;
   }
-
+//
 //  @Profile("local")
 //  @Bean
 //  Server h2Server() {
@@ -51,20 +39,12 @@ public class ApplicationBeans {
 //  }
 
   @Bean
-  public Cloudinary cloudinaryConfig() throws IOException {
+  public Cloudinary cloudinaryConfig() {
     Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
       "cloud_name", cloudName,
       "api_key", apiKey,
       "api_secret", apiSecret,
       "secure", true));
-
-
-    //upload from byte array that given by front end side
-    //byte[] imageByteArray = new byte[1024]; // there will be parsing request body to get byte array
-    //try (InputStream is = new ByteArrayInputStream(imageByteArray)) {
-    //  String cloudinaryUrl = cloudinary.uploader().upload(is, ObjectUtils.asMap("public_id", "someImageName")).get("url").toString();
-    //} catch (IOException exception) {
-    //  System.out.println(exception.getMessage());
 
     //Sync upload and get url
     //    try {
