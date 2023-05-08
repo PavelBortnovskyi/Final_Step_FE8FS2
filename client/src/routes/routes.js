@@ -16,32 +16,32 @@ export const mainRoutes = () => {
     },
 
     {
-      element: <UserPage />,
       path: '/explore',
+      element: <UserPage />,
     },
     {
-      element: <UserPage />,
       path: '/notifications',
+      element: <UserPage />,
     },
     {
-      element: <UserPage />,
       path: '/messages',
+      element: <UserPage />,
     },
     {
-      element: <UserPage />,
       path: '/bookmarks',
+      element: <UserPage />,
     },
     {
-      element: <UserPage />,
       path: '/twitter_blue',
+      element: <UserPage />,
     },
     {
-      element: <UserPage />,
       path: '/verified-orgs',
+      element: <UserPage />,
     },
     {
-      element: <UserPage />,
       path: '/profile',
+      element: <UserPage />,
     },
   ];
 };

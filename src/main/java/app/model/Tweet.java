@@ -2,7 +2,11 @@ package app.model;
 
 import app.enums.TweetType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,46 +17,38 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
+import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tweets")
 @NoArgsConstructor
 @Data
 public class Tweet extends BaseEntityModel {
-  @Column(name = "body", nullable = false, updatable = true)
+  @Column(name = "body", nullable = false)
   private String body;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "tweet_type", nullable = false, updatable = false)
   private TweetType tweetType;
-  @ManyToOne(targetEntity = UserModel.class)
+
+  @ManyToOne
   @JoinColumn(name = "user_id")
-  private Long userId;
-  @OneToOne(targetEntity = Tweet.class)
+  private UserModel user;
+
+  @ManyToOne
   @JoinColumn(name = "parent_tweet_id")
-  private Long parentTweetId;
+  private Tweet parentTweetId;
 
-  @OneToOne(mappedBy = "tweetId")
-  private TweetAction tweetAction;
+  @OneToMany(mappedBy = "tweet")
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Set<TweetAction> tweetActions = new HashSet<>();
 
-  @OneToOne(mappedBy = "tweetId")
-  private Notification notification;
+  @OneToMany(mappedBy = "tweet")
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Set<Notification> notifications = new HashSet<>();
 
-  public Tweet(String body, Long userId) {
-    this.body = body;
-    this.tweetType = TweetType.TWEET;
-    this.userId = userId;
-    this.setCreatedBy(userId);
-  }
-
-  public Tweet(String body, TweetType tweetType, Long userId, Long parentTweetId) {
-    this.body = body;
-    this.tweetType = tweetType;
-    this.userId = userId;
-    this.setCreatedBy(userId);
-    this.parentTweetId = parentTweetId;
-  }
-
-  @OneToMany(mappedBy = "tweetId")
-  private Set<AttachmentImage> attachmentImages;
+  @OneToMany(mappedBy = "tweet")
+  private Set<AttachmentImage> attachmentImages = new HashSet<>();
 }

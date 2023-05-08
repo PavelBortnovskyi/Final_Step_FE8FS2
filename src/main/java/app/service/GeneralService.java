@@ -52,10 +52,10 @@ public abstract class GeneralService<E extends BaseEntityModel> implements Servi
     return repo.getById(id);
   }
 
-  @Override
-  public E findEntityById(Long id) {
-    return repo.findEntityById(id);
-  }
+//  @Override
+//  public E findEntityById(Long id) {
+//    return repo.findEntityById(id);
+//  }
 
   @Override
   public List<E> findAllById(Iterable<Long> listOfIds) {
