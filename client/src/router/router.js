@@ -14,6 +14,7 @@ export const router = createBrowserRouter([
     errorElement: <NotfoundPage />,
     children: [
       {
+        path: '/',
         element: <HomePage />,
         index: true,
       },
@@ -21,41 +22,42 @@ export const router = createBrowserRouter([
         path: '/user',
         element: <UserPage />,
       },
+
       {
-        path: 'login',
+        element: <UserPage />,
+        path: '/explore',
+      },
+      {
+        element: <UserPage />,
+        path: '/notifications',
+      },
+      {
+        element: <UserPage />,
+        path: '/messages',
+      },
+      {
+        element: <UserPage />,
+        path: '/bookmarks',
+      },
+      {
+        element: <UserPage />,
+        path: '/twitter_blue',
+      },
+      {
+        element: <UserPage />,
+        path: '/verified-orgs',
+      },
+      {
+        element: <UserPage />,
+        path: '/profile',
+      },
+      {
+        path: '/modal/login',
         element: <LoginPage />,
       },
       {
-        path: 'registration',
+        path: '/modal/registration',
         element: <RegistrationPage />,
-      },
-      {
-        element: <UserPage />,
-        path: 'explore',
-      },
-      {
-        element: <UserPage />,
-        path: 'notifications',
-      },
-      {
-        element: <UserPage />,
-        path: 'messages',
-      },
-      {
-        element: <UserPage />,
-        path: 'bookmarks',
-      },
-      {
-        element: <UserPage />,
-        path: 'twitter_blue',
-      },
-      {
-        element: <UserPage />,
-        path: 'verified-orgs',
-      },
-      {
-        element: <UserPage />,
-        path: 'profile',
       },
     ],
   },

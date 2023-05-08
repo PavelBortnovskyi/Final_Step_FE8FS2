@@ -1,7 +1,8 @@
 import { AppBar, Grid, Toolbar, Button, Typography, Link } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 export const BottomToolbar = () => {
+  const location = useLocation();
   return (
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
@@ -24,7 +25,8 @@ export const BottomToolbar = () => {
             <Button variant="outlined" color="transparent">
               <Link
                 component={NavLink}
-                to="/login"
+                to="/modal/login"
+                state={{ background: location }}
                 color="inherit"
                 underline="none"
               >
@@ -34,7 +36,8 @@ export const BottomToolbar = () => {
             <Button variant="outlined" color="gray">
               <Link
                 component={NavLink}
-                to="/registration"
+                to="/modal/registration"
+                state={{ background: location }}
                 color="inherit"
                 underline="none"
               >
