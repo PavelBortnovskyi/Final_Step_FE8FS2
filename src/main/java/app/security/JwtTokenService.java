@@ -13,21 +13,14 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -39,8 +32,6 @@ import java.util.Optional;
 @Log4j2
 @Service
 public class JwtTokenService {
-
-  @Autowired
   private final UserDetailsService userDetailsService;
 
   @Value("${jwt.secret}")
@@ -84,7 +75,7 @@ public class JwtTokenService {
   /**
    * Method for JWT token creation with token type (Enum) reference
    */
-  protected String createToken(Long userId, TokenType tokenType) {
+  public String createToken(Long userId, TokenType tokenType) {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
     Date expiry = this.getExpirationDate(tokenType);
@@ -98,7 +89,7 @@ public class JwtTokenService {
       .compact();
   }
 
-  protected String createToken(Long userId, TokenType tokenType, String userTag, String userMail) {
+  public String createToken(Long userId, TokenType tokenType, String userTag, String userMail) {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
     Date expiry = this.getExpirationDate(tokenType);

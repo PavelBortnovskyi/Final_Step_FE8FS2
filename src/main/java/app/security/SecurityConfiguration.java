@@ -28,7 +28,7 @@ public class SecurityConfiguration {
       .authorizeRequests()
       .antMatchers("/create").permitAll()
       .antMatchers("/h2-console/**").permitAll()
-      .antMatchers("/api/v1/auth/**").authenticated() //end points need to specified
+      .antMatchers("/api/v1/auth/**").authenticated()  //end points need to specified
       .antMatchers("/test").authenticated()           //need to be replaced for specified end points later
       .anyRequest().authenticated();
 

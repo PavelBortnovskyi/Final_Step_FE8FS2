@@ -1,8 +1,11 @@
 package app.controller;
 
+import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.model.UserModel;
+import app.security.JwtTokenService;
 import app.service.UserModelService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Log4j2
 @RestController
 @RequestMapping("/create")
 public class TestController {
@@ -23,10 +27,21 @@ public class TestController {
   @Autowired
   private PasswordEncoder encoder;
 
+  @Autowired
+  private JwtTokenService jwtTokenService;
+
  @GetMapping
   public void createSample(){
-    UserModel sample = new UserModel("Homer", "DUFF", encoder.encode("111"), "111@gmail.com");
-    sample.setRefreshToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJEVUZGIiwiZW1haWwiOiIxMTFAZ21haWwuY29tIiwiaWF0IjoxNjgzNDcwNTg4LCJleHAiOjE2ODM0Nzc3ODh9.eNpnB6TLFcQmaEr9JGrE-7kyvsXh0Ad__s4BX5J5nyrVrYLueeDz9a7nUxAsJO-jInOoUvvsX5uHIHf2B-tZ6Q");
+    UserModel sample = new UserModel();
+    sample.setEmail("111@gmail.com");
+    sample.setFullName("Homer");
+    sample.setUserTag("DUFF");
+    sample.setPassword(encoder.encode("111"));
+    String refreshToken = this.jwtTokenService.createToken(1L, TokenType.REFRESH);
+    String accessToken = this.jwtTokenService.createToken(1L, TokenType.ACCESS, "DUFF", "111@gmail.com");
+    log.info("RESRESH:" + refreshToken);
+    log.info("ACCESS:" + accessToken);
+    sample.setRefreshToken(refreshToken);
     this.userService.save(sample);
   }
 }

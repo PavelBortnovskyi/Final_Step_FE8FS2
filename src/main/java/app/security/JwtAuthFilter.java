@@ -1,9 +1,7 @@
 package app.security;
 
 import app.enums.TokenType;
-import app.exceptions.AuthErrorException;
-import app.model.UserModel;
-import app.service.GeneralService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-  @Autowired
   private final JwtTokenService tokenService;
-
-  @Autowired
-  private final GeneralService<UserModel> userService;
 
   /**
    * Filter validates jwt bearer token and make authorization according to validation.
@@ -40,6 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     if (request.getServletPath().equals("/api/v1/auth/login")) { //pass filtering and redirect to SpringSecurity auth procedure
+        log.info("Going to SS basic auth");
         filterChain.doFilter(request, response);
     } else {
       try {
