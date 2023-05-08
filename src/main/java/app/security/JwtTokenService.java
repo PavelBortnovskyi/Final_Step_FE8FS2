@@ -188,7 +188,7 @@ public class JwtTokenService {
       return !claimsJws.getBody().getExpiration().before(new Date());
     } catch (JwtException | IllegalArgumentException e) {
       log.error(String.format("JWT %s token is expired or invalid", tokenType.toString()));
-      throw new JwtAuthenticationException(String.format("JWT %s token is expired or invalid", tokenType.toString()), HttpStatus.UNAUTHORIZED);
+      throw new JwtAuthenticationException(String.format("JWT %s token is expired or invalid", tokenType.toString()));
     }
   }
 

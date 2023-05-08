@@ -43,10 +43,10 @@ public class AuthControllerVar2 {
     Object principal = auth.getPrincipal();
 
     Optional<User> maybeAuthUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
-    User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication", HttpStatus.UNAUTHORIZED));
+    User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
 
     Optional<UserModel> maybeCurrentUser = this.userService.getUserByEmail(authUser.getUsername());
-    UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB!", HttpStatus.INTERNAL_SERVER_ERROR));
+    UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB!"));
 
     String accessToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.ACCESS, currentUser.getUserTag(), currentUser.getEmail());
     String refreshToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.REFRESH);

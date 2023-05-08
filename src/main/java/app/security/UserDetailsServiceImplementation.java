@@ -2,6 +2,7 @@
 package app.security;
 
 import app.exceptions.AuthErrorException;
+import app.exceptions.EmailNotFoundException;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @RequiredArgsConstructor
 public class UserDetailsServiceImplementation implements UserDetailsService {
 
-  @Autowired
   private final UserModelService userModelService;
 
   public UserDetails mapper(UserModel userModel) {
@@ -39,7 +39,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
     log.info(userMail);
     return this.userModelService.getUserByEmail(userMail)
       .map(this::mapper)
-      .orElseThrow(() -> new AuthErrorException(String.format("User with email: `%s` not found", userMail), HttpStatus.UNAUTHORIZED
+      .orElseThrow(() -> new EmailNotFoundException(String.format("User with email: `%s` not found", userMail)
       ));
   }
 }

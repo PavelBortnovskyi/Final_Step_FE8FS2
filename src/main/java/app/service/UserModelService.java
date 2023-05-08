@@ -29,4 +29,11 @@ public class UserModelService extends GeneralService<UserModel> {
       return true;
     } else return false;
   }
+
+  /**
+   * Method returns true if provided email address is present in DB
+   */
+  public boolean checkEmail(String email) {
+    return this.userModelRepository.findByEmail(email).isPresent();
+  }
 }

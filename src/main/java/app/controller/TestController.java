@@ -39,7 +39,7 @@ public class TestController {
     sample.setPassword(encoder.encode("111"));
     String refreshToken = this.jwtTokenService.createToken(1L, TokenType.REFRESH);
     String accessToken = this.jwtTokenService.createToken(1L, TokenType.ACCESS, "DUFF", "111@gmail.com");
-    log.info("RESRESH:" + refreshToken);
+    log.info("REFRESH:" + refreshToken);
     log.info("ACCESS:" + accessToken);
     sample.setRefreshToken(refreshToken);
     this.userService.save(sample);

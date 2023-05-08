@@ -27,13 +27,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   /**
    * Filter validates jwt bearer token and make authorization according to validation.
    * Login path passes without token validation to normal auth procedure by Spring security
-   *
-   * @param response
-   * @param filterChain
    */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    if (request.getServletPath().equals("/api/v1/auth/login")) { //pass filtering and redirect to SpringSecurity auth procedure
+    //pass filtering and redirect to SpringSecurity auth procedure
+    if (request.getServletPath().equals("/api/v1/auth/login")) {
         log.info("Going to SS basic auth");
         filterChain.doFilter(request, response);
     } else {
