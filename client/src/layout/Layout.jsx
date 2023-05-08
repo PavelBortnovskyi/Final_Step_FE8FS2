@@ -1,7 +1,7 @@
-import { Header } from "src/components/Header/Header";
 import { Main } from "src/components/Main/Main";
 import { Footer } from "src/components/Footer/Footer";
 import { Grid } from "@mui/material";
+import {Sidebar} from "src/components/Sidebar/Sidebar";
 export const Layout = () => {
   return (
     <Grid
@@ -11,7 +11,7 @@ export const Layout = () => {
       alignItems="flex-start"
     >
       <Grid item xs={3}>
-        <Header />
+        <Sidebar />
       </Grid>
       <Grid item xs={8}>
         <Grid container>
