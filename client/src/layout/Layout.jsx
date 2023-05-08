@@ -1,29 +1,28 @@
-import { Sidebar } from "src/components/Sidebar/Sidebar";
 import { Main } from "src/components/Main/Main";
 import { Footer } from "src/components/Footer/Footer";
-import styles from "src/styles/Layout.module.scss";
-import body from "src/styles/Body.module.scss";
+import { Grid } from "@mui/material";
+import {Sidebar} from "src/components/Sidebar/Sidebar";
 export const Layout = () => {
   return (
-    <div className={body.allContainer}>
-      <header className={styles.Header}>
-        <div className={styles.container}>
-          <Sidebar />
-        </div>
-      </header>
-      <div className={styles.mainContainr}>
-        <main className={styles.Main}>
-          <div className={styles.container}>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="flex-start"
+    >
+      <Grid item xs={3}>
+        <Sidebar />
+      </Grid>
+      <Grid item xs={8}>
+        <Grid container>
+          <Grid item xs={8} sx={{ border: "1px solid", borderTop: "none" }}>
             <Main />
-          </div>
-        </main>
-        <footer className={styles.Footer}>
-          <div className={styles.container}>
+          </Grid>
+          <Grid item xs={4}>
             <Footer />
-          </div>
-        </footer>
-      </div>
-      <div></div>
-    </div>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
