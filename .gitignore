@@ -12,6 +12,7 @@ target/
 .settings/
 *.sublime-workspace
 *.iml
+*.xml
 *.class
 ### Eclipse ###
 .apt_generated
