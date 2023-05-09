@@ -37,9 +37,9 @@ jwt:
   expirationPasswordUpdate: 3600000
   header: Authorization
 cloudinary:
-  cloudName: dojrbfnaz
-  apiKey: 516471726946834
-  apiSecret: JokricYXIJmtjF29Ptgm2H7FusA
+  cloudName: ${CLOUDINARY_CLOUD_NAME}
+  apiKey: ${CLOUDINARY_API_KEY}
+  apiSecret: ${CLOUDINARY_API_SECRET}
 
 
 
