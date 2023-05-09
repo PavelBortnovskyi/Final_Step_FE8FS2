@@ -74,15 +74,20 @@ public class AuthController {
     if (this.userService.checkEmail(signUpDTO.getEmail()))
       throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
 
-    //New user saving to DB
+    //Mapping signUpDTO -> UserModel
     UserModel freshUser = new UserModel();
     signUpDTO.setPassword(this.passwordEncoder.encode(signUpDTO.getPassword()));
     modelMapper.map(signUpDTO, freshUser);
+    //Saving new User to DB and getting user_id to freshUser
     freshUser = this.userService.save(freshUser);
 
-    //Token creation
+    //Token creation using user_id
     String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
     String refreshToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.REFRESH);
+
+    //New user saving to DB with refresh token
+    freshUser.setRefreshToken(refreshToken);
+   this.userService.save(freshUser);
 
     return new HashMap<>() {{
       put("ACCESS_TOKEN", accessToken);
