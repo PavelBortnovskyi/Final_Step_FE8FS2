@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,10 +34,10 @@ public class SecurityConfiguration {
       .antMatchers("/swagger-resources").permitAll()
       .antMatchers("/swagger-ui/index.html**").permitAll()
       .antMatchers("/api/v2/api-docs").permitAll()
-      .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/h2-console/**").permitAll()
+      .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login/**").authenticated()  //end points need to specified
-      .antMatchers("/test").authenticated()           //need to be replaced for specified end points later
+      .antMatchers("/test").authenticated()  //need to be replaced for specified end points later
       .anyRequest().authenticated();
 
     //For h2 correct visualization

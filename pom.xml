@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.0</version>
+        <version>2.7.9</version>
         <relativePath/>
     </parent>
 
@@ -24,6 +24,7 @@
         <sonar.projectKey>PavelBortnovskyi_Final_Step_Full_1</sonar.projectKey>
         <sonar.projectName>Final_Step_Full_1</sonar.projectName>
     </properties>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
@@ -131,6 +132,7 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
                 <plugin>
