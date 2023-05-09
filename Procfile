@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=preprod -Dcheckstyle.skip=true -Dserver.port=$PORT $JAVA_OPTS -jar target/Final_Step_FE8FS2-1.0-SNAPSHOT.jar
+web: java -Dcheckstyle.skip=true -Dspring.profiles.active=preprod -Dserver.port=$PORT $JAVA_OPTS -jar target/Final_Step_FE8FS2-1.0-SNAPSHOT.jar
