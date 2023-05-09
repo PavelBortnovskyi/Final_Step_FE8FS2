@@ -1,4 +1,4 @@
-package app;
+package app.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -24,6 +24,7 @@ public class ApplicationBeans {
     mm.getConfiguration().setFieldMatchingEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
     return mm;
   }
+
 //
 //  @Profile("local")
 //  @Bean

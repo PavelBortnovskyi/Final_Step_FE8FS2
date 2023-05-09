@@ -30,6 +30,11 @@ public class SecurityConfiguration {
       .and()
       .authorizeRequests()
       .antMatchers("/create").permitAll()
+      .antMatchers("/swagger-ui.html**").permitAll()
+      .antMatchers("/v2/api-docs").permitAll()
+      .antMatchers("/swagger-resources").permitAll()
+      .antMatchers("/swagger-ui/index.html**").permitAll()
+      .antMatchers("/api/v2/api-docs").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/login/**").authenticated()  //end points need to specified
