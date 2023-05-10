@@ -97,30 +97,45 @@ public class AuthController {
     return ResponseEntity.ok(response);
   }
 
-@PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-public HashMap<String, String> handleRegistration(@Validated(New.class) @RequestBody UserModelRequest signUpDTO){
-  //Email duplicate checking
-  if(this.userService.checkEmail(signUpDTO.getEmail()))
-  throw new EmailAlreadyRegisteredException("Email: "+signUpDTO.getEmail()+" already taken!");
+  @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@Validated(New.class) @RequestBody UserModelRequest signUpDTO, BindingResult bindingResult) {
+    validator.validate(signUpDTO, bindingResult);
 
-  //Mapping signUpDTO -> UserModel
-  UserModel freshUser=new UserModel();
-  signUpDTO.setPassword(this.passwordEncoder.encode(signUpDTO.getPassword()));
-  modelMapper.map(signUpDTO,freshUser);
-  //Saving new User to DB and getting user_id to freshUser
-  freshUser=this.userService.save(freshUser);
+    if (bindingResult.hasErrors()) {
+      List<String> errorMessages = new ArrayList<>();
+      for (FieldError error : bindingResult.getFieldErrors()) {
+        errorMessages.add(error.getDefaultMessage());
+      }
 
-  //Token creation using user_id
-  String accessToken=this.jwtTokenService.createToken(freshUser.getId(),TokenType.ACCESS,freshUser.getUserTag(),freshUser.getEmail());
-  String refreshToken=this.jwtTokenService.createToken(freshUser.getId(),TokenType.REFRESH);
+      HashMap<String, String> errorResponse = new HashMap<>();
+      errorResponse.put("error", errorMessages.toString());
 
-  //New user saving to DB with refresh token
-  freshUser.setRefreshToken(refreshToken);
-  this.userService.save(freshUser);
+      return ResponseEntity.badRequest().body(errorResponse);
+    }
 
-  return new HashMap<>(){{
-  put("ACCESS_TOKEN",accessToken);
-  put("REFRESH_TOKEN",refreshToken);
-  }};
+    //Email duplicate checking
+    if (this.userService.checkEmail(signUpDTO.getEmail()))
+      throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
+
+    //Mapping signUpDTO -> UserModel
+    UserModel freshUser = new UserModel();
+    signUpDTO.setPassword(this.passwordEncoder.encode(signUpDTO.getPassword()));
+    modelMapper.map(signUpDTO, freshUser);
+    //Saving new User to DB and getting user_id to freshUser
+    freshUser = this.userService.save(freshUser);
+
+    //Token creation using user_id
+    String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
+    String refreshToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.REFRESH);
+
+    //New user saving to DB with refresh token
+    freshUser.setRefreshToken(refreshToken);
+    this.userService.save(freshUser);
+
+    HashMap<String, String> response = new HashMap<>();
+    response.put("ACCESS_TOKEN", accessToken);
+    response.put("REFRESH_TOKEN", refreshToken);
+
+    return ResponseEntity.ok(response);
   }
-  }
+}

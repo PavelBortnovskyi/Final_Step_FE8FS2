@@ -24,7 +24,7 @@ public class UserModelRequest {
   private String userTag;
 
   @Size(max = 50, groups = {Existed.class, New.class})
-  @Email(groups = {Existed.class, New.class})
+  @Email(groups = {Existed.class, New.class}, message = "Must have email format")
   @NotEmpty(groups = {New.class, Existed.class})
   private String email;
 
