@@ -1,52 +1,56 @@
 package app.controller;
 
+import app.annotations.Existed;
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.exceptions.EmailAlreadyRegisteredException;
 import app.model.UserModel;
-import app.security.JwtTokenService;
+import app.service.JwtTokenService;
 import app.service.UserModelService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Optional;
 
 @Log4j2
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-  @Autowired
-  private UserModelService userService;
+  private final UserModelService userService;
 
-  @Autowired
-  private JwtTokenService jwtTokenService;
+  private final JwtTokenService jwtTokenService;
 
-  @Autowired
-  private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
+
+  private final AuthenticationManager authenticationManager;
 
   @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-  public HashMap<String, String> handleLogin(Authentication auth) {
-    if (auth == null) {
-      log.info("Auth null");
-      return new HashMap<>() {{
-        put("ACCESS_TOKEN", "");
-      }};
-    }
+  public HashMap<String, String> handleLogin(@RequestBody UserModelRequest loginRequest) {
 
-    Object principal = auth.getPrincipal();
+    Authentication authentication = authenticationManager
+      .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    Object principal = authentication.getPrincipal();
 
     Optional<User> maybeAuthUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
     User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));

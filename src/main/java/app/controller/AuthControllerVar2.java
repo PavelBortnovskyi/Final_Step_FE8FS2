@@ -5,7 +5,7 @@ import app.dto.rs.UserModelResponse;
 import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.model.UserModel;
-import app.security.JwtTokenService;
+import app.service.JwtTokenService;
 import app.service.UserModelService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.log4j.Log4j2;

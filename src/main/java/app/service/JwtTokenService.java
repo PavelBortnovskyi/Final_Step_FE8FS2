@@ -1,4 +1,4 @@
-package app.security;
+package app.service;
 
 import app.enums.TokenType;
 import app.exceptions.JwtAuthenticationException;
@@ -13,13 +13,10 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -111,24 +108,32 @@ public class JwtTokenService {
   /**
    * Method for extraction claims from token according to token type (Enum)
    */
-  protected Optional<Jws<Claims>> extractClaimsFromToken(String token, TokenType tokenType) {
+  public Optional<Jws<Claims>> extractClaimsFromToken(String token, TokenType tokenType) {
     String signKey = this.getSignKey(tokenType);
     try {
       return Optional.ofNullable(Jwts.parser()
         .setSigningKey(signKey)
         .parseClaimsJws(token));
-    } catch (SignatureException x) {
+    } catch (SignatureException e) {
       log.error("Wrong signature key: " + signKey);
+      throw new JwtAuthenticationException("Wrong signature key: " + signKey);
     } catch (MalformedJwtException e) {
-      log.error("Token was broken: " + token);
+      log.error("Token was malformed: " + token);
+      throw new JwtAuthenticationException("Token was malformed: " + token);
     } catch (ExpiredJwtException e) {
       log.error(String.format("Token: %s expired", token));
+      throw new JwtAuthenticationException(String.format("Token: %s expired", token));
     } catch (UnsupportedJwtException e) {
       log.error("Unsupported type for token: " + token);
+      throw new JwtAuthenticationException("Unsupported type for token: " + token);
     } catch (InvalidClaimException e) {
       log.error("Invalid claim from token: " + token);
+      throw new JwtAuthenticationException("Invalid claim from token: " + token);
     } catch (CompressionException e) {
       log.error("Invalid compression for token: " + token);
+      throw new JwtAuthenticationException("Invalid compression for token: " + token);
+    } catch (Exception e) {
+      log.error("Some error" + e.toString());
     }
     return Optional.empty();
   }
@@ -136,7 +141,7 @@ public class JwtTokenService {
   /**
    * Method for extraction token from request (JWT Bearer type)
    */
-  protected Optional<String> extractTokenFromRequest(HttpServletRequest request) {
+  public Optional<String> extractTokenFromRequest(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
       .filter(h -> h.startsWith("BEARER"))
       .map(h -> h.substring("BEARER".length()));
@@ -145,13 +150,13 @@ public class JwtTokenService {
   /**
    * Method for extraction user id value from JWT Claims
    */
-  protected Optional<Long> extractIdFromClaims(Jws<Claims> claims) {
+  public Optional<Long> extractIdFromClaims(Jws<Claims> claims) {
     try {
       return Optional.ofNullable(claims.getBody().getSubject()).map(Long::parseLong);
     } catch (Exception e) {
       log.error(String.format("Claims id: %s id parsing went wrong: %s", claims.getBody().getId(), claims.getBody().getSubject()));
-      return Optional.empty();
     }
+    return Optional.empty();
   }
 
   /**

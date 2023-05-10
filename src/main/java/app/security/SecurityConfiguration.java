@@ -5,16 +5,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Log4j2
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
@@ -29,7 +32,6 @@ public class SecurityConfiguration {
       .and()
       .authorizeRequests()
       .antMatchers("/create").permitAll()
-      .antMatchers("/swagger-ui/index.html").permitAll()
       .antMatchers("/swagger-ui/**").permitAll()
       .antMatchers("/swagger-resources").permitAll()
       .antMatchers("/swagger-resources/**").permitAll()
@@ -37,7 +39,7 @@ public class SecurityConfiguration {
       .antMatchers("/v2/api-docs").permitAll()
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
-      .antMatchers("/api/v1/auth/login/**").authenticated()  //end points need to specified
+      .antMatchers("/api/v1/auth/login").permitAll() //end points need to specified
       .antMatchers("/test").authenticated()  //need to be replaced for specified end points later
       .anyRequest().authenticated();
 
@@ -47,6 +49,11 @@ public class SecurityConfiguration {
     httpSec.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return httpSec.build();
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+    return authConfig.getAuthenticationManager();
   }
 }
 

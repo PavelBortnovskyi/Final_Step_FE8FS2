@@ -56,12 +56,12 @@ public class UserModel extends BaseEntityModel {
 //  @JoinTable(name = "followers")
 //  private Set<UserModel> followers;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
     inverseJoinColumns = @JoinColumn(name = "follower_id"))
   private Set<UserModel> followers = new HashSet<>();
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "follower_id"),
     inverseJoinColumns = @JoinColumn(name = "followed_id"))
   private Set<UserModel> followings = new HashSet<>();
@@ -77,7 +77,8 @@ public class UserModel extends BaseEntityModel {
   private Set<Chat> chat = new HashSet<>();
   ;
 
-  @ManyToMany(mappedBy = "users")
+
+  @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
   private Set<Chat> chats = new HashSet<>();
   ;
 

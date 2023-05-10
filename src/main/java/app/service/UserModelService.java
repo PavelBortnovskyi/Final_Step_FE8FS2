@@ -2,16 +2,17 @@ package app.service;
 
 import app.model.UserModel;
 import app.repository.UserModelRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserModelService extends GeneralService<UserModel> {
 
-  @Autowired
-  UserModelRepository userModelRepository;
+  private final UserModelRepository userModelRepository;
 
   /**
    * Method returns Optional of UserModel by email as parameter
