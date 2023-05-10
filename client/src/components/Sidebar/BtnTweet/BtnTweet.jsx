@@ -6,6 +6,7 @@ export const BtnTweet = () => {
         <Button variant="contained"
             size="large"
             sx={{
+                display: {lg: 'block', xs: 'none' },
                 fontSize: '20px',
                 fontWeight: '700',
                 width: '230px',

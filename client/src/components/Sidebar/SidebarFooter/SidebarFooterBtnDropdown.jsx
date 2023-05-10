@@ -7,9 +7,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
         <Button variant="text"
             {...bindTrigger(popupState)}
             sx={{
-                position: 'absolute',
-                top: '92vh',
-                left: '10%',
+                marginRight: '4px',
                 '&:hover': {
                     backgroundColor: 'rgb(39,51,64)',
                     borderRadius: '30px',
@@ -20,12 +18,16 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
             <Avatar src="./img/avatar2.JPG" />
 
             <Hidden lgDown>
-                <Box ml={1}>
+                <Box ml={1} sx={{
+                    // textAlign: 'start',
+                }}>
                     <Typography
                         variant="subtitle1"
                         sx={{
                             textTransform: 'capitalize',
                             color: '#FFF',
+                            fontSize: '15px',
+                            fontWeight: 700,
                         }}
                     >
                         {displayName}
@@ -36,6 +38,8 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                         sx={{
                             textTransform: 'lowercase',
                             color: 'rgb(139,152,165)',
+                            fontSize: '15px',
+                            fontWeight: 400,
                         }}
                     >
                         @{username}
