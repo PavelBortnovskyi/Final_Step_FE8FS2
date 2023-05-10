@@ -7,7 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { mainSidebarElemets } from './sidebarElemets';
 import Link from '@mui/material/Link';
-import { Box, Hidden} from '@mui/material';
+import { Box } from '@mui/material';
 import { SidebarFooter } from './SidebarFooter/SidebarFooter';
 import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
 import { BtnTweet } from './BtnTweet/BtnTweet';
@@ -20,9 +20,6 @@ import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
 export const Sidebar = () => {
 
   return (
-    
-
-    
     <Drawer
       variant="permanent"
       anchor="left"
@@ -31,17 +28,11 @@ export const Sidebar = () => {
         flexShrink: 0,
         marginRight: '12px',
         width: '100%',
-        // width: {lg: '72px'},
-        // '@media (max-width: 1199px)': {
-        //   width: '72px'
-        // },
+        height: '100vh',
         '& .MuiDrawer-paper': {
           position: 'relative',
           width: '100%',
           border: 'none',
-          // '@media (max-width: 1199px)': {
-          //   width: '72px'
-          // },
           boxSizing: 'border-box',
           backgroundColor: 'rgb(21,32,43)',
         },
@@ -49,74 +40,82 @@ export const Sidebar = () => {
     >
 
       <Box sx={{
-        height: '100vh'
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'end',
+        marginBottom: '18px',
+        textAlign: 'start',
+        mx: '10px',
       }}>
-        <Link href='/'
-          display="flex" justifyContent="center" alignItems="center"
-          sx={{
-            width: '50px',
-            height: '50px',
-            ml: '20px',
-            mt: '2px',
-            '&:hover': {
-              backgroundColor: 'rgb(39,51,64)',
-              borderRadius: '30px',
-            },
-          }}
-        >
-          <TwitterIcon
+
+        <Box>
+          <Link href='/'
+            display="flex" justifyContent="center" alignItems="center"
             sx={{
-              fontSize: 34,
+              width: '50px',
+              height: '50px',
+              ml: '10px',
+              mt: '2px',
+              color: '#FFF',
+              '&:hover': {
+                backgroundColor: 'rgb(39,51,64)',
+                borderRadius: '30px',
+              },
             }}
-          />
-        </Link>
+          >
+            <TwitterIcon
+              sx={{
+                fontSize: 34,
+              }}
+            />
+          </Link>
 
 
-        <List
-          sx={{
-            mx: '10px',
-          }}
-        >
-          {mainSidebarElemets.map((navElement) => (
-            <Link href={navElement.route} underline="none" key={navElement.id}>
-              <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF' }}>
-                <ListItemButton
-                  sx={{
-                    '&:hover': {
-                      backgroundColor: 'rgb(39,51,64)',
-                      borderRadius: '30px',
-                    },
-                  }}
-                >
-                  <ListItemIcon sx={{ fontSize: 30 }}>
-                    <navElement.icon sx={{ fontSize: 30, color: '#FFF' }} />
-                  </ListItemIcon>
-                  {/* <Hidden lgDown> */}
-                    <ListItemText primaryTypographyProps={{ fontSize: '18px', }} 
+          <List
+            sx={{
+              // mx: '10px',
+            }}
+          >
+            {mainSidebarElemets.map((navElement) => (
+              <Link href={navElement.route} underline="none" key={navElement.id}>
+                <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF' }}>
+                  <ListItemButton
                     sx={{
-                      display: {lg: 'block', xs: 'none' }
+                      '&:hover': {
+                        backgroundColor: 'rgb(39,51,64)',
+                        borderRadius: '30px',
+                      },
                     }}
-                    primary={navElement.label} />
-                  {/* </Hidden> */}
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          ))}
+                  >
+                    <ListItemIcon>
+                      <navElement.icon sx={{ fontSize: 30, color: '#FFF' }} />
+                    </ListItemIcon>
 
-          <SidebarDropdown />
+                    <ListItemText primaryTypographyProps={{ fontSize: '18px', }}
+                      sx={{
+                        display: { lg: 'block', xs: 'none' }
+                      }}
+                      primary={navElement.label} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
 
-          <Hidden lgDown>
+            <SidebarDropdown />
+
             <BtnTweet />
-          </Hidden>
 
-          <Hidden lgUp>
             <SmallBtnTweet />
-          </Hidden>
-        </List>
+
+
+          </List>
+        </Box>
 
         <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
       </Box>
     </Drawer>
-    
+
   );
 };

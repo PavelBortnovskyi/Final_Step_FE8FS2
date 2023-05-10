@@ -5,6 +5,7 @@ export default function SmallBtnTweet() {
     return (
         <Box 
             sx={{
+                visibility: {lg: 'hidden', xs: 'visible' },
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
