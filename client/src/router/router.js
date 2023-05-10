@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         element: <UserPage />,
-        path: 'verified-orgs',
+        path: 'verified_orgs',
       },
       {
         element: <UserPage />,

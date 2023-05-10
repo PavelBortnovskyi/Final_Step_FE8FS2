@@ -1,9 +1,9 @@
-import { ListItemButton, ListItemIcon, Typography } from '@mui/material';
+import { Hidden, ListItemButton, ListItemIcon, Typography } from '@mui/material';
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
-import { bindTrigger} from 'material-ui-popup-state';
+import { bindTrigger } from 'material-ui-popup-state';
 import React from 'react'
 
-export const DropdownBtn = ({popupState}) => {
+export const DropdownBtn = ({ popupState }) => {
     return (
         <ListItemButton variant="text"
             {...bindTrigger(popupState)}
@@ -18,16 +18,18 @@ export const DropdownBtn = ({popupState}) => {
                 <PendingOutlinedIcon sx={{ fontSize: 30 }} />
             </ListItemIcon>
 
-            <Typography
-                variant="subtitle1"
-                sx={{
-                    width: '176px',
-                    textTransform: 'capitalize',
-                    fontSize: '18px',
-                }}
-            >
-                More
-            </Typography>
+            <Hidden lgDown>
+                <Typography
+                    variant="subtitle1"
+                    sx={{
+                        width: '176px',
+                        textTransform: 'capitalize',
+                        fontSize: '18px',
+                    }}
+                >
+                    More
+                </Typography>
+            </Hidden>
         </ListItemButton>
     )
 }
