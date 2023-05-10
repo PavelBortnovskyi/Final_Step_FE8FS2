@@ -1,29 +1,61 @@
-import { Sidebar } from "src/components/Sidebar/Sidebar";
-import { Main } from "src/components/Main/Main";
-import { Footer } from "src/components/Footer/Footer";
-import styles from "src/styles/Layout.module.scss";
-import body from "src/styles/Body.module.scss";
+import { useLocation } from 'react-router-dom';
+import { Container, Grid } from '@mui/material';
+
+import { Sidebar } from 'src/components/Sidebar/Sidebar';
+// import { Main } from 'src/components/Main/Main';
+import { Footer } from 'src/components/AppBar/AppBar';
+
+// import { Modal } from 'src/components/Modal/Modal';
+import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
+import { MainRoutes } from 'src/routes/MainRoutes';
+import { ModalRoutes } from 'src/routes/ModalRoutes';
+
 export const Layout = () => {
+  // create location for MainRoutes
+  const location = useLocation();
+  const background = location.state && location.state.background;
+
   return (
-    <div className={body.allContainer}>
-      <header className={styles.Header}>
-        <div className={styles.container}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        backgroundColor: 'rgb(21,32,43)',
+        color: '#FFF',
+      }}
+    >
+      <Grid container>
+        <Grid
+          item
+          sm={2}
+          md={3}
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+          }}
+        >
           <Sidebar />
-        </div>
-      </header>
-      <div className={styles.mainContainr}>
-        <main className={styles.Main}>
-          <div className={styles.container}>
-            <Main />
-          </div>
-        </main>
-        <footer className={styles.Footer}>
-          <div className={styles.container}>
-            <Footer />
-          </div>
-        </footer>
-      </div>
-      <div></div>
-    </div>
+        </Grid>
+
+        <Grid item xs={12} sm={10} md={6}>
+          {/* <Main /> */}
+
+          {/* routes for main components */}
+          <MainRoutes location={background || location} />
+        </Grid>
+
+        <Grid
+          item
+          md={3}
+          sx={{
+            display: { xs: 'none', md: 'block' },
+          }}
+        >
+          <Footer />
+        </Grid>
+      </Grid>
+      <BottomToolbar />
+
+      {/* routes for modal window */}
+      <ModalRoutes />
+    </Container>
   );
 };

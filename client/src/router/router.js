@@ -2,47 +2,62 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { App } from 'src/components/App';
 import { HomePage } from 'src/pages/HomePage';
-import { NewsPage } from 'src/pages/NewsPage';
+import { LoginPage } from 'src/pages/LoginPage';
+import { RegistrationPage } from 'src/pages/RegistrationPage';
 import { NotfoundPage } from 'src/pages/NotfoundPage';
 import { UserPage } from 'src/pages/UserPage';
 
 export const router = createBrowserRouter([
   {
-    element: <App />,
     path: '/',
+    element: <App />,
     errorElement: <NotfoundPage />,
     children: [
       {
+        path: '/',
         element: <HomePage />,
         index: true,
       },
       {
+        path: '/user',
         element: <UserPage />,
-        path: 'explore',
+      },
+
+      {
+        path: '/explore',
+        element: <UserPage />,
       },
       {
+        path: '/notifications',
         element: <UserPage />,
-        path: 'notifications',
       },
       {
+        path: '/messages',
         element: <UserPage />,
-        path: 'messages',
       },
       {
+        path: '/bookmarks',
         element: <UserPage />,
-        path: 'bookmarks',
       },
       {
+        path: '/twitter_blue',
         element: <UserPage />,
-        path: 'twitter_blue',
       },
       {
+        path: '/verified-orgs',
         element: <UserPage />,
-        path: 'verified_orgs',
       },
       {
+        path: '/profile',
         element: <UserPage />,
-        path: 'profile',
+      },
+      {
+        path: '/modal/login',
+        element: <LoginPage />,
+      },
+      {
+        path: '/modal/registration',
+        element: <RegistrationPage />,
       },
     ],
   },

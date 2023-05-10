@@ -21,7 +21,7 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
         mainLabel && <FormControl
             sx={{
                 display: 'flex',
-
+                fill: '#FFF'
             }}
 
         >
@@ -30,6 +30,7 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
                 sx={{
                         backgroundColor: "rgb(21,32,43)",
                         border: 'none',
+                        color: '#FFF',
                         
                         '& .MuiPaper': {
                             backgroundColor: "rgb(21,32,43)",

@@ -14,6 +14,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                     backgroundColor: 'rgb(39,51,64)',
                     borderRadius: '30px',
                 }
+                
             }}
         >
             <Avatar src="./img/avatar2.JPG" />
@@ -22,9 +23,9 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                 <Box ml={1}>
                     <Typography
                         variant="subtitle1"
-
                         sx={{
                             textTransform: 'capitalize',
+                            color: '#FFF',
                         }}
                     >
                         {displayName}
@@ -32,10 +33,9 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                     <Typography
                         variant="subtitle2"
                         display="block"
-
                         sx={{
                             textTransform: 'lowercase',
-                            color: 'rgb(139,152,165)'
+                            color: 'rgb(139,152,165)',
                         }}
                     >
                         @{username}
@@ -47,6 +47,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                     variant="h5"
                     display="block"
                     sx={{
+                        color: '#FFF',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100%'
                     }}
                 >

@@ -15,7 +15,7 @@ export const DropdownBtn = ({ popupState }) => {
             }}
         >
             <ListItemIcon sx={{ fontSize: 30 }}>
-                <PendingOutlinedIcon sx={{ fontSize: 30 }} />
+                <PendingOutlinedIcon sx={{ fontSize: 30, color: '#FFF' }} />
             </ListItemIcon>
 
             <Hidden lgDown>
@@ -25,6 +25,7 @@ export const DropdownBtn = ({ popupState }) => {
                         width: '176px',
                         textTransform: 'capitalize',
                         fontSize: '18px',
+                        color: '#FFF',
                     }}
                 >
                     More

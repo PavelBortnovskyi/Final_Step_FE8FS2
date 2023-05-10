@@ -13,8 +13,6 @@ export const SidebarDropdown = () => {
 
                         <DropdownBtn popupState={popupState} />
 
-                        
-
                         <SidebarDropdownMenu popupState={popupState} />
 
                     </ListItem>

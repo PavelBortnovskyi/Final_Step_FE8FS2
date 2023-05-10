@@ -20,22 +20,28 @@ import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
 export const Sidebar = () => {
 
   return (
+    
+
+    
     <Drawer
       variant="permanent"
       anchor="left"
+
       sx={{
         flexShrink: 0,
         marginRight: '12px',
-        width: '265px',
-        '@media (max-width: 1199px)': {
-          width: '72px'
-        },
+        width: '100%',
+        // width: {lg: '72px'},
+        // '@media (max-width: 1199px)': {
+        //   width: '72px'
+        // },
         '& .MuiDrawer-paper': {
-          width: '265px',
+          position: 'relative',
+          width: '100%',
           border: 'none',
-          '@media (max-width: 1199px)': {
-            width: '72px'
-          },
+          // '@media (max-width: 1199px)': {
+          //   width: '72px'
+          // },
           boxSizing: 'border-box',
           backgroundColor: 'rgb(21,32,43)',
         },
@@ -55,40 +61,43 @@ export const Sidebar = () => {
             '&:hover': {
               backgroundColor: 'rgb(39,51,64)',
               borderRadius: '30px',
-            }
+            },
           }}
         >
-          <TwitterIcon sx={{
-            fontSize: 34,
-          }}
+          <TwitterIcon
+            sx={{
+              fontSize: 34,
+            }}
           />
         </Link>
 
+
         <List
           sx={{
-            mx: '10px'
+            mx: '10px',
           }}
         >
           {mainSidebarElemets.map((navElement) => (
-            <Link href={navElement.route}
-              underline="none"
-              key={navElement.id}
-            >
-              <ListItem key={navElement.id} disablePadding>
+            <Link href={navElement.route} underline="none" key={navElement.id}>
+              <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF' }}>
                 <ListItemButton
                   sx={{
                     '&:hover': {
                       backgroundColor: 'rgb(39,51,64)',
                       borderRadius: '30px',
-                    }
+                    },
                   }}
                 >
                   <ListItemIcon sx={{ fontSize: 30 }}>
-                    <navElement.icon sx={{ fontSize: 30 }} />
+                    <navElement.icon sx={{ fontSize: 30, color: '#FFF' }} />
                   </ListItemIcon>
-                  <Hidden lgDown>
-                    <ListItemText primaryTypographyProps={{ fontSize: '18px', width: '176px' }} primary={navElement.label} />
-                  </Hidden>
+                  {/* <Hidden lgDown> */}
+                    <ListItemText primaryTypographyProps={{ fontSize: '18px', }} 
+                    sx={{
+                      display: {lg: 'block', xs: 'none' }
+                    }}
+                    primary={navElement.label} />
+                  {/* </Hidden> */}
                 </ListItemButton>
               </ListItem>
             </Link>
@@ -105,26 +114,9 @@ export const Sidebar = () => {
           </Hidden>
         </List>
 
-
-        <SidebarFooter
-          displayName="Алексей SlaAll00"
-          username="slaall00"
-        />
+        <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
       </Box>
     </Drawer>
-
-
-
-
-
-
+    
   );
 };
-
-
-
-
-
-
-
-
