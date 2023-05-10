@@ -2,6 +2,7 @@ import { HomePage } from 'src/pages/HomePage';
 import { UserPage } from 'src/pages/UserPage';
 import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
+import { MessagesPage } from 'src/pages/MessagesPage';
 
 export const mainRoutes = () => {
   return [
@@ -25,7 +26,7 @@ export const mainRoutes = () => {
     },
     {
       path: '/messages',
-      element: <UserPage />,
+      element: <MessagesPage />,
     },
     {
       path: '/bookmarks',

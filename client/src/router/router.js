@@ -6,6 +6,7 @@ import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
 import { NotfoundPage } from 'src/pages/NotfoundPage';
 import { UserPage } from 'src/pages/UserPage';
+import { MessagesPage } from 'src/pages/MessagesPage';
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/messages',
-        element: <UserPage />,
+        element: <MessagesPage />,
       },
       {
         path: '/bookmarks',

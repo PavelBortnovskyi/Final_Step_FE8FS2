@@ -33,7 +33,13 @@ export const Layout = () => {
           <Sidebar />
         </Grid>
 
-        <Grid item xs={12} sm={10} md={6}>
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          md={6}
+          sx={{ borderLeft: '1px solid #333', borderRight: '1px solid #333' }}
+        >
           {/* <Main /> */}
 
           {/* routes for main components */}
