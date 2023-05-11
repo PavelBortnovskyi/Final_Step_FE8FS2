@@ -10,7 +10,7 @@ import {
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import { NavLink } from 'react-router-dom';
-import { SearchField } from './SearchField';
+import { SearchField } from './Search/SearchField';
 
 export const Messages = () => {
   return (
@@ -22,7 +22,7 @@ export const Messages = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingTop: '10px',
+            margin: '10px 0 26px',
           }}
         >
           <Typography variant="h6">Messages</Typography>

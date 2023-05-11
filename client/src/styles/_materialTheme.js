@@ -22,8 +22,62 @@ export const theme = createTheme({
       main: '#000',
       contrastText: '#fff',
     },
+    text: {
+      primary: 'rgba(208,27,27,0.87)',
+      secondary: 'rgba(76,97,191,0.6)',
+      dark: 'red',
+    },
   },
   components: {
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          // Ваши стили здесь
+
+          '& .MuiTab-root': {
+            fontSize: '16px',
+          },
+        },
+        indicator: {
+          // Ваши стили здесь
+        },
+      },
+      variants: [
+        {
+          props: { colorTheme: 'dark' },
+          style: {
+            // background: 'transparent',
+            // color: 'red',
+            borderBottom: '1px solid #273340',
+            // '&:hover': {
+            //   backgroundColor: '#ffffff33',
+            //   border: '1px solid #ffffff85',
+            // },
+            transition: 'all 0.3s ease-out',
+
+            '& .MuiTab-root': {
+              textTransform: 'none',
+              transition: 'all 0.3s ease-out',
+              color: '#8b98a5',
+            },
+            '& .MuiTab-root:hover': {
+              transition: 'all 0.3s ease-out',
+              backgroundColor: '#273340',
+            },
+            '& .MuiTab-root.Mui-selected': {
+              color: '#fff',
+            },
+          },
+        },
+      ],
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          marginTop: '4px !important',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

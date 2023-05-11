@@ -1,7 +1,9 @@
-import { styled, alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
+import { Box, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+
+import { SearchTabs } from './SearchTabs';
+
+import { styled, alpha } from '@mui/material/styles';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,6 +61,9 @@ export const SearchField = () => {
           inputProps={{ 'aria-label': 'search' }}
         />
       </Search>
+      <Box sx={{ marginTop: '16px' }}>
+        <SearchTabs />
+      </Box>
     </Box>
   );
 };
