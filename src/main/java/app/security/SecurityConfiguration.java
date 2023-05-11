@@ -40,6 +40,7 @@ public class SecurityConfiguration {
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login").permitAll() //end points need to specified
+      .antMatchers("/").permitAll() //end points need to specified
       .antMatchers("/test").authenticated()  //need to be replaced for specified end points later
       .anyRequest().authenticated();
 

@@ -4,12 +4,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: rgb(255, 255, 255);
 }
 
 html {
   height: 100%;
-  background-color: rgb(21, 32, 43);
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -17,7 +16,7 @@ body {
   margin: 0;
   background-size: 100vw;
   height: 100%;
-  color:rgb(21, 32, 43);
+  // color: rgb(21, 32, 43)
 }
 
 #root {
@@ -28,4 +27,13 @@ body {
   min-width: 480px;
   min-height: 100%;
   gap: 16px;
+  background-color: rgb(21, 32, 43)
+}
+
+a {
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
 }

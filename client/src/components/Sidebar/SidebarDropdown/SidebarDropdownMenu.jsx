@@ -30,7 +30,7 @@ export const SidebarDropdownMenu = ({ popupState }) => {
     return (
         <MenuStyled {...bindMenu(popupState)}>
 
-            <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)' }}>
+            <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)', color: '#FFF' }}>
                 {
                     dropdownElements.map(dropdownEl => (
                         <DropdownHeader key={dropdownEl.id}
@@ -47,13 +47,10 @@ export const SidebarDropdownMenu = ({ popupState }) => {
             key={selectEl.id}
             mainLabel={selectEl.label}
             selects={selectEl.selects}
-            
         />
     )) 
 }
-            
-
-            <DropdownFooterSelect/>
+        
         </MenuStyled>
     )
 }
