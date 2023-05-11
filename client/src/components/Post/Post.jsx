@@ -3,14 +3,8 @@ import { Avatar, Box, CardMedia, Typography } from '@mui/material';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import PostIconList from './PostIconGroup/PostIconList';
 
-const ImageStyle = {
-  borderRadius: '20px',
-  height: 'auto',
-  with: '80%',
-  marginTop: '10px',
-};
-
-function Post({ displayName, username, verified, text, image }) {
+function Post({ displayName, username, verified, text, image, logoUrl }) {
+  console.log(logoUrl);
   return (
     <Box
       sx={{
@@ -20,7 +14,7 @@ function Post({ displayName, username, verified, text, image }) {
       display="flex"
     >
       <Box padding={2}>
-        <Avatar src="./img/avatar.JPG" />
+        <Avatar src={logoUrl} />
       </Box>
 
       <Box padding={1}>
@@ -39,21 +33,21 @@ function Post({ displayName, username, verified, text, image }) {
             4h
           </Typography>
         </Box>
+
         <Typography variant="body" sx={{ fontSize: '15px' }}>
           {text}
         </Typography>
 
         <CardMedia
-        component="img"
-        height="auto"
-        image={image}
-        alt="Paella dish"
-        sx={{
-          borderRadius: "20px",
-        }}
-      />
-
-        {/* <img style={ImageStyle} src={image} alt="" /> */}
+          component="img"
+          height="auto"
+          image={image}
+          alt="Paella dish"
+          sx={{
+            borderRadius: '20px',
+            my: '20px',
+          }}
+        />
         <PostIconList />
       </Box>
     </Box>

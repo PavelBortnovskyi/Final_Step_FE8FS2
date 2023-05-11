@@ -6,6 +6,7 @@ import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
 import { NotfoundPage } from 'src/pages/NotfoundPage';
 import { UserPage } from 'src/pages/UserPage';
+import TweetPage from 'src/pages/TweetPage';
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: '/user',
         element: <UserPage />,
+      },
+      {
+        path: '/tweet',
+        element: <TweetPage />,
       },
 
       {

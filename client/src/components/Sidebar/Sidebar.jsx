@@ -7,26 +7,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { mainSidebarElemets } from './sidebarElemets';
 import Link from '@mui/material/Link';
-import { Box, Hidden} from '@mui/material';
+import { Box, Hidden } from '@mui/material';
 import { SidebarFooter } from './SidebarFooter/SidebarFooter';
 import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
 import { BtnTweet } from './BtnTweet/BtnTweet';
 import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
-
-
-
-
+import TweetButton from 'src/UI/TweetButton';
 
 export const Sidebar = () => {
-
   return (
-    
-
-    
     <Drawer
       variant="permanent"
       anchor="left"
-
       sx={{
         flexShrink: 0,
         marginRight: '12px',
@@ -47,12 +39,16 @@ export const Sidebar = () => {
         },
       }}
     >
-
-      <Box sx={{
-        height: '100vh'
-      }}>
-        <Link href='/'
-          display="flex" justifyContent="center" alignItems="center"
+      <Box
+        sx={{
+          height: '100vh',
+        }}
+      >
+        <Link
+          href="/"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
           sx={{
             width: '50px',
             height: '50px',
@@ -71,7 +67,6 @@ export const Sidebar = () => {
           />
         </Link>
 
-
         <List
           sx={{
             mx: '10px',
@@ -79,7 +74,11 @@ export const Sidebar = () => {
         >
           {mainSidebarElemets.map((navElement) => (
             <Link href={navElement.route} underline="none" key={navElement.id}>
-              <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF' }}>
+              <ListItem
+                key={navElement.id}
+                disablePadding
+                sx={{ color: '#FFF' }}
+              >
                 <ListItemButton
                   sx={{
                     '&:hover': {
@@ -92,11 +91,13 @@ export const Sidebar = () => {
                     <navElement.icon sx={{ fontSize: 30, color: '#FFF' }} />
                   </ListItemIcon>
                   {/* <Hidden lgDown> */}
-                    <ListItemText primaryTypographyProps={{ fontSize: '18px', }} 
+                  <ListItemText
+                    primaryTypographyProps={{ fontSize: '18px' }}
                     sx={{
-                      display: {lg: 'block', xs: 'none' }
+                      display: { lg: 'block', xs: 'none' },
                     }}
-                    primary={navElement.label} />
+                    primary={navElement.label}
+                  />
                   {/* </Hidden> */}
                 </ListItemButton>
               </ListItem>
@@ -117,6 +118,5 @@ export const Sidebar = () => {
         <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
       </Box>
     </Drawer>
-    
   );
 };

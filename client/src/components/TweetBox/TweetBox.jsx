@@ -1,51 +1,35 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Box, styled, FilledInput } from '@mui/material';
-import CreatePostBar from './CreatePostBar/CreatePostBar';
-import AddingFile from './CreatePostBar/AddingFile';
-
-const InputStyled = styled(FilledInput)((props) => ({
-  flex: 1,
-  marginLeft: '20px',
-  fontSize: '20px',
-  border: 'none',
-  color: '#fff',
-  backgroundColor: 'inherit',
-  '&:hover': {
-    backgroundColor: 'inherit',
-  },
-  '&.Mui-focused': {
-    '&:after': {
-      content: 'none',
-    },
-  },
-}));
+import { Box } from '@mui/material';
+import CreatePostBar from '../../UI/CreatePostBar';
+import AddingFile from '../../UI/CreatePostBar/AddingFile';
+import InputAvatar from '../../UI/InputAvatar';
+import TweetButton from 'src/UI/TweetButton';
 
 function TweetBox() {
   const [postInputText, setPostInputText] = useState('');
   const [postImage, setPostImage] = useState(null);
 
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData({ ...formData, [name]: value });
+  // const data = {
+  //   postText: postInputText,
+  //   postImage: postImage,
   // };
-
-  const data = {
-    postText: postInputText,
-    postImage: postImage,
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('file', data);
-    const response = await fetch('/upload', {
-      method: 'POST',
-      body: formData,
-    });
-    setPostInputText('');
-    setPostImage(null);
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append('file', data);
+  //   const response = await fetch('/upload', {
+  //     method: 'POST',
+  //     body: formData,
+  //   });
+  //   setPostInputText('');
+  //   setPostImage(null);
+  // };
   const handleEmojiSelect = (emoji) => {
     setPostInputText(postInputText + emoji);
+  };
+
+  const handleInput = (ev) => {
+    setPostInputText(ev);
   };
 
   const handleFileSelect = (file) => {
@@ -56,22 +40,13 @@ function TweetBox() {
   };
   const objectURL = postImage ? URL.createObjectURL(postImage) : null;
   return (
-    <Box pl={1.2} pr={1.2} mt={12.6}>
-      <form onChange={(event) => console.log(event.target.value)}>
-        <Box display="flex" p="20px">
-          <Avatar
-            sx={{ width: 56, height: 56 }}
-            alt="Remy Sharp"
-            src="./img/avatar.JPG"
-          />
-
-          <InputStyled
-            placeholder="What's happening?"
-            disableUnderline={false}
-            name="PostText"
-            onChange={(event) => setPostInputText(event.target.value)}
-          />
-        </Box>
+    <Box>
+      <form>
+        <InputAvatar
+          avatarUrl="/img/avatar.JPG"
+          placeholder="What's happening?"
+          feature={handleInput}
+        />
         {postImage && (
           <AddingFile handleCloseFile={handleCloseFile} photo={objectURL} />
         )}
@@ -89,25 +64,22 @@ function TweetBox() {
             handleFileSelect={handleFileSelect}
             handleEmojiSelect={handleEmojiSelect}
           />
-          <Button
-            disabled={
-              postInputText.length === 0 && postImage === null ? true : false
-            }
+
+          <Box
             sx={{
-              backgroundColor: '##50b7f5',
-              '&:disabled': {
-                opacity: '10%',
-              },
+              mt: '15px',
+              mr: '15px',
             }}
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              handleSubmit();
-            }}
-            variant="contained"
           >
-            Tweet
-          </Button>
+            <TweetButton
+              isDisabled={
+                postInputText.length === 0 && postImage === null ? true : false
+              }
+              text="Tweet"
+              w="80px"
+              h="34px"
+            />
+          </Box>
         </Box>
       </form>
     </Box>
