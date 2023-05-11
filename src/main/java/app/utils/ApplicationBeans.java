@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 @Configuration
 public class ApplicationBeans {
   @Value("${cloudinary.cloudName}")
@@ -23,6 +27,12 @@ public class ApplicationBeans {
     ModelMapper mm = new ModelMapper();
     mm.getConfiguration().setFieldMatchingEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
     return mm;
+  }
+
+  @Bean
+  public Validator validator(){
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    return factory.getValidator();
   }
 
 //

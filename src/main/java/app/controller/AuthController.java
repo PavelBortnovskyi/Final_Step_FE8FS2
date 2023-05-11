@@ -9,7 +9,6 @@ import app.exceptions.EmailAlreadyRegisteredException;
 import app.model.UserModel;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
-import app.validation.UserDtoValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -22,17 +21,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Log4j2
 @RestController
@@ -50,23 +50,19 @@ public class AuthController {
 
   private final AuthenticationManager authenticationManager;
 
-  private final UserDtoValidator validator;
+  private final Validator validator;
 
-  @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleLogin(@Validated(Existed.class) @RequestBody UserModelRequest loginRequest, Errors errors) {
+  @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody UserModelRequest loginRequest) {
     //RequestDTO validation according to UserDTOValidator settings
-    validator.validate(loginRequest, errors);
+    Set<ConstraintViolation<UserModelRequest>> violations = validator.validate(loginRequest, Existed.class);
 
     //Validation results handling
-    if (errors.hasErrors()) {
-      List<String> errorMessages = new ArrayList<>();
-      for (FieldError error : errors.getFieldErrors()) {
-        errorMessages.add(error.getDefaultMessage());
-      }
-
+    if (!violations.isEmpty()) {
       HashMap<String, String> errorResponse = new HashMap<>();
-      errorResponse.put("error", errorMessages.toString());
-
+      for (ConstraintViolation<UserModelRequest> violation : violations) {
+        errorResponse.put("field_validation_error", violation.getMessage());
+      }
       return ResponseEntity.badRequest().body(errorResponse);
     }
 
@@ -100,21 +96,17 @@ public class AuthController {
     return ResponseEntity.ok(response);
   }
 
-  @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleRegistration(@Validated(New.class) @RequestBody UserModelRequest signUpDTO, Errors errors) {
+  @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody UserModelRequest signUpDTO) {
     //RequestDTO validation according to UserDTOValidator settings
-    validator.validate(signUpDTO, errors);
+    Set<ConstraintViolation<UserModelRequest>> violations = validator.validate(signUpDTO, New.class);
 
     //Validation results handling
-    if (errors.hasErrors()) {
-      List<String> errorMessages = new ArrayList<>();
-      for (FieldError error : errors.getFieldErrors()) {
-        errorMessages.add(error.getDefaultMessage());
-      }
-
+    if (!violations.isEmpty()) {
       HashMap<String, String> errorResponse = new HashMap<>();
-      errorResponse.put("error", errorMessages.toString());
-
+      for (ConstraintViolation<UserModelRequest> violation : violations) {
+        errorResponse.put("field_validation_error", violation.getMessage());
+      }
       return ResponseEntity.badRequest().body(errorResponse);
     }
 
