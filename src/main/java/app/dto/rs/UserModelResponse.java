@@ -3,7 +3,11 @@ package app.dto.rs;
 import app.annotations.Details;
 import app.annotations.Existed;
 import app.annotations.New;
-import app.model.*;
+import app.model.Chat;
+import app.model.Message;
+import app.model.Tweet;
+import app.model.TweetAction;
+import app.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
@@ -13,6 +17,10 @@ import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.util.Set;
 
+
+/**
+ * UserDTO for responses
+ */
 @Data
 public class UserModelResponse {
 

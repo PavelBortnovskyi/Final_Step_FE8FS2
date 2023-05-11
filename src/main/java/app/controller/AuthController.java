@@ -13,7 +13,6 @@ import app.validation.UserDtoValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,12 +53,14 @@ public class AuthController {
   private final UserDtoValidator validator;
 
   @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleLogin(@Validated(Existed.class) @RequestBody UserModelRequest loginRequest, BindingResult bindingResult) {
-    validator.validate(loginRequest, bindingResult);
+  public ResponseEntity<HashMap<String, String>> handleLogin(@Validated(Existed.class) @RequestBody UserModelRequest loginRequest, Errors errors) {
+    //RequestDTO validation according to UserDTOValidator settings
+    validator.validate(loginRequest, errors);
 
-    if (bindingResult.hasErrors()) {
+    //Validation results handling
+    if (errors.hasErrors()) {
       List<String> errorMessages = new ArrayList<>();
-      for (FieldError error : bindingResult.getFieldErrors()) {
+      for (FieldError error : errors.getFieldErrors()) {
         errorMessages.add(error.getDefaultMessage());
       }
 
@@ -69,6 +70,7 @@ public class AuthController {
       return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    //Auth procedure handling
     Authentication authentication = authenticationManager
       .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -90,6 +92,7 @@ public class AuthController {
     //Update refresh token for current user
     this.userService.updateRefreshToken(currentUser, refreshToken);
 
+    //JWT tokens for response packing
     HashMap<String, String> response = new HashMap<>();
     response.put("ACCESS_TOKEN", accessToken);
     response.put("REFRESH_TOKEN", refreshToken);
@@ -98,12 +101,14 @@ public class AuthController {
   }
 
   @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleRegistration(@Validated(New.class) @RequestBody UserModelRequest signUpDTO, BindingResult bindingResult) {
-    validator.validate(signUpDTO, bindingResult);
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@Validated(New.class) @RequestBody UserModelRequest signUpDTO, Errors errors) {
+    //RequestDTO validation according to UserDTOValidator settings
+    validator.validate(signUpDTO, errors);
 
-    if (bindingResult.hasErrors()) {
+    //Validation results handling
+    if (errors.hasErrors()) {
       List<String> errorMessages = new ArrayList<>();
-      for (FieldError error : bindingResult.getFieldErrors()) {
+      for (FieldError error : errors.getFieldErrors()) {
         errorMessages.add(error.getDefaultMessage());
       }
 
@@ -132,6 +137,7 @@ public class AuthController {
     freshUser.setRefreshToken(refreshToken);
     this.userService.save(freshUser);
 
+    //JWT tokens for response packing
     HashMap<String, String> response = new HashMap<>();
     response.put("ACCESS_TOKEN", accessToken);
     response.put("REFRESH_TOKEN", refreshToken);
