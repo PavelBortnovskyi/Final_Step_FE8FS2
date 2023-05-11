@@ -25,6 +25,8 @@ export const Sidebar = () => {
       anchor="left"
 
       sx={{
+        position: 'sticky',
+        top: 0,
         zIndex: 10,
         flexShrink: 0,
         marginRight: '12px',
@@ -124,7 +126,13 @@ export const Sidebar = () => {
 
           </List>
 
-          <BtnTweet />
+          <Box sx={{
+            marginTop: '20px',
+            marginLeft: '10px',
+          }}>
+            <BtnTweet />
+          </Box>
+
 
           <SmallBtnTweet />
         </Box>

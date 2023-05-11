@@ -8,11 +8,10 @@ export const BtnTweet = () => {
             sx={{
                 display: {lg: 'block', xs: 'none' },
                 fontSize: '20px',
-                fontWeight: '700',
+                fontWeight: '800',
                 width: '230px',
                 height: '50px',
-                marginTop: '20px',
-                marginLeft: '10px',
+                
                 color: '#FFFF',
                 backgroundColor: 'rgb(30,155,240)',
                 borderRadius: "30px",

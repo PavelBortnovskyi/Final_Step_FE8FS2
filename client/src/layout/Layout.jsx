@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
 import { Sidebar } from 'src/components/Sidebar/Sidebar';
 // import { Main } from 'src/components/Main/Main';
-import { Footer } from 'src/components/AppBar/AppBar';
+import { RightSection } from 'src/components/RightSection/RightSection';
 // import { Modal } from 'src/components/Modal/Modal';
 import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 import { MainRoutes } from 'src/routes/MainRoutes';
@@ -47,7 +47,7 @@ export const Layout = () => {
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <Footer />
+          <RightSection/>
         </Grid>
       </Grid>
       <BottomToolbar />
