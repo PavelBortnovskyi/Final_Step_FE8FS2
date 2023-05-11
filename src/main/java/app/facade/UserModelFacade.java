@@ -11,6 +11,6 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     public void init() {
         super.getMm().typeMap(UserModel.class, UserModelResponse.class)
                 .addMapping(src -> src.getFollowers().size(), UserModelResponse::setCountUserFollowers)
-                .addMapping(src -> src.getFollowing().size(), UserModelResponse::setCountUserFollowings);
+                .addMapping(src -> src.getFollowings().size(), UserModelResponse::setCountUserFollowings);
     }
 }
