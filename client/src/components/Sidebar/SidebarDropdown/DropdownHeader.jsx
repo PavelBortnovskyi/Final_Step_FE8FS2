@@ -18,7 +18,7 @@ export const DropdownHeader = ({dropdownEl, popupState}) => {
             }}
         >
 
-            <ListItemIcon sx={{ fontSize: 24, paddingRight: "24px" }}>
+            <ListItemIcon sx={{ fontSize: 24, paddingRight: "24px", color: '#FFF' }}>
                 <dropdownEl.icon sx={{ fontSize: 24 }} />
             </ListItemIcon>
             {dropdownEl.label}

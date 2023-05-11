@@ -15,8 +15,6 @@ export const SidebarDropdown = () => {
 
                         <SidebarDropdownMenu popupState={popupState} />
 
-                        
-
                     </ListItem>
                 </React.Fragment>
             )}
