@@ -2,6 +2,7 @@ import { HomePage } from 'src/pages/HomePage';
 import { UserPage } from 'src/pages/UserPage';
 import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
+import TweetPage from 'src/pages/TweetPage';
 
 export const mainRoutes = () => {
   return [
@@ -22,6 +23,10 @@ export const mainRoutes = () => {
     {
       path: '/notifications',
       element: <UserPage />,
+    },
+    {
+      path: '/tweet',
+      element: <TweetPage />,
     },
     {
       path: '/messages',

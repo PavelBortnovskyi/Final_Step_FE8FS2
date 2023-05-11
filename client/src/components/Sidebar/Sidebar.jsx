@@ -12,18 +12,13 @@ import { SidebarFooter } from './SidebarFooter/SidebarFooter';
 import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
 import { BtnTweet } from './BtnTweet/BtnTweet';
 import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
-
-
-
-
+import TweetButton from 'src/UI/TweetButton';
 
 export const Sidebar = () => {
-
   return (
     <Drawer
       variant="permanent"
       anchor="left"
-
       sx={{
         zIndex: 10,
         flexShrink: 0,
