@@ -13,11 +13,11 @@ import styles from 'src/styles/Forms.module.scss';
 
 // structure data for form
 const SignupSchema = Yup.object().shape({
-  login: Yup.string()
-    .min(4, 'must be more than 3 characters')
-    .max(20, 'must be no more than 20 characters')
-    .matches(/^[0-9a-zA-Z_\-/.]+$/, 'only English letters and numbers')
-    .required('required field'),
+  // login: Yup.string()
+  //   .min(4, 'must be more than 3 characters')
+  //   .max(20, 'must be no more than 20 characters')
+  //   .matches(/^[0-9a-zA-Z_\-/.]+$/, 'only English letters and numbers')
+  //   .required('required field'),
   password: Yup.string()
     .min(4, 'must be more than 3 characters')
     .required('required field'),
@@ -46,7 +46,10 @@ export const FormLogin = () => {
   // send report and clear form
   const handleSubmit = async (values, actions) => {
     // send user data to redux thunk
-    dispatch(loginUser(values));
+    dispatch(loginUser({
+      email: values.login,
+      password: values.password
+    }));
 
     // reset form
     await new Promise((resolve) => {
