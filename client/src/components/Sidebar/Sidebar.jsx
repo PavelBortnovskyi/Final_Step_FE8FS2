@@ -7,19 +7,28 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { mainSidebarElemets } from './sidebarElemets';
 import Link from '@mui/material/Link';
-import { Box } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 import { SidebarFooter } from './SidebarFooter/SidebarFooter';
 import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
-import { BtnTweet } from './BtnTweet/BtnTweet';
 import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
 import TweetButton from 'src/UI/TweetButton';
+import TweetBox from '../TweetBox/TweetBox';
+import { ModalTweetPage } from 'src/pages/ModalTweetPage';
+import { NavLink, useLocation } from 'react-router-dom';
+
+
+
 
 export const Sidebar = () => {
+  const location = useLocation();
+
   return (
     <Drawer
       variant="permanent"
       anchor="left"
       sx={{
+        position: 'sticky',
+        top: 0,
         zIndex: 10,
         flexShrink: 0,
         marginRight: '12px',
@@ -119,7 +128,18 @@ export const Sidebar = () => {
 
           </List>
 
-          <BtnTweet />
+          <Box sx={{
+            marginTop: '20px',
+            marginLeft: '10px',
+            display: { lg: 'block', xs: 'none' }
+          }}>
+            <Link to="/modal/tweet" state={{ background: location }} component={NavLink}>
+
+              <TweetButton text="Tweet" w="230" h="50" isDisabled={false} />
+            </Link>
+
+
+          </Box>
 
           <SmallBtnTweet />
         </Box>

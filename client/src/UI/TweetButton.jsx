@@ -9,6 +9,7 @@ function TweetButton({ isDisabled, fnc, text, w, h }) {
       sx={{
         width: `${w}px`,
         height: `${h}px`,
+        fontSize: '20px',
         fontWeight: '800',
         borderRadius: '30px',
         '&.Mui-disabled': {

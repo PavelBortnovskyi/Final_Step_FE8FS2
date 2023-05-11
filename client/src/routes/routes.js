@@ -3,6 +3,7 @@ import { UserPage } from 'src/pages/UserPage';
 import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
 import TweetPage from 'src/pages/TweetPage';
+import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 
 export const mainRoutes = () => {
   return [
@@ -60,6 +61,10 @@ export const modalRoutes = () => {
     {
       path: '/modal/registration',
       element: <RegistrationPage />,
+    },
+    {
+      path: '/modal/tweet',
+      element: <ModalTweetPage />,
     },
   ];
 };
