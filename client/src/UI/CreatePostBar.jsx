@@ -1,9 +1,9 @@
 import React from 'react';
-import AddImage from './BarItem/AddImage';
-import Emoji from './BarItem/Emoji';
-import Gif from './BarItem/Gif';
-import Schedule from './BarItem/Schedule';
-import Location from './BarItem/Location';
+import AddImage from './CreatePostBar/BarItem/AddImage';
+import Emoji from './CreatePostBar/BarItem/Emoji';
+import Gif from './CreatePostBar/BarItem/Gif';
+import Schedule from './CreatePostBar/BarItem/Schedule';
+import Location from './CreatePostBar/BarItem/Location';
 import { Box } from '@mui/material';
 
 function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {

@@ -16,7 +16,6 @@ body {
   margin: 0;
   background-size: 100vw;
   height: 100%;
-  overflow: hidden;
   // color: rgb(21, 32, 43)
 }
 
@@ -28,7 +27,7 @@ body {
   min-width: 480px;
   min-height: 100%;
   gap: 16px;
-  background-color: rgb(21, 32, 43)
+  background-color: rgb(21, 32, 43);
 }
 
 a {

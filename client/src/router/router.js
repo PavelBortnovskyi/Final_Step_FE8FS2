@@ -6,6 +6,8 @@ import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
 import { NotfoundPage } from 'src/pages/NotfoundPage';
 import { UserPage } from 'src/pages/UserPage';
+import TweetPage from 'src/pages/TweetPage';
+import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: '/user',
         element: <UserPage />,
+      },
+      {
+        path: '/tweet',
+        element: <TweetPage />,
       },
 
       {
@@ -58,6 +64,10 @@ export const router = createBrowserRouter([
       {
         path: '/modal/registration',
         element: <RegistrationPage />,
+      },
+      {
+        path: '/modal/tweet',
+        element: <ModalTweetPage />,
       },
     ],
   },
