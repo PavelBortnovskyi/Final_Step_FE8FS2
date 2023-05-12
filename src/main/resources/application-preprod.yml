@@ -3,7 +3,7 @@ spring:
     password: dbTW1991
     url: jdbc:postgresql://165.232.125.235:8080/fe8fs2tw
     username: postgres
-    driver-classname: org.h2.Driver
+    driver-classname: org.postgresql.Driver
     schema: classpath:/schema.sql
     continue-on-error: true
     initialize: true
@@ -31,15 +31,15 @@ jwt:
   secretRefresh: ${JWT_REFRESH_SECRET}
   secretPasswordReset: ${JWT_PASSWORD_RESET_SECRET}
   secretPasswordUpdate: ${JWT_PASSWORD_UPDATE_SECRET}
-  expiration: 7200000
-  expirationRefresh: 604800000
-  expirationPasswordReset: 86400000
-  expirationPasswordUpdate: 3600000
+  expiration: 7200000 #2h
+  expirationRefresh: 604800000 #7d
+  expirationPasswordReset: 86400000 #24h
+  expirationPasswordUpdate: 3600000 #1h
   header: Authorization
 cloudinary:
-  cloudName: dojrbfnaz
-  apiKey: 516471726946834
-  apiSecret: JokricYXIJmtjF29Ptgm2H7FusA
+  cloudName: ${CLOUDINARY_CLOUD_NAME}
+  apiKey: ${CLOUDINARY_API_KEY}
+  apiSecret: ${CLOUDINARY_API_SECRET}
 
 
 
