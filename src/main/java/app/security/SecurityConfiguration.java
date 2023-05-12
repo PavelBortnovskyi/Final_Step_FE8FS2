@@ -29,6 +29,8 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/**").permitAll()
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/test").authenticated()
+      .antMatchers("/create").permitAll()
+      .antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated();
 
     httpSec.headers().frameOptions().disable(); //For h2 correct visualization
