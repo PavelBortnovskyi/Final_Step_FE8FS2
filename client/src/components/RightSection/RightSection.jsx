@@ -1,5 +1,9 @@
-import styles from 'src/styles/Footer.module.scss';
+import { InputSearch } from "../InputSearch/InputSearch";
+
 
 export const RightSection = () => {
-  return <div className={styles.Footer__row}>&copy; 2023</div>;
+  
+  return (
+    <InputSearch placeholder="Search Twitter" />
+  )
 };
