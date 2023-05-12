@@ -1,7 +1,10 @@
 package app.service;
 
 import app.enums.TokenType;
+import app.exceptions.AuthErrorException;
 import app.exceptions.JwtAuthenticationException;
+import app.model.UserModel;
+import app.repository.UserModelRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.CompressionException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,10 +16,15 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +38,9 @@ import java.util.Optional;
 @Service
 public class JwtTokenService {
   private final UserDetailsService userDetailsService;
+
+  @Autowired
+  private UserModelRepository userModelRepository;
 
   @Value("${jwt.secret}")
   private String secretAccessKey;
@@ -51,6 +62,8 @@ public class JwtTokenService {
   private long PasswordResetTokenLiveTime;
   @Value("${jwt.expirationPasswordUpdate}")
   private long PasswordUpdateTokenLiveTime;
+
+  private static final String BEARER = "Bearer ";
 
   /**
    * Class constructor with bean injection qualify to avoid NoUniqueBeanDefinitionException
@@ -143,8 +156,8 @@ public class JwtTokenService {
    */
   public Optional<String> extractTokenFromRequest(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-      .filter(h -> h.startsWith("BEARER"))
-      .map(h -> h.substring("BEARER".length()));
+      .filter(h -> h.startsWith(BEARER))
+      .map(h -> h.substring(BEARER.length()));
   }
 
   /**
@@ -186,14 +199,15 @@ public class JwtTokenService {
   /**
    * Method for token expiration time validation. Returns true if token not expired
    */
-  protected boolean validateToken(String token, TokenType tokenType) {
+  public boolean validateToken(String token, TokenType tokenType) {
     String signKey = this.getSignKey(tokenType);
     try {
       Jws<Claims> claimsJws = Jwts.parser().setSigningKey(signKey).parseClaimsJws(token);
       return !claimsJws.getBody().getExpiration().before(new Date());
     } catch (JwtException | IllegalArgumentException e) {
       log.error(String.format("JWT %s token is expired or invalid", tokenType.toString()));
-      throw new JwtAuthenticationException(String.format("JWT %s token is expired or invalid", tokenType.toString()));
+      return false;
+      //throw new JwtAuthenticationException(String.format("JWT %s token is expired or invalid", tokenType.toString()));
     }
   }
 
@@ -202,6 +216,48 @@ public class JwtTokenService {
    */
   protected String resolveToken(HttpServletRequest request) {
     return request.getHeader(authorizationHeader);
+  }
+
+  /**
+   * Method returns authentication from access token
+   */
+  public Authentication getAuthentication(String accessToken) {
+    UserDetails userDetails = this.userDetailsService
+      .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
+        .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
+        .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
+    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+  }
+
+  /**
+   * Method returns true if provided User Model is exist in DB and refreshToken updated
+   */
+  public boolean updateRefreshToken(UserModel userModel, String refreshToken) {
+    if (this.userModelRepository.existsById(userModel.getId())) {
+      this.userModelRepository.updateRefreshToken(userModel.getId(), refreshToken);
+      return true;
+    } else return false;
+  }
+
+  /**
+   * Method returns true if provided refresh Token is not used
+   */
+  public boolean checkRefreshTokenStatus(String refreshToken) {
+    return this.userModelRepository.checkRefreshTokenStatus(refreshToken);
+  }
+
+  /**
+   * Method changes refresh token refreshed status
+   */
+  public void changeTokenStatus(Long userId, boolean usedStatus) {
+    this.userModelRepository.changeTokenStatusById(userId, usedStatus);
+  }
+
+  /**
+   * Method changes refresh token refreshed status
+   */
+  public void changeTokenStatus(String token, boolean usedStatus) {
+    this.userModelRepository.changeTokenStatusByValue(token, usedStatus);
   }
 
   /**

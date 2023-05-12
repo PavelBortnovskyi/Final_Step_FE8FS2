@@ -7,6 +7,7 @@ import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.exceptions.EmailAlreadyRegisteredException;
 import app.model.UserModel;
+import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +21,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
 import javax.validation.Validator;
 import java.util.HashMap;
 import java.util.Optional;
@@ -78,7 +76,7 @@ public class AuthController {
     User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
 
     //User extraction from DB by security credentials from Authenticated User (email aka username)
-    Optional<UserModel> maybeCurrentUser = this.userService.getUserByEmail(authUser.getUsername());
+    Optional<UserModel> maybeCurrentUser = this.userService.getUser(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
     //Token creation
@@ -86,7 +84,7 @@ public class AuthController {
     String refreshToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.REFRESH);
 
     //Update refresh token for current user
-    this.userService.updateRefreshToken(currentUser, refreshToken);
+    this.jwtTokenService.updateRefreshToken(currentUser, refreshToken);
 
     //JWT tokens for response packing
     HashMap<String, String> response = new HashMap<>();

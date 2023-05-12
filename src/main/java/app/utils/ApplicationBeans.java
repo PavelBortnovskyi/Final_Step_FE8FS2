@@ -2,6 +2,7 @@ package app.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+
 
 @Configuration
 public class ApplicationBeans {
@@ -30,9 +32,14 @@ public class ApplicationBeans {
   }
 
   @Bean
-  public Validator validator(){
+  public Validator validator() {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     return factory.getValidator();
+  }
+
+  @Bean
+  public ObjectMapper objectMapper(){
+    return new ObjectMapper();
   }
 
 //
@@ -56,6 +63,14 @@ public class ApplicationBeans {
       "api_key", apiKey,
       "api_secret", apiSecret,
       "secure", true));
+
+
+    //Sync upload from byte array and get url
+    //byte[] imageByteArray = new byte[1024]; // there will be parsing request body to get byte array
+    //try (InputStream is = new ByteArrayInputStream(imageByteArray)) {
+    //  String cloudinaryUrl = cloudinary.uploader().upload(is, ObjectUtils.asMap("public_id", "someImageName")).get("url").toString();
+    //} catch (IOException exception) {
+    //  System.out.println(exception.getMessage());
 
     //Sync upload and get url
     //    try {

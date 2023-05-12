@@ -37,7 +37,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String userMail) throws UsernameNotFoundException {
     log.info(userMail);
-    return this.userModelService.getUserByEmail(userMail)
+    return this.userModelService.getUser(userMail)
       .map(this::mapper)
       .orElseThrow(() -> new EmailNotFoundException(String.format("User with email: `%s` not found", userMail)
       ));
