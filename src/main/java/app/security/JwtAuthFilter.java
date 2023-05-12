@@ -41,12 +41,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     String token = this.tokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+
     if (!token.isEmpty()) {
+
       //Try to validate token as access token
       if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
         log.info("Token is valid continue...");
         this.processRequestWithToken(request, response, filterChain, token);
       } else {
+
         //Try to validate token as refresh token
         if (this.tokenService.validateToken(token, TokenType.REFRESH) && !this.tokenService.checkRefreshTokenStatus(token)) {
           //Get user from DB to create new token pair and update refresh token
@@ -98,13 +101,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
   private void processRequestWithToken(HttpServletRequest request, HttpServletResponse response,
                                        FilterChain filterChain, String token) throws ServletException, IOException {
-    this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-      .flatMap(this.tokenService::extractIdFromClaims)
-      .map(JwtUserDetails::new)
-      .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
-      .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
-        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(auth);
-      });
+    try {
+      this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
+        .flatMap(this.tokenService::extractIdFromClaims)
+        .map(JwtUserDetails::new)
+        .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
+        .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
+          auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          SecurityContextHolder.getContext().setAuthentication(auth);
+        });
+    } catch (Exception e) {
+      throw new JwtAuthenticationException("Login failed with: " + e.getMessage());
+    }
   }
 }
