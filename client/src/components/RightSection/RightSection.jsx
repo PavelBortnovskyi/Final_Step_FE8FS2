@@ -1,4 +1,4 @@
-import { InputSearch } from "../InputSearch/InputSearch";
+import { InputSearch } from "../../UI/InputSearch/InputSearch";
 
 
 export const RightSection = () => {
