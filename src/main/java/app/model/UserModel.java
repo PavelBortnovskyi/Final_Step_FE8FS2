@@ -48,6 +48,9 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "refresh_token")
   private String refreshToken;
 
+  @Column(name = "token_used")
+  private boolean refreshed;
+
 //  @OneToMany
 //  @JoinTable(name = "followers")
 //  private Set<UserModel> following;

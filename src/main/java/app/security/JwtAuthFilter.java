@@ -1,12 +1,17 @@
 package app.security;
 
 import app.enums.TokenType;
+import app.exceptions.JwtAuthenticationException;
+import app.model.UserModel;
 import app.service.JwtTokenService;
+import app.service.UserModelService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,6 +20,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @Component
@@ -23,31 +30,88 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
   private final JwtTokenService tokenService;
 
+  private final UserModelService userModelService;
+
+  private final ObjectMapper objectMapper;
+
   /**
-   * Filter validates jwt bearer token and make authorization according to validation.
-   * Login path passes without token validation to normal auth procedure by Spring security
+   * Filter validates jwt bearer token and make authorization according to validation. In case access token invalid method returns 401 and waiting for refresh token to
+   * update token pair.
    */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    //pass filtering and redirect to SpringSecurity auth procedure
-    if (request.getServletPath().equals("/api/v1/auth/login")) {
-        log.info("Going to SS basic auth");
-        filterChain.doFilter(request, response);
-    } else {
-      try {
-        this.tokenService.extractTokenFromRequest(request)
-          .flatMap(t -> this.tokenService.extractClaimsFromToken(t, TokenType.ACCESS))
-          .flatMap(this.tokenService::extractIdFromClaims)
-          .map(JwtUserDetails::new)
-          .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
-          .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(auth);
-          });
-        filterChain.doFilter(request, response);
-      } catch (Exception e) {
-        log.error("Authentication failed with: " + e.getMessage());
+    String token = this.tokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+
+    if (!token.isEmpty()) {
+
+      //Try to validate token as access token
+      if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
+        log.info("Token is valid continue...");
+        this.processRequestWithToken(request, response, filterChain, token);
+      } else {
+
+        //Try to validate token as refresh token
+        if (this.tokenService.validateToken(token, TokenType.REFRESH) && !this.tokenService.checkRefreshTokenStatus(token)) {
+          //Get user from DB to create new token pair and update refresh token
+          UserModel currUser = this.userModelService.getUserByToken(token).orElseThrow(() -> new JwtAuthenticationException("Wrong refresh token!"));
+          String newAccessToken = this.tokenService.createToken(currUser.getId(), TokenType.ACCESS, currUser.getUserTag(), currUser.getEmail());
+          String newRefreshToken = this.tokenService.createToken(currUser.getId(), TokenType.REFRESH);
+          this.tokenService.updateRefreshToken(currUser, newRefreshToken);
+          log.info("Refresh token updated for user with id: " + currUser.getId());
+
+          Map<String, String> tokens = new HashMap<>();
+          tokens.put("access_token", newAccessToken);
+          tokens.put("refresh_token", token);
+
+          String tokensJson = this.objectMapper.writeValueAsString(tokens);
+
+          response.setContentType("application/json");
+          response.setCharacterEncoding("UTF-8");
+          response.getWriter().write(tokensJson);
+        } else {
+          log.info("Token invalid!");
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
       }
+    }
+  }
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) {
+    String requestMethod = request.getMethod();
+
+    AntPathRequestMatcher[] matchers = {
+      new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
+      new AntPathRequestMatcher("/swagger-resources", requestMethod),
+      new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
+      new AntPathRequestMatcher("/webjars/**", requestMethod),
+      new AntPathRequestMatcher("/v2/api-docs", requestMethod),
+      new AntPathRequestMatcher("/h2-console/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod)
+    };
+
+    for (AntPathRequestMatcher matcher : matchers) {
+      if (matcher.matches(request)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void processRequestWithToken(HttpServletRequest request, HttpServletResponse response,
+                                       FilterChain filterChain, String token) throws ServletException, IOException {
+    try {
+      this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
+        .flatMap(this.tokenService::extractIdFromClaims)
+        .map(JwtUserDetails::new)
+        .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
+        .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
+          auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          SecurityContextHolder.getContext().setAuthentication(auth);
+        });
+    } catch (Exception e) {
+      throw new JwtAuthenticationException("Login failed with: " + e.getMessage());
     }
   }
 }
