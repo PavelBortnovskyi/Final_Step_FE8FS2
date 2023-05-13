@@ -47,6 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
         log.info("Token is valid continue...");
         this.processRequestWithToken(request, response, filterChain, token);
+        request.setAttribute("userId", this.tokenService.getIdFromRequest(request).get());
         doFilter(request, response, filterChain);
       } else {
 

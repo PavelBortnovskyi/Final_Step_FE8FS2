@@ -137,7 +137,7 @@ public class AuthController {
 
   @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleLogout(HttpServletRequest request) {
-    Long id = this.jwtTokenService.getIdFromRequest(request).orElseThrow();
+    Long id = (Long) request.getAttribute("userId");
     this.jwtTokenService.changeTokenStatus(id, true);
     log.info("User id: " + id + " logged out");
     return ResponseEntity.ok("User with Id: " + id + " logged out");
