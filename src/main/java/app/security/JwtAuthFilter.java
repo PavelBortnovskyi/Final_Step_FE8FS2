@@ -45,14 +45,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     if (!token.isEmpty()) {
       //Try to validate token as access token
       if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
+
         log.info("Token is valid continue...");
         this.processRequestWithToken(request, response, filterChain, token);
+
+        //Add value of userId to request to more simple access to it in controllers
         request.setAttribute("userId", this.tokenService.getIdFromRequest(request).get());
         doFilter(request, response, filterChain);
       } else {
-
         //Try to validate token as refresh token
         if (this.tokenService.validateToken(token, TokenType.REFRESH) && !this.tokenService.checkRefreshTokenStatus(token)) {
+
           //Get user from DB to create new token pair and update refresh token
           UserModel currUser = this.userModelService.getUserByToken(token).orElseThrow(() -> new JwtAuthenticationException("Wrong refresh token!"));
           String newAccessToken = this.tokenService.createToken(currUser.getId(), TokenType.ACCESS, currUser.getUserTag(), currUser.getEmail());
