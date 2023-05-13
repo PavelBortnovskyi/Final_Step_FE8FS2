@@ -6,10 +6,13 @@ import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.exceptions.EmailAlreadyRegisteredException;
+import app.exceptions.JwtAuthenticationException;
 import app.model.UserModel;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -21,11 +24,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.HashMap;
@@ -64,12 +65,11 @@ public class AuthController {
       return ResponseEntity.badRequest().body(errorResponse);
     }
 
+
     //Auth procedure handling
     Authentication authentication = authenticationManager
       .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
     SecurityContextHolder.getContext().setAuthentication(authentication);
-
     Object principal = authentication.getPrincipal();
 
     Optional<User> maybeAuthUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
@@ -133,5 +133,13 @@ public class AuthController {
     response.put("REFRESH_TOKEN", refreshToken);
 
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> handleLogout(HttpServletRequest request) {
+    Long id = this.jwtTokenService.getIdFromRequest(request).orElseThrow();
+    this.jwtTokenService.changeTokenStatus(id, true);
+    log.info("User id: " + id + " logged out");
+    return ResponseEntity.ok("User with Id: " + id + " logged out");
   }
 }

@@ -43,11 +43,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     String token = this.tokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
     if (!token.isEmpty()) {
-
       //Try to validate token as access token
       if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
         log.info("Token is valid continue...");
         this.processRequestWithToken(request, response, filterChain, token);
+        doFilter(request, response, filterChain);
       } else {
 
         //Try to validate token as refresh token

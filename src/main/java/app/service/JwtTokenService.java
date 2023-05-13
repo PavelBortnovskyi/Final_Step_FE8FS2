@@ -197,6 +197,15 @@ public class JwtTokenService {
   }
 
   /**
+   * Method returns optional of user id from request with JWT Access token
+   */
+  public Optional<Long> getIdFromRequest(HttpServletRequest request){
+    return this.extractTokenFromRequest(request)
+      .flatMap(t -> this.extractClaimsFromToken(t, TokenType.ACCESS))
+      .flatMap(this::extractIdFromClaims);
+  }
+
+  /**
    * Method for token expiration time validation. Returns true if token not expired
    */
   public boolean validateToken(String token, TokenType tokenType) {
@@ -207,7 +216,6 @@ public class JwtTokenService {
     } catch (JwtException | IllegalArgumentException e) {
       log.error(String.format("JWT %s token is expired or invalid", tokenType.toString()));
       return false;
-      //throw new JwtAuthenticationException(String.format("JWT %s token is expired or invalid", tokenType.toString()));
     }
   }
 
