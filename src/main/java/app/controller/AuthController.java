@@ -53,7 +53,7 @@ public class AuthController {
 
   private final Validator validator;
 
-  //private final UserModelFacade userModelFacade;
+  private final UserModelFacade userModelFacade;
 
   @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody UserModelRequest loginRequest) {
@@ -99,12 +99,8 @@ public class AuthController {
     if (this.userService.checkEmail(signUpDTO.getEmail()))
       throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
 
-    //Mapping signUpDTO -> UserModel
-    UserModel freshUser = new UserModel();
-    signUpDTO.setPassword(this.passwordEncoder.encode(signUpDTO.getPassword()));
-    modelMapper.map(signUpDTO, freshUser);
-    //Saving new User to DB and getting user_id to freshUser
-    freshUser = this.userService.save(freshUser);
+    //Saving new User to DB and getting user_id to freshUser   //Mapping signUpDTO -> UserModel
+    UserModel freshUser = this.userService.save(this.userModelFacade.convertToEntity(signUpDTO));
 
     //Token creation using user_id
     String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
@@ -112,12 +108,12 @@ public class AuthController {
 
     //New user saving to DB with refresh token
     freshUser.setRefreshToken(refreshToken);
-    this.userService.save(freshUser);
 
-    //JWT tokens for response packing
+    //JWT tokens and UserId for response packing
     HashMap<String, String> response = new HashMap<>();
     response.put("ACCESS_TOKEN", accessToken);
     response.put("REFRESH_TOKEN", refreshToken);
+    response.put("NEW_USER_ID", this.userService.save(freshUser).getId().toString());
 
     return ResponseEntity.ok(response);
   }

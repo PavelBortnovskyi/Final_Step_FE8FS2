@@ -32,4 +32,5 @@ public class UserModelService extends GeneralService<UserModel> {
   public boolean checkEmail(String email) {
     return this.userModelRepository.findByEmail(email).isPresent();
   }
+
 }
