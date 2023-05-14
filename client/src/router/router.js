@@ -1,63 +1,68 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from "react-router-dom";
 
-import { App } from 'src/components/App';
-import { HomePage } from 'src/pages/HomePage';
-import { LoginPage } from 'src/pages/LoginPage';
-import { RegistrationPage } from 'src/pages/RegistrationPage';
-import { NotfoundPage } from 'src/pages/NotfoundPage';
-import { UserPage } from 'src/pages/UserPage';
+import { App } from "src/components/App";
+import { HomePage } from "src/pages/HomePage";
+import { LoginPage } from "src/pages/LoginPage";
+import { RegistrationPage } from "src/pages/RegistrationPage";
+import { NotfoundPage } from "src/pages/NotfoundPage";
+import { UserPage } from "src/pages/UserPage";
+import { EditProfileModal } from "src/components/EditProfile/EditProfileModal";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     errorElement: <NotfoundPage />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <HomePage />,
         index: true,
       },
       {
-        path: '/user',
+        path: "/user",
         element: <UserPage />,
       },
 
       {
-        path: '/explore',
+        path: "/explore",
         element: <UserPage />,
       },
       {
-        path: '/notifications',
+        path: "/notifications",
         element: <UserPage />,
       },
       {
-        path: '/messages',
+        path: "/messages",
         element: <UserPage />,
       },
       {
-        path: '/bookmarks',
+        path: "/bookmarks",
         element: <UserPage />,
       },
       {
-        path: '/twitter_blue',
+        path: "/twitter_blue",
         element: <UserPage />,
       },
       {
-        path: '/verified-orgs',
+        path: "/verified-orgs",
         element: <UserPage />,
       },
       {
-        path: '/profile',
+        path: "/profile",
         element: <UserPage />,
       },
       {
-        path: '/modal/login',
+        path: "/modal/login",
         element: <LoginPage />,
       },
       {
-        path: '/modal/registration',
+        path: "/modal/registration",
         element: <RegistrationPage />,
+      },
+      {
+        path: "/settings/profile",
+        element: <EditProfileModal />,
       },
     ],
   },

@@ -2,13 +2,14 @@ import { Form } from "formik";
 import { EditFormHeder } from "./EditFormHeder";
 import { UserPageFoto } from "../User/UserPageFoto";
 import { UserPageAvatar } from "../User/UserPageAvatar";
-import { Button, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { ImgInputAvatar } from "./ImgInputAvatar";
 import { UserPageFotoInput } from "./UserPageFotoInput";
 import { ClearPageFoto } from "./ClearPageFoto";
 import { EditBirthDate } from "./EditBirthDate";
+// import { BirthdayInput } from "./BirthdayInput";
 
 const RedditTextField = styled((props) => (
   <TextField InputProps={{ disableUnderline: true }} {...props} />
@@ -121,7 +122,7 @@ export function EditForm() {
             </Typography>
             <EditBirthDate />
           </Box>
-
+          {/* <BirthdayInput /> */}
           <Typography>Birth date</Typography>
         </Box>
       </Box>
