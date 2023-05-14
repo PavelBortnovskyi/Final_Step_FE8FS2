@@ -5,19 +5,13 @@ import { loginUser } from '../thunk/loginUser.js';
 import { getUser } from '../thunk/getUser.js';
 
 const initialState = {
-  isAuthenticated: Boolean(localStorage.getItem("accessToken")),
-  user: null,
-  isLoading: true
-
-  // login: null,
-  // email: null,
-  // address: '',
-  // username: '',
-  // orders: [],
-  // token: null,
-  // isLoading: false,
-  // message: '',
-  // error: '',
+  isAuthenticated: Boolean(localStorage.getItem('accessToken')),
+  email: null,
+  fullName: null,
+  userTag: null,
+  isLoading: false,
+  message: '',
+  error: '',
 };
 
 export const authSlice = createSlice({
@@ -25,12 +19,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.login = null;
+      state.isAuthenticated = false;
       state.email = null;
-      state.address = '';
-      state.username = '';
-      state.orders = [];
-      state.token = null;
+      state.fullName = null;
+      state.userTag = null;
       state.isLoading = false;
       state.message = '';
       state.error = '';
@@ -44,13 +36,11 @@ export const authSlice = createSlice({
       state.error = '';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.login = action.payload.login;
       state.email = action.payload.email;
-      state.address = action.payload.address;
-      state.username = action.payload.username;
-      state.orders = action.payload.orders;
-      state.token = action.payload.token;
+      state.fullName = action.payload.fullName;
+      state.userTag = action.payload.userTag;
       state.message = action.payload.message;
+      state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
@@ -76,13 +66,11 @@ export const authSlice = createSlice({
       state.error = '';
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
-      state.login = action.payload?.login;
-      state.email = action.payload?.email;
-      state.address = action.payload.address;
-      state.username = action.payload.username;
-      state.orders = action.payload.orders;
-      state.token = action.payload?.token;
-      state.message = '';
+      state.email = action.payload.email;
+      state.fullName = action.payload.fullName;
+      state.userTag = action.payload.userTag;
+      state.message = action.payload.message;
+      state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(getUser.rejected, (state, action) => {
@@ -93,7 +81,7 @@ export const authSlice = createSlice({
 });
 
 // check if there is a token
-export const checkIsAuth = (state) => Boolean(state.auth.token);
+// export const checkIsAuth = (state) => Boolean(state.auth.token);
 
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;

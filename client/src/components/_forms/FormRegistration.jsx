@@ -9,7 +9,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { checkIsAuth } from 'src/redux/reducers/authSlice';
 import { registerUser } from 'src/redux/thunk/registerUser';
 import { getMessageAuthorization } from 'src/redux/selectors/selectors';
 
@@ -17,7 +16,12 @@ import styles from 'src/styles/Forms.module.scss';
 
 // structure data for form
 const SignupSchema = Yup.object().shape({
-  login: Yup.string()
+  email: Yup.string().email('invalid email address').required('required field'),
+  fullName: Yup.string()
+    .min(4, 'must be more than 3 characters')
+    .max(20, 'must be no more than 20 characters')
+    .required('required field'),
+  userTag: Yup.string()
     .min(4, 'must be more than 3 characters')
     .max(20, 'must be no more than 20 characters')
     .matches(/^[0-9a-zA-Z_\-/.]+$/, 'only English letters and numbers')
@@ -25,10 +29,8 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(4, 'must be more than 3 characters')
     .required('required field'),
-  email: Yup.string().email('invalid email address').required('required field'),
-  birthday: Yup.date()
-    .max(new Date(), 'Date cannot be greater than current')
-    .required('required field'),
+  birthday: Yup.date().max(new Date(), 'Date cannot be greater than current'),
+  // .required('required field'),
 });
 
 // Formik form
@@ -36,10 +38,9 @@ export const FormRegistration = () => {
   const dispatch = useDispatch();
 
   // get message from server after authorization
-  const { error, message } = useSelector(getMessageAuthorization);
-
-  // get state authorization
-  const isAuth = useSelector(checkIsAuth);
+  const { error, message, isAuthenticated } = useSelector(
+    getMessageAuthorization
+  );
 
   // navigate
   const navigate = useNavigate();
@@ -48,8 +49,8 @@ export const FormRegistration = () => {
   useEffect(() => {
     // if (message) toast.success(message);
     // if (error) toast.error(error);
-    if (isAuth) navigate('/');
-  }, [navigate, isAuth]);
+    if (isAuthenticated) navigate('/');
+  }, [navigate, isAuthenticated]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {

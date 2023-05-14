@@ -1,15 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
-import {getUser} from "src/redux/thunk/getUser";
+import { getUser } from 'src/redux/thunk/getUser';
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (user, { dispatch, rejectWithValue }) => {
     try {
       const { email, password } = user;
-
-      // /api/auth/register - path from server/src/routes/auth.js
-      // BASE_URL_AXIOS=http://localhost/3004/api - path from client/src/.env
 
       // request for server
       const { data } = await myAxios.post('/auth/login', {
@@ -21,7 +18,7 @@ export const loginUser = createAsyncThunk(
       if (data.ACCESS_TOKEN) {
         window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
 
-        dispatch(getUser())
+        dispatch(getUser());
       }
       return data;
     } catch (error) {

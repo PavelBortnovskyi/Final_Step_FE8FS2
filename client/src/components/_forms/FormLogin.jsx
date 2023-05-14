@@ -28,10 +28,9 @@ export const FormLogin = () => {
   const dispatch = useDispatch();
 
   // get message from server after authorization
-  const { error, message } = useSelector(getMessageAuthorization);
-
-  // get state authorization
-  const isAuth = useSelector(checkIsAuth);
+  const { error, message, isAuthenticated } = useSelector(
+    getMessageAuthorization
+  );
 
   // navigate
   const navigate = useNavigate();
@@ -40,16 +39,18 @@ export const FormLogin = () => {
   useEffect(() => {
     // if (message) <Alert severity="success">{message}</Alert>;
     // if (error) <Alert severity="error">{error}</Alert>;
-    if (isAuth) navigate('/');
-  }, [navigate, isAuth]);
+    if (isAuthenticated) navigate('/');
+  }, [navigate, isAuthenticated]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {
     // send user data to redux thunk
-    dispatch(loginUser({
-      email: values.login,
-      password: values.password
-    }));
+    dispatch(
+      loginUser({
+        email: values.login,
+        password: values.password,
+      })
+    );
 
     // reset form
     await new Promise((resolve) => {
