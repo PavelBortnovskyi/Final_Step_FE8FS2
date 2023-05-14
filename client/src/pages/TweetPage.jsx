@@ -7,6 +7,8 @@ import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import InputAvatar from 'src/UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
+import TweetPost from 'src/UI/TweetPost';
+import CommentsList from 'src/components/Comments/CommentsList';
 
 function TweetPage() {
   return (
@@ -34,12 +36,14 @@ function TweetPage() {
         </Box>
       </Link>
 
-      <Post
+      <TweetPost
         displayName="Artem Shevchuk"
         username="Jocellyn Flores"
         verified={false}
         text="This glorious backpack has been on many adventures now. It is comfortable, holds a ton which the/a packing cube to increase this. Honestly it is surprising how much it holds. I’m also not the gentlest with my backpacks and this one has help up.."
         image="https://31.media.tumblr.com/b00badbaad9a499a16f36c6ecd1ddccb/tumblr_mkygq9DYRb1ryx1p2o1_400.gif"
+        logoUrl="./img/avatar.JPG"
+        showIconList={false}
       />
 
       {/* likes */}
@@ -65,14 +69,13 @@ function TweetPage() {
         container
         alignItems="center"
         justifyContent="center"
-        sx={{ borderBottom: '1px solid rgb(56, 68, 77)', py: '20px' }}
+        sx={{ borderBottom: '1px solid rgb(56, 68, 77)', pb: '20px' }}
       >
         <PostIconList />
       </Grid>
 
       <Box
         sx={{
-          mb: '100px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -86,6 +89,7 @@ function TweetPage() {
           <TweetButton text="Reply" />
         </Box>
       </Box>
+      <CommentsList />
     </Box>
   );
 }
