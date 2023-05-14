@@ -6,10 +6,14 @@ import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.exceptions.EmailAlreadyRegisteredException;
+import app.exceptions.JwtAuthenticationException;
+import app.facade.UserModelFacade;
 import app.model.UserModel;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -21,13 +25,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
@@ -50,26 +53,18 @@ public class AuthController {
 
   private final Validator validator;
 
+  private final UserModelFacade userModelFacade;
+
   @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody UserModelRequest loginRequest) {
     //RequestDTO validation according to UserDTOValidator settings
-    Set<ConstraintViolation<UserModelRequest>> violations = validator.validate(loginRequest, Existed.class);
-
-    //Validation results handling
-    if (!violations.isEmpty()) {
-      HashMap<String, String> errorResponse = new HashMap<>();
-      for (ConstraintViolation<UserModelRequest> violation : violations) {
-        errorResponse.put("field_validation_error", violation.getMessage());
-      }
-      return ResponseEntity.badRequest().body(errorResponse);
-    }
+    if (this.getValidation(loginRequest, Existed.class).getStatusCode().isError())
+      return this.getValidation(loginRequest, Existed.class);
 
     //Auth procedure handling
     Authentication authentication = authenticationManager
       .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
     SecurityContextHolder.getContext().setAuthentication(authentication);
-
     Object principal = authentication.getPrincipal();
 
     Optional<User> maybeAuthUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
@@ -97,27 +92,15 @@ public class AuthController {
   @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody UserModelRequest signUpDTO) {
     //RequestDTO validation according to UserDTOValidator settings
-    Set<ConstraintViolation<UserModelRequest>> violations = validator.validate(signUpDTO, New.class);
-
-    //Validation results handling
-    if (!violations.isEmpty()) {
-      HashMap<String, String> errorResponse = new HashMap<>();
-      for (ConstraintViolation<UserModelRequest> violation : violations) {
-        errorResponse.put("field_validation_error", violation.getMessage());
-      }
-      return ResponseEntity.badRequest().body(errorResponse);
-    }
+    if (this.getValidation(signUpDTO, New.class).getStatusCode().isError())
+      return this.getValidation(signUpDTO, New.class);
 
     //Email duplicate checking
     if (this.userService.checkEmail(signUpDTO.getEmail()))
       throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
 
-    //Mapping signUpDTO -> UserModel
-    UserModel freshUser = new UserModel();
-    signUpDTO.setPassword(this.passwordEncoder.encode(signUpDTO.getPassword()));
-    modelMapper.map(signUpDTO, freshUser);
-    //Saving new User to DB and getting user_id to freshUser
-    freshUser = this.userService.save(freshUser);
+    //Saving new User to DB and getting user_id to freshUser   //Mapping signUpDTO -> UserModel
+    UserModel freshUser = this.userService.save(this.userModelFacade.convertToEntity(signUpDTO));
 
     //Token creation using user_id
     String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
@@ -125,13 +108,33 @@ public class AuthController {
 
     //New user saving to DB with refresh token
     freshUser.setRefreshToken(refreshToken);
-    this.userService.save(freshUser);
 
-    //JWT tokens for response packing
+    //JWT tokens and UserId for response packing
     HashMap<String, String> response = new HashMap<>();
     response.put("ACCESS_TOKEN", accessToken);
     response.put("REFRESH_TOKEN", refreshToken);
+    response.put("NEW_USER_ID", this.userService.save(freshUser).getId().toString());
 
     return ResponseEntity.ok(response);
   }
-}
+
+  @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> handleLogout(HttpServletRequest request) {
+    Long id = (Long) request.getAttribute("userId");
+    this.jwtTokenService.changeTokenStatus(id, true);
+    log.info("User id: " + id + " logged out");
+    return ResponseEntity.ok("User with Id: " + id + " logged out");
+  }
+
+  private <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker){
+    Set<ConstraintViolation<T>> violations = validator.validate(request, marker);
+
+    //Validation results handling
+    if (!violations.isEmpty()) {
+      HashMap<String, String> errorResponse = new HashMap<>();
+      for (ConstraintViolation<T> violation : violations) {
+        errorResponse.put("field_validation_error", violation.getMessage());
+      }
+      return ResponseEntity.badRequest().body(errorResponse);
+  } else return ResponseEntity.ok().body(new HashMap<>(){{put("field_validation", "Data is valid");}});
+}}
