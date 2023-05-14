@@ -1,14 +1,22 @@
 import { useLocation } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
+import { useSelector } from 'react-redux';
+
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { Sidebar } from 'src/components/Sidebar/Sidebar';
-// import { Main } from 'src/components/Main/Main';
 import { Footer } from 'src/components/AppBar/AppBar';
-// import { Modal } from 'src/components/Modal/Modal';
 import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 import { MainRoutes } from 'src/routes/MainRoutes';
 import { ModalRoutes } from 'src/routes/ModalRoutes';
+import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolbar';
+// import { Main } from 'src/components/Main/Main';
+// import { Modal } from 'src/components/Modal/Modal';
 
 export const Layout = () => {
+  // get Authentication
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+  console.log('auth', isAuthenticated);
+
   // create location for MainRoutes
   const location = useLocation();
   const background = location.state && location.state.background;
@@ -56,7 +64,8 @@ export const Layout = () => {
           <Footer />
         </Grid>
       </Grid>
-      <BottomToolbar />
+
+      {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
       {/* routes for modal window */}
       <ModalRoutes />

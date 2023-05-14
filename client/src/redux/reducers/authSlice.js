@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { registerUser } from '../thunk/registerUser.js';
 import { loginUser } from '../thunk/loginUser.js';
+import { logoutUser } from '../thunk/logoutUser.js';
 import { getUser } from '../thunk/getUser.js';
 
 const initialState = {
@@ -17,17 +18,7 @@ const initialState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.email = null;
-      state.fullName = null;
-      state.userTag = null;
-      state.isLoading = false;
-      state.message = '';
-      state.error = '';
-    },
-  },
+
   extraReducers: (builder) => {
     // register
     builder.addCase(registerUser.pending, (state, action) => {
@@ -50,12 +41,32 @@ export const authSlice = createSlice({
     // login
     builder.addCase(loginUser.pending, (state, action) => {
       state.isLoading = true;
+      state.message = '';
+      state.error = '';
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
+      state.error = action.payload.error;
+      state.isLoading = false;
+    });
+    // logout
+    builder.addCase(logoutUser.pending, (state, action) => {
+      state.isLoading = true;
+      state.message = '';
+      state.error = '';
+    });
+    builder.addCase(logoutUser.fulfilled, (state, action) => {
+      state.email = null;
+      state.fullName = null;
+      state.userTag = null;
+      state.message = '';
+      state.isAuthenticated = false;
+      state.isLoading = false;
+    });
+    builder.addCase(logoutUser.rejected, (state, action) => {
       state.error = action.payload.error;
       state.isLoading = false;
     });
@@ -70,7 +81,7 @@ export const authSlice = createSlice({
       state.fullName = action.payload.fullName;
       state.userTag = action.payload.userTag;
       state.message = action.payload.message;
-      state.isAuthenticated = true;
+      // state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(getUser.rejected, (state, action) => {

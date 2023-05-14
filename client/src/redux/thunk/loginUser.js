@@ -18,6 +18,7 @@ export const loginUser = createAsyncThunk(
       if (data.ACCESS_TOKEN) {
         window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
 
+        // get user data
         dispatch(getUser());
       }
       return data;
