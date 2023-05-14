@@ -1,13 +1,15 @@
 package app.facade;
 
 import app.dto.rq.TweetRequest;
+import app.dto.rq.UserModelRequest;
 import app.dto.rs.TweetResponse;
 import app.dto.rs.UserModelResponse;
 import app.model.Tweet;
 import app.model.UserModel;
+import lombok.NoArgsConstructor;
 
 import javax.annotation.PostConstruct;
-
+@NoArgsConstructor
 public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
   @PostConstruct
   public void init() {
@@ -17,6 +19,13 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
       .addMapping(src -> src.getCountLikes(), TweetResponse::setCountLikes)
-      .addMapping(src -> src.getParentTweetId(), TweetResponse::setParentTweet);
+      .addMapping(src -> src.getParentTweet(), TweetResponse::setParentTweet);
+  }
+
+  @Override
+  public Tweet convertToEntity(TweetRequest dto) {
+    Tweet sample = new Tweet();
+    super.getMm().map(dto, sample);
+    return sample;
   }
 }

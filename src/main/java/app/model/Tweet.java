@@ -38,8 +38,8 @@ public class Tweet extends BaseEntityModel {
   private UserModel user;
 
   @ManyToOne
-  @JoinColumn(name = "parent_tweet_id")
-  private Tweet parentTweetId;
+  @JoinColumn(name = "parent_tweet")
+  private Tweet parentTweet;
 
   @OneToMany(mappedBy = "tweet")
   @OnDelete(action = OnDeleteAction.CASCADE)
