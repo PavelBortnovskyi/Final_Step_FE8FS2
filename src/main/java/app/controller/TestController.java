@@ -1,48 +1,45 @@
 package app.controller;
 
+import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
-import app.enums.TweetType;
-import app.model.Tweet;
 import app.model.UserModel;
-import app.service.TweetService;
+import app.security.JwtUserDetails;
+import app.service.JwtTokenService;
 import app.service.UserModelService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @Log4j2
 @RestController
-@RequestMapping("/create")
+@RequiredArgsConstructor
+@RequestMapping("/test")
 public class TestController {
 
-  @Autowired
-  private TweetService tweetService;
+  private final UserModelService userService;
 
-  @Autowired
-  private UserModelService userService;
+  private final PasswordEncoder encoder;
 
-  @Autowired
-  private PasswordEncoder encoder;
+  private final JwtTokenService jwtTokenService;
 
+  private final AuthenticationManager authenticationManager;
 
-  @GetMapping
-  public void createSample(){
-    UserModel sample = new UserModel();
-    sample.setEmail("111@gmail.com");
-    sample.setFullName("Homer");
-    sample.setUserTag("DUFF");
-    sample.setPassword(encoder.encode("111"));
-    this.userService.save(sample);
+  @PostMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> extractId(@RequestBody UserModelRequest loginRequest) {
+    Authentication authentication = authenticationManager
+      .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-    Tweet tweet = new Tweet();
-    tweet.setBody("Hello world");
-    tweet.setCountLikes(45);
-    tweet.setUser(sample);
-    tweet.setCountRetweets(2);
-    tweet.setTweetType(TweetType.TWEET);
-    this.tweetService.save(tweet);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    JwtUserDetails jwt = (JwtUserDetails) authentication.getDetails();
+
+    return ResponseEntity.ok(jwt.getId().toString());
   }
 }

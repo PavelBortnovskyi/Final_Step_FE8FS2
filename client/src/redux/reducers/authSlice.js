@@ -5,15 +5,19 @@ import { loginUser } from '../thunk/loginUser.js';
 import { getUser } from '../thunk/getUser.js';
 
 const initialState = {
-  login: null,
-  email: null,
-  address: '',
-  username: '',
-  orders: [],
-  token: null,
-  isLoading: false,
-  message: '',
-  error: '',
+  isAuthenticated: Boolean(localStorage.getItem("accessToken")),
+  user: null,
+  isLoading: true
+
+  // login: null,
+  // email: null,
+  // address: '',
+  // username: '',
+  // orders: [],
+  // token: null,
+  // isLoading: false,
+  // message: '',
+  // error: '',
 };
 
 export const authSlice = createSlice({
@@ -56,17 +60,9 @@ export const authSlice = createSlice({
     // login
     builder.addCase(loginUser.pending, (state, action) => {
       state.isLoading = true;
-      state.message = '';
-      state.error = '';
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.login = action.payload.login;
-      state.email = action.payload.email;
-      state.address = action.payload.address;
-      state.username = action.payload.username;
-      state.orders = action.payload.orders;
-      state.token = action.payload.token;
-      state.message = action.payload.message;
+      state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(loginUser.rejected, (state, action) => {

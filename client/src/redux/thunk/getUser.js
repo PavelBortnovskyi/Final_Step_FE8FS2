@@ -10,6 +10,7 @@ export const getUser = createAsyncThunk(
 
       // request to server if we have token in localStorage it will inject src/utils/axiosSetup into request
       const { data } = await myAxios.get('/auth/user');
+
       return data;
     } catch (error) {
       // set message error from server
