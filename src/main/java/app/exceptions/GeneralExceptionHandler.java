@@ -1,8 +1,12 @@
 package app.exceptions;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -28,16 +32,17 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "This username is already registered. Please choose another one.");
   }
 
-  @ExceptionHandler({WrongPasswordException.class})
-  public ErrorInfo handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Password is wrong!");
-  }
-
   @ExceptionHandler({JwtAuthenticationException.class})
   public ErrorInfo handleLoginException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+  }
+
+  @ExceptionHandler({AuthenticationException.class })
+  @ResponseBody
+  public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong login or password. Please try again.");
   }
 
   @Getter

@@ -1,5 +1,6 @@
 package app.utils;
 
+import app.facade.UserModelFacade;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +43,11 @@ public class ApplicationBeans {
     return new ObjectMapper();
   }
 
+  @Bean
+  public UserModelFacade getUserModelFacade(){
+    return new UserModelFacade();
+  }
+
 //
 //  @Profile("local")
 //  @Bean
@@ -63,7 +69,6 @@ public class ApplicationBeans {
       "api_key", apiKey,
       "api_secret", apiSecret,
       "secure", true));
-
 
     //Sync upload from byte array and get url
     //byte[] imageByteArray = new byte[1024]; // there will be parsing request body to get byte array

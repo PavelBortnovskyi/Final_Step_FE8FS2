@@ -2,6 +2,8 @@ package app.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,17 +12,22 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Log4j2
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
-  private final JwtAuthFilter jwtAuthFilter;
+  @Autowired
+  private JwtAuthFilter jwtAuthFilter;
+
+  @Autowired
+  @Qualifier("delegatedAuthenticationEntryPoint")
+  AuthenticationEntryPoint authEntryPoint;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
@@ -29,7 +36,7 @@ public class SecurityConfiguration {
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
       .authorizeRequests()
-      //.antMatchers("/").permitAll()
+      .antMatchers("/").permitAll()
       .antMatchers("/swagger-ui/**").permitAll()
       .antMatchers("/swagger-resources").permitAll()
       .antMatchers("/swagger-resources/**").permitAll()
@@ -38,8 +45,10 @@ public class SecurityConfiguration {
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login").permitAll()
+      .antMatchers("/api/v1/auth/logout").permitAll()
       .antMatchers("/test/id").authenticated()
-      .anyRequest().authenticated();
+      .anyRequest().authenticated()
+      .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
