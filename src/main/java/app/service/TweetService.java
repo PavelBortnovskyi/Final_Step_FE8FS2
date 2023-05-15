@@ -11,14 +11,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TweetService extends GeneralService<Tweet> {
-  private TweetModelRepository tweetModelRepository;
+  private final TweetModelRepository tweetModelRepository;
   public void deleteTweet(Long tweetId) {
     this.tweetModelRepository.deleteById(tweetId);
     new TweetIsDeleteException(String.format("Tweet: %d, has been deleted", tweetId));
   }
 
   public Optional<Tweet> update(Tweet tweetRequest) {
-    Optional<Tweet> tweet = tweetModelRepository.findById(tweetRequest.getTweetId());
+    Optional<Tweet> tweet = tweetModelRepository.findById(tweetRequest.getId());
     if (tweet.isPresent()) {
       Tweet tweetToUpdate = tweet.get();
       tweetToUpdate.setBody(tweetRequest.getBody());

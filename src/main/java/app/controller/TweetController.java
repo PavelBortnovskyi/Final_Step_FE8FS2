@@ -41,25 +41,14 @@ public class TweetController {
 
 
   @GetMapping("{id}")
-  public ResponseEntity<HashMap<String, String>> getTweet(@PathVariable String id) {
-    Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
+  public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id) {
+    Optional<Tweet> tweet = tweetService.findById(id);
 
     if (!tweet.isPresent()) {
       return ResponseEntity.notFound().build();
     }
-
-    HashMap<String, String> response = new HashMap<>();
-    response.put("created_at", tweet.get().getCreatedAt().toString());
-    response.put("count_likes", tweet.get().getCountLikes().toString());
-    response.put("count_retweets", tweet.get().getCountRetweets().toString());
-    response.put("avatar_image", tweet.get().getUser().getAvatarImgUrl());
-    response.put("user_tag", tweet.get().getUser().getUserTag());
-    if (tweet.get().getParentTweet()!= null) response.put("parent_tweet", tweet.get().getParentTweet().toString());
-    response.put("body", tweet.get().getBody());
-
-
-
-    return ResponseEntity.ok(response);
+    return tweet.map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
+            .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @GetMapping("/create")
@@ -92,12 +81,15 @@ public class TweetController {
     return null;
   }
 
-
-
-  @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> addTweet(@RequestBody TweetRequest tweetRequest) {
-    this.tweetService.save(this.tweetFacade.convertToEntity(tweetRequest));
-    return ResponseEntity.ok("response");
+  @PostMapping("/add")
+  public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest) {
+    UserModel user = userModelService.getUser(1L).orElse(null);
+    Tweet tweet = new Tweet();
+    tweet.setBody(tweetRequest.getBody());
+    tweet.setTweetType(tweetRequest.getTweetType());
+    tweet.setUser(user);
+    Tweet savedTweet = tweetService.save(tweet);
+    return ResponseEntity.ok(savedTweet);
   }
 
 
