@@ -30,12 +30,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/tweet")
 public class TweetController {
-  @Autowired
-  private TweetService tweetService;
 
-  private UserModelService userModelService;
+  private final TweetService tweetService;
 
-  private TweetFacade tweetFacade;
+  private final UserModelService userModelService;
+
+  private final TweetFacade tweetFacade;
 
 
 
@@ -67,7 +67,6 @@ public class TweetController {
   @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> addTweet(@RequestBody TweetRequest tweetRequest) {
 
-    //Saving new User to DB and getting user_id to freshUser   //Mapping tweetRequest -> UserModel
     Tweet newTweet = this.tweetService.save(this.tweetFacade.convertToEntity(tweetRequest));
 
     return ResponseEntity.ok("response");

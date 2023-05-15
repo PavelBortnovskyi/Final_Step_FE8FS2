@@ -1,12 +1,10 @@
 package app.facade;
 
 import app.dto.rq.TweetRequest;
-import app.dto.rq.UserModelRequest;
 import app.dto.rs.TweetResponse;
-import app.dto.rs.UserModelResponse;
 import app.model.Tweet;
-import app.model.UserModel;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
 @NoArgsConstructor
