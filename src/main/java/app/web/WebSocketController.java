@@ -29,18 +29,12 @@ public class WebSocketController {
   @MessageMapping("/chat/message")
   @SendTo("/topic/chat")
   public MessageResponse processChatMessage(MessageRequest messageDtoReq) {
-    // Обработка входящего сообщения чата
     return this.messageFacade.save(this.messageFacade.convertToEntity(messageDtoReq));
-    // Можно выполнить дополнительную логику, например, сохранение сообщения в базе данных
-
   }
 
   @MessageMapping("/notifications")
   @SendTo("/topic/notifications")
   public NotificationResponse processNotification(NotificationRequest notificationDtoReq) {
-    // Обработка входящего уведомления
     return this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
-    // Можно выполнить дополнительную логику, например, отправку уведомления другим пользователям
-
   }
 }

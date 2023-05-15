@@ -12,14 +12,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-  @Autowired
-  private ChatMessageHandler chatMessageHandler;
-
-  @Autowired
-  private NotificationHandler notificationHandler;
-
-  @Autowired
-  private HttpHandshakeInterceptor handshakeInterceptor;
+//  @Autowired
+//  private ChatMessageHandler chatMessageHandler;
+//
+//  @Autowired
+//  private NotificationHandler notificationHandler;
+//
+//  @Autowired
+//  private HttpHandshakeInterceptor handshakeInterceptor;
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -40,9 +40,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     // Регистрация точки входа STOMP для чата
-    registry.addEndpoint("/chat-ws").withSockJS().setInterceptors(handshakeInterceptor);
+    registry.addEndpoint("/chat-ws").withSockJS();//.setInterceptors(handshakeInterceptor);
 
     // Регистрация точки входа STOMP для уведомлений
-    registry.addEndpoint("/notifications-ws").withSockJS().setInterceptors(handshakeInterceptor);
+    registry.addEndpoint("/notifications-ws").withSockJS();//.setInterceptors(handshakeInterceptor);
   }
 }
