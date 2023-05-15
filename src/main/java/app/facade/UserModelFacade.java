@@ -21,12 +21,4 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
                 .addMapping(UserModel::getCountFollowers, UserModelResponse::setCountUserFollowers)
                 .addMapping(UserModel::getCountFollowings, UserModelResponse::setCountUserFollowings);
   }
-
-  @Override
-  public UserModel convertToEntity(UserModelRequest dto) {
-    UserModel sample = new UserModel();
-    dto.setPassword(this.encoder.encode(dto.getPassword()));
-    super.getMm().map(dto, sample);
-    return sample;
-  }
 }

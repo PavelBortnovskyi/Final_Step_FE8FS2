@@ -68,36 +68,6 @@ public class UserModelResponse {
   private boolean isVerified;
 
   @Null(groups = {New.class})
-  @NotNull(groups = {Existed.class})
-  @JsonView({Details.class})
-  private String accessToken;
-
-  @Null(groups = {New.class})
-  @NotNull(groups = {Existed.class})
-  private String refreshToken;
-
-  @Null(groups = {New.class})
-  private Set<UserModel> following;
-
-  @Null(groups = {New.class})
-  private Set<UserModel> followers;
-
-  @Null(groups = {New.class})
-  private Set<Tweet> tweets;
-
-  @Null(groups = {New.class})
-  private Set<Message> messages;
-
-  @Null(groups = {New.class})
-  private Set<Chat> chat;
-
-  @Null(groups = {New.class})
-  private Set<Chat> chats;
-
-  @Null(groups = {New.class})
-  private TweetAction tweetAction;
-
-  @Null(groups = {New.class})
   private Integer countUserFollowers;
 
   @Null(groups = {New.class})

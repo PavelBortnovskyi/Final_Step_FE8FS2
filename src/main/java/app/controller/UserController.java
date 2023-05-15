@@ -1,6 +1,8 @@
 package app.controller;
 
+import app.dto.rs.UserModelResponse;
 import app.dto.rs.UserResponseDTO;
+import app.facade.UserModelFacade;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +19,27 @@ import java.util.Optional;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping("/user")
+@RequestMapping("user")
 public class UserController {
 
   private final UserModelService userModelService;
+  private final UserModelFacade userModelFacade;
 
-//  @GetMapping("/user/{userId}")
-//  public ResponseEntity<UserResponseDTO> getUserById(@PathVariable(name = "userId") Long userId){
-//    Optional<UserModel> userModel = userModelService.getUser(userId);
-//    return userModel.map(model -> ResponseEntity.ok(userFacade.convertToDto(model)))
-//                    .orElseGet(() -> ResponseEntity.notFound().build());
-//  }
-//
-//  @GetMapping("/user")
-//  public ResponseEntity<UserResponseDTO> getUser(HttpServletRequest httpRequest){
-//    Long id = (Long) httpRequest.getAttribute("userId");
-//    Optional<UserModel> userModel = userModelService.getUser(id);
-////    return userModel.map(model -> ResponseEntity.ok(userFacade.convertToDto(model)))
-//      .orElseGet(() -> ResponseEntity.notFound().build());
-//  }
+  @GetMapping("{userId}")
+  public ResponseEntity<UserModelResponse> getUserById(@PathVariable(name = "userId") Long userId){
+    Optional<UserModel> userModel = userModelService.getUser(userId);
+    return userModel.map(model -> ResponseEntity.ok(userModelFacade.convertToDto(model)))
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+
+  @GetMapping("profile")
+  public ResponseEntity<UserModelResponse> getUser(HttpServletRequest httpRequest){
+    Long id = (Long) httpRequest.getAttribute("userId");
+    Optional<UserModel> userModel = userModelService.getUser(id);
+    return userModel.map(model -> ResponseEntity.ok(userModelFacade.convertToDto(model)))
+      .orElseGet(() -> ResponseEntity.notFound().build());
+  }
 
 
 }
