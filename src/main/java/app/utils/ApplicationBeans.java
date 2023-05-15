@@ -5,6 +5,7 @@ import app.facade.NotificationFacade;
 import app.facade.UserModelFacade;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +53,11 @@ public class ApplicationBeans {
   @Bean
   public NotificationFacade getNotificationFacade() {
     return new NotificationFacade();
+  }
+
+  @Bean
+  public ObjectMapper getObjectMapper(){
+    return new ObjectMapper();
   }
 
 //
