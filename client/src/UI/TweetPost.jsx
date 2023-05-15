@@ -2,6 +2,7 @@ import { Box, Avatar, Typography, CardMedia } from '@mui/material';
 import React from 'react';
 import UserNames from './UserNames';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
+import TranslatedText from './TranslatedText/TranslatedText';
 
 function TweetPost({
   displayName,
@@ -35,6 +36,7 @@ function TweetPost({
         <Typography variant="body" sx={{ fontSize: '15px' }}>
           {text}
         </Typography>
+        <TranslatedText text={text} />
         {image ? (
           <CardMedia
             component="img"
