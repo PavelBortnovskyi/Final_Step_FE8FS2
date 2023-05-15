@@ -5,11 +5,11 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, { rejectWithValue }) => {
     try {
-      // const { data } = await myAxios.get('/auth/logout');
+      const { data } = await myAxios.get('/auth/logout');
 
       window.localStorage.removeItem('accessToken');
 
-      // return data;
+      return data;
     } catch (error) {
       // set message error from server
       const errorMessage = error.response.data || error.message;
