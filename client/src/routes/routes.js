@@ -1,50 +1,54 @@
-
 import { HomePage } from 'src/pages/HomePage';
 import { UserPage } from 'src/pages/UserPage';
 import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
+import TweetPage from 'src/pages/TweetPage';
+import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
-import { EditProfileModal } from "src/components/EditProfile/EditProfileModal";
-
+import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
 
 export const mainRoutes = () => {
   return [
     {
-      path: "/",
+      path: '/',
       element: <HomePage />,
       index: true,
     },
     {
-      path: "/user",
+      path: '/user',
       element: <UserPage />,
     },
 
     {
-      path: "/explore",
+      path: '/explore',
       element: <UserPage />,
     },
     {
-      path: "/notifications",
+      path: '/notifications',
       element: <UserPage />,
+    },
+    {
+      path: '/tweet',
+      element: <TweetPage />,
     },
     {
       path: '/messages',
       element: <MessagesPage />,
     },
     {
-      path: "/bookmarks",
+      path: '/bookmarks',
       element: <UserPage />,
     },
     {
-      path: "/twitter_blue",
+      path: '/twitter_blue',
       element: <UserPage />,
     },
     {
-      path: "/verified-orgs",
+      path: '/verified-orgs',
       element: <UserPage />,
     },
     {
-      path: "/profile",
+      path: '/profile',
       element: <UserPage />,
     },
   ];
@@ -53,15 +57,19 @@ export const mainRoutes = () => {
 export const modalRoutes = () => {
   return [
     {
-      path: "/modal/login",
+      path: '/modal/login',
       element: <LoginPage />,
     },
     {
-      path: "/modal/registration",
+      path: '/modal/registration',
       element: <RegistrationPage />,
     },
     {
-      path: "/settings/profile",
+      path: '/modal/tweet',
+      element: <ModalTweetPage />,
+    },
+    {
+      path: '/settings/profile',
       element: <EditProfileModal />,
     },
   ];

@@ -1,4 +1,4 @@
-import { FormControl, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { Box, FormControl, MenuItem, OutlinedInput, Select } from '@mui/material';
 import React, { useState } from 'react';
 // import { selectElements } from './DropdownElements';
 
@@ -28,47 +28,45 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
             <Select
                 displayEmpty
                 sx={{
+                    backgroundColor: "rgb(21,32,43)",
+                    border: 'none',
+                    color: '#FFF',
+
+                    '& .MuiPaper': {
                         backgroundColor: "rgb(21,32,43)",
                         border: 'none',
-                        color: '#FFF',
-                        
-                        '& .MuiPaper': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
-                        '& .MuiPaper-root': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
+                    },
+                    '& .MuiPaper-root': {
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                    },
 
-                        '& .MuiMenu': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
-                        '& .MuiMenu-paper': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
-                        '& .MuiPopover': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
-                        '& .MuiPopover-paper': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
+                    '& .MuiMenu': {
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                    },
+                    '& .MuiMenu-paper': {
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                    },
+                    '& .MuiPopover': {
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                    },
+                    '& .MuiPopover-paper': {
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                    },
 
 
-                        '& .Mui-selected': {
-                            backgroundColor: "rgb(21,32,43)",
-                            border: 'none',
-                        },
-                    }}
+                    '& .Mui-selected': {
+                        backgroundColor: "rgb(21,32,43)",
+                        border: 'none',
+                    },
+                }}
                 value={mainLabel}
                 onChange={handleChange}
-                input={<OutlinedInput
-                    
-                />}
+                input={<OutlinedInput />}
 
             >
 
@@ -80,13 +78,16 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
 
 
                 {selects && selects.map((selectEl) => (
-                    <MenuItem
-                        key={selectEl.id}
-                        value={selectEl.label}
+                    <Box display="flex" alignItems="center" px='12px'>
+                        <selectEl.icon sx={{ fontSize: 20 }} />
+                        <MenuItem
+                            key={selectEl.id}
+                            value={selectEl.label}
 
-                    >
-                        {selectEl.label}
-                    </MenuItem>
+                        >
+                            {selectEl.label}
+                        </MenuItem>
+                    </Box>
                 ))}
             </Select>
         </FormControl>
