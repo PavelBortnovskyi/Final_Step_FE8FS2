@@ -75,7 +75,7 @@ public class TweetController {
   }
 
   @GetMapping("/delete/{id}")
-  public void deleteTweet(@PathVariable String id){
+  public void deleteTweet(@PathVariable String id, HttpServletRequest request){
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
     if (tweet.isPresent() && tweet.get().getUser().getId().equals(1L)) { //(Long) request.getAttribute("userId")
       tweetService.deleteTweet(Long.valueOf(id));
@@ -96,9 +96,7 @@ public class TweetController {
 
   @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> addTweet(@RequestBody TweetRequest tweetRequest) {
-
-    Tweet newTweet = this.tweetService.save(this.tweetFacade.convertToEntity(tweetRequest));
-
+    this.tweetService.save(this.tweetFacade.convertToEntity(tweetRequest));
     return ResponseEntity.ok("response");
   }
 
