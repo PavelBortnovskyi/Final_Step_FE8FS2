@@ -1,15 +1,12 @@
 
 package app.security;
 
-import app.exceptions.AuthErrorException;
 import app.exceptions.EmailNotFoundException;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

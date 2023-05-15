@@ -28,14 +28,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     registry.setApplicationDestinationPrefixes("/api/v1");
   }
 
-  @Override
-  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    // Регистрация обработчика WebSocket для чата
-    registry.addHandler(chatMessageHandler, "/chat").setAllowedOrigins("*");
-
-    // Регистрация обработчика WebSocket для уведомлений
-    registry.addHandler(notificationHandler, "/notifications").setAllowedOrigins("*");
-  }
+//  @Override
+//  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+//    // Регистрация обработчика WebSocket для чата
+//    registry.addHandler(chatMessageHandler, "/chat").setAllowedOrigins("*");
+//
+//    // Регистрация обработчика WebSocket для уведомлений
+//    registry.addHandler(notificationHandler, "/notifications").setAllowedOrigins("*");
+//  }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {

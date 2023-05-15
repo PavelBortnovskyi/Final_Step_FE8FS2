@@ -4,8 +4,14 @@ import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
 import app.dto.rs.NotificationResponse;
+import app.facade.MessageFacade;
+import app.facade.NotificationFacade;
 import app.model.Message;
 import app.model.Notification;
+import app.service.ChatService;
+import app.service.MessageService;
+import app.service.NotificationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -13,25 +19,28 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@RequiredArgsConstructor
 public class WebSocketController {
+
+  private final MessageFacade messageFacade;
+
+  private final NotificationFacade notificationFacade;
 
   @MessageMapping("/chat/message")
   @SendTo("/topic/chat")
-  public MessageResponse processChatMessage(MessageRequest message) {
+  public MessageResponse processChatMessage(MessageRequest messageDtoReq) {
     // Обработка входящего сообщения чата
+    return this.messageFacade.save(this.messageFacade.convertToEntity(messageDtoReq));
     // Можно выполнить дополнительную логику, например, сохранение сообщения в базе данных
 
-    // Возвращение обработанного сообщения
-    return new MessageResponse();
   }
 
   @MessageMapping("/notifications")
   @SendTo("/topic/notifications")
-  public NotificationResponse processNotification(NotificationRequest message) {
+  public NotificationResponse processNotification(NotificationRequest notificationDtoReq) {
     // Обработка входящего уведомления
+    return this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
     // Можно выполнить дополнительную логику, например, отправку уведомления другим пользователям
 
-    // Возвращение обработанного уведомления
-    return new NotificationResponse();
   }
 }

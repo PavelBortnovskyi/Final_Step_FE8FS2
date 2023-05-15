@@ -6,17 +6,12 @@ import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.AuthErrorException;
 import app.exceptions.EmailAlreadyRegisteredException;
-import app.exceptions.JwtAuthenticationException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
-import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,13 +19,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
@@ -44,10 +37,6 @@ public class AuthController {
   private final UserModelService userService;
 
   private final JwtTokenService jwtTokenService;
-
-  private final ModelMapper modelMapper;
-
-  private final PasswordEncoder passwordEncoder;
 
   private final AuthenticationManager authenticationManager;
 
@@ -85,6 +74,7 @@ public class AuthController {
     HashMap<String, String> response = new HashMap<>();
     response.put("ACCESS_TOKEN", accessToken);
     response.put("REFRESH_TOKEN", refreshToken);
+    response.put("LOGIN_USER_ID", currentUser.getId().toString());
 
     return ResponseEntity.ok(response);
   }
