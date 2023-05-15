@@ -4,6 +4,8 @@ import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
 import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
+import { MessagesPage } from 'src/pages/MessagesPage';
+import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
 
 export const mainRoutes = () => {
   return [
@@ -31,7 +33,7 @@ export const mainRoutes = () => {
     },
     {
       path: '/messages',
-      element: <UserPage />,
+      element: <MessagesPage />,
     },
     {
       path: '/bookmarks',
@@ -65,6 +67,10 @@ export const modalRoutes = () => {
     {
       path: '/modal/tweet',
       element: <ModalTweetPage />,
+    },
+    {
+      path: '/settings/profile',
+      element: <EditProfileModal />,
     },
   ];
 };
