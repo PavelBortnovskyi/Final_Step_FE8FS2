@@ -7,12 +7,10 @@ import java.util.Set;
 
 @Data
 public class TweetResponse {
-  public TweetResponse(String body){
-    this.body = body;
-  }
 
+  private Long tweetId;
   private String body;
-  private Set<String> attachments;
+  private Set<String> attachmentsImages;
   private String userAvatarImage;
   private String userTag;
   private Integer countLikes;

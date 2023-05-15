@@ -40,25 +40,34 @@ public class TweetController {
 
 
   @GetMapping("{id}")
-  public ResponseEntity<TweetResponse> getTweet(@PathVariable String id) {
+  public ResponseEntity<HashMap<String, String>> getTweet(@PathVariable String id) {
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
 
     if (!tweet.isPresent()) {
       return ResponseEntity.notFound().build();
     }
 
-    TweetResponse tweetResponse = new TweetResponse(tweet.get().getBody());
-    return ResponseEntity.ok(tweetResponse);
+    HashMap<String, String> response = new HashMap<>();
+    response.put("created_at", tweet.get().getCreatedAt().toString());
+    response.put("count_likes", tweet.get().getCountLikes().toString());
+    response.put("count_retweets", tweet.get().getCountRetweets().toString());
+    response.put("avatar_image", tweet.get().getUser().getAvatarImgUrl());
+    response.put("user_tag", tweet.get().getUser().getUserTag());
+    if (tweet.get().getParentTweet()!= null) response.put("parent_tweet", tweet.get().getParentTweet().toString());
+    response.put("body", tweet.get().getBody());
+
+
+
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/create")
   public void createTweet(HttpServletRequest request){
-    Long id = (Long) request.getAttribute("userId");
-    //Optional<UserModel> user = userModelService.getUser(1L);
+    Optional<UserModel> user = userModelService.getUser(1L);  //(Long) request.getAttribute("userId")
     Tweet tweet = new Tweet();
     tweet.setBody("Hello world");
     tweet.setCountLikes(45);
-    //tweet.setUser(user.orElse(null));
+    tweet.setUser(user.orElse(null));
     tweet.setCountRetweets(2);
     tweet.setTweetType(TweetType.TWEET);
     this.tweetService.save(tweet);
