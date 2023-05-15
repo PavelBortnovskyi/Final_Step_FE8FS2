@@ -5,7 +5,6 @@ import app.facade.NotificationFacade;
 import app.facade.UserModelFacade;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,11 +37,6 @@ public class ApplicationBeans {
   public Validator validator() {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     return factory.getValidator();
-  }
-
-  @Bean
-  public ObjectMapper objectMapper() {
-    return new ObjectMapper();
   }
 
   @Bean

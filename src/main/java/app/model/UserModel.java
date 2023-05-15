@@ -1,6 +1,8 @@
 package app.model;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -59,11 +61,13 @@ public class UserModel extends BaseEntityModel {
 //  @JoinTable(name = "followers")
 //  private Set<UserModel> followers;
 
+  @LazyCollection(value = LazyCollectionOption.TRUE)
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
     inverseJoinColumns = @JoinColumn(name = "follower_id"))
   private Set<UserModel> followers = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "follower_id"),
     inverseJoinColumns = @JoinColumn(name = "followed_id"))
@@ -74,19 +78,15 @@ public class UserModel extends BaseEntityModel {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Message> messages = new HashSet<>();
-  ;
 
   @OneToMany(mappedBy = "initiatorUser")
   private Set<Chat> chat = new HashSet<>();
-  ;
-
 
   @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
   private Set<Chat> chats = new HashSet<>();
-  ;
 
-  @OneToOne(mappedBy = "user")
-  private TweetAction tweetAction;
+  @OneToMany(mappedBy = "user")
+  private Set<TweetAction> tweetActions;
 
   public boolean isVerified() {
     return this.isVerified;
