@@ -86,7 +86,7 @@ public class UserModel extends BaseEntityModel {
   private Set<Chat> chats = new HashSet<>();
 
   @OneToMany(mappedBy = "user")
-  private Set<TweetAction> tweetActions;
+  private Set<TweetAction> tweetAction;
 
   public boolean isVerified() {
     return this.isVerified;
@@ -94,6 +94,14 @@ public class UserModel extends BaseEntityModel {
 
   public void setVerified(boolean isVerified) {
     this.isVerified = isVerified;
+  }
+
+  public Integer getCountFollowers() {
+    return followers.size();
+  }
+
+  public Integer getCountFollowings() {
+    return followings.size();
   }
 }
 
