@@ -63,5 +63,4 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
   public void deleteById(Long id) {
     service.deleteById(id);
   }
-
 }
