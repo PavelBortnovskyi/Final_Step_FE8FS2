@@ -50,7 +50,7 @@ export const mainSidebarElemets = [
         id: 6,
         icon: VerifiedOutlinedIcon,
         label: 'Verified Organiza...',
-        route: 'verified_orgs',
+        route: 'verified-orgs',
     },
     {
         id: 7,

@@ -1,8 +1,10 @@
+import { Avatar } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
-import { Box } from '@mui/material';
+import Post from '../Post/Post';
 import TweetPost from 'src/UI/TweetPost';
 
-function Post({
+function Comment({
   displayName,
   username,
   verified,
@@ -15,15 +17,15 @@ function Post({
     <Box>
       <TweetPost
         displayName={displayName}
+        logo={logoUrl}
         username={username}
         verified={verified}
-        text={text}
         image={image}
-        logoUrl={logoUrl}
-        showIconList={true}
+        text={text}
+        showIconList={showIconList}
       />
     </Box>
   );
 }
 
-export default Post;
+export default Comment;
