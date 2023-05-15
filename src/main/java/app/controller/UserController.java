@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.dto.rs.UserResponseDTO;
-import app.facade.UserFacade;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +20,22 @@ import java.util.Optional;
 //@RequestMapping("/user")
 public class UserController {
 
-  private final UserFacade userFacade;
   private final UserModelService userModelService;
 
-  @GetMapping("/user/{userId}")
-  public ResponseEntity<UserResponseDTO> getUserById(@PathVariable(name = "userId") Long userId){
-    Optional<UserModel> userModel = userModelService.getUser(userId);
-    return userModel.map(model -> ResponseEntity.ok(userFacade.convertToDto(model)))
-                    .orElseGet(() -> ResponseEntity.notFound().build());
-  }
-
-  @GetMapping("/user")
-  public ResponseEntity<UserResponseDTO> getUser(HttpServletRequest httpRequest){
-    Long id = (Long) httpRequest.getAttribute("userId");
-    Optional<UserModel> userModel = userModelService.getUser(id);
-    return userModel.map(model -> ResponseEntity.ok(userFacade.convertToDto(model)))
-      .orElseGet(() -> ResponseEntity.notFound().build());
-  }
+//  @GetMapping("/user/{userId}")
+//  public ResponseEntity<UserResponseDTO> getUserById(@PathVariable(name = "userId") Long userId){
+//    Optional<UserModel> userModel = userModelService.getUser(userId);
+//    return userModel.map(model -> ResponseEntity.ok(userFacade.convertToDto(model)))
+//                    .orElseGet(() -> ResponseEntity.notFound().build());
+//  }
+//
+//  @GetMapping("/user")
+//  public ResponseEntity<UserResponseDTO> getUser(HttpServletRequest httpRequest){
+//    Long id = (Long) httpRequest.getAttribute("userId");
+//    Optional<UserModel> userModel = userModelService.getUser(id);
+////    return userModel.map(model -> ResponseEntity.ok(userFacade.convertToDto(model)))
+//      .orElseGet(() -> ResponseEntity.notFound().build());
+//  }
 
 
 }

@@ -9,8 +9,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@Data
+@Setter
+@Getter
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users")
@@ -61,14 +61,14 @@ public class UserModel extends BaseEntityModel {
 //  @JoinTable(name = "followers")
 //  private Set<UserModel> followers;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @LazyCollection(LazyCollectionOption.TRUE)
+  @ManyToMany
+  @LazyCollection(LazyCollectionOption.EXTRA)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
     inverseJoinColumns = @JoinColumn(name = "follower_id"))
   private Set<UserModel> followers = new HashSet<>();
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @LazyCollection(LazyCollectionOption.TRUE)
+  @ManyToMany
+  @LazyCollection(LazyCollectionOption.EXTRA)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "follower_id"),
     inverseJoinColumns = @JoinColumn(name = "followed_id"))
   private Set<UserModel> followings = new HashSet<>();
@@ -85,8 +85,8 @@ public class UserModel extends BaseEntityModel {
   @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
   private Set<Chat> chats = new HashSet<>();
 
-  @OneToOne(mappedBy = "user")
-  private TweetAction tweetAction;
+  @OneToMany(mappedBy = "user")
+  private Set<TweetAction> tweetAction;
 
   public boolean isVerified() {
     return this.isVerified;
@@ -96,5 +96,13 @@ public class UserModel extends BaseEntityModel {
     this.isVerified = isVerified;
   }
 
+
+  public Integer getCountFollowers() {
+    return followers.size();
+  }
+
+  public Integer getCountFollowings() {
+    return followings.size();
+  }
 }
 
