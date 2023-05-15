@@ -1,16 +1,14 @@
 import { Box } from "@mui/material";
-import { EditProfileModal } from "../EditProfile/EditProfileModal";
 import { UserAction } from "./UserAction";
 import { UserHeder } from "./UserHeder";
 import { UserInfo } from "./UserInfo";
 
 export const User = () => {
   return (
-    <Box>
+    <Box sx={{ border: "1px solid white", borderTop: "none" }}>
       <UserHeder />
       <UserInfo />
       <UserAction />
-      <EditProfileModal />
     </Box>
   );
 };

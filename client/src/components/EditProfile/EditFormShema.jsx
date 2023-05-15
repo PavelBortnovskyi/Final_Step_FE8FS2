@@ -12,6 +12,7 @@ export function EditFormShema() {
         bio: "",
         location: "",
         website: "",
+        birthDate: "",
       }}
       validationSchema={Yup.object({
         foto: Yup.array().max(1, "select at least 1 file"),
@@ -22,6 +23,7 @@ export function EditFormShema() {
         bio: Yup.string().max(160),
         location: Yup.string().max(30),
         website: Yup.string().max(100),
+        birthDate: Yup.date(),
       })}
       onSubmit={(values, { setSubmitting }) => {}}
       component={EditForm}
