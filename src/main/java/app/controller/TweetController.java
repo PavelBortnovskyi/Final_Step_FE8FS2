@@ -40,8 +40,8 @@ public class TweetController {
 
 
   @GetMapping("{id}")
-  public ResponseEntity<TweetResponse> getTweet(@PathVariable Long tweetId) {
-    Optional<Tweet> tweet = tweetService.findById(tweetId);
+  public ResponseEntity<TweetResponse> getTweet(@PathVariable String id) {
+    Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
 
     if (!tweet.isPresent()) {
       return ResponseEntity.notFound().build();
