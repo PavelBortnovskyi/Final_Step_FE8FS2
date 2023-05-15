@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -72,6 +73,26 @@ public class TweetController {
     tweet.setTweetType(TweetType.TWEET);
     this.tweetService.save(tweet);
   }
+
+  @GetMapping("/delete/{id}")
+  public void deleteTweet(@PathVariable String id){
+    Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
+    if (tweet.isPresent() && tweet.get().getUser().getId().equals(1L)) { //(Long) request.getAttribute("userId")
+      tweetService.deleteTweet(Long.valueOf(id));
+    }
+  }
+
+  @PostMapping(path ="/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> updateTweet(@PathVariable String id, @RequestBody TweetRequest tweetRequest){
+    Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
+    if (tweet.isPresent()){
+      this.tweetService.update(this.tweetFacade.convertToEntity(tweetRequest));
+      return ResponseEntity.ok("response");
+    }
+    return null;
+  }
+
+
 
   @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> addTweet(@RequestBody TweetRequest tweetRequest) {

@@ -1,8 +1,5 @@
 package app.service;
 
-import app.dto.rq.TweetRequest;
-import app.dto.rs.TweetResponse;
-import app.exceptions.EmailNotFoundException;
 import app.exceptions.TweetIsDeleteException;
 import app.model.Tweet;
 import app.repository.TweetModelRepository;
@@ -20,7 +17,7 @@ public class TweetService extends GeneralService<Tweet> {
     new TweetIsDeleteException(String.format("Tweet: %d, has been deleted", tweetId));
   }
 
-  public Optional<Tweet> update(TweetRequest tweetRequest) {
+  public Optional<Tweet> update(Tweet tweetRequest) {
     Optional<Tweet> tweet = tweetModelRepository.findById(tweetRequest.getTweetId());
     if (tweet.isPresent()) {
       Tweet tweetToUpdate = tweet.get();
