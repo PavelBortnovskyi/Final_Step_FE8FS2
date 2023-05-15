@@ -1,12 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import { App } from "src/components/App";
-import { HomePage } from "src/pages/HomePage";
-import { LoginPage } from "src/pages/LoginPage";
-import { RegistrationPage } from "src/pages/RegistrationPage";
-import { NotfoundPage } from "src/pages/NotfoundPage";
-import { UserPage } from "src/pages/UserPage";
+import { App } from 'src/components/App';
+import { HomePage } from 'src/pages/HomePage';
+import { LoginPage } from 'src/pages/LoginPage';
+import { RegistrationPage } from 'src/pages/RegistrationPage';
+import { NotfoundPage } from 'src/pages/NotfoundPage';
+import { UserPage } from 'src/pages/UserPage';
+import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from "src/components/EditProfile/EditProfileModal";
+
 
 export const router = createBrowserRouter([
   {
@@ -33,8 +35,8 @@ export const router = createBrowserRouter([
         element: <UserPage />,
       },
       {
-        path: "/messages",
-        element: <UserPage />,
+        path: '/messages',
+        element: <MessagesPage />,
       },
       {
         path: "/bookmarks",

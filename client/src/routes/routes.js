@@ -1,8 +1,11 @@
-import { HomePage } from "src/pages/HomePage";
-import { UserPage } from "src/pages/UserPage";
-import { LoginPage } from "src/pages/LoginPage";
-import { RegistrationPage } from "src/pages/RegistrationPage";
+
+import { HomePage } from 'src/pages/HomePage';
+import { UserPage } from 'src/pages/UserPage';
+import { LoginPage } from 'src/pages/LoginPage';
+import { RegistrationPage } from 'src/pages/RegistrationPage';
+import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from "src/components/EditProfile/EditProfileModal";
+
 
 export const mainRoutes = () => {
   return [
@@ -25,8 +28,8 @@ export const mainRoutes = () => {
       element: <UserPage />,
     },
     {
-      path: "/messages",
-      element: <UserPage />,
+      path: '/messages',
+      element: <MessagesPage />,
     },
     {
       path: "/bookmarks",
