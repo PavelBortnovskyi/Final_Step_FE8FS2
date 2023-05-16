@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @RestController
@@ -53,7 +52,7 @@ public class TweetController {
 
   @GetMapping("/create")
   public void createTweet(HttpServletRequest request){
-    Optional<UserModel> user = userModelService.getUser(1L);  //(Long) request.getAttribute("userId")
+    Optional<UserModel> user = userModelService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
     tweet.setBody("Hello world");
     tweet.setCountLikes(45);
@@ -66,7 +65,7 @@ public class TweetController {
   @GetMapping("/delete/{id}")
   public void deleteTweet(@PathVariable String id, HttpServletRequest request){
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
-    if (tweet.isPresent() && tweet.get().getUser().getId().equals(1L)) { //(Long) request.getAttribute("userId")
+    if (tweet.isPresent() && tweet.get().getUser().getId().equals(request.getAttribute("userId"))) {
       tweetService.deleteTweet(Long.valueOf(id));
     }
   }
@@ -82,8 +81,8 @@ public class TweetController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest) {
-    UserModel user = userModelService.getUser(1L).orElse(null); //(Long) request.getAttribute("userId")
+  public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
+    UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetRequest.getTweetType());
@@ -106,6 +105,52 @@ public class TweetController {
     }
     return tweet.map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
       .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @GetMapping("/test")
+  public void test () {
+    UserModel user1 = new UserModel();
+    user1.setUserTag("user1");
+    user1.setFullName("User Usereus1");
+    user1.setEmail("user1@gmail.com");
+    user1.setPassword("11111111");
+
+    UserModel user2 = new UserModel();
+    user2.setUserTag("user2");
+    user2.setFullName("User Usereus2");
+    user2.setEmail("user2@gmail.com");
+    user2.setPassword("11111111");
+
+    UserModel user3 = new UserModel();
+    user3.setUserTag("user3");
+    user3.setFullName("User Usereus3");
+    user3.setEmail("user4@gmail.com");
+    user3.setPassword("11111111");
+
+    UserModel user4 = new UserModel();
+    user4.setUserTag("user4");
+    user4.setFullName("User Usereus1");
+    user4.setEmail("user41@gmail.com");
+    user4.setPassword("11111111");
+
+    UserModel user5 = new UserModel();
+    user5.setUserTag("user5");
+    user5.setFullName("User Usereus1");
+    user5.setEmail("user5@gmail.com");
+    user5.setPassword("11111111");
+    List<UserModel> users = new LinkedList<>();
+
+    users.add(user1);
+    users.add(user2);
+    users.add(user3);
+    users.add(user4);
+
+/*    Set<UserModel> followUser = new TreeSet<>();
+    followUser.add(user3);
+    followUser.add(user5);
+    user1.setFollowings(followUser);*/
+
+    users.forEach(u -> userModelService.save(u));;
   }
 
 

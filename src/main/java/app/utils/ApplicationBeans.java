@@ -3,6 +3,9 @@ package app.utils;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.facade.UserModelFacade;
+import app.model.UserModel;
+import app.service.TweetService;
+import app.service.UserModelService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +17,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Configuration
@@ -59,6 +65,7 @@ public class ApplicationBeans {
   public ObjectMapper getObjectMapper(){
     return new ObjectMapper();
   }
+
 
 //
 //  @Profile("local")
