@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React from 'react';
 
-function TweetButton({ isDisabled, fnc, text, w, h }) {
+function TweetButton({ isDisabled, fnc, text, w, h , fw}) {
   return (
     <Button
       disabled={isDisabled}
@@ -10,7 +10,7 @@ function TweetButton({ isDisabled, fnc, text, w, h }) {
         width: `${w}px`,
         height: `${h}px`,
         fontSize: '20px',
-        fontWeight: '800',
+        fontWeight: `${fw}px`,
         borderRadius: '30px',
         '&.Mui-disabled': {
           backgroundColor: 'rgb(29, 155, 240)',
