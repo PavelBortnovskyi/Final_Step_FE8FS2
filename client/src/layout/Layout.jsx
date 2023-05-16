@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { Sidebar } from 'src/components/Sidebar/Sidebar';
-import { Footer } from 'src/components/AppBar/AppBar';
+import { RightSection } from 'src/components/RightSection/RightSection';
 import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 import { MainRoutes } from 'src/routes/MainRoutes';
 import { ModalRoutes } from 'src/routes/ModalRoutes';
@@ -38,7 +38,7 @@ export const Layout = () => {
             display: { xs: 'none', sm: 'block' },
           }}
         >
-          <Sidebar />
+          <Sidebar isAuthenticated={isAuthenticated}/>
         </Grid>
 
         <Grid
@@ -61,11 +61,11 @@ export const Layout = () => {
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <Footer />
+          <RightSection isAuthenticated={isAuthenticated}/>
         </Grid>
       </Grid>
 
-      {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
+      {/* {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />} */}
 
       {/* routes for modal window */}
       <ModalRoutes />
