@@ -1,5 +1,7 @@
 package app.utils;
 
+import app.facade.MessageFacade;
+import app.facade.NotificationFacade;
 import app.facade.UserModelFacade;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -39,13 +41,23 @@ public class ApplicationBeans {
   }
 
   @Bean
-  public ObjectMapper objectMapper(){
-    return new ObjectMapper();
+  public UserModelFacade getUserModelFacade() {
+    return new UserModelFacade();
   }
 
   @Bean
-  public UserModelFacade getUserModelFacade(){
-    return new UserModelFacade();
+  public MessageFacade getMessageFacade() {
+    return new MessageFacade();
+  }
+
+  @Bean
+  public NotificationFacade getNotificationFacade() {
+    return new NotificationFacade();
+  }
+
+  @Bean
+  public ObjectMapper getObjectMapper(){
+    return new ObjectMapper();
   }
 
 //

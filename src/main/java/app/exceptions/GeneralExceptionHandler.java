@@ -39,7 +39,6 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler({AuthenticationException.class })
-  @ResponseBody
   public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong login or password. Please try again.");
