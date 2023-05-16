@@ -6,6 +6,7 @@ import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,10 @@ public class TweetService extends GeneralService<Tweet> {
       tweetModelRepository.save(tweetToUpdate);
     }
     return tweet;
+  }
+
+  public List<Tweet> allUserTweet(Long userId){
+    return tweetModelRepository.getAllByUserId(userId);
   }
 
 }

@@ -83,15 +83,30 @@ public class TweetController {
 
   @PostMapping("/add")
   public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest) {
-    UserModel user = userModelService.getUser(1L).orElse(null);
+    UserModel user = userModelService.getUser(1L).orElse(null); //(Long) request.getAttribute("userId")
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetRequest.getTweetType());
+    tweet.setCountLikes(0);
+    tweet.setCountRetweets(0);
     tweet.setUser(user);
     Tweet savedTweet = tweetService.save(tweet);
     return ResponseEntity.ok(savedTweet);
   }
 
+
+  @GetMapping("/get_tweet_for/{id}")
+  public ResponseEntity<TweetResponse> getAllTweet(@PathVariable(name = "id") Long id) {
+
+    userModelService.getUser(id);
+    Optional<Tweet> tweet = tweetService.findById(id);
+
+    if (!tweet.isPresent()) {
+      return ResponseEntity.notFound().build();
+    }
+    return tweet.map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
+      .orElseGet(() -> ResponseEntity.notFound().build());
+  }
 
 
 }

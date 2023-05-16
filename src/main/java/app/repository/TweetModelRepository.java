@@ -9,4 +9,5 @@ import java.util.List;
 public interface TweetModelRepository extends RepositoryInterface<Tweet>{
     void deleteById(Long id);
     List<Tweet> getAllByUserId(Long id);
+
 }
