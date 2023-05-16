@@ -1,22 +1,40 @@
-import { Switch, Typography } from '@mui/material';
-import { useState } from 'react';
+import { FormControlLabel, Switch } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from 'src/redux/selectors/selectors';
+import { setTheme } from 'src/redux/reducers/themeSlice';
+import { modeTheme } from 'src/styles/_materialTheme';
 
 export const ThemeSwitcher = () => {
-  const [checked, setChecked] = useState(true);
+  const dispatch = useDispatch();
+
+  // get theme setting from redux
+  const { theme, colorTheme } = useSelector(getTheme);
+
+  // set value for switcher
+  const isChecked = modeTheme[theme] || false;
 
   const handleChange = (event) => {
-    setChecked(event.target.checked);
+    // set theme value for localStorage and redux
+    const mode =
+      Object.keys(modeTheme).find(
+        (key) => modeTheme[key] === event.target.checked
+      ) || false;
+    localStorage.setItem('theme', mode);
+    dispatch(setTheme(mode));
   };
 
   return (
-    <>
-      <Typography variant="span">Theme</Typography>
-      <Switch
-        color="warning"
-        checked={checked}
-        onChange={handleChange}
-        inputProps={{ 'aria-label': 'controlled' }}
-      />
-    </>
+    <FormControlLabel
+      control={
+        <Switch
+          color="warning"
+          checked={isChecked}
+          onChange={handleChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+      }
+      labelPlacement="start"
+      label="Theme"
+    />
   );
 };
