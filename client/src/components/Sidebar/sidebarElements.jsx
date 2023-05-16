@@ -9,7 +9,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 
-export const mainSidebarElemets = [
+export const mainSidebarElements = [
     {
         id: 0,
         icon: HomeIcon,

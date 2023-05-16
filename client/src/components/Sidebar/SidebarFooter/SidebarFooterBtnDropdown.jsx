@@ -7,7 +7,9 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
         <Button variant="text"
             {...bindTrigger(popupState)}
             sx={{
-                // marginRight: '4px',
+                px: 0,
+                minWidth: '64px',
+                height: '64px',
                 '&:hover': {
                     backgroundColor: 'rgb(39,51,64)',
                     borderRadius: '30px',
