@@ -13,7 +13,6 @@ export default function SmallBtnTweet() {
                 width: '50px',
                 height: '50px',
                 marginTop: '20px',
-                
                 fill: '#FFFF',
                 backgroundColor: 'rgb(30,155,240)',
                 borderRadius: "50%",

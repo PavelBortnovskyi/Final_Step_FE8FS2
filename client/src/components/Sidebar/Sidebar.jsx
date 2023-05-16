@@ -1,7 +1,7 @@
 
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import { mainSidebarElemets } from './sidebarElemets';
+import { mainSidebarElements } from './sidebarElements';
 import Link from '@mui/material/Link';
 import { Box, styled } from '@mui/material';
 import { SidebarFooter } from './SidebarFooter/SidebarFooter';
@@ -25,7 +25,6 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
     top: 0,
     zIndex: 10,
     flexShrink: 0,
-    // marginRight: '12px',
     paddingRight: '10px',
     width: '100%',
     height: '100vh',
@@ -44,22 +43,15 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'end',
-    // alignItems: {xs: 'end', lg: 'start'},
     marginBottom: '18px',
     textAlign: 'start',
-    // mx: '10px',
-    // width: '100%', // Добавлено для изменения ширины на маленьких экранах
-    //       '@media (min-width: 501px)': { // Медиазапрос для ширины экрана больше 500 пикселей
-    //         // width: '50px',
-    //         height: '50px',
-    //       },
   }))
 
 
 
-  const filteredMainSidebarElemets = isAuthenticated
-    ? mainSidebarElemets
-    : mainSidebarElemets.filter((button) => button.label === 'Explore' || button.label === 'Settings');
+  const filteredMainSidebarElements = isAuthenticated
+    ? mainSidebarElements
+    : mainSidebarElements.filter((button) => button.label === 'Explore' || button.label === 'Settings');
 
 
   return (
@@ -68,9 +60,9 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
         <Box>
           <LogoTwitter/>
 
-          <List sx={{ width: { xs: '50px', lg: '100%' } }}>
-            {filteredMainSidebarElemets.map((navElement) => (
-              <MainMenuSidebar navElement={navElement} />
+          <List sx={{ paddingRight: '10px', width: { xs: '58px', lg: '100%' } }}>
+            {filteredMainSidebarElements.map((navElement) => (
+              <MainMenuSidebar navElement={navElement} key={navElement.id}/>
             ))}
 
             {

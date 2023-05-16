@@ -5,8 +5,8 @@ import { SidebarFooterBtnDropdown } from './SidebarFooterBtnDropdown';
 import { Box, styled } from '@mui/material';
 
 const BoxFooterSliderStyled = styled(Box)((props) => ({
-    marginLeft: '12px', 
-    
+    marginLeft: '12px',
+
     // alignSelf: {xs: 'end', lg: 'start'},
     // '& .MuiButton-root': {
     //     padding: 0, 
@@ -18,7 +18,12 @@ export const SidebarFooter = ({ displayName, username }) => {
     return (
         <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
-                <BoxFooterSliderStyled >
+                <BoxFooterSliderStyled
+                    sx={{
+                        
+                        alignSelf: { xs: 'end', lg: 'start' },
+                    }}
+                >
 
                     <SidebarFooterBtnDropdown
                         popupState={popupState}
