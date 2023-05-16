@@ -31,10 +31,10 @@ jwt:
   secretRefresh: wannaRefresh?
   secretPasswordReset: you_forgot_it_again!
   secretPasswordUpdate: ok_try_again!
-  expiration: 7200000
-  expirationRefresh: 604800000
-  expirationPasswordReset: 86400000
-  expirationPasswordUpdate: 3600000
+  expiration: 7200000 #2h
+  expirationRefresh: 604800000 #7d
+  expirationPasswordReset: 86400000 #24h
+  expirationPasswordUpdate: 3600000 #1h
   header: Authorization
 cloudinary:
   cloudName: dojrbfnaz

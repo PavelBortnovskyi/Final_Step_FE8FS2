@@ -8,6 +8,8 @@ import { NotfoundPage } from 'src/pages/NotfoundPage';
 import { UserPage } from 'src/pages/UserPage';
 import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
+import { MessagesPage } from 'src/pages/MessagesPage';
+import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
 
 export const router = createBrowserRouter([
   {
@@ -39,7 +41,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/messages',
-        element: <UserPage />,
+        element: <MessagesPage />,
       },
       {
         path: '/bookmarks',
@@ -68,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: '/modal/tweet',
         element: <ModalTweetPage />,
+      },
+      {
+        path: '/settings/profile',
+        element: <EditProfileModal />,
       },
     ],
   },
