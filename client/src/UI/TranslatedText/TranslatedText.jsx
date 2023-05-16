@@ -39,9 +39,14 @@ function TranslatedText({ text }) {
         alignItems: 'self-start',
       }}
     >
-      <Button variant="text" onClick={translateText}>
-        Translate Tweet
-      </Button>
+      {translatedText.length !== 0 ? (
+        <Button variant="text" onClick={translateText}>
+          Translate Tweet
+        </Button>
+      ) : (
+        false
+      )}
+
       <Typography variant="body" sx={{ fontSize: '15px' }}>
         {translatedText !== '' ? translatedText : false}
       </Typography>
