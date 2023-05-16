@@ -17,6 +17,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,13 +29,13 @@ public class WebSocketController {
 
   @MessageMapping("/chat/message")
   @SendTo("/topic/chat")
-  public MessageResponse processChatMessage(MessageRequest messageDtoReq) {
+  public MessageResponse processChatMessage(@RequestBody MessageRequest messageDtoReq) {
     return this.messageFacade.save(this.messageFacade.convertToEntity(messageDtoReq));
   }
 
   @MessageMapping("/notifications")
   @SendTo("/topic/notifications")
-  public NotificationResponse processNotification(NotificationRequest notificationDtoReq) {
+  public NotificationResponse processNotification(@RequestBody NotificationRequest notificationDtoReq) {
     return this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
   }
 }

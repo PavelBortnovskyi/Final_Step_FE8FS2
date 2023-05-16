@@ -27,7 +27,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     registry.enableSimpleBroker("/topic");
     registry.setApplicationDestinationPrefixes("/api/v1");
   }
-
 //  @Override
 //  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 //    // Регистрация обработчика WebSocket для чата
