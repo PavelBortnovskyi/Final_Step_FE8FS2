@@ -1,6 +1,6 @@
 spring:
   datasource:
-    password: dbTW1991
+    password: ${DIGITAL_OCEAN_DB_PASSWORD}
     url: jdbc:postgresql://165.232.125.235:8080/fe8fs2tw
     username: postgres
     driver-classname: org.postgresql.Driver
