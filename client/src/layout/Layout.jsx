@@ -38,7 +38,7 @@ export const Layout = () => {
             display: { xs: 'none', sm: 'block' },
           }}
         >
-          <Sidebar isAuthenticated={isAuthenticated}/>
+          <Sidebar isAuthenticated={isAuthenticated} />
         </Grid>
 
         <Grid
@@ -61,11 +61,11 @@ export const Layout = () => {
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <RightSection isAuthenticated={isAuthenticated}/>
+          <RightSection isAuthenticated={isAuthenticated} />
         </Grid>
       </Grid>
 
-      {/* {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />} */}
+      {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
       {/* routes for modal window */}
       <ModalRoutes />
