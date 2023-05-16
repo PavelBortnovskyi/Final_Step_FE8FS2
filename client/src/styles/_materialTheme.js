@@ -49,7 +49,7 @@ export const theme = createTheme({
       },
       variants: [
         {
-          props: { colorTheme: 'dark' },
+          props: { settheme: 'dark' },
           style: {
             // background: 'transparent',
             // color: 'red',

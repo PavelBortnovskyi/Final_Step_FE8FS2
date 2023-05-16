@@ -7,6 +7,7 @@ import { TabMessages } from './TabMessages';
 export const TabAll = () => {
   return (
     <Box>
+      {/* People panel */}
       <Box sx={{ margin: '20px 0 0 0' }}>
         {/* Title people */}
         <Box
@@ -39,6 +40,7 @@ export const TabAll = () => {
         </Box>
       </Box>
 
+      {/* Messages panel */}
       <Box sx={{ margin: '20px 0 0 0' }}>
         {/* Title messages */}
         <Box
