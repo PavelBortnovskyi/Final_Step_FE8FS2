@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,6 +21,7 @@ public class MessageRequest {
   @NotEmpty(message = "Message body must be not empty")
   private String body;
 
+  @Null
   private LocalDateTime sent = LocalDateTime.now();
 
 }
