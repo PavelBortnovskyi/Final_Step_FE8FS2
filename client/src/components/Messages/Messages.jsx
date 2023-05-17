@@ -11,7 +11,6 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import { NavLink } from 'react-router-dom';
 import { SearchField } from './Search/SearchField';
-import { InputSearch } from 'src/UI/InputSearch/InputSearch';
 
 export const Messages = () => {
   return (
@@ -42,7 +41,6 @@ export const Messages = () => {
         </Box>
         {/* Search */}
         <SearchField />
-        {/* <InputSearch /> */}
       </Container>
     </Box>
   );
