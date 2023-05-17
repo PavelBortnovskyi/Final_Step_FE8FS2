@@ -1,12 +1,4 @@
-import {
-  AppBar,
-  Grid,
-  Toolbar,
-  Button,
-  Typography,
-  Link,
-  Switch,
-} from '@mui/material';
+import { AppBar, Grid, Toolbar } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { LogoutButton } from 'src/UI/LogoutButton/LogoutButton';
 import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher';
@@ -18,9 +10,9 @@ export const TempBottomToolbar = () => {
         <Grid container spacing={1}>
           <Grid item xs={0} md={3}></Grid>
           <Grid item xs={6} md={5}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              You are logged in
-            </Typography>
+            <NavLink to="/user">user</NavLink>|
+            <NavLink to="/tweet">tweet</NavLink>|
+            <NavLink to="/messages">messages</NavLink>
           </Grid>
           <Grid
             item
