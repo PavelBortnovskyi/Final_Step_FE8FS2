@@ -15,6 +15,7 @@ public class TweetResponse {
   private String userTag;
   private Integer countLikes;
   private Integer countRetweets;
+  private Integer countReply;
   private Tweet parentTweet;
 
 }

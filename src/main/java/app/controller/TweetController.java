@@ -44,18 +44,6 @@ public class TweetController {
       .orElseThrow(() -> new TweetIsNotFoundException(id.toString()));
   }
 
-  @GetMapping("/create")
-  public void createTweet(HttpServletRequest request){
-    Optional<UserModel> user = userModelService.getUser((Long) request.getAttribute("userId"));
-    Tweet tweet = new Tweet();
-    tweet.setBody("Hello world");
-    tweet.setCountLikes(45);
-    tweet.setUser(user.orElse(null));
-    tweet.setCountRetweets(2);
-    tweet.setTweetType(TweetType.TWEET);
-    this.tweetService.save(tweet);
-  }
-
   @GetMapping("/delete/{id}")
   public void deleteTweet(@PathVariable String id, HttpServletRequest request){
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
@@ -82,6 +70,7 @@ public class TweetController {
     tweet.setTweetType(tweetRequest.getTweetType());
     tweet.setCountLikes(0);
     tweet.setCountRetweets(0);
+    tweet.setCountReply(0);
     tweet.setUser(user);
     Tweet savedTweet = tweetService.save(tweet);
     return ResponseEntity.ok(savedTweet);

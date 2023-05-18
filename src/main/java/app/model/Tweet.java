@@ -56,5 +56,8 @@ public class Tweet extends BaseEntityModel {
   @Column(name = "count_retweets")
   private Integer countRetweets;
 
+  @Column(name = "count_reply")
+  private Integer countReply;
+
 
 }

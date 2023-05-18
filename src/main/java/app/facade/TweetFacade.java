@@ -21,6 +21,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
       .addMapping(src -> src.getCountLikes(), TweetResponse::setCountLikes)
+      .addMapping(src -> src.getCountRetweets(), TweetResponse::setCountRetweets)
+      .addMapping(src -> src.getCountReply(), TweetResponse::setCountReply)
       .addMapping(src -> src.getParentTweet(), TweetResponse::setParentTweet);
   }
 
