@@ -16,7 +16,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TweetService extends GeneralService<Tweet> {
   private final TweetModelRepository tweetModelRepository;
-  private final UserModelRepository userModelRepository;
+
+  public void addLikeToTweet(Long userId, long tweetId){
+    Optional<Tweet> tweet = tweetModelRepository.findById(tweetId);
+
+  }
   public void deleteTweet(Long tweetId) {
     this.tweetModelRepository.deleteById(tweetId);
     new TweetIsNotFoundException(String.format("Tweet: %d, has been deleted", tweetId));

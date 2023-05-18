@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tweet")
+@RequestMapping("api/v1/tweet")
 public class TweetController {
 
   private final TweetService tweetService;
@@ -95,6 +95,11 @@ public class TweetController {
         .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
         .collect(Collectors.toList()))
       .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
+  }
+
+  @PostMapping("/add_like/{id}")
+  public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request){
+    tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
   }
 
 
