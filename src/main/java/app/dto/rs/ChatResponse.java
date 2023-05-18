@@ -10,7 +10,7 @@ import java.util.Set;
 @Data
 public class ChatResponse {
 
-  private Long initiatorUser;
-  private List<Message> messages;
-  private Set<UserModel> users;
+    private Long initiatorUser;
+    private List<Message> messages;
+    private Set<UserModel> users;
 }

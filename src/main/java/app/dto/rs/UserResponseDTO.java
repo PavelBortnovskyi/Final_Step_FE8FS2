@@ -1,6 +1,6 @@
 package app.dto.rs;
 
-import app.model.*;
+import app.model.TweetAction;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -8,29 +8,29 @@ import java.time.LocalDate;
 @Data
 public class UserResponseDTO {
 
-  private Long id;
+    private Long id;
 
-  private String fullName;
+    private String fullName;
 
-  private String userTag;
+    private String userTag;
 
-  private String email;
+    private String email;
 
-  private LocalDate birthdate;
+    private LocalDate birthdate;
 
-  private String bio;
+    private String bio;
 
-  private String location;
+    private String location;
 
-  private String avatarImgUrl;
+    private String avatarImgUrl;
 
-  private String headerImgUrl;
+    private String headerImgUrl;
 
-  private boolean isVerified;
+    private boolean isVerified;
 
-  private TweetAction tweetAction;
+    private TweetAction tweetAction;
 
-  private Integer countUserFollowers;
+    private Integer countUserFollowers;
 
-  private Integer countUserFollowings;
+    private Integer countUserFollowings;
 }

@@ -1,6 +1,5 @@
 package app.security;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,46 +21,46 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
-  @Autowired
-  private JwtAuthFilter jwtAuthFilter;
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
 
-  @Autowired
-  @Qualifier("delegatedAuthenticationEntryPoint")
-  AuthenticationEntryPoint authEntryPoint;
+    @Autowired
+    @Qualifier("delegatedAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
-    httpSec
-      .csrf().disable()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      .authorizeRequests()
-      .antMatchers("/").permitAll()
-      .antMatchers("/swagger-ui/**").permitAll()
-      .antMatchers("/swagger-resources").permitAll()
-      .antMatchers("/swagger-resources/**").permitAll()
-      .antMatchers("/webjars/**").permitAll()
-      .antMatchers("/v2/api-docs").permitAll()
-      .antMatchers("/h2-console/**").permitAll()
-      .antMatchers("/api/v1/auth/register").permitAll()
-      .antMatchers("/api/v1/auth/login").permitAll()
-      .antMatchers("/api/v1/auth/logout").permitAll()
-      .antMatchers("/test/id").authenticated()
-      .antMatchers("/user/**").authenticated()
-      .anyRequest().authenticated()
-      .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
+        httpSec
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-resources").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/api/v1/auth/register").permitAll()
+                .antMatchers("/api/v1/auth/login").permitAll()
+                .antMatchers("/api/v1/auth/logout").permitAll()
+                .antMatchers("/test/id").authenticated()
+                .antMatchers("/user/**").authenticated()
+                .anyRequest().authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
-    //For h2 correct visualization
-    httpSec.headers().frameOptions().disable();
+        //For h2 correct visualization
+        httpSec.headers().frameOptions().disable();
 
-    httpSec.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSec.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return httpSec.build();
-  }
+        return httpSec.build();
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-    return authConfig.getAuthenticationManager();
-  }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
 }
 

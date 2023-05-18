@@ -12,13 +12,13 @@ import javax.annotation.PostConstruct;
 @NoArgsConstructor
 public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, UserModelResponse> {
 
-  @Autowired
-  private PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder encoder;
 
-  @PostConstruct
-  public void init() {
+    @PostConstruct
+    public void init() {
         super.getMm().typeMap(UserModel.class, UserModelResponse.class)
                 .addMapping(UserModel::getCountFollowers, UserModelResponse::setCountUserFollowers)
                 .addMapping(UserModel::getCountFollowings, UserModelResponse::setCountUserFollowings);
-  }
+    }
 }

@@ -1,26 +1,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
+import { getUser } from 'src/redux/thunk/getUser';
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async (user, { rejectWithValue }) => {
+  async (user, { dispatch, rejectWithValue }) => {
     try {
-      const { login, password, email } = user;
-
-      // /api/auth/register - path from server/src/routes/auth.js
-      // BASE_URL_AXIOS=http://localhost/3004/api - path from client/src/.env
+      const { email, fullName, userTag, password, birthday } = user;
 
       // request for server
       const { data } = await myAxios.post('/auth/register', {
-        login,
-        password,
         email,
+        fullName,
+        userTag,
+        password,
+        birthday,
       });
 
       // if a token is received, store it in localStorage
-      if (data.token) {
-        window.localStorage.setItem('token', data.token);
+      if (data.ACCESS_TOKEN) {
+        window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
+
+        // get user data
+        dispatch(getUser());
       }
+
       return data;
     } catch (error) {
       // set message error from server
