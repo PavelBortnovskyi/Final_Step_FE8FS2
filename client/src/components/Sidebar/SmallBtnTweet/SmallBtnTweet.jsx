@@ -5,6 +5,7 @@ export default function SmallBtnTweet() {
     return (
         <Box 
             sx={{
+                cursor: 'pointer',
                 visibility: {lg: 'hidden', xs: 'visible' },
                 display: 'flex',
                 justifyContent: 'center',
@@ -12,7 +13,6 @@ export default function SmallBtnTweet() {
                 width: '50px',
                 height: '50px',
                 marginTop: '20px',
-                marginLeft: '10px',
                 fill: '#FFFF',
                 backgroundColor: 'rgb(30,155,240)',
                 borderRadius: "50%",

@@ -1,58 +1,61 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './HomePageHeder.module.scss';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { Grid, Tab, Tabs } from '@mui/material';
+import styled from '@emotion/styled';
+import { TabPanelUnstyled } from '@mui/base';
+
+const CustomTab = styled(Tab)((props) => ({
+  color: '#fff',
+  fontWeight: '800',
+  width: '50%',
+  textTransform: 'capitalize',
+  '&:hover': {
+    cursor: 'pointer',
+    backgroundColor: '#b3b3b32b',
+  },
+}));
 
 function MainPage_header() {
-  const [openForYou, setOpenForYou] = useState(true);
-  const [openFolowing, setOpenFlowing] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0);
 
-  const handleOpenForYou = () => {
-    setOpenFlowing(false);
-    setOpenForYou(true);
-  };
-  const handleOpenFlowing = () => {
-    setOpenForYou(false);
-    setOpenFlowing(true);
+  const handleTabChange = (event, newTabIndex) => {
+    setTabIndex(newTabIndex);
   };
 
   return (
-    <div className={styles.homeHeder}>
-      <NavLink to="/" className={styles.hed}>
-        <div>Home</div>
-      </NavLink>
-      <div>
+    <Box
+      sx={{
+        backgroundColor: '#15202bd9',
+        backdropFilter: 'blur(6px)',
+        width: '100%',
+        pb: '2px',
+        borderBottom: '1px solid rgb(56, 68, 77)',
+        position: 'sticky',
+        top: '0',
+        zIndex: 1300,
+      }}
+    >
+      <NavLink to="/">
         <Box
           sx={{
-            '& button': {
-              padding: '15px',
-              width: '50%',
-              borderRadius: '0',
-              color: 'rgb(255, 255, 255)',
-              '&:hover': {
-                backgroundColor: '#b3b3b32b',
-              },
-            },
+            paddingTop: '15px',
+            pl: '20px',
+            fontSize: '20px',
+            textDecoration: 'none',
+            color: 'rgb(255, 255, 255)',
           }}
         >
-          <Button
-            className={openForYou ? styles.btn_active : styles.btn}
-            size="medium"
-            onClick={handleOpenForYou}
-          >
-            <p>For you</p>
-          </Button>
-          <Button
-            className={openFolowing ? styles.btn_active : styles.btn}
-            size="medium"
-            onClick={handleOpenFlowing}
-          >
-            <p> Folowing</p>
-          </Button>
+          Home
         </Box>
-      </div>
-    </div>
+      </NavLink>
+
+      <Tabs value={tabIndex} onChange={handleTabChange}>
+        <CustomTab label="For you" />
+        <CustomTab label="Following" />
+      </Tabs>
+    </Box>
   );
 }
 

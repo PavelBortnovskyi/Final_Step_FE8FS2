@@ -1,14 +1,22 @@
 import { useLocation } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
+import { useSelector } from 'react-redux';
+
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { Sidebar } from 'src/components/Sidebar/Sidebar';
-// import { Main } from 'src/components/Main/Main';
-import { Footer } from 'src/components/AppBar/AppBar';
-// import { Modal } from 'src/components/Modal/Modal';
+import { RightSection } from 'src/components/RightSection/RightSection';
 import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 import { MainRoutes } from 'src/routes/MainRoutes';
 import { ModalRoutes } from 'src/routes/ModalRoutes';
+import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolbar';
+// import { Main } from 'src/components/Main/Main';
+// import { Modal } from 'src/components/Modal/Modal';
 
 export const Layout = () => {
+  // get Authentication
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+  console.log('auth', isAuthenticated);
+
   // create location for MainRoutes
   const location = useLocation();
   const background = location.state && location.state.background;
@@ -30,10 +38,16 @@ export const Layout = () => {
             display: { xs: 'none', sm: 'block' },
           }}
         >
-          <Sidebar />
+          <Sidebar isAuthenticated={isAuthenticated}/>
         </Grid>
 
-        <Grid item xs={12} sm={10} md={6}>
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          md={6}
+          sx={{ borderLeft: '1px solid #333', borderRight: '1px solid #333' }}
+        >
           {/* <Main /> */}
 
           {/* routes for main components */}
@@ -47,10 +61,11 @@ export const Layout = () => {
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <Footer />
+          <RightSection isAuthenticated={isAuthenticated}/>
         </Grid>
       </Grid>
-      <BottomToolbar />
+
+      {/* {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />} */}
 
       {/* routes for modal window */}
       <ModalRoutes />

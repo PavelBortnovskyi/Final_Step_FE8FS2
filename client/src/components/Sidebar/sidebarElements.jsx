@@ -6,10 +6,10 @@ import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlin
 import TwitterIcon from '@mui/icons-material/Twitter';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'; 
 import PersonIcon from '@mui/icons-material/Person';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 
-
-export const mainSidebarElemets = [
+export const mainSidebarElements = [
     {
         id: 0,
         icon: HomeIcon,
@@ -50,7 +50,7 @@ export const mainSidebarElemets = [
         id: 6,
         icon: VerifiedOutlinedIcon,
         label: 'Verified Organiza...',
-        route: 'verified_orgs',
+        route: 'verified-orgs',
     },
     {
         id: 7,
@@ -58,6 +58,12 @@ export const mainSidebarElemets = [
         label: 'Profile',
         route: 'profile',
     },
+    {
+        id: 8,
+        icon: SettingsOutlinedIcon,
+        label: 'Settings',
+        route: 'settings',
+      },
     
 ]
 
