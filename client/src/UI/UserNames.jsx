@@ -4,26 +4,40 @@ import { Box, Typography } from '@mui/material';
 // this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
 // you have to add all necessary props
 
-function UserNames({ username, verified, displayName, postTime }) {
+function UserNames({ username, verified, displayName, postTime, text }) {
   return (
     <Box
       display="flex"
-      sx={{ gap: '3px', alignItems: 'center', marginBottom: '10px' }}
+      sx={{
+        flexDirection: 'column',
+        gap: '4px',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+      }}
     >
-      <Typography variant="body1">{username}</Typography>
-      <div>
-        {verified && (
-          <VerifiedUserRoundedIcon
-            sx={{ fontSize: '15px', color: '#1d9bf0' }}
-          />
-        )}
-      </div>
-      <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
-        @{displayName} ·
-      </Typography>
-      <Typography color="#bdbdbd" sx={{ fontSize: '11px' }}>
-        4h
-      </Typography>
+      <Box
+        display="flex"
+        sx={{
+          gap: '4px',
+          alignItems: 'flex-start',
+        }}
+      >
+        <Typography variant="body1">{username}</Typography>
+        <div>
+          {verified && (
+            <VerifiedUserRoundedIcon
+              sx={{ fontSize: '15px', color: '#1d9bf0' }}
+            />
+          )}
+        </div>
+        <Typography color="#bdbdbd" sx={{ fontSize: '14px' }}>
+          {displayName} ·
+        </Typography>
+        <Typography color="#bdbdbd" sx={{ fontSize: '14px' }}>
+          {postTime}
+        </Typography>
+      </Box>
+      <Typography sx={{ fontSize: '14px' }}>{text}</Typography>
     </Box>
   );
 }

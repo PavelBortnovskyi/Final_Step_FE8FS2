@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TabAll } from './TabAll';
 import { TabPeople } from './TabPeople';
 import { TabMessages } from './TabMessages';
+import { SearchNoResult } from './SearchNoResult';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -21,12 +22,6 @@ function TabPanel(props) {
   );
 }
 
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.number.isRequired,
-//   value: PropTypes.number.isRequired,
-// };
-
 function tabsProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -34,7 +29,11 @@ function tabsProps(index) {
   };
 }
 
-export const SearchTabs = () => {
+export const SearchTabs = ({
+  searchText = null,
+  searchPeople = null,
+  searchMessages = null,
+}) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -58,12 +57,26 @@ export const SearchTabs = () => {
       </Box>
       <TabPanel value={value} index={0}>
         <TabAll />
+        {searchPeople || searchMessages ? (
+          <TabAll searchPeople={searchPeople} searchMessages={searchMessages} />
+        ) : (
+          <SearchNoResult searchText={searchText} />
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TabPeople />
+        {searchPeople ? (
+          <TabPeople searchPeople={searchPeople} />
+        ) : (
+          <SearchNoResult searchText={searchText} />
+        )}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <TabMessages />
+        {searchMessages ? (
+          <TabMessages searchMessages={searchMessages} />
+        ) : (
+          <SearchNoResult searchText={searchText} />
+        )}
       </TabPanel>
     </Box>
   );

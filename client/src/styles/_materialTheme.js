@@ -43,6 +43,7 @@ export const theme = createTheme({
             fontSize: '16px',
           },
         },
+
         indicator: {
           // Ваши стили здесь
         },
