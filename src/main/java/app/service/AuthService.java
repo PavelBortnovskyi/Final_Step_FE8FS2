@@ -8,8 +8,6 @@ import app.exceptions.AuthErrorException;
 import app.exceptions.EmailAlreadyRegisteredException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
-import app.repository.UserModelRepository;
-import app.security.Encoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -117,7 +115,7 @@ public class AuthService {
     return "User with Id: " + userId + " logged out";
   }
 
-  private <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
+  public  <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
     Set<ConstraintViolation<T>> violations = validator.validate(request, marker);
     //Validation results handling
     if (!violations.isEmpty()) {

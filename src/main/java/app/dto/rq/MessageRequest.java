@@ -1,5 +1,6 @@
 package app.dto.rq;
 
+import app.annotations.New;
 import app.model.Chat;
 import app.model.UserModel;
 import lombok.Data;
@@ -12,13 +13,13 @@ import java.time.LocalDateTime;
 @Data
 public class MessageRequest {
 
-  @NotNull(message = "Chat id must be specified")
+  @NotNull(message = "Chat id must be specified", groups = New.class)
   private Chat chat;
 
-  @NotNull(message = "Message author must be specified")
+  @NotNull(message = "Message author must be specified", groups = New.class)
   private UserModel user;
 
-  @NotEmpty(message = "Message body must be not empty")
+  @NotEmpty(message = "Message body must be not empty", groups = New.class)
   private String body;
 
   @Null
