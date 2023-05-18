@@ -27,34 +27,34 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({EmailAlreadyRegisteredException.class})
   @ResponseBody
-  public ErrorInfo handleSignUpException(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public ErrorInfo handleSignUpException(RuntimeException ex,HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     log.error("Email already taken");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "This email is already registered. Please choose another one.");
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
   @ExceptionHandler({UsernameIsTakenException.class})
   @ResponseBody
-  public ErrorInfo handleSignUpException2(HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleSignUpException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     log.error("Username already taken");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "This username is already registered. Please choose another one.");
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
   @ExceptionHandler({JwtAuthenticationException.class})
   @ResponseBody
-  public ErrorInfo handleAuthException(HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     log.error("JWT token empty or invalid!");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "JWT token is empty or invalid. Please provide correct token and try again.");
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
   @ExceptionHandler({AuthenticationException.class})
   @ResponseBody
-  public ErrorInfo handleAuthException2(HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleAuthException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     log.error("Wrong login or password!");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong login or password. Please try again.");
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
   @ExceptionHandler({MethodArgumentNotValidException.class})
@@ -63,6 +63,14 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     log.error("Wrong request dto. Field validation failed!");
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong request dto. Field validation failed!: " + ex.getMessage());
+  }
+
+  @ExceptionHandler({ChatNotFoundException.class})
+  @ResponseBody
+  public ErrorInfo handleWebSocketException2(MethodArgumentNotValidException ex, HttpServletRequest request, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    log.error(ex.getMessage());
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 }
 

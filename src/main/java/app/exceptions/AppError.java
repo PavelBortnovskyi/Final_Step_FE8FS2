@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 
 @AllArgsConstructor
+@Data
 public class AppError extends RuntimeException {
   public String message;
 }

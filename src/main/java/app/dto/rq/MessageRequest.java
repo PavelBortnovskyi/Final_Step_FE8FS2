@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @Data
 public class MessageRequest {
 
-  @NotNull(message = "Chat id must be specified", groups = New.class)
+  @NotNull(message = "Chat id must be specified")
   private Chat chat;
 
-  @NotNull(message = "Message author must be specified", groups = New.class)
+  @NotNull(message = "Message author must be specified")
   private UserModel user;
 
-  @NotEmpty(message = "Message body must be not empty", groups = New.class)
+  @NotEmpty(message = "Message body must be not empty")
   private String body;
 
   @Null
