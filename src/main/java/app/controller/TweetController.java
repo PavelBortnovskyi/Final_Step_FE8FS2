@@ -64,16 +64,7 @@ public class TweetController {
 
   @PostMapping("/add")
   public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
-    UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
-    Tweet tweet = new Tweet();
-    tweet.setBody(tweetRequest.getBody());
-    tweet.setTweetType(tweetRequest.getTweetType());
-    tweet.setCountLikes(0);
-    tweet.setCountRetweets(0);
-    tweet.setCountReply(0);
-    tweet.setUser(user);
-    Tweet savedTweet = tweetService.save(tweet);
-    return ResponseEntity.ok(savedTweet);
+    return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
   }
 
 
