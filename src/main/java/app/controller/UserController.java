@@ -1,9 +1,7 @@
 package app.controller;
 
 import app.dto.rs.UserModelResponse;
-import app.exceptions.userNotFound.UserNotFoundException;
 import app.facade.UserModelFacade;
-import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -27,18 +24,18 @@ public class UserController {
 
     @GetMapping("{userId}")
     public ResponseEntity<UserModelResponse> getUserById(@PathVariable(name = "userId") Long userId) {
-        Optional<UserModel> userModel = userModelService.getUser(userId);
-        return userModel.map(model -> ResponseEntity.ok(userModelFacade.convertToDto(model)))
-                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+        return ResponseEntity.ok(userModelFacade.getUserById(userId));
     }
-
 
     @GetMapping("profile")
     public ResponseEntity<UserModelResponse> getUser(HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
-        Optional<UserModel> userModel = userModelService.getUser(userId);
-        return userModel.map(model -> ResponseEntity.ok(userModelFacade.convertToDto(model)))
-                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+        return ResponseEntity.ok(userModelFacade.getUserById((Long) httpRequest.getAttribute("userId")));
+    }
+
+    @GetMapping("following/{userIdToFollowing}")
+    public ResponseEntity<Void> following(@PathVariable(name = "userIdToFollowing") Long userIdToFollowing, HttpServletRequest httpRequest) {
+        userModelService.following((Long) httpRequest.getAttribute("userId"), userIdToFollowing);
+        return ResponseEntity.ok().build();
     }
 
 

@@ -47,7 +47,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({UserNotFoundException.class})
     public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "User with id: " + ex.getMessage() + " not Found");
     }
 

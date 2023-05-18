@@ -64,17 +64,18 @@ public class UserModel extends BaseEntityModel {
 //  @JoinTable(name = "followers")
 //  private Set<UserModel> followers;
 
-    @LazyCollection(value = LazyCollectionOption.TRUE)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
-            inverseJoinColumns = @JoinColumn(name = "follower_id"))
-    private Set<UserModel> followers = new HashSet<>();
 
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "follower_id"),
             inverseJoinColumns = @JoinColumn(name = "followed_id"))
     private Set<UserModel> followings = new HashSet<>();
+
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
+    @ManyToMany(mappedBy = "followings", fetch = FetchType.LAZY)
+//    @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
+//            inverseJoinColumns = @JoinColumn(name = "follower_id"))
+    private Set<UserModel> followers = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Tweet> tweets = new HashSet<>();
@@ -83,16 +84,15 @@ public class UserModel extends BaseEntityModel {
     private Set<Message> messages = new HashSet<>();
     ;
 
-    @OneToMany(mappedBy = "initiatorUser")
+    @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
     private Set<Chat> chat = new HashSet<>();
     ;
-
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Chat> chats = new HashSet<>();
     ;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<TweetAction> tweetAction;
 
     public boolean isVerified() {

@@ -1,5 +1,6 @@
 package app.service;
 
+import app.exceptions.userNotFound.UserNotFoundException;
 import app.model.UserModel;
 import app.repository.UserModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,15 @@ public class UserModelService extends GeneralService<UserModel> {
     public Optional<UserModel> getUserByToken(String refreshToken) {
         return this.userModelRepository.findByToken(refreshToken);
     }
+
+    public void following(Long userCurrentId, Long userToFollowingId) {
+        UserModel userCurrent = this.getUser(userCurrentId).orElseThrow(() -> new UserNotFoundException(userCurrentId));
+        UserModel userToFollowing = this.getUser(userToFollowingId).orElseThrow(() -> new UserNotFoundException(userToFollowingId));
+
+        userCurrent.getFollowings().add(userToFollowing);
+        this.save(userCurrent);
+    }
+
 
     /**
      * Method returns true if provided email address is present in DB
