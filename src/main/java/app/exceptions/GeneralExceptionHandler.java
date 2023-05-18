@@ -1,5 +1,9 @@
 package app.exceptions;
 
+import app.exceptions.authError.EmailAlreadyRegisteredException;
+import app.exceptions.authError.JwtAuthenticationException;
+import app.exceptions.authError.UsernameIsTakenException;
+import app.exceptions.userNotFound.UserNotFoundException;
 import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.util.UrlUtils;
@@ -39,6 +43,12 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong login or password. Please try again.");
+    }
+
+    @ExceptionHandler({UserNotFoundException.class})
+    public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "User with id: " + ex.getMessage() + " not Found");
     }
 
     @Getter

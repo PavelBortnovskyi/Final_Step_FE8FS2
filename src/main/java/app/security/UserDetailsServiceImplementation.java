@@ -1,6 +1,6 @@
 package app.security;
 
-import app.exceptions.EmailNotFoundException;
+import app.exceptions.authError.EmailNotFoundException;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;

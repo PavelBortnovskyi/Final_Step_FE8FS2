@@ -1,4 +1,4 @@
-package app.exceptions;
+package app.exceptions.authError;
 
 public class UsernameIsTakenException extends AuthErrorException {
     public UsernameIsTakenException(String message) {

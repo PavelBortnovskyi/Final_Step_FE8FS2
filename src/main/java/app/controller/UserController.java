@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.dto.rs.UserModelResponse;
+import app.exceptions.userNotFound.UserNotFoundException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
 import app.service.UserModelService;
@@ -28,16 +29,16 @@ public class UserController {
     public ResponseEntity<UserModelResponse> getUserById(@PathVariable(name = "userId") Long userId) {
         Optional<UserModel> userModel = userModelService.getUser(userId);
         return userModel.map(model -> ResponseEntity.ok(userModelFacade.convertToDto(model)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
     }
 
 
     @GetMapping("profile")
     public ResponseEntity<UserModelResponse> getUser(HttpServletRequest httpRequest) {
-        Long id = (Long) httpRequest.getAttribute("userId");
-        Optional<UserModel> userModel = userModelService.getUser(id);
+        Long userId = (Long) httpRequest.getAttribute("userId");
+        Optional<UserModel> userModel = userModelService.getUser(userId);
         return userModel.map(model -> ResponseEntity.ok(userModelFacade.convertToDto(model)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
     }
 
 

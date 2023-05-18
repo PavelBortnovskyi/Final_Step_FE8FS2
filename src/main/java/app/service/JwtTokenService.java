@@ -1,8 +1,8 @@
 package app.service;
 
 import app.enums.TokenType;
-import app.exceptions.AuthErrorException;
-import app.exceptions.JwtAuthenticationException;
+import app.exceptions.authError.AuthErrorException;
+import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
 import app.repository.UserModelRepository;
 import io.jsonwebtoken.*;
