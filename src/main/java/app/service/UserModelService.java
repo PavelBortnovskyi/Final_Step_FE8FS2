@@ -36,7 +36,8 @@ public class UserModelService extends GeneralService<UserModel> {
 
   @Transactional
   public void subscribe(Long userCurrentId, Long userToFollowingId) {
-    if (userToFollowingId == null || Objects.equals(userCurrentId, userToFollowingId)) throw new UserIncorrectIdException(userToFollowingId);
+    if (userToFollowingId == null || Objects.equals(userCurrentId, userToFollowingId))
+      throw new UserIncorrectIdException(userToFollowingId);
     UserModel userCurrent = this.getUser(userCurrentId).orElseThrow(() -> new UserNotFoundException(userCurrentId));
     UserModel userToFollowing = this.getUser(userToFollowingId).orElseThrow(() -> new UserNotFoundException(userToFollowingId));
     userCurrent.getFollowings().add(userToFollowing);

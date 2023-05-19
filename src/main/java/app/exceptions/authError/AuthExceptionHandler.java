@@ -1,7 +1,6 @@
 package app.exceptions.authError;
 
 import app.exceptions.ErrorInfo;
-
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
