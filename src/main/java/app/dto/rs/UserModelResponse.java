@@ -16,7 +16,7 @@ public class UserModelResponse {
   private String fullName;
 
   private String userTag;
-  
+
   private String email;
 
   private LocalDate birthdate;
