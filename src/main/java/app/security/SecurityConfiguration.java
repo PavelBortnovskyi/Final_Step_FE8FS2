@@ -52,6 +52,7 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/login").permitAll()
       .antMatchers("/api/v1/auth/logout").permitAll()
       .antMatchers("/test/id").authenticated()
+      .antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
       .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
 

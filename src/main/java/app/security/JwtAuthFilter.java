@@ -92,7 +92,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/v2/api-docs", requestMethod),
       new AntPathRequestMatcher("/h2-console/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod)
+      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
+      //new AntPathRequestMatcher("/tweet/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
