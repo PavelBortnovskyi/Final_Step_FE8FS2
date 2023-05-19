@@ -1,9 +1,10 @@
 package app.exceptions.authError;
 
-import app.exceptions.AppError;
+import app.exceptions.UnAuthorizedException;
 
-public class AuthErrorException extends AppError {
+public class AuthErrorException extends UnAuthorizedException {
   public AuthErrorException(String message) {
-    super(message);
+
+    super("Authorization error. " + message);
   }
 }

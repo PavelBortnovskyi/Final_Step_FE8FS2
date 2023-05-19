@@ -1,7 +1,10 @@
 package app.exceptions.authError;
 
-public class EmailAlreadyRegisteredException extends AuthErrorException {
+import app.exceptions.BadRequestException;
+
+public class EmailAlreadyRegisteredException extends BadRequestException {
   public EmailAlreadyRegisteredException(String message) {
-    super(message);
+
+    super("This email is already registered. Please choose another one." + message);
   }
 }

@@ -1,7 +1,10 @@
 package app.exceptions.authError;
 
-public class UsernameIsTakenException extends AuthErrorException {
+import app.exceptions.BadRequestException;
+
+public class UsernameIsTakenException extends BadRequestException {
   public UsernameIsTakenException(String message) {
-    super(message);
+
+    super("This username is already registered. Please choose another one." + message);
   }
 }
