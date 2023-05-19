@@ -1,6 +1,6 @@
 package app.exceptions.tweetError;
 
-import app.exceptions.BadRequestException;
+import app.exceptions.httpError.BadRequestException;
 
 public class TweetIsNotFoundException extends BadRequestException {
   public TweetIsNotFoundException(String message) {

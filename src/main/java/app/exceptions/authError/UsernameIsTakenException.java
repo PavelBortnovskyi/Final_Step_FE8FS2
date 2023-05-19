@@ -1,6 +1,6 @@
 package app.exceptions.authError;
 
-import app.exceptions.BadRequestException;
+import app.exceptions.httpError.BadRequestException;
 
 public class UsernameIsTakenException extends BadRequestException {
   public UsernameIsTakenException(String message) {

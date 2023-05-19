@@ -1,7 +1,7 @@
 package app.exceptions.chatError;
 
 
-import app.exceptions.BadRequestException;
+import app.exceptions.httpError.BadRequestException;
 
 public class ChatNotFoundException extends BadRequestException {
   public ChatNotFoundException(String message) {

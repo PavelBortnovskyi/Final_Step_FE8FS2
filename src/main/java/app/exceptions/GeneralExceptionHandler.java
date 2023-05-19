@@ -1,5 +1,7 @@
 package app.exceptions;
 
+import app.exceptions.httpError.BadRequestException;
+import app.exceptions.httpError.UnAuthorizedException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
