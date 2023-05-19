@@ -1,5 +1,8 @@
 package app.security;
 
+import app.exceptions.FilterExceptionHandler;
+import app.exceptions.GeneralExceptionHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +28,9 @@ public class SecurityConfiguration {
   private JwtAuthFilter jwtAuthFilter;
 
   @Autowired
+  private FilterExceptionHandler filterExceptionHandler;
+
+  @Autowired
   @Qualifier("delegatedAuthenticationEntryPoint")
   AuthenticationEntryPoint authEntryPoint;
 
@@ -47,13 +53,18 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/logout").permitAll()
       .antMatchers("/test/id").authenticated()
       .antMatchers("/user/**").authenticated()
+      .antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
       .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
 
+    //JWT token authentication
     httpSec.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+    //Filter for interception of JwtAuthenticationException from jwtAuthFilter
+    httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
 
     return httpSec.build();
   }
