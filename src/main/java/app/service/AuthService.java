@@ -115,7 +115,7 @@ public class AuthService {
     return "User with Id: " + userId + " logged out";
   }
 
-  private <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
+  public  <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
     Set<ConstraintViolation<T>> violations = validator.validate(request, marker);
     //Validation results handling
     if (!violations.isEmpty()) {
