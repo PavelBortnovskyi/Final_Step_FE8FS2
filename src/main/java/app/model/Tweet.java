@@ -4,7 +4,6 @@ import app.enums.TweetType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
@@ -38,8 +36,8 @@ public class Tweet extends BaseEntityModel {
   private UserModel user;
 
   @ManyToOne
-  @JoinColumn(name = "parent_tweet_id")
-  private Tweet parentTweetId;
+  @JoinColumn(name = "parent_tweet")
+  private Tweet parentTweet;
 
   @OneToMany(mappedBy = "tweet")
   @OnDelete(action = OnDeleteAction.CASCADE)
@@ -51,4 +49,15 @@ public class Tweet extends BaseEntityModel {
 
   @OneToMany(mappedBy = "tweet")
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
+
+  @Column(name = "count_likes")
+  private Integer countLikes;
+
+  @Column(name = "count_retweets")
+  private Integer countRetweets;
+
+  @Column(name = "count_reply")
+  private Integer countReply;
+
+
 }
