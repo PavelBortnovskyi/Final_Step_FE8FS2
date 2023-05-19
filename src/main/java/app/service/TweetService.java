@@ -22,7 +22,10 @@ public class TweetService extends GeneralService<Tweet> {
 
   public void addLikeToTweet(Long userId, long tweetId){
     Optional<Tweet> tweet = tweetModelRepository.findById(tweetId);
-
+    if (tweet.isPresent()) {
+      Tweet newTweet = tweet.get();
+      newTweet.setCountLikes(newTweet.getCountLikes() + 1);
+    }
   }
   public void deleteTweet(Long tweetId) {
     this.tweetModelRepository.deleteById(tweetId);
@@ -55,6 +58,12 @@ public class TweetService extends GeneralService<Tweet> {
     Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
     return followingUsers.stream()
       .flatMap(u -> tweetModelRepository.getAllByUser((UserModel) u).stream())
+      .collect(Collectors.toList());
+  }
+
+  public List<Tweet> getUserTweets(Long userId){
+    Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
+    return tweetModelRepository.getAllByUserId(userId).stream()
       .collect(Collectors.toList());
   }
 

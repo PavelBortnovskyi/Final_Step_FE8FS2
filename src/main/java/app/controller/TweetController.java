@@ -32,7 +32,7 @@ public class TweetController {
   private final TweetFacade tweetFacade;
 
 
-
+  //get tweet by id (don`t need token)
   @GetMapping("{id}")
   public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id) {
     Optional<Tweet> tweet = tweetService.findById(id);
@@ -44,6 +44,7 @@ public class TweetController {
       .orElseThrow(() -> new TweetIsNotFoundException(id.toString()));
   }
 
+  //delete tweet by id
   @GetMapping("/delete/{id}")
   public void deleteTweet(@PathVariable String id, HttpServletRequest request){
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
@@ -52,6 +53,7 @@ public class TweetController {
     }
   }
 
+  //update tweet
   @PostMapping(path ="/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> updateTweet(@PathVariable String id, @RequestBody TweetRequest tweetRequest){
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
@@ -62,20 +64,32 @@ public class TweetController {
     return null;
   }
 
-  @PostMapping("/add")
+  //create new tweet
+  @PostMapping("/create")
   public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
   }
 
-
-  @GetMapping("/get_tweet_for/{id}")
-  public Optional<List<ResponseEntity<TweetResponse>>> getAllTweet(@PathVariable(name = "id") Long id) {
+  //get List tweets following users
+  @GetMapping("/get_following_tweets/{id}")
+  public Optional<List<ResponseEntity<TweetResponse>>> getAllTweets(@PathVariable(name = "id") Long id) {
     return Optional.ofNullable(Optional.ofNullable(tweetService.allUserFollowingTweet(id))
       .map(models -> models.stream()
         .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
         .collect(Collectors.toList()))
       .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
   }
+
+  // get user tweets
+  @GetMapping("/get_tweets/{id}")
+  public Optional<List<ResponseEntity<TweetResponse>>> getUserTweets(@PathVariable(name = "id") Long id) {
+    return Optional.ofNullable(Optional.ofNullable(tweetService.getUserTweets(id))
+      .map(models -> models.stream()
+        .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
+        .collect(Collectors.toList()))
+      .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
+  }
+
 
   @PostMapping("/add_like/{id}")
   public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request){
