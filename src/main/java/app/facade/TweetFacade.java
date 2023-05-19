@@ -5,9 +5,9 @@ import app.dto.rs.TweetResponse;
 import app.model.Tweet;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.Mapping;
 
 import javax.annotation.PostConstruct;
+
 @NoArgsConstructor
 @Component
 public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
