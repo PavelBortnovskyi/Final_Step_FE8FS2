@@ -1,6 +1,5 @@
 package app.dto.rq;
 
-import app.annotations.New;
 import app.model.Chat;
 import app.model.UserModel;
 import lombok.Data;

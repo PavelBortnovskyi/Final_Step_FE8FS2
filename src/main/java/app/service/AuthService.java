@@ -4,8 +4,8 @@ import app.annotations.Existed;
 import app.annotations.New;
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
-import app.exceptions.AuthErrorException;
-import app.exceptions.EmailAlreadyRegisteredException;
+import app.exceptions.authError.AuthErrorException;
+import app.exceptions.authError.EmailAlreadyRegisteredException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
 import lombok.RequiredArgsConstructor;
@@ -115,7 +115,7 @@ public class AuthService {
     return "User with Id: " + userId + " logged out";
   }
 
-  public  <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
+  public <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
     Set<ConstraintViolation<T>> violations = validator.validate(request, marker);
     //Validation results handling
     if (!violations.isEmpty()) {

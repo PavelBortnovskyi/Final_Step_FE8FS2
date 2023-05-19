@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TweetModelRepository extends RepositoryInterface<Tweet>{
-    void deleteById(Long id);
-    List<Tweet> getAllByUserId(Long id);
-    List<Tweet> getAllByUser(UserModel user);
+public interface TweetModelRepository extends RepositoryInterface<Tweet> {
+  void deleteById(Long id);
 
-    @Query(value = "SELECT u FROM UserModel u where u.followings = :followed_id")
-    Optional<List<UserModel>> userFollowings(@Param("followed_id") Long userId);
+  List<Tweet> getAllByUserId(Long id);
+
+  List<Tweet> getAllByUser(UserModel user);
+
+  @Query(value = "SELECT u FROM UserModel u where u.followings = :followed_id")
+  Optional<List<UserModel>> userFollowings(@Param("followed_id") Long userId);
 
 }

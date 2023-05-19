@@ -1,22 +1,11 @@
 package app.service;
 
 import app.enums.TokenType;
-import app.exceptions.AuthErrorException;
-import app.exceptions.JwtAuthenticationException;
+import app.exceptions.authError.AuthErrorException;
+import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
 import app.repository.UserModelRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.CompressionException;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.InvalidClaimException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.RequiredArgsConstructor;
+import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -199,7 +188,7 @@ public class JwtTokenService {
   /**
    * Method returns optional of user id from request with JWT Access token
    */
-  public Optional<Long> getIdFromRequest(HttpServletRequest request){
+  public Optional<Long> getIdFromRequest(HttpServletRequest request) {
     return this.extractTokenFromRequest(request)
       .flatMap(t -> this.extractClaimsFromToken(t, TokenType.ACCESS))
       .flatMap(this::extractIdFromClaims);
@@ -232,7 +221,7 @@ public class JwtTokenService {
   public Authentication getAuthentication(String accessToken) {
     UserDetails userDetails = this.userDetailsService
       .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
-        .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
+          .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
         .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }

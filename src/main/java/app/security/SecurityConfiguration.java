@@ -1,8 +1,6 @@
 package app.security;
 
 import app.exceptions.FilterExceptionHandler;
-import app.exceptions.GeneralExceptionHandler;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,6 +50,7 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/login").permitAll()
       .antMatchers("/api/v1/auth/logout").permitAll()
       .antMatchers("/test/id").authenticated()
+      .antMatchers("/user/**").authenticated()
       .antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
       .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);

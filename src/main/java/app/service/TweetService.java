@@ -1,11 +1,10 @@
 package app.service;
 
 import app.dto.rq.TweetRequest;
-import app.exceptions.TweetIsNotFoundException;
+import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
-import app.repository.UserModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +19,20 @@ public class TweetService extends GeneralService<Tweet> {
   private final TweetModelRepository tweetModelRepository;
   private final UserModelService userModelService;
 
-  public void addLikeToTweet(Long userId, long tweetId){
+  public void addLikeToTweet(Long userId, long tweetId) {
     Optional<Tweet> tweet = tweetModelRepository.findById(tweetId);
     if (tweet.isPresent()) {
       Tweet newTweet = tweet.get();
       newTweet.setCountLikes(newTweet.getCountLikes() + 1);
     }
   }
+
   public void deleteTweet(Long tweetId) {
     this.tweetModelRepository.deleteById(tweetId);
     new TweetIsNotFoundException(String.format("Tweet: %d, has been deleted", tweetId));
   }
 
-  public Tweet createTweet(TweetRequest tweetRequest, HttpServletRequest request){
+  public Tweet createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
@@ -44,6 +44,7 @@ public class TweetService extends GeneralService<Tweet> {
     Tweet savedTweet = tweetModelRepository.save(tweet);
     return savedTweet;
   }
+
   public Optional<Tweet> update(Tweet tweetRequest) {
     Optional<Tweet> tweet = tweetModelRepository.findById(tweetRequest.getId());
     if (tweet.isPresent()) {
@@ -54,14 +55,14 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
-  public List<Tweet> allUserFollowingTweet(Long userId){
+  public List<Tweet> allUserFollowingTweet(Long userId) {
     Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
     return followingUsers.stream()
       .flatMap(u -> tweetModelRepository.getAllByUser((UserModel) u).stream())
       .collect(Collectors.toList());
   }
 
-  public List<Tweet> getUserTweets(Long userId){
+  public List<Tweet> getUserTweets(Long userId) {
     Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
     return tweetModelRepository.getAllByUserId(userId).stream()
       .collect(Collectors.toList());

@@ -1,8 +1,8 @@
 package app.dto.rs;
 
-import app.dto.rq.TweetRequest;
-import app.model.*;
+import app.model.Tweet;
 import lombok.Data;
+
 import java.util.Set;
 
 @Data

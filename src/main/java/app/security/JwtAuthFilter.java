@@ -1,7 +1,7 @@
 package app.security;
 
 import app.enums.TokenType;
-import app.exceptions.JwtAuthenticationException;
+import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
