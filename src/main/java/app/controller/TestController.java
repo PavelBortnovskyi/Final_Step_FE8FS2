@@ -24,22 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
-    private final UserModelService userService;
+  private final UserModelService userService;
 
-    private final PasswordEncoder encoder;
+  private final PasswordEncoder encoder;
 
-    private final JwtTokenService jwtTokenService;
+  private final JwtTokenService jwtTokenService;
 
-    private final AuthenticationManager authenticationManager;
+  private final AuthenticationManager authenticationManager;
 
-    @PostMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> extractId(@RequestBody UserModelRequest loginRequest) {
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+  @PostMapping(value = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> extractId(@RequestBody UserModelRequest loginRequest) {
+    Authentication authentication = authenticationManager
+      .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        JwtUserDetails jwt = (JwtUserDetails) authentication.getDetails();
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    JwtUserDetails jwt = (JwtUserDetails) authentication.getDetails();
 
-        return ResponseEntity.ok(jwt.getId().toString());
-    }
+    return ResponseEntity.ok(jwt.getId().toString());
+  }
 }

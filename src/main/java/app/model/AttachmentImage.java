@@ -13,10 +13,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 public class AttachmentImage extends BaseEntityModel {
-    @ManyToOne
-    @JoinColumn(name = "tweet_id")
-    private Tweet tweet;
+  @ManyToOne
+  @JoinColumn(name = "tweet_id")
+  private Tweet tweet;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+  @Column(name = "img_url")
+  private String imgUrl;
 }

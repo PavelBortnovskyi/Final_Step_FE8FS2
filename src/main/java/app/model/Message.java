@@ -15,17 +15,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class Message extends BaseEntityModel {
-    @ManyToOne
-    @JoinColumn(name = "chat_id")
-    private Chat chat;
+  @ManyToOne
+  @JoinColumn(name = "chat_id")
+  private Chat chat;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserModel user;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private UserModel user;
 
-    @Column(name = "body")
-    private String body;
+  @Column(name = "body")
+  private String body;
 
-    @Column(name = "sent_at")
-    private LocalDateTime sent;
+  @Column(name = "sent_at")
+  private LocalDateTime sent;
 }

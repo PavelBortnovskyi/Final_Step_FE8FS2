@@ -17,20 +17,20 @@ import java.util.HashMap;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final AuthService authService;
+  private final AuthService authService;
 
-    @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody UserModelRequest loginDTO) {
-        return this.authService.makeLogin(loginDTO);
-    }
+  @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody UserModelRequest loginDTO) {
+    return this.authService.makeLogin(loginDTO);
+  }
 
-    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody UserModelRequest signUpDTO) {
-        return this.authService.makeSighUp(signUpDTO);
-    }
+  @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody UserModelRequest signUpDTO) {
+    return this.authService.makeSighUp(signUpDTO);
+  }
 
-    @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> handleLogout(HttpServletRequest request) {
-        return ResponseEntity.ok(this.authService.makeLogOut((Long) request.getAttribute("userId")));
-    }
+  @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> handleLogout(HttpServletRequest request) {
+    return ResponseEntity.ok(this.authService.makeLogOut((Long) request.getAttribute("userId")));
+  }
 }

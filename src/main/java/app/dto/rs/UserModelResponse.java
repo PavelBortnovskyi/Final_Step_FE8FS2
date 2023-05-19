@@ -18,52 +18,52 @@ import java.time.LocalDate;
 @Data
 public class UserModelResponse {
 
-    @Null(groups = {New.class})
-    @NotNull(groups = {Existed.class})
-    @JsonView({Details.class})
-    private Long id;
+  @Null(groups = {New.class})
+  @NotNull(groups = {Existed.class})
+  @JsonView({Details.class})
+  private Long id;
 
-    @NotNull(groups = {Existed.class, New.class})
-    @JsonView({Details.class})
-    private String fullName;
+  @NotNull(groups = {Existed.class, New.class})
+  @JsonView({Details.class})
+  private String fullName;
 
-    @NotNull(groups = {Existed.class, New.class})
-    @JsonView({Details.class})
-    private String userTag;
+  @NotNull(groups = {Existed.class, New.class})
+  @JsonView({Details.class})
+  private String userTag;
 
-    @NotNull(groups = {Existed.class, New.class})
-    @Email(groups = {Existed.class, New.class})
-    @JsonView({Details.class})
-    private String email;
+  @NotNull(groups = {Existed.class, New.class})
+  @Email(groups = {Existed.class, New.class})
+  @JsonView({Details.class})
+  private String email;
 
-    @NotNull(groups = {Existed.class, New.class})
-    @JsonView({Details.class})
-    private LocalDate birthdate;
+  @NotNull(groups = {Existed.class, New.class})
+  @JsonView({Details.class})
+  private LocalDate birthdate;
 
-    @Null(groups = {New.class})
-    @JsonView({Details.class})
-    private String bio;
+  @Null(groups = {New.class})
+  @JsonView({Details.class})
+  private String bio;
 
-    @Null(groups = {New.class})
-    private String location;
+  @Null(groups = {New.class})
+  private String location;
 
-    @Null(groups = {New.class})
-    @NotNull(groups = {Existed.class})
-    @JsonView({Details.class})
-    private String avatarImgUrl;
+  @Null(groups = {New.class})
+  @NotNull(groups = {Existed.class})
+  @JsonView({Details.class})
+  private String avatarImgUrl;
 
-    @Null(groups = {New.class})
-    @NotNull(groups = {Existed.class})
-    @JsonView({Details.class})
-    private String headerImgUrl;
+  @Null(groups = {New.class})
+  @NotNull(groups = {Existed.class})
+  @JsonView({Details.class})
+  private String headerImgUrl;
 
-    @NotNull(groups = {Existed.class, New.class})
-    @JsonView({Details.class})
-    private boolean isVerified;
+  @NotNull(groups = {Existed.class, New.class})
+  @JsonView({Details.class})
+  private boolean isVerified;
 
-    @Null(groups = {New.class})
-    private Integer countUserFollowers;
+  @Null(groups = {New.class})
+  private Integer countUserFollowers;
 
-    @Null(groups = {New.class})
-    private Integer countUserFollowings;
+  @Null(groups = {New.class})
+  private Integer countUserFollowings;
 }
