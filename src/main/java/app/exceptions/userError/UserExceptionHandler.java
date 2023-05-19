@@ -12,16 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(UserNotFoundException.class)
+  @ExceptionHandler(UserBadRequest.class)
   public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "User with id: " + ex.getMessage() + " not Found");
-  }
-
-  @ExceptionHandler(UserIncorrectIdException.class)
-  public ErrorInfo handleIncorrectIdException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Incorrect user id: " + ex.getMessage());
+    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
 }

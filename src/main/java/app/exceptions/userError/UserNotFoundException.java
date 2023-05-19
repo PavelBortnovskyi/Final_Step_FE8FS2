@@ -1,9 +1,7 @@
 package app.exceptions.userError;
 
-import app.exceptions.AppError;
-
-public class UserNotFoundException extends AppError {
+public class UserNotFoundException extends UserBadRequest {
   public UserNotFoundException(Long id) {
-    super(id.toString());
+    super("User not found id: " + id.toString());
   }
 }

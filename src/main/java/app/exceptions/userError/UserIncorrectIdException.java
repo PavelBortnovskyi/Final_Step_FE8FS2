@@ -1,9 +1,7 @@
 package app.exceptions.userError;
 
-import app.exceptions.AppError;
-
-public class UserIncorrectIdException extends AppError {
+public class UserIncorrectIdException extends UserBadRequest {
   public UserIncorrectIdException(Long id) {
-    super(id.toString());
+    super("Incorrect user id: " + id.toString());
   }
 }
