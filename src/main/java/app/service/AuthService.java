@@ -17,11 +17,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.Set;
 
 @Log4j2
 @Service
@@ -35,8 +32,6 @@ public class AuthService {
   private final UserModelFacade userModelFacade;
 
   private final UserModelService userModelService;
-
-  private final Validator validator;
 
   private final PasswordEncoder encoder;
 
