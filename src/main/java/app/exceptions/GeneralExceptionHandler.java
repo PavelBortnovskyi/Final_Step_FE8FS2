@@ -1,5 +1,7 @@
 package app.exceptions;
 
+import app.exceptions.httpError.BadRequestException;
+import app.exceptions.httpError.UnAuthorizedException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -13,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Main exception handler
@@ -23,29 +24,19 @@ import java.io.IOException;
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({EmailAlreadyRegisteredException.class})
-  @ResponseBody
-  public ErrorInfo handleSignUpException(RuntimeException ex,HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    log.error("Email already taken");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-  }
-
-  @ExceptionHandler({UsernameIsTakenException.class})
-  @ResponseBody
-  public ErrorInfo handleSignUpException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    log.error("Username already taken");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-  }
-
-  @ExceptionHandler({JwtAuthenticationException.class})
-  @ResponseBody
-  public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  @ExceptionHandler(UnAuthorizedException.class)
+  public ErrorInfo handleLoginException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    log.error("JWT token empty or invalid!");
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
+
+  @ExceptionHandler(BadRequestException.class)
+  public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+  }
+
+  // -------- SPRING ---------
 
   @ExceptionHandler({AuthenticationException.class})
   @ResponseBody
@@ -63,12 +54,5 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong request dto. Field validation failed!: " + ex.getMessage());
   }
 
-  @ExceptionHandler({ChatNotFoundException.class})
-  @ResponseBody
-  public ErrorInfo handleWebSocketException2(MethodArgumentNotValidException ex, HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    log.error(ex.getMessage());
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-  }
 }
 

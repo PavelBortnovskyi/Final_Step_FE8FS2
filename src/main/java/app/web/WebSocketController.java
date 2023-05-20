@@ -3,7 +3,7 @@ package app.web;
 import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
-import app.exceptions.ChatNotFoundException;
+import app.exceptions.chatError.ChatNotFoundException;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.ChatService;
@@ -36,7 +36,7 @@ public class WebSocketController {
 
   @MessageMapping("/v1/message")
   @SendTo("/topic/chats")
-  public MessageResponse processChatMessage(@Payload @Valid MessageRequest messageDtoReq) {
+  public MessageResponse processChatMessage(@Payload @Valid MessageRequest messageDtoReq) throws ChatNotFoundException {
     this.chatService.findById(messageDtoReq.getChat().getId())
       .map(chat -> {
         this.userModelService.getUser(messageDtoReq.getUser().getId())

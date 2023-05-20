@@ -2,11 +2,9 @@ package app.controller;
 
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
-import app.enums.TweetType;
-import app.exceptions.TweetIsNotFoundException;
+import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.facade.TweetFacade;
 import app.model.Tweet;
-import app.model.UserModel;
 import app.service.TweetService;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -46,7 +45,7 @@ public class TweetController {
 
   //delete tweet by id
   @GetMapping("/delete/{id}")
-  public void deleteTweet(@PathVariable String id, HttpServletRequest request){
+  public void deleteTweet(@PathVariable String id, HttpServletRequest request) {
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
     if (tweet.isPresent() && tweet.get().getUser().getId().equals(request.getAttribute("userId"))) {
       tweetService.deleteTweet(Long.valueOf(id));
@@ -54,10 +53,10 @@ public class TweetController {
   }
 
   //update tweet
-  @PostMapping(path ="/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> updateTweet(@PathVariable String id, @RequestBody TweetRequest tweetRequest){
+  @PostMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> updateTweet(@PathVariable String id, @RequestBody TweetRequest tweetRequest) {
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
-    if (tweet.isPresent()){
+    if (tweet.isPresent()) {
       this.tweetService.update(this.tweetFacade.convertToEntity(tweetRequest));
       return ResponseEntity.ok("response");
     }
@@ -92,7 +91,7 @@ public class TweetController {
 
 
   @PostMapping("/add_like/{id}")
-  public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request){
+  public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request) {
     tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
   }
 

@@ -1,5 +1,6 @@
 package app.exceptions;
 
+import app.exceptions.authError.JwtAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

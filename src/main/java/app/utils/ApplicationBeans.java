@@ -3,9 +3,6 @@ package app.utils;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.facade.UserModelFacade;
-import app.model.UserModel;
-import app.repository.UserModelRepository;
-import app.service.UserModelService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,7 +56,7 @@ public class ApplicationBeans {
   }
 
   @Bean
-  public ObjectMapper getObjectMapper(){
+  public ObjectMapper getObjectMapper() {
     return new ObjectMapper();
   }
 //

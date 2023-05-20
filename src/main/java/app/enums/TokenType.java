@@ -1,7 +1,6 @@
 package app.enums;
 
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 public enum TokenType {

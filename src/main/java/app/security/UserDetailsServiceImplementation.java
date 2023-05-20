@@ -1,7 +1,6 @@
-
 package app.security;
 
-import app.exceptions.EmailNotFoundException;
+import app.exceptions.authError.EmailNotFoundException;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
 
   /**
    * Method returns User Details object for Spring Security authentication procedure using user email as login parameter
+   *
    * @throws UsernameNotFoundException
    */
   @Override

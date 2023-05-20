@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import lombok.Data;
 
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Null;
