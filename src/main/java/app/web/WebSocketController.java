@@ -52,7 +52,12 @@ public class WebSocketController {
   @MessageMapping("/v1/notifications")
   @SendTo("/specific")
   public void processPrivateNotification(@Payload @Valid NotificationRequest notificationDtoReq) {
-    this.template.convertAndSendToUser(notificationDtoReq.getReceiverUser().getEmail(), "/specific", notificationDtoReq);
-    this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
+    this.userModelService.getUser(notificationDtoReq.getReceiverUser().getId())
+      .map(user -> {
+        this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
+        this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
+        return user;
+      })
+      .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUser().getId()));
   }
 }

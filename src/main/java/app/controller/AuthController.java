@@ -1,12 +1,18 @@
 package app.controller;
 
+import app.annotations.Views;
 import app.dto.rq.UserModelRequest;
 import app.service.AuthService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -20,12 +26,12 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody UserModelRequest loginDTO) {
+  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Views.Login.class) UserModelRequest loginDTO) {
     return this.authService.makeLogin(loginDTO);
   }
 
   @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody UserModelRequest signUpDTO) {
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Views.Register.class) UserModelRequest signUpDTO) {
     return this.authService.makeSighUp(signUpDTO);
   }
 
