@@ -17,5 +17,4 @@ public class TweetResponse {
   private Integer countRetweets;
   private Integer countReply;
   private Tweet parentTweet;
-
 }
