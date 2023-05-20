@@ -82,14 +82,6 @@ public class UserModel extends BaseEntityModel {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<TweetAction> tweetAction;
 
-  public boolean isVerified() {
-    return this.isVerified;
-  }
-
-  public void setVerified(boolean isVerified) {
-    this.isVerified = isVerified;
-  }
-
   public Integer getCountFollowers() {
     return followers.size();
   }
