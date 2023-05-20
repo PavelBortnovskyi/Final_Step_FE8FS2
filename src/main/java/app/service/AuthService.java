@@ -1,7 +1,5 @@
 package app.service;
 
-import app.annotations.Existed;
-import app.annotations.New;
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
@@ -43,13 +41,6 @@ public class AuthService {
   private final PasswordEncoder encoder;
 
   public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
-    //RequestDTO validation according to UserDTOValidator settings
-    ResponseEntity<HashMap<String, String>> validationResult = this.getValidation(loginDTO, Existed.class);
-    if (validationResult.getStatusCode().isError()) {
-      log.error("Validation error during login!");
-      return validationResult;
-    }
-
     //Auth procedure handling
     Authentication authentication = authenticationManager
       .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
@@ -79,13 +70,6 @@ public class AuthService {
   }
 
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
-    //RequestDTO validation according to UserDTOValidator settings
-    ResponseEntity<HashMap<String, String>> validationResult = this.getValidation(signUpDTO, New.class);
-    if (validationResult.getStatusCode().isError()) {
-      log.error("Validation error during sign up!");
-      return validationResult;
-    }
-
     //Email duplicate checking
     if (this.userModelService.checkEmail(signUpDTO.getEmail()))
       throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
@@ -113,19 +97,5 @@ public class AuthService {
     this.jwtTokenService.changeTokenStatus(userId, true);
     log.info("User id: " + userId + " logged out");
     return "User with Id: " + userId + " logged out";
-  }
-
-  public <T> ResponseEntity<HashMap<String, String>> getValidation(T request, Class<?>... marker) {
-    Set<ConstraintViolation<T>> violations = validator.validate(request, marker);
-    //Validation results handling
-    if (!violations.isEmpty()) {
-      HashMap<String, String> errorResponse = new HashMap<>();
-      for (ConstraintViolation<T> violation : violations) {
-        errorResponse.put("field_validation_error", violation.getMessage());
-      }
-      return ResponseEntity.badRequest().body(errorResponse);
-    } else return ResponseEntity.ok().body(new HashMap<>() {{
-      put("field_validation", "Data is valid");
-    }});
   }
 }

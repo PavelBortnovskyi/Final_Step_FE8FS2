@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
 /**
  * Main exception handler
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(UnAuthorizedException.class)
-  public ErrorInfo handleLoginException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
@@ -40,15 +41,15 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({AuthenticationException.class})
   @ResponseBody
-  public ErrorInfo handleAuthException2(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     log.error("Wrong login or password!");
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
-  @ExceptionHandler({MethodArgumentNotValidException.class})
+  @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
   @ResponseBody
-  public ErrorInfo handleWebSocketException(MethodArgumentNotValidException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleValidation(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     log.error("Wrong request dto. Field validation failed!");
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong request dto. Field validation failed!: " + ex.getMessage());
