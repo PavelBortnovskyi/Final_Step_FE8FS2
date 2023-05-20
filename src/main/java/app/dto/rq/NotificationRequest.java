@@ -1,6 +1,5 @@
 package app.dto.rq;
 
-import app.annotations.New;
 import app.enums.NotificationType;
 import app.model.Tweet;
 import app.model.UserModel;
