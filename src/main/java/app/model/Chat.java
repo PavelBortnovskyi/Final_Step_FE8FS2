@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,9 +22,9 @@ public class Chat extends BaseEntityModel {
   private UserModel initiatorUser;
 
   @OneToMany(mappedBy = "chat")
-  private List<Message> messages;
+  private List<Message> messages = new ArrayList<>();
 
-  @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
   private Set<UserModel> users = new HashSet<>();

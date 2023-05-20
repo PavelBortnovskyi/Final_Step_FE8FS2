@@ -1,5 +1,6 @@
 package app.utils;
 
+import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.facade.UserModelFacade;
@@ -48,6 +49,11 @@ public class ApplicationBeans {
   @Bean
   public MessageFacade getMessageFacade() {
     return new MessageFacade();
+  }
+
+  @Bean
+  public ChatFacade getChatFacade() {
+    return new ChatFacade();
   }
 
   @Bean

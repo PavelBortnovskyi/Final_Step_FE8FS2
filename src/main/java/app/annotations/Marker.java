@@ -9,5 +9,6 @@ public interface Marker {
 
   interface Details{}
 
+  interface ChatDetails{}
 }
 
