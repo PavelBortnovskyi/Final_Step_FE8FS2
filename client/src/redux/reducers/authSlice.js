@@ -7,9 +7,11 @@ import { getUser } from '../thunk/getUser.js';
 
 const initialState = {
   isAuthenticated: Boolean(localStorage.getItem('accessToken')),
-  email: null,
-  fullName: null,
-  userTag: null,
+  // email: null,
+  // fullName: null,
+  // userTag: null,
+  userId: null,
+  user: {},
   isLoading: false,
   message: '',
   error: '',
@@ -27,15 +29,16 @@ export const authSlice = createSlice({
       state.error = '';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.email = action.payload.email;
-      state.fullName = action.payload.fullName;
-      state.userTag = action.payload.userTag;
-      state.message = action.payload.message;
+      // state.email = action.payload.email;
+      // state.fullName = action.payload.fullName;
+      // state.userTag = action.payload.userTag;
+      state.userId = action.payload.NEW_USER_ID;
+      state.message = action.payload?.message;
       state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
     // login
@@ -45,11 +48,12 @@ export const authSlice = createSlice({
       state.error = '';
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.userId = action.payload.LOGIN_USER_ID;
       state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
     // logout
@@ -59,15 +63,17 @@ export const authSlice = createSlice({
       state.error = '';
     });
     builder.addCase(logoutUser.fulfilled, (state, action) => {
-      state.email = null;
-      state.fullName = null;
-      state.userTag = null;
+      // state.email = null;
+      // state.fullName = null;
+      // state.userTag = null;
+      state.userId = null;
+      state.user = {};
       state.message = '';
       state.isAuthenticated = false;
       state.isLoading = false;
     });
     builder.addCase(logoutUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
     // getUser
@@ -77,15 +83,16 @@ export const authSlice = createSlice({
       state.error = '';
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
-      state.email = action.payload.email;
-      state.fullName = action.payload.fullName;
-      state.userTag = action.payload.userTag;
-      state.message = action.payload.message;
+      // state.email = action.payload.email;
+      // state.fullName = action.payload.fullName;
+      // state.userTag = action.payload.userTag;
+      state.user = action.payload;
+      state.message = action.payload?.message;
       state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(getUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
   },

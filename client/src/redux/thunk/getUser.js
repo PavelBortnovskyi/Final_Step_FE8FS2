@@ -6,7 +6,9 @@ export const getUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       // request to server if we have token in localStorage it will inject src/utils/axiosSetup into request
-      const { data } = await myAxios.get('/auth/user');
+      const { data } = await myAxios.get('/auth/user/profile');
+
+      console.log('user', data);
 
       return data;
     } catch (error) {

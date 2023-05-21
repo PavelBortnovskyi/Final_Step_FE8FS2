@@ -19,11 +19,13 @@ export const registerUser = createAsyncThunk(
 
       // if a token is received, store it in localStorage
       if (data.ACCESS_TOKEN) {
-        window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
+        await window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
 
         // get user data
         dispatch(getUser());
       }
+
+      console.log(data);
 
       return data;
     } catch (error) {
