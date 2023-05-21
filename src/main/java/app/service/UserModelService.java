@@ -2,13 +2,20 @@ package app.service;
 
 import app.exceptions.userError.IncorrectUserIdException;
 import app.exceptions.userError.UserNotFoundException;
+import app.model.Chat;
+import app.model.Message;
 import app.model.UserModel;
 import app.repository.UserModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -57,4 +64,5 @@ public class UserModelService extends GeneralService<UserModel> {
   public boolean checkEmail(String email) {
     return this.userModelRepository.findByEmail(email).isPresent();
   }
+
 }

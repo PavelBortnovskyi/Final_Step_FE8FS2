@@ -42,9 +42,13 @@ public class TestController {
   private final ChatService chatService;
 
   @PostMapping(value = "/addMessages", produces = MediaType.APPLICATION_JSON_VALUE)
-  public void extractId() {
-   this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUser(1L).get(), "Hi all!", LocalDateTime.now()));
-    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUser(2L).get(), "Hi all!", LocalDateTime.now()));
-    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUser(3L).get(), "Hi all!", LocalDateTime.now()));
+  public void extractId() throws InterruptedException {
+   this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUser(3L).get(), "Hi my friends!", LocalDateTime.now()));
+   Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUser(3L).get(), "Hi all!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUser(1L).get(), "Hello!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUser(2L).get(), "Hello Nigga!", LocalDateTime.now()));
   }
 }

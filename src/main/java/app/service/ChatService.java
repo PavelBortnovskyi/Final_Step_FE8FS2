@@ -8,9 +8,11 @@ import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -46,5 +48,27 @@ public class ChatService extends GeneralService<Chat> {
 
   public List<Message> getMessages(Long chatId, Integer pageSize, Integer pageNumber){
     return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
+  }
+
+  public List<Chat> getChatList(Long userId, Integer pageSize, Integer pageNumber) {
+    return this.chatRepository.getChatList(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
+  }
+
+  /**
+   * Method returns collection of user chats for only last message in each
+   */
+  public List<Chat> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
+    Page<Object[]> result = chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber));
+
+    List<Chat> chats = new ArrayList<>();
+    for (Object[] objects : result.getContent()) {
+      Chat chat = (Chat) objects[0];
+      Message lastMessage = (Message) objects[1];
+      chat.setMessages(new ArrayList<>() {{
+        add(lastMessage);
+      }});
+      chats.add(chat);
+    }
+    return chats;
   }
 }

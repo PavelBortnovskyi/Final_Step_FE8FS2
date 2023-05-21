@@ -1,6 +1,5 @@
 package app.repository;
 
-import app.model.Chat;
 import app.model.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

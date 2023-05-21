@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -59,6 +61,18 @@ public class ChatController {
   }
 
   @Validated({Marker.forExisted.class})
+  @GetMapping(path = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @JsonView({Marker.ChatDetails.class}) ResponseEntity<List<ChatResponse>> handleGetChatsForPreview(HttpServletRequest request,
+                                                                                                 @RequestBody @JsonView(Marker.forExisted.class)
+                                                                                                 @Valid ChatRequest chatDTO) {
+    Long currUserId = (Long) request.getAttribute("userId");
+    return ResponseEntity.ok(this.chatService.getUserChatsWithLastMessage(currUserId, chatDTO.getPageSize(), chatDTO.getPageNumber() - 1)
+      .stream()
+      .map(this.chatFacade::convertToDto)
+      .collect(Collectors.toList()));
+  }
+
+  @Validated({Marker.forExisted.class})
   @GetMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ChatResponse> handleGetChat(@PathVariable(name = "id") Long chatId,
                                                     @RequestBody @JsonView(Marker.forExisted.class)
@@ -68,8 +82,8 @@ public class ChatController {
       .filter(chat -> chat.getUsers().contains(this.userService.findById(chatDTO.getInitiatorUserId())
         .orElseThrow(() -> new UserNotFoundException(currUserId))) || chat.getInitiatorUser().getId().equals(currUserId))
       .map(chat -> {
-        chat.setMessages(this.chatService.getMessages(chatDTO.getChatId(), chatDTO.getPageSize(), chatDTO.getPageNumber()));
+        chat.setMessages(this.chatService.getMessages(chatDTO.getChatId(), chatDTO.getPageSize(), chatDTO.getPageNumber() - 1));
         return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d bot found", chatId, currUserId)))));
+      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, currUserId)))));
   }
 }
