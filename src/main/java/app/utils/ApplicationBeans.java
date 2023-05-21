@@ -56,10 +56,9 @@ public class ApplicationBeans {
   }
 
   @Bean
-  public ObjectMapper getObjectMapper(){
+  public ObjectMapper getObjectMapper() {
     return new ObjectMapper();
   }
-
 //
 //  @Profile("local")
 //  @Bean

@@ -1,7 +1,7 @@
 package app.security;
 
 import app.enums.TokenType;
-import app.exceptions.JwtAuthenticationException;
+import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
 import app.service.JwtTokenService;
 import app.service.UserModelService;
@@ -92,7 +92,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/v2/api-docs", requestMethod),
       new AntPathRequestMatcher("/h2-console/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod)
+      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
+      //new AntPathRequestMatcher("/tweet/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {

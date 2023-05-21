@@ -1,17 +1,19 @@
 package app.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -53,25 +55,17 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "token_used")
   private boolean refreshed;
 
-//  @OneToMany
-//  @JoinTable(name = "followers")
-//  private Set<UserModel> following;
-//
-//  @OneToMany
-//  @JoinTable(name = "followers")
-//  private Set<UserModel> followers;
-
-  @LazyCollection(value = LazyCollectionOption.TRUE)
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
-    inverseJoinColumns = @JoinColumn(name = "follower_id"))
-  private Set<UserModel> followers = new HashSet<>();
-
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "follower_id"),
     inverseJoinColumns = @JoinColumn(name = "followed_id"))
   private Set<UserModel> followings = new HashSet<>();
+
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
+    inverseJoinColumns = @JoinColumn(name = "follower_id"))
+  private Set<UserModel> followers = new HashSet<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Tweet> tweets = new HashSet<>();
@@ -79,22 +73,14 @@ public class UserModel extends BaseEntityModel {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Message> messages = new HashSet<>();
 
-  @OneToMany(mappedBy = "initiatorUser")
+  @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
   private Set<Chat> chat = new HashSet<>();
 
   @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
   private Set<Chat> chats = new HashSet<>();
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<TweetAction> tweetAction;
-
-  public boolean isVerified() {
-    return this.isVerified;
-  }
-
-  public void setVerified(boolean isVerified) {
-    this.isVerified = isVerified;
-  }
 
   public Integer getCountFollowers() {
     return followers.size();
@@ -103,5 +89,19 @@ public class UserModel extends BaseEntityModel {
   public Integer getCountFollowings() {
     return followings.size();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UserModel userModel = (UserModel) o;
+    return userTag.equals(userModel.userTag) && email.equals(userModel.email);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(userTag, email);
+  }
+
 }
 

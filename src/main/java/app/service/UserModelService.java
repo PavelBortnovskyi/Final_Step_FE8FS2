@@ -1,29 +1,16 @@
 package app.service;
 
-import app.annotations.Existed;
-import app.annotations.New;
-import app.dto.rq.UserModelRequest;
-import app.enums.TokenType;
-import app.exceptions.AuthErrorException;
-import app.exceptions.EmailAlreadyRegisteredException;
-import app.facade.UserModelFacade;
+import app.exceptions.userError.IncorrectIdExceptionException;
+import app.exceptions.userError.NotFoundExceptionException;
 import app.model.UserModel;
 import app.repository.UserModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Log4j2
 @Service
@@ -46,6 +33,23 @@ public class UserModelService extends GeneralService<UserModel> {
   public Optional<UserModel> getUserByToken(String refreshToken) {
     return this.userModelRepository.findByToken(refreshToken);
   }
+
+  @Transactional
+  public void subscribe(Long userCurrentId, Long userToFollowingId) {
+    if (userToFollowingId == null || Objects.equals(userCurrentId, userToFollowingId))
+      throw new IncorrectIdExceptionException(userToFollowingId);
+    UserModel userCurrent = this.getUser(userCurrentId).orElseThrow(() -> new NotFoundExceptionException(userCurrentId));
+    UserModel userToFollowing = this.getUser(userToFollowingId).orElseThrow(() -> new NotFoundExceptionException(userToFollowingId));
+    userCurrent.getFollowings().add(userToFollowing);
+  }
+
+  @Transactional
+  public void unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
+    UserModel userCurrent = this.getUser(userCurrentId).orElseThrow(() -> new NotFoundExceptionException(userCurrentId));
+    UserModel userToUnFollowing = this.getUser(userToUnFollowingId).orElseThrow(() -> new NotFoundExceptionException(userToUnFollowingId));
+    userCurrent.getFollowings().remove(userToUnFollowing);
+  }
+
 
   /**
    * Method returns true if provided email address is present in DB

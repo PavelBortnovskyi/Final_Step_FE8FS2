@@ -1,6 +1,6 @@
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 
 const ListItemButtonStyled = styled(ListItemButton)((props) => ({
@@ -20,7 +20,7 @@ const ListItemIconStyled = styled(ListItemIcon)((props) => ({
 
 export const MainMenuSidebar = ({ navElement }) => {
     return (
-        <Link href={navElement.route} underline="none" key={navElement.id}>
+        <Link to={navElement.route} underline="none" key={navElement.id} component={NavLink}>
             <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF', width: '100%' }}>
                 <ListItemButtonStyled
                     sx={{
