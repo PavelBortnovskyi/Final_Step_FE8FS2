@@ -1,9 +1,6 @@
 package app.utils;
 
-import app.facade.ChatFacade;
-import app.facade.MessageFacade;
-import app.facade.NotificationFacade;
-import app.facade.UserModelFacade;
+import app.facade.*;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,6 +51,11 @@ public class ApplicationBeans {
   @Bean
   public ChatFacade getChatFacade() {
     return new ChatFacade();
+  }
+
+  @Bean
+  public TweetFacade getTweetFacade() {
+    return new TweetFacade();
   }
 
   @Bean

@@ -4,6 +4,7 @@ import app.annotations.Marker;
 import app.dto.rq.ChatRequest;
 import app.dto.rs.ChatResponse;
 import app.exceptions.chatError.ChatNotFoundException;
+import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.facade.ChatFacade;
 import app.facade.UserModelFacade;
@@ -28,7 +29,7 @@ import java.util.HashSet;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/chat")
 @Validated
-public class СhatController {
+public class ChatController {
   private final ChatFacade chatFacade;
 
   private final UserModelFacade userFacade;
@@ -37,28 +38,26 @@ public class СhatController {
 
   private final UserModelService userService;
 
-  @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<ChatResponse> handleCreate(HttpServletRequest request) {
+  @Validated
+  @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestBody @JsonView(Marker.forNew.class)
+                                                                                           @Valid ChatRequest chatDTO,
+                                                                                           HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    UserModel currUser = this.userService.findById(currUserId).orElseThrow(() -> new UserNotFoundException(currUserId));
-    Chat freshChat = new Chat(currUser, null, new HashSet<>() {{add(currUser);}});
-    return ResponseEntity.ok(this.chatFacade.save(freshChat));
+    if (currUserId.equals(chatDTO.getInterlocutorUserId()))
+      throw new BadRequestException("Please find somebody else to chat except yourself!");
+    return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.createChat(currUserId, chatDTO.getInterlocutorUserId())));
   }
 
+  @Validated
   @PostMapping(path = "/add/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<ChatResponse> handleAdd(@PathVariable("id") Long userIdToAdd,
-                                                @RequestBody @JsonView(Marker.ChatDetails.class)
-                                                @Valid ChatRequest chatDTO,
-                                                HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    UserModel currUser = this.userService.findById(currUserId).orElseThrow(() -> new UserNotFoundException(currUserId));
-    UserModel userToAdd = this.userService.findById(userIdToAdd).orElseThrow(() -> new UserNotFoundException(userIdToAdd));
-    Chat chatToUpdate = this.chatService.findById(chatDTO.getChatId()).orElseThrow(() -> new ChatNotFoundException(""));
-    chatToUpdate.getUsers().add(userToAdd);
-    return ResponseEntity.ok(this.chatFacade.save(chatToUpdate));
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleAddUserToChat(@PathVariable("id") Long userIdToAdd,
+                                                                                              @RequestBody @JsonView(Marker.ChatDetails.class)
+                                                                                              @Valid ChatRequest chatDTO,
+                                                                                              HttpServletRequest request) {
+    return ResponseEntity.ok(this.chatFacade.save(this.chatService.addUser(userIdToAdd, chatDTO.getChatId())));
   }
 
-  //TODO: add Pageable support
   @Validated({Marker.forExisted.class})
   @GetMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ChatResponse> handleGetChat(@PathVariable(name = "id") Long chatId,
@@ -68,6 +67,9 @@ public class СhatController {
     return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.findById(chatId)
       .filter(chat -> chat.getUsers().contains(this.userService.findById(chatDTO.getInitiatorUserId())
         .orElseThrow(() -> new UserNotFoundException(currUserId))) || chat.getInitiatorUser().getId().equals(currUserId))
-      .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d bot found", chatId, currUserId)))));
+      .map(chat -> {
+        chat.setMessages(this.chatService.getMessages(chatDTO.getChatId(), chatDTO.getPageSize(), chatDTO.getPageNumber()));
+        return chat;
+      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d bot found", chatId, currUserId)))));
   }
 }

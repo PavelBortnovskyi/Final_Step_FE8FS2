@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @NoArgsConstructor
-@Component
 public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
   @PostConstruct
-
   public void init() {
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
       .addMapping(src -> src.getBody(), TweetResponse::setBody)

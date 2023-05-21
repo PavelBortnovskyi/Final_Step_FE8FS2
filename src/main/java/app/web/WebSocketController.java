@@ -4,6 +4,7 @@ import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
 import app.exceptions.chatError.ChatNotFoundException;
+import app.exceptions.userError.UserNotFoundException;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.ChatService;
@@ -40,7 +41,7 @@ public class WebSocketController {
     this.chatService.findById(messageDtoReq.getChat().getId())
       .map(chat -> {
         this.userModelService.getUser(messageDtoReq.getUser().getId())
-          .orElseThrow(() -> new UsernameNotFoundException("User with id: " + messageDtoReq.getUser().getId() + " not found!"));
+          .orElseThrow(() -> new UserNotFoundException(messageDtoReq.getUser().getId()));
         chat.getMessages().add(this.messageFacade.convertToEntity(messageDtoReq));
         this.chatService.save(chat);
         return chat;
