@@ -12,14 +12,14 @@ function UserNames({ username, verified, displayName, postTime, text }) {
         flexDirection: 'column',
         gap: '4px',
         alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
       }}
     >
       <Box
         display="flex"
         sx={{
           gap: '4px',
-          alignItems: 'flex-start',
+          alignItems: 'baseline',
         }}
       >
         <Typography variant="body1">{username}</Typography>
