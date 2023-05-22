@@ -13,44 +13,47 @@ import { MainMenuSidebar } from './MainMenuSidebar';
 import { LogoTwitter } from './LogoTwitter';
 
 
+const BoxContainerStyled = styled(Box)((props) => ({
+  height: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'end',
+  marginBottom: '18px',
+  textAlign: 'start',
+}))
+
+
+const DrawerStyled = styled(Drawer)((props) => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: 10,
+  flexShrink: 0,
+  paddingRight: '10px',
+  width: '100%',
+  height: '100vh',
+  '& .MuiDrawer-paper': {
+    position: 'relative',
+    width: '100%',
+    border: 'none',
+    boxSizing: 'border-box',
+    backgroundColor: 'rgb(21,32,43)',
+  },
+}))
+
+
+
+
+
+
 
 
 export const Sidebar = (/*{isAuthenticated}*/) => {
   const location = useLocation();
   const isAuthenticated = true;  // удалить как будет готова аутентефикация
 
-
-  const DrawerStyled = styled(Drawer)((props) => ({
-    position: 'sticky',
-    top: 0,
-    zIndex: 10,
-    flexShrink: 0,
-    paddingRight: '10px',
-    width: '100%',
-    height: '100vh',
-    '& .MuiDrawer-paper': {
-      position: 'relative',
-      width: '100%',
-      border: 'none',
-      boxSizing: 'border-box',
-      backgroundColor: 'rgb(21,32,43)',
-    },
-  }))
-
-  const BoxContainerStyled = styled(Box)((props) => ({
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'end',
-    marginBottom: '18px',
-    textAlign: 'start',
-  }))
-
-
-
   const filteredMainSidebarElements = isAuthenticated
-    ? mainSidebarElements
+    ? mainSidebarElements.filter((button) => button.label !== 'Settings')
     : mainSidebarElements.filter((button) => button.label === 'Explore' || button.label === 'Settings');
 
 

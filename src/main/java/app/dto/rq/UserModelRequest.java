@@ -4,7 +4,6 @@ import app.annotations.Marker;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import lombok.Data;
 
 import javax.validation.constraints.Email;
