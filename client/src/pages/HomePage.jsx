@@ -7,7 +7,6 @@ export const HomePage = () => {
   return (
     <Box
       sx={{
-        border: '1px solid rgb(56, 68, 77)',
         borderTop: '0px',
       }}
     >

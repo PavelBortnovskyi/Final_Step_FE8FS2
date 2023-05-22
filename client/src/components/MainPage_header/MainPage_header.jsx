@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import styled from '@emotion/styled';
-import { TabPanelUnstyled } from '@mui/base';
+import { useMode } from 'src/styles/_materialTheme';
 
 const CustomTab = styled(Tab)((props) => ({
   color: '#fff',
@@ -19,6 +18,7 @@ const CustomTab = styled(Tab)((props) => ({
 
 function MainPage_header() {
   const [tabIndex, setTabIndex] = useState(0);
+  const theme = useMode();
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -27,7 +27,7 @@ function MainPage_header() {
   return (
     <Box
       sx={{
-        backgroundColor: '#15202bd9',
+        backgroundColor: `${theme.palette.background.default}`,
         backdropFilter: 'blur(6px)',
         width: '100%',
         pb: '2px',

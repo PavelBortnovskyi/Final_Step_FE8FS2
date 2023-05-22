@@ -1,7 +1,9 @@
 import { Button } from '@mui/material';
 import React from 'react';
+import { useTheme } from '@emotion/react';
 
-function TweetButton({ isDisabled, fnc, text, w, h , fw}) {
+function TweetButton({ isDisabled, fnc, text, w, h }) {
+  const theme = useTheme();
   return (
     <Button
       disabled={isDisabled}
@@ -13,7 +15,7 @@ function TweetButton({ isDisabled, fnc, text, w, h , fw}) {
         fontWeight: `${fw}px`,
         borderRadius: '30px',
         '&.Mui-disabled': {
-          backgroundColor: 'rgb(29, 155, 240)',
+          backgroundColor: `${theme.palette.primary.disabled}`,
           opacity: '0.5',
           color: '#fff',
         },
