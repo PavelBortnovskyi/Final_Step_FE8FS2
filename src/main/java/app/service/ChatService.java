@@ -39,6 +39,19 @@ public class ChatService extends GeneralService<Chat> {
   }
 
   /**
+   * Method returns boolean result of deleting operation
+   */
+  public boolean deleteChat(Long chatId, Long userId) {
+    this.chatRepository.findById(chatId)
+      .filter(chat -> chat.getInitiatorUser().getId().equals(userId))
+      .map(chat -> {
+        this.chatRepository.delete(chat);
+        return chat;
+      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
+    return this.chatRepository.existsById(chatId);
+  }
+
+  /**
    * Method returns chat after adding new user to it
    */
 
@@ -54,6 +67,22 @@ public class ChatService extends GeneralService<Chat> {
         .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found")));
   }
 
+  /**
+   * Method returns boolean result of user deleting from chat operation
+   */
+  public boolean removeUser(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
+    Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
+    UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
+    if (chat.getInitiatorUser().getId().equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
+      chat.getUsers().remove(this.userService.findById(userToRemoveId).get());
+      this.chatRepository.save(chat);
+      return true;
+    } else return false;
+  }
+
+  /**
+   * Method returns caht with added message
+   */
   public Chat addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
     return this.chatRepository.save(this.chatRepository.findById(chatId)
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))

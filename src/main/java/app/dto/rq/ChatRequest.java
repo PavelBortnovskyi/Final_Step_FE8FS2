@@ -14,14 +14,14 @@ import javax.validation.constraints.Null;
 public class ChatRequest {
 
   @ApiModelProperty(value = "Chat id", example = "599", required = true)
-  @JsonView({Marker.forExisted.class, Marker.ChatDetails.class})
-  @NotNull(message = "Need to specify chatId", groups = {Marker.forExisted.class, Marker.ChatDetails.class})
+  @JsonView({Marker.forExisted.class, Marker.ChatDetails.class, Marker.toDelete.class, Marker.Details.class})
+  @NotNull(message = "Need to specify chatId", groups = {Marker.forExisted.class, Marker.ChatDetails.class, Marker.toDelete.class, Marker.Details.class})
   @Null(groups = {Marker.forNew.class})
   private Long chatId;
 
   @ApiModelProperty(value = "Initiator userID", example = "13", required = true)
-  @JsonView({Marker.forNew.class, Marker.forExisted.class})
-  @NotNull(message = "Need to specify initiator userId", groups = {Marker.forExisted.class, Marker.forNew.class})
+  @JsonView({Marker.forNew.class, Marker.forExisted.class, Marker.toDelete.class})
+  @NotNull(message = "Need to specify initiator userId", groups = {Marker.forExisted.class, Marker.forNew.class, Marker.toDelete.class})
   private Long initiatorUserId;
 
   @ApiModelProperty(value = "Initiator userID", example = "55", required = true)

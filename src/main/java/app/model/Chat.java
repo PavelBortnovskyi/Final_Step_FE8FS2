@@ -21,7 +21,7 @@ public class Chat extends BaseEntityModel {
   @ManyToOne
   private UserModel initiatorUser;
 
-  @OneToMany(mappedBy = "chat")
+  @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
   private List<Message> messages = new ArrayList<>();
 
   @ManyToMany(fetch = FetchType.EAGER)

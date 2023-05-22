@@ -4,8 +4,6 @@ import app.annotations.Marker;
 import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
-import app.exceptions.chatError.ChatNotFoundException;
-import app.exceptions.userError.UserNotFoundException;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.ChatService;
@@ -72,7 +70,7 @@ public class WebSocketController {
   public void deleteMessage(@PathVariable Long messageId, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     if (this.messageService.deleteMessage(currUserId, messageId))
-      this.template.convertAndSendToUser(currUserId.toString(), "/message/delete", messageId);
+      this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageId));
   }
 
   @MessageMapping("/v1/notifications")

@@ -15,5 +15,7 @@ public interface Marker {
 
   interface Preview {
   }
+
+  interface toDelete{}
 }
 
