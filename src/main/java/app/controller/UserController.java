@@ -1,8 +1,11 @@
 package app.controller;
 
+import app.annotations.Views;
+import app.dto.rq.UserModelRequest;
 import app.dto.rs.UserModelResponse;
 import app.facade.UserModelFacade;
 import app.service.UserModelService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 @Log4j2
@@ -41,6 +45,11 @@ public class UserController {
   @PostMapping("unsubscribe/{userIdToUnFollowing}")
   public ResponseEntity<Void> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing, HttpServletRequest httpRequest) {
     userModelService.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("update")
+  public ResponseEntity<UserModelResponse> updateUser(@JsonView({Views.Update.class}) @RequestBody UserModelRequest userRequestDTO){
     return ResponseEntity.ok().build();
   }
 

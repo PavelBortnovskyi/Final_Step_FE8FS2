@@ -6,4 +6,7 @@ public class Views {
 
   public static class Register {
   }
+
+  public static class Update {
+  }
 }
