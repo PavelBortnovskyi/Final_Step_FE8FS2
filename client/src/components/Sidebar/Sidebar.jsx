@@ -16,9 +16,6 @@ import TweetBox from '../TweetBox/TweetBox';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { NavLink, useLocation } from 'react-router-dom';
 
-
-
-
 export const Sidebar = () => {
   const location = useLocation();
 
@@ -40,31 +37,32 @@ export const Sidebar = () => {
           width: '100%',
           border: 'none',
           boxSizing: 'border-box',
-          backgroundColor: 'rgb(21,32,43)',
         },
       }}
     >
-
-      <Box sx={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'end',
-        marginBottom: '18px',
-        textAlign: 'start',
-        mx: '10px',
-
-      }}>
-
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'end',
+          marginBottom: '18px',
+          textAlign: 'start',
+          mx: '10px',
+        }}
+      >
         <Box>
-          <Link href='/'
-            display="flex" justifyContent="center" alignItems="center"
+          <Link
+            href="/"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
             sx={{
               width: '50px',
               height: '50px',
               mt: '2px',
-              color: '#FFF',
+
               '&:hover': {
                 backgroundColor: 'rgb(39,51,64)',
                 borderRadius: '30px',
@@ -78,16 +76,22 @@ export const Sidebar = () => {
             />
           </Link>
 
-
           <List
             sx={{
               width: { xs: '50px', lg: '100%' },
-
             }}
           >
             {mainSidebarElemets.map((navElement) => (
-              <Link href={navElement.route} underline="none" key={navElement.id}>
-                <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF', width: '100%' }}>
+              <Link
+                href={navElement.route}
+                underline="none"
+                key={navElement.id}
+              >
+                <ListItem
+                  key={navElement.id}
+                  disablePadding
+                  sx={{ color: '#FFF', width: '100%' }}
+                >
                   <ListItemButton
                     sx={{
                       height: '50px',
@@ -95,8 +99,6 @@ export const Sidebar = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '0 4px',
-
-
 
                       '&:hover': {
                         backgroundColor: 'rgb(39,51,64)',
@@ -110,35 +112,40 @@ export const Sidebar = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                      }}>
-                      <navElement.icon sx={{ fontSize: 30, color: '#FFF' }} />
+                      }}
+                    >
+                      <navElement.icon sx={{ fontSize: 30 }} />
                     </ListItemIcon>
 
-                    <ListItemText primaryTypographyProps={{ fontSize: '18px', }}
+                    <ListItemText
+                      primaryTypographyProps={{ fontSize: '18px' }}
                       sx={{
-                        display: { lg: 'block', xs: 'none' }
+                        display: { lg: 'block', xs: 'none' },
                       }}
-                      primary={navElement.label} />
+                      primary={navElement.label}
+                    />
                   </ListItemButton>
                 </ListItem>
               </Link>
             ))}
 
             <SidebarDropdown />
-
           </List>
 
-          <Box sx={{
-            marginTop: '20px',
-            marginLeft: '10px',
-            display: { lg: 'block', xs: 'none' }
-          }}>
-            <Link to="/modal/tweet" state={{ background: location }} component={NavLink}>
-
+          <Box
+            sx={{
+              marginTop: '20px',
+              marginLeft: '10px',
+              display: { lg: 'block', xs: 'none' },
+            }}
+          >
+            <Link
+              to="/modal/tweet"
+              state={{ background: location }}
+              component={NavLink}
+            >
               <TweetButton text="Tweet" w="230" h="50" isDisabled={false} />
             </Link>
-
-
           </Box>
 
           <SmallBtnTweet />
@@ -147,6 +154,5 @@ export const Sidebar = () => {
         <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
       </Box>
     </Drawer>
-
   );
 };
