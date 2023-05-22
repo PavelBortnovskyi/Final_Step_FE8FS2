@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.annotations.Views;
 import app.dto.rq.UserModelRequest;
 import app.service.AuthService;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -25,15 +24,15 @@ public class AuthController {
 
   private final AuthService authService;
 
-  @Validated({Marker.forExisted.class})
+  @Validated({Marker.Existed.class})
   @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Views.Login.class) @Valid UserModelRequest loginDTO) {
+  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Marker.Existed.class) @Valid UserModelRequest loginDTO) {
     return this.authService.makeLogin(loginDTO);
   }
 
-  @Validated({Marker.forNew.class})
+  @Validated({Marker.New.class})
   @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Views.Register.class) @Valid UserModelRequest signUpDTO) {
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Marker.New.class) @Valid UserModelRequest signUpDTO) {
     return this.authService.makeSighUp(signUpDTO);
   }
 

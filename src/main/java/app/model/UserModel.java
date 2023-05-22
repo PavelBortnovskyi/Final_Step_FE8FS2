@@ -76,7 +76,7 @@ public class UserModel extends BaseEntityModel {
   @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
   private Set<Chat> chat = new HashSet<>();
 
-  @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Chat> chats = new HashSet<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

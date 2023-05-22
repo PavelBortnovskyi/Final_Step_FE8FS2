@@ -1,13 +1,23 @@
 package app.annotations;
 
 public interface Marker {
-  interface forNew {
+  interface New {
   }
 
-  interface forExisted {
+  interface Existed {
   }
 
   interface Details {
   }
+
+  interface ChatDetails {
+  }
+
+  interface Preview {
+  }
+
+  interface Delete {}
+
+  interface Update {}
 }
 
