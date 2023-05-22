@@ -4,6 +4,7 @@ import app.annotations.Marker;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.facade.TweetFacade;
+import app.service.TweetActionService;
 import app.service.TweetService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.*;
 public class TweetController {
 
   private final TweetService tweetService;
+  private final TweetActionService tweetActionService;
   private final TweetFacade tweetFacade;
 
   //get tweet by id (don`t need token)
@@ -71,7 +73,12 @@ public class TweetController {
 
   @PostMapping("/add_like/{id}")
   public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request){
-    tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
+    tweetActionService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
+  }
+
+  @PostMapping("/add_bookmark/{id}")
+  public void addBookmarkToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request){
+    tweetActionService.addBookmark((Long) request.getAttribute("userId"), tweetId);
   }
 
   @PostMapping("/create_retweet/{id}")

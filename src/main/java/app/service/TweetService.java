@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TweetService extends GeneralService<Tweet> {
   private final TweetModelRepository tweetModelRepository;
+  private final TweetActionService tweetActionService;
   private final UserModelService userModelService;
 
   public Optional<Tweet> getTweet(Long id){
@@ -26,13 +27,6 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
-  public void addLikeToTweet(Long userId, long tweetId){
-    Optional<Tweet> tweet = tweetModelRepository.findById(tweetId);
-    if (tweet.isPresent()) {
-      Tweet newTweet = tweet.get();
-      newTweet.setCountLikes(newTweet.getCountLikes() + 1);
-    }
-  }
   public void deleteTweet(String tweetId, HttpServletRequest request) {
     Optional<Tweet> tweet = tweetModelRepository.findById(Long.valueOf(tweetId));
     if (tweet.isPresent() && tweet.get().getUser().getId().equals(request.getAttribute("userId"))) {
@@ -48,9 +42,7 @@ public class TweetService extends GeneralService<Tweet> {
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetType);
-    tweet.setCountLikes(0);
-    tweet.setCountRetweets(0);
-    tweet.setCountReply(0);
+
     tweet.setUser(user);
     tweet.setParentTweetId(findById(parentTweetId).orElseThrow(() -> new NotFoundExceptionException(parentTweetId)));
     Tweet savedTweet = tweetModelRepository.save(tweet);
@@ -59,9 +51,7 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setTweetId(savedTweet.getId());
     tweetResponse.setBody(savedTweet.getBody());
     tweetResponse.setTweetType(tweetType);
-    tweetResponse.setCountLikes(savedTweet.getCountLikes());
-    tweetResponse.setCountRetweets(savedTweet.getCountRetweets());
-    tweetResponse.setCountReply(savedTweet.getCountReply());
+    tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweet.getId()));
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
     tweetResponse.setParentTweetId(parentTweetId);
