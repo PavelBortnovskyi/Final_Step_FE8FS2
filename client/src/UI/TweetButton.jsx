@@ -12,7 +12,7 @@ function TweetButton({ isDisabled, fnc, text, w, h }) {
         width: `${w}px`,
         height: `${h}px`,
         fontSize: '20px',
-        fontWeight: '800',
+        fontWeight: `${fw}px`,
         borderRadius: '30px',
         '&.Mui-disabled': {
           backgroundColor: `${theme.palette.primary.disabled}`,

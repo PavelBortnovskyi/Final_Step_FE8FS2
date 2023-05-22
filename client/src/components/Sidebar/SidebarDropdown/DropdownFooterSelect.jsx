@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 
 
 export const DropdownFooterSelect = ({ mainLabel, selects }) => {
-    console.log(mainLabel);
-    console.log(selects);
 
     const handleChange = (event) => {
         // const {

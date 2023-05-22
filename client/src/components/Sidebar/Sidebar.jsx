@@ -1,158 +1,99 @@
-import TwitterIcon from '@mui/icons-material/Twitter';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { mainSidebarElemets } from './sidebarElemets';
+import { mainSidebarElements } from './sidebarElements';
 import Link from '@mui/material/Link';
-import { Box, Modal } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { SidebarFooter } from './SidebarFooter/SidebarFooter';
 import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
 import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
 import TweetButton from 'src/UI/TweetButton';
-import TweetBox from '../TweetBox/TweetBox';
-import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { NavLink, useLocation } from 'react-router-dom';
+import { MainMenuSidebar } from './MainMenuSidebar';
+import { LogoTwitter } from './LogoTwitter';
 
-export const Sidebar = () => {
+const BoxContainerStyled = styled(Box)((props) => ({
+  height: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'end',
+  marginBottom: '18px',
+  textAlign: 'start',
+}));
+
+const DrawerStyled = styled(Drawer)((props) => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: 10,
+  flexShrink: 0,
+  paddingRight: '10px',
+  width: '100%',
+  height: '100vh',
+  '& .MuiDrawer-paper': {
+    position: 'relative',
+    width: '100%',
+    border: 'none',
+    boxSizing: 'border-box',
+    backgroundColor: 'rgb(21,32,43)',
+  },
+}));
+
+export const Sidebar = (/*{isAuthenticated}*/) => {
   const location = useLocation();
+  const isAuthenticated = true; // удалить как будет готова аутентефикация
+
+  const filteredMainSidebarElements = isAuthenticated
+    ? mainSidebarElements.filter((button) => button.label !== 'Settings')
+    : mainSidebarElements.filter(
+        (button) => button.label === 'Explore' || button.label === 'Settings'
+      );
 
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-        flexShrink: 0,
-        marginRight: '12px',
-
-        width: '100%',
-        height: '100vh',
-        '& .MuiDrawer-paper': {
-          position: 'relative',
-          width: '100%',
-          border: 'none',
-          boxSizing: 'border-box',
-        },
-      }}
-    >
-      <Box
-        sx={{
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'end',
-          marginBottom: '18px',
-          textAlign: 'start',
-          mx: '10px',
-        }}
-      >
+    <DrawerStyled variant="permanent" anchor="left">
+      <BoxContainerStyled>
         <Box>
-          <Link
-            href="/"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              width: '50px',
-              height: '50px',
-              mt: '2px',
-
-              '&:hover': {
-                backgroundColor: 'rgb(39,51,64)',
-                borderRadius: '30px',
-              },
-            }}
-          >
-            <TwitterIcon
-              sx={{
-                fontSize: 34,
-              }}
-            />
-          </Link>
+          <LogoTwitter />
 
           <List
-            sx={{
-              width: { xs: '50px', lg: '100%' },
-            }}
+            sx={{ paddingRight: '10px', width: { xs: '58px', lg: '100%' } }}
           >
-            {mainSidebarElemets.map((navElement) => (
-              <Link
-                href={navElement.route}
-                underline="none"
-                key={navElement.id}
-              >
-                <ListItem
-                  key={navElement.id}
-                  disablePadding
-                  sx={{ color: '#FFF', width: '100%' }}
-                >
-                  <ListItemButton
-                    sx={{
-                      height: '50px',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '0 4px',
-
-                      '&:hover': {
-                        backgroundColor: 'rgb(39,51,64)',
-                        borderRadius: { xs: '50%', lg: '30px' },
-                      },
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        fontSize: 30,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <navElement.icon sx={{ fontSize: 30 }} />
-                    </ListItemIcon>
-
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '18px' }}
-                      sx={{
-                        display: { lg: 'block', xs: 'none' },
-                      }}
-                      primary={navElement.label}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
+            {filteredMainSidebarElements.map((navElement) => (
+              <MainMenuSidebar navElement={navElement} key={navElement.id} />
             ))}
 
-            <SidebarDropdown />
+            {isAuthenticated && <SidebarDropdown />}
           </List>
 
-          <Box
-            sx={{
-              marginTop: '20px',
-              marginLeft: '10px',
-              display: { lg: 'block', xs: 'none' },
-            }}
-          >
-            <Link
-              to="/modal/tweet"
-              state={{ background: location }}
-              component={NavLink}
+          {isAuthenticated && (
+            <Box
+              sx={{
+                marginTop: '20px',
+                marginLeft: '10px',
+                display: { lg: 'block', xs: 'none' },
+              }}
             >
-              <TweetButton text="Tweet" w="230" h="50" isDisabled={false} />
-            </Link>
-          </Box>
-
-          <SmallBtnTweet />
+              <Link
+                to="/modal/tweet"
+                state={{ background: location }}
+                component={NavLink}
+              >
+                <TweetButton
+                  text="Tweet"
+                  w="230"
+                  h="50"
+                  fw="800"
+                  isDisabled={false}
+                />
+              </Link>
+            </Box>
+          )}
+          {isAuthenticated && <SmallBtnTweet />}
         </Box>
 
-        <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
-      </Box>
-    </Drawer>
+        {isAuthenticated && (
+          <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
+        )}
+      </BoxContainerStyled>
+    </DrawerStyled>
   );
 };
