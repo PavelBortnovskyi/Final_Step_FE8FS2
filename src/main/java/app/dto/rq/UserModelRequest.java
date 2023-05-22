@@ -8,9 +8,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 
 /**
  * UserDTO for login(Existed)/register(New) requests
@@ -19,28 +19,28 @@ import java.time.LocalDate;
 @ApiModel(description = "User model request")
 public class UserModelRequest {
 
-  @JsonView({Views.Register.class, Views.Update.class})
+  @JsonView({Marker.New.class, Marker.Update.class})
   @ApiModelProperty(value = "Full name", example = "John Doe", required = true, allowableValues = "range[2, 20]")
-  @Size(max = 20, min = 2, message = "Full name length must be in range 2..20 characters", groups = {Marker.forExisted.class, Marker.forNew.class})
-  @Null(groups = {Marker.forExisted.class})
+  @Size(max = 20, min = 2, message = "Full name length must be in range 2..20 characters", groups = {Marker.Existed.class, Marker.New.class})
+  @Null(groups = {Marker.Existed.class})
   private String fullName;
 
-  @JsonView({Views.Register.class, Views.Update.class})
+  @JsonView(Marker.New.class)
   @ApiModelProperty(value = "User tag", example = "@john_doe", required = true, allowableValues = "range[2, 20]")
-  @Size(max = 20, min = 2, message = "UserTag length must be in range 2..20 characters", groups = {Marker.forExisted.class, Marker.forNew.class})
-  @Null(groups = {Marker.forExisted.class})
+  @Size(max = 20, min = 2, message = "UserTag length must be in range 2..20 characters", groups = {Marker.Existed.class, Marker.New.class})
+  @Null(groups = {Marker.Existed.class})
   private String userTag;
 
 
-  @JsonView({Views.Register.class, Views.Login.class})
+  @JsonView({Marker.Existed.class, Marker.New.class})
   @ApiModelProperty(value = "Email", example = "john.doe@example.com", required = true, allowableValues = "range[6, 50]")
-  @Size(min = 6, max = 50, message = "Max email length is 50 characters", groups = {Marker.forExisted.class, Marker.forNew.class})
-  @Email(message = "Must have email format", groups = {Marker.forExisted.class, Marker.forNew.class})
+  @Size(min = 6, max = 50, message = "Max email length is 50 characters", groups = {Marker.Existed.class, Marker.New.class})
+  @Email(message = "Must have email format", groups = {Marker.Existed.class, Marker.New.class})
   private String email;
 
-  @JsonView({Views.Register.class, Views.Login.class})
+  @JsonView({Marker.Existed.class, Marker.New.class})
   @ApiModelProperty(value = "Password", example = "password123", required = true, allowableValues = "range[8, 50]")
-  @Size(min = 8, max = 50, message = "Password length must be in range 8..50 characters", groups = {Marker.forExisted.class, Marker.forNew.class})
+  @Size(min = 8, max = 50, message = "Password length must be in range 8..50 characters", groups = {Marker.Existed.class, Marker.New.class})
   private String password;
 
   @JsonView({Views.Update.class})

@@ -2,7 +2,7 @@ package app.facade;
 
 import app.dto.rq.UserModelRequest;
 import app.dto.rs.UserModelResponse;
-import app.exceptions.userError.NotFoundExceptionException;
+import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,6 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
 
   public UserModelResponse getUserById(Long userId) {
     return ums.getUser(userId).map(this::convertToDto)
-      .orElseThrow(() -> new NotFoundExceptionException(userId));
+      .orElseThrow(() -> new UserNotFoundException(userId));
   }
 }
