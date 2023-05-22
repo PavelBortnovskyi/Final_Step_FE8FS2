@@ -20,4 +20,6 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   @Query(value = "SELECT u FROM UserModel u where u.followings = :followed_id")
   Optional<List<UserModel>> userFollowings(@Param("followed_id") Long userId);
 
+
+
 }

@@ -8,6 +8,7 @@ public interface Marker {
   }
 
   interface Details{}
+  interface TweetDetails{}
 
 }
 
