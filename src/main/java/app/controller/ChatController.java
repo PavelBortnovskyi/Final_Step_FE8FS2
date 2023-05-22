@@ -38,9 +38,9 @@ public class ChatController {
 
   private final UserModelService userService;
 
-  @Validated({Marker.forNew.class})
+  @Validated({Marker.New.class})
   @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestBody @JsonView(Marker.forNew.class)
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestBody @JsonView(Marker.New.class)
                                                                                            @Valid ChatRequest chatDTO,
                                                                                            HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -49,9 +49,9 @@ public class ChatController {
     return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.createChat(currUserId, chatDTO.getInterlocutorUserId())));
   }
 
-  @Validated({Marker.toDelete.class})
+  @Validated({Marker.Delete.class})
   @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.toDelete.class)
+  public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.Delete.class)
                                                  @Valid ChatRequest chatDTO,
                                                  HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -93,9 +93,9 @@ public class ChatController {
       .collect(Collectors.toList()));
   }
 
-  @Validated({Marker.forExisted.class})
+  @Validated({Marker.Existed.class})
   @GetMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<MessageResponse>> handleGetChat(@RequestBody @JsonView(Marker.forExisted.class)
+  public ResponseEntity<List<MessageResponse>> handleGetChat(@RequestBody @JsonView(Marker.Existed.class)
                                                              @Valid ChatRequest chatDTO, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     this.chatService.findById(chatDTO.getChatId())

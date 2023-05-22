@@ -44,10 +44,10 @@ public class WebSocketController {
 
   private final SimpMessagingTemplate template;
 
-  @Validated({Marker.forNew.class})
+  @Validated({Marker.New.class})
   @MessageMapping("/v1/message")
   @SendTo("/topic/chats")
-  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.forNew.class})
+  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                   MessageRequest messageDTO,
                                                                                   HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -55,10 +55,10 @@ public class WebSocketController {
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
-  @Validated({Marker.forExisted.class})
+  @Validated({Marker.Existed.class})
   @PutMapping("/v1/message/edit")
   @SendTo("/topic/chats")
-  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.forExisted.class})
+  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
                                                                                       MessageRequest messageDTO,
                                                                                       HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");

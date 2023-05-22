@@ -1,10 +1,10 @@
 package app.annotations;
 
 public interface Marker {
-  interface forNew {
+  interface New {
   }
 
-  interface forExisted {
+  interface Existed {
   }
 
   interface Details {
@@ -16,6 +16,8 @@ public interface Marker {
   interface Preview {
   }
 
-  interface toDelete{}
+  interface Delete {}
+
+  interface Update {}
 }
 
