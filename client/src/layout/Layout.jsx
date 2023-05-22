@@ -25,6 +25,7 @@ export const Layout = () => {
     <Container
       maxWidth="lg"
       sx={{
+        position: 'relative',
         backgroundColor: 'rgb(21,32,43)',
         color: '#FFF',
       }}
@@ -35,6 +36,7 @@ export const Layout = () => {
           sm={2}
           md={3}
           sx={{
+            
             display: { xs: 'none', sm: 'block' },
           }}
         >
