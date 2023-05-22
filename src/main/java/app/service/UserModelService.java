@@ -9,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
@@ -36,8 +35,7 @@ public class UserModelService extends GeneralService<UserModel> {
 
   @Transactional
   public void subscribe(Long userCurrentId, Long userToFollowingId) {
-    if (userToFollowingId == null || Objects.equals(userCurrentId, userToFollowingId))
-      throw new IncorrectIdExceptionException(userToFollowingId);
+    if (userCurrentId.equals(userToFollowingId)) throw new IncorrectIdExceptionException(userToFollowingId);
     UserModel userCurrent = this.getUser(userCurrentId).orElseThrow(() -> new NotFoundExceptionException(userCurrentId));
     UserModel userToFollowing = this.getUser(userToFollowingId).orElseThrow(() -> new NotFoundExceptionException(userToFollowingId));
     userCurrent.getFollowings().add(userToFollowing);

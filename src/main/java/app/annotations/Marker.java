@@ -7,7 +7,7 @@ public interface Marker {
   interface forExisted {
   }
 
-  interface Details{}
-
+  interface Details {
+  }
 }
 
