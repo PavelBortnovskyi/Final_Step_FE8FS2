@@ -3,6 +3,7 @@ package app.service;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetType;
+import app.exceptions.userError.NotFoundExceptionException;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -42,29 +43,43 @@ public class TweetService extends GeneralService<Tweet> {
 
   }
 
-  public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request){
+  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, Long parentTweetId, TweetType tweetType){
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
-    tweet.setTweetType(TweetType.TWEET);
+    tweet.setTweetType(tweetType);
     tweet.setCountLikes(0);
     tweet.setCountRetweets(0);
     tweet.setCountReply(0);
     tweet.setUser(user);
+    tweet.setParentTweetId(findById(parentTweetId).orElseThrow(() -> new NotFoundExceptionException(parentTweetId)));
     Tweet savedTweet = tweetModelRepository.save(tweet);
 
     TweetResponse tweetResponse = new TweetResponse();
     tweetResponse.setTweetId(savedTweet.getId());
     tweetResponse.setBody(savedTweet.getBody());
-    tweetResponse.setTweetType(TweetType.TWEET);
+    tweetResponse.setTweetType(tweetType);
     tweetResponse.setCountLikes(savedTweet.getCountLikes());
     tweetResponse.setCountRetweets(savedTweet.getCountRetweets());
     tweetResponse.setCountReply(savedTweet.getCountReply());
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
+    tweetResponse.setParentTweetId(parentTweetId);
 
 
     return tweetResponse;
+  }
+
+  public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request){
+    return create(tweetRequest, request, null, TweetType.TWEET);
+  }
+
+  public TweetResponse createRetweet(TweetRequest tweetRequest, HttpServletRequest request, Long tweetId){
+    return create(tweetRequest, request, tweetId, TweetType.QUOTE_TWEET);
+  }
+
+  public TweetResponse createReply(TweetRequest tweetRequest, HttpServletRequest request, Long tweetId){
+    return create(tweetRequest, request, tweetId, TweetType.REPLY);
   }
 
   public List<Tweet> allUserFollowingTweet(Long userId){
@@ -83,6 +98,7 @@ public class TweetService extends GeneralService<Tweet> {
     return tweetModelRepository.getAllByUserId(id);
   }
 
+  //TODO: finish update method
   public Optional<Tweet> updateTweet(Long id, TweetRequest tweetRequest){
     Optional<Tweet> tweet = findById(id);
     return tweet;

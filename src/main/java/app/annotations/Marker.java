@@ -8,14 +8,10 @@ public interface Marker {
   }
 
   interface Details{}
-  interface tweetUpdate {
-  }
-  interface createTweet{
-  }
 
-  interface createRetweet{
-  }
+  interface createRetweet{}
 
+  interface createReply{}
 
 }
 

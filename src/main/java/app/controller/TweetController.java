@@ -3,11 +3,8 @@ package app.controller;
 import app.annotations.Marker;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
-import app.dto.rs.UserModelResponse;
 import app.facade.TweetFacade;
-import app.model.Tweet;
 import app.service.TweetService;
-import app.service.UserModelService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -44,7 +41,7 @@ public class TweetController {
     tweetService.deleteTweet(id, request);
   }
 
-  //update tweet
+  //TODO: finish method
   @PostMapping(path ="/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @Validated({Marker.forNew.class})
   public ResponseEntity<TweetResponse> updateTweet(@PathVariable Long id, @RequestBody TweetRequest tweetRequest){
@@ -53,13 +50,13 @@ public class TweetController {
 
   //create new tweet
   @PostMapping("/create")
-  @Validated({Marker.createTweet.class})
-  public ResponseEntity<TweetResponse> createTweet(@Payload @Valid @RequestBody TweetRequest tweetRequest,
+  @Validated({Marker.forNew.class})
+  public ResponseEntity<TweetResponse> createTweet(@Payload @Valid @JsonView(Marker.forNew.class) @RequestBody TweetRequest tweetRequest,
                                                    HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
   }
 
-  //get List tweets following users
+  //TODO: finish method
   @GetMapping("/get_following_tweets/{id}")
   public List<ResponseEntity<TweetResponse>> getAllTweets(@PathVariable(name = "id") Long id) {
     return (List<ResponseEntity<TweetResponse>>) ResponseEntity.ok(tweetService.allUserFollowingTweet(id));
@@ -77,19 +74,18 @@ public class TweetController {
     tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
   }
 
-  @PostMapping("/create_retweet")
+  @PostMapping("/create_retweet/{id}")
   @Validated({Marker.createRetweet.class})
-  public ResponseEntity<TweetResponse> createRetweet(@Payload @Valid @RequestBody TweetRequest tweetRequest,
+  public ResponseEntity<TweetResponse> createRetweet(@PathVariable(name = "id") Long id, @Valid @JsonView(Marker.createRetweet.class) @RequestBody TweetRequest tweetRequest,
                                                    HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
+    return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request, id));
   }
 
-  /**TODO:
-   * @PostMapping("/create_retweet{id}")
-   * @PostMapping("/create_reply{id}")
-   *
-   *
-   */
-
+  @PostMapping("/create_reply/{id}")
+  @Validated({Marker.createRetweet.class})
+  public ResponseEntity<TweetResponse> createReply(@PathVariable(name = "id") Long id, @Valid @JsonView(Marker.createRetweet.class) @RequestBody TweetRequest tweetRequest,
+                                                     HttpServletRequest request) {
+    return ResponseEntity.ok(tweetService.createReply(tweetRequest, request, id));
+  }
 
 }
