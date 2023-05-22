@@ -26,16 +26,24 @@ public class ChatService extends GeneralService<Chat> {
 
   private final MessageModelRepository messageRepository;
 
+  /**
+   * Method returns created chat between 2 users
+   */
   public Chat createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
     UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
     return this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
-      add(interlocutor); add(initiator);
+      add(interlocutor);
+      add(initiator);
     }}));
   }
 
+  /**
+   * Method returns chat after adding new user to it
+   */
+
   public Chat addUser(Long userId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
-   return this.chatRepository
+    return this.chatRepository
       .save(this.chatRepository
         .findById(chatId)
         .map(chat -> {
@@ -46,10 +54,25 @@ public class ChatService extends GeneralService<Chat> {
         .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found")));
   }
 
-  public List<Message> getMessages(Long chatId, Integer pageSize, Integer pageNumber){
+  public Chat addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
+    return this.chatRepository.save(this.chatRepository.findById(chatId)
+      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))
+      .map(chat -> {
+        chat.getMessages().add(message);
+        return chat;
+      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId))));
+  }
+
+  /**
+   * Method returns pageable list of chat messages
+   */
+  public List<Message> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
     return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
   }
 
+  /**
+   * Method returns pageable chat list of user
+   */
   public List<Chat> getChatList(Long userId, Integer pageSize, Integer pageNumber) {
     return this.chatRepository.getChatList(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
   }

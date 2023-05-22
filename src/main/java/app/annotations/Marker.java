@@ -7,8 +7,13 @@ public interface Marker {
   interface forExisted {
   }
 
-  interface Details{}
+  interface Details {
+  }
 
-  interface ChatDetails{}
+  interface ChatDetails {
+  }
+
+  interface Preview {
+  }
 }
 

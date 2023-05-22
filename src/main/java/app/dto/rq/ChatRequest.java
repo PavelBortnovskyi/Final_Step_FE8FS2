@@ -30,14 +30,14 @@ public class ChatRequest {
   private Long interlocutorUserId;
 
   @ApiModelProperty(value = "Page size for message quantity definition", example = "20", required = true)
-  @JsonView(Marker.forExisted.class)
-  @NotNull(message = "Need to specify messages q-ty", groups = {Marker.forExisted.class})
+  @JsonView({Marker.forExisted.class, Marker.Preview.class})
+  @NotNull(message = "Need to specify messages q-ty", groups = {Marker.forExisted.class, Marker.Preview.class})
   @Null(groups = {Marker.forNew.class})
   private Integer pageSize;
 
   @ApiModelProperty(value = "Page number", example = "5", required = true)
-  @JsonView(Marker.forExisted.class)
-  @NotNull(message = "Page number", groups = {Marker.forExisted.class})
+  @JsonView({Marker.forExisted.class, Marker.Preview.class})
+  @NotNull(message = "Page number", groups = {Marker.forExisted.class, Marker.Preview.class})
   @Null(groups = {Marker.forNew.class})
   private Integer pageNumber;
 }
