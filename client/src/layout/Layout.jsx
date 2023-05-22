@@ -70,7 +70,7 @@ export const Layout = () => {
               display: { xs: 'none', md: 'block' },
             }}
           >
-            {/* <Footer /> */}
+            <Footer />
           </Grid>
         </Grid>
 

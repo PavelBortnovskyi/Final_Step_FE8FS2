@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { useTheme } from '@emotion/react';
 
-function TweetButton({ isDisabled, fnc, text, w, h, fw}) {
+function TweetButton({ isDisabled, fnc, text, w, h }) {
   const theme = useTheme();
   return (
     <Button
