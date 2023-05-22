@@ -2,6 +2,7 @@ package app.service;
 
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
+import app.enums.TweetType;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -45,7 +46,7 @@ public class TweetService extends GeneralService<Tweet> {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
-    tweet.setTweetType(tweetRequest.getTweetType());
+    tweet.setTweetType(TweetType.TWEET);
     tweet.setCountLikes(0);
     tweet.setCountRetweets(0);
     tweet.setCountReply(0);
@@ -55,7 +56,7 @@ public class TweetService extends GeneralService<Tweet> {
     TweetResponse tweetResponse = new TweetResponse();
     tweetResponse.setTweetId(savedTweet.getId());
     tweetResponse.setBody(savedTweet.getBody());
-    tweetResponse.setTweetType(savedTweet.getTweetType());
+    tweetResponse.setTweetType(TweetType.TWEET);
     tweetResponse.setCountLikes(savedTweet.getCountLikes());
     tweetResponse.setCountRetweets(savedTweet.getCountRetweets());
     tweetResponse.setCountReply(savedTweet.getCountReply());
