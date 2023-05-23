@@ -40,4 +40,23 @@ public class AuthController {
   public ResponseEntity<String> handleLogout(HttpServletRequest request) {
     return ResponseEntity.ok(this.authService.makeLogOut((Long) request.getAttribute("userId")));
   }
+
+  @Validated({Marker.PasswordUpdate.class})
+  @GetMapping(path = "/password/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleGetPasswordUpdateToken(@RequestBody @JsonView({Marker.PasswordUpdate.class})
+                                                                              @Valid UserModelRequest passUpDto) {
+    return this.authService.getPasswordUpdateToken(passUpDto);
+  }
+
+  @Validated({Marker.PasswordReset.class})
+  @GetMapping(path = "/password/reset", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> handleGetPasswordResetToken(@RequestBody @JsonView({Marker.PasswordReset.class})
+                                                            @Valid UserModelRequest passResetDto) {
+    return this.authService.getPasswordResetToken(passResetDto);
+  }
+
+//  @GetMapping(path = "/password/reset/apply", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<String> handleGetPasswordChange(HttpServletRequest request, @RequestParam("token") String token) {
+//
+//  }
 }

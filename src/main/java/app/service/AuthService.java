@@ -111,9 +111,9 @@ public class AuthService {
   public ResponseEntity<String> getPasswordResetToken(UserModelRequest passwordResetDto) {
     if (this.userService.checkEmail(passwordResetDto.getEmail())) {
       String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUser(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
-      String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset?" + passwordResetToken;
+      String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset/apply?token=" + passwordResetToken;
       emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
       return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
-    } else return ResponseEntity.badRequest().body(passwordResetDto.getEmail() + "is not registered in our DB");
+    } else return ResponseEntity.badRequest().body("ERROR: " + passwordResetDto.getEmail() + " is not registered in our DB");
   }
 }

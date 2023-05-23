@@ -48,6 +48,4 @@ public class UserController {
 //  public ResponseEntity<UserModelResponse> updateUser(@JsonView({Views.Update.class}) @RequestBody UserModelRequest userRequestDTO){
 //    return ResponseEntity.ok().build();
 //  }
-
-
 }

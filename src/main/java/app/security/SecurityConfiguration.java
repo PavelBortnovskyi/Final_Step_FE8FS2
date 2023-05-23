@@ -49,6 +49,7 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login").permitAll()
       .antMatchers("/api/v1/auth/logout").permitAll()
+      .antMatchers("/api/v1/auth/password/reset").permitAll()
       .antMatchers("/test/id").authenticated()
       .antMatchers("/user/**").authenticated()
       //.antMatchers("/api/v1/chat/create").permitAll()

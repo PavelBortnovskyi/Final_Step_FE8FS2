@@ -30,7 +30,7 @@ public class UserModelRequest {
   private String userTag;
 
 
-  @JsonView({Marker.Existed.class, Marker.New.class, Marker.PasswordReset.class})
+  @JsonView({Marker.Existed.class, Marker.New.class, Marker.PasswordUpdate.class, Marker.PasswordReset.class})
   @ApiModelProperty(value = "Email", example = "john.doe@example.com", required = true, allowableValues = "range[6, 50]")
   @Size(min = 6, max = 50, message = "Max email length is 50 characters", groups = {Marker.Existed.class, Marker.New.class, Marker.PasswordReset.class, Marker.PasswordUpdate.class})
   @Email(message = "Must have email format", groups = {Marker.Existed.class, Marker.New.class, Marker.PasswordReset.class, Marker.PasswordUpdate.class})
