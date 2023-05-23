@@ -6,6 +6,7 @@ import app.dto.rs.TweetResponse;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.facade.TweetFacade;
 import app.model.Tweet;
+import app.service.TweetActionService;
 import app.service.TweetService;
 import app.service.UserModelService;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -32,7 +33,7 @@ public class TweetController {
 
   private final TweetService tweetService;
 
-
+  private final TweetActionService tweetActionService;
   private final TweetFacade tweetFacade;
 
   //get tweet by id (don`t need token)
@@ -61,21 +62,21 @@ public class TweetController {
   //create new tweet
   @PostMapping("/create_tweet")
   @Validated({Marker.New.class})
-  public @JsonView({Marker.New.class}) ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
+  public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
           @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
   }
 
   @PostMapping("/create_retweet")
   @Validated({Marker.Retweet.class})
-  public @JsonView({Marker.Retweet.class}) ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.Retweet.class})
+  public ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.Retweet.class})
                                                                                  @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
   }
 
   @PostMapping("/create_reply")
   @Validated({Marker.Retweet.class})
-  public @JsonView({Marker.Retweet.class}) ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
+  public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
                                                                                        @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
   }
@@ -92,11 +93,17 @@ public class TweetController {
     return ResponseEntity.ok(tweetFacade.getUserTweets(userId)).getBody();
   }
 
-  //TODO: fix, not working
-  @PostMapping("/add_like/{id}")
-  public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request) {
-    tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
+  @PostMapping("/add_like/{tweetId}")
+  public ResponseEntity addLikeToTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetActionService.addLike(tweetId, request));
   }
+
+  @PostMapping("/add_bookmarks/{tweetId}")
+  public ResponseEntity addBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetActionService.addBookmark(tweetId, request));
+  }
+
+
 
 
 }

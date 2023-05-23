@@ -3,9 +3,9 @@ package app.exceptions.tweetError;
 import app.exceptions.httpError.BadRequestException;
 
 public class TweetIsNotFoundException extends BadRequestException {
-  public TweetIsNotFoundException(String message) {
+  public TweetIsNotFoundException(Long tweetId) {
 
-    super("Tweet is not found " + message);
+    super("Tweet is not found " + tweetId);
   }
 
 }
