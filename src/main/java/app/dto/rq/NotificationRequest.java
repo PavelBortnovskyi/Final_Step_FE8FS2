@@ -10,17 +10,17 @@ import javax.validation.constraints.NotNull;
 @Data
 public class NotificationRequest {
 
-    @NotNull(message = "Notification type must be specified")
-    private NotificationType notificationType;
+  @NotNull(message = "Notification type must be specified")
+  private NotificationType notificationType;
 
-    @NotNull(message = "Receiver user must be specified")
-    private UserModel receiverUser;
+  @NotNull(message = "Receiver user must be specified")
+  private UserModel receiverUser;
 
-    @NotNull(message = "Sender must be specified")
-    private UserModel initiatorUser;
+  @NotNull(message = "Sender must be specified")
+  private UserModel initiatorUser;
 
-    @NotNull(message = "Tweet must be specified")
-    private Tweet tweet;
+  @NotNull(message = "Tweet must be specified")
+  private Tweet tweet;
 
-    private boolean isRead = false;
+  private boolean isRead = false;
 }

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatModelRepository extends RepositoryInterface<Chat> {
-    @Query("SELECT c FROM UserModel u JOIN u.chats c WHERE u.id = :id")
-    Page<Chat> getChatList(@Param("id") Long userId, Pageable pageable);
+  @Query("SELECT c FROM UserModel u JOIN u.chats c WHERE u.id = :id")
+  Page<Chat> getChatList(@Param("id") Long userId, Pageable pageable);
 
-    @Query("SELECT c, m FROM UserModel u JOIN u.chats c LEFT JOIN c.messages m " +
-            "WHERE u.id = :id AND m.sent = (SELECT MAX(m2.sent) FROM c.messages m2)")
-    Page<Object[]> getChatListForPreview(@Param("id") Long userId, Pageable pageable);
+  @Query("SELECT c, m FROM UserModel u JOIN u.chats c LEFT JOIN c.messages m " +
+          "WHERE u.id = :id AND m.sent = (SELECT MAX(m2.sent) FROM c.messages m2)")
+  Page<Object[]> getChatListForPreview(@Param("id") Long userId, Pageable pageable);
 }

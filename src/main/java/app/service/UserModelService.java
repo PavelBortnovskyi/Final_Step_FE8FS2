@@ -17,86 +17,86 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserModelService extends GeneralService<UserModel> {
 
-    private final UserModelRepository userModelRepository;
+  private final UserModelRepository userModelRepository;
 
-    private final PasswordEncoder encoder;
-
-
-    /**
-     * Methods returns Optional of UserModel by different parameters
-     */
-    public Optional<UserModel> getUserO(String email) {
-        return this.userModelRepository.findByEmail(email);
-    }
-
-    public Optional<UserModel> getUserO(Long id) {
-        return this.userModelRepository.findById(id);
-    }
+  private final PasswordEncoder encoder;
 
 
-    public UserModel getUser(String email) {
-        return this.userModelRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
-    }
+  /**
+   * Methods returns Optional of UserModel by different parameters
+   */
+  public Optional<UserModel> getUserO(String email) {
+    return this.userModelRepository.findByEmail(email);
+  }
 
-    public UserModel getUser(Long userId) {
-        return this.userModelRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-    }
-
-
-    public Optional<UserModel> getUserByToken(String refreshToken) {
-        return this.userModelRepository.findByToken(refreshToken);
-    }
-
-    public Optional<UserModel> getUserByTagO(String userTag) {
-        return this.userModelRepository.findByUserTag(userTag);
-    }
+  public Optional<UserModel> getUserO(Long id) {
+    return this.userModelRepository.findById(id);
+  }
 
 
-    @Transactional
-    public void subscribe(Long userCurrentId, Long userToFollowingId) {
-        if (userCurrentId.equals(userToFollowingId))
-            throw new IncorrectUserIdException(userToFollowingId);
-        getUser(userCurrentId).getFollowings().add(getUser(userToFollowingId));
-    }
+  public UserModel getUser(String email) {
+    return this.userModelRepository.findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException(email));
+  }
+
+  public UserModel getUser(Long userId) {
+    return this.userModelRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException(userId));
+  }
 
 
-    @Transactional
-    public void unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
-        getUser(userCurrentId).getFollowings().remove(getUser(userToUnFollowingId));
-    }
+  public Optional<UserModel> getUserByToken(String refreshToken) {
+    return this.userModelRepository.findByToken(refreshToken);
+  }
+
+  public Optional<UserModel> getUserByTagO(String userTag) {
+    return this.userModelRepository.findByUserTag(userTag);
+  }
 
 
-    /**
-     * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
-     */
-    public boolean updatePassword(String email, String oldPassword, String freshPassword) {
-        return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
-                .map(user -> {
-                    this.userModelRepository.updatePassword(user.getId(), freshPassword);
-                    return true;
-                }).orElseGet(() -> false);
-    }
+  @Transactional
+  public void subscribe(Long userCurrentId, Long userToFollowingId) {
+    if (userCurrentId.equals(userToFollowingId))
+      throw new IncorrectUserIdException(userToFollowingId);
+    getUser(userCurrentId).getFollowings().add(getUser(userToFollowingId));
+  }
 
 
-    /**
-     * Method returns boolean result of checking presence in DB user with login&password combination
-     */
-    public boolean checkLoginPassword(String email, String password) {
-        return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
-    }
+  @Transactional
+  public void unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
+    getUser(userCurrentId).getFollowings().remove(getUser(userToUnFollowingId));
+  }
 
 
-    /**
-     * Method returns true if provided email address is present in DB
-     */
-    public boolean isEmailPresentInDB(String email) {
-        return this.userModelRepository.findByEmail(email).isPresent();
-    }
+  /**
+   * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
+   */
+  public boolean updatePassword(String email, String oldPassword, String freshPassword) {
+    return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
+            .map(user -> {
+              this.userModelRepository.updatePassword(user.getId(), freshPassword);
+              return true;
+            }).orElseGet(() -> false);
+  }
 
-    public boolean isUserTagPresentInDB(String userTag) {
-        return this.getUserByTagO(userTag).isPresent();
-    }
+
+  /**
+   * Method returns boolean result of checking presence in DB user with login&password combination
+   */
+  public boolean checkLoginPassword(String email, String password) {
+    return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
+  }
+
+
+  /**
+   * Method returns true if provided email address is present in DB
+   */
+  public boolean isEmailPresentInDB(String email) {
+    return this.userModelRepository.findByEmail(email).isPresent();
+  }
+
+  public boolean isUserTagPresentInDB(String userTag) {
+    return this.getUserByTagO(userTag).isPresent();
+  }
 
 }

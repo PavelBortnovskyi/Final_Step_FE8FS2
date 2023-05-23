@@ -31,27 +31,27 @@ import java.util.stream.Collectors;
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UnAuthorizedException.class)
-    public ErrorInfo handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-    }
+  @ExceptionHandler(UnAuthorizedException.class)
+  public ErrorInfo handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+  }
 
-    @ExceptionHandler(BadRequestException.class)
-    public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-    }
+  @ExceptionHandler(BadRequestException.class)
+  public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+  }
 
-    // -------- SPRING ---------
+  // -------- SPRING ---------
 
-    @ExceptionHandler({AuthenticationException.class})
-    @ResponseBody
-    public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        log.error("Wrong login or password!");
-        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-    }
+  @ExceptionHandler({AuthenticationException.class})
+  @ResponseBody
+  public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    log.error("Wrong login or password!");
+    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+  }
 
 //  @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
 //  @ResponseBody
@@ -61,33 +61,33 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 //    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong request dto. Field validation failed!: " + ex.getMessage());
 //  }
 
-    @ResponseBody
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse onConstraintValidationException(
-            ConstraintViolationException e
-    ) {
-        final List<Violation> violations = e.getConstraintViolations().stream()
-                .map(
-                        violation -> new Violation(
-                                violation.getPropertyPath().toString(),
-                                violation.getMessage()
-                        )
-                )
-                .collect(Collectors.toList());
-        return new ValidationErrorResponse(violations);
-    }
+  @ResponseBody
+  @ExceptionHandler(ConstraintViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ValidationErrorResponse onConstraintValidationException(
+          ConstraintViolationException e
+  ) {
+    final List<Violation> violations = e.getConstraintViolations().stream()
+            .map(
+                    violation -> new Violation(
+                            violation.getPropertyPath().toString(),
+                            violation.getMessage()
+                    )
+            )
+            .collect(Collectors.toList());
+    return new ValidationErrorResponse(violations);
+  }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ValidationErrorResponse onMethodArgumentNotValidException(
-            MethodArgumentNotValidException e
-    ) {
-        final List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
-                .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
-                .collect(Collectors.toList());
-        return new ValidationErrorResponse(violations);
-    }
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ValidationErrorResponse onMethodArgumentNotValidException(
+          MethodArgumentNotValidException e
+  ) {
+    final List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
+            .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
+            .collect(Collectors.toList());
+    return new ValidationErrorResponse(violations);
+  }
 }
 

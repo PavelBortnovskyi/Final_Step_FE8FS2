@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class TweetActionResponse {
 
-    private TweetActionType actionType;
-    private Long userId;
-    private Long tweetId;
+  private TweetActionType actionType;
+  private Long userId;
+  private Long tweetId;
 }

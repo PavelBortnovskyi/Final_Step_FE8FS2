@@ -7,17 +7,17 @@ import java.util.Optional;
 
 @Service
 public interface ServiceInterface<E> {
-    E save(E entity);
+  E save(E entity);
 
-    void delete(E entity);
+  void delete(E entity);
 
-    void deleteById(Long id);
+  void deleteById(Long id);
 
-    List<E> findAll();
+  List<E> findAll();
 
-    Optional<E> findById(Long id);
+  Optional<E> findById(Long id);
 
-    E getOne(Long id);
+  E getOne(Long id);
 
-    List<E> findAllById(Iterable<Long> listOfIds);
+  List<E> findAllById(Iterable<Long> listOfIds);
 }
