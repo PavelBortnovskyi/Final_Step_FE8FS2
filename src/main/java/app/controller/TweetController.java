@@ -26,10 +26,8 @@ public class TweetController {
 
   private final TweetService tweetService;
 
-  private final UserModelService userModelService;
 
   private final TweetFacade tweetFacade;
-
 
   //get tweet by id (don`t need token)
   @GetMapping("{id}")
@@ -59,18 +57,18 @@ public class TweetController {
   }
 
   //get List tweets following users
-  @GetMapping("/get_following_tweets/{id}")
-  public List<ResponseEntity<TweetResponse>> getAllTweets(@PathVariable(name = "id") Long id) {
-    return (List<ResponseEntity<TweetResponse>>) ResponseEntity.ok(tweetService.allUserFollowingTweet(id));
+  @GetMapping("/get_following_tweets/{pageNumber}")
+  public List<TweetResponse> getAllTweets(@PathVariable(name = "pageNumber") Integer pageNumber, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, pageNumber)).getBody();
   }
 
   // get user tweets
   @GetMapping("/get_tweets/{id}")
   public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId) {
-    return (List<TweetResponse>) ResponseEntity.ok(tweetService.getUserTweets(userId));
+    return ResponseEntity.ok(tweetFacade.getUserTweets(userId)).getBody();
   }
 
-
+  //TODO: fix, not working
   @PostMapping("/add_like/{id}")
   public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request) {
     tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);

@@ -9,6 +9,7 @@ import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -71,15 +72,15 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
-  public List<Tweet> allUserFollowingTweet(Long userId) {
-    Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
-    return followingUsers.stream()
-      .flatMap(u -> tweetModelRepository.getAllByUser((UserModel) u).stream())
-      .collect(Collectors.toList());
+  public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
+    List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null)
+            .getFollowings().stream().map(u -> u.getId()).toList();
+    return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
+            Pageable.ofSize(10).withPage(pageNumber)).toList());
   }
 
-  public List<TweetResponse> getUserTweets(Long userId) {
-    return tweetModelRepository.getAllByUserId(userId).stream().collect(Collectors.toList());
+  public ResponseEntity<List<Tweet>> getUserTweets(Long userId) {
+    return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId));
   }
 
   public Optional<Tweet> updateTweet(Long id, TweetRequest tweetRequest) {

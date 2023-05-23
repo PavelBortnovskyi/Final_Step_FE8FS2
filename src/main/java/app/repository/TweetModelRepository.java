@@ -1,27 +1,28 @@
 package app.repository;
 
-import app.dto.rs.TweetResponse;
+
 import app.model.Tweet;
 import app.model.UserModel;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Optional;
+
 
 @Repository
 public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   void deleteById(Long id);
 
   @Query(value = "SELECT t FROM Tweet t WHERE t.user.id =:userId")
-  List<TweetResponse> getAllByUserId(Long userId);
+  List<Tweet> getUserTweets(Long userId);
+
+  @Query("SELECT t FROM Tweet t WHERE t.user.id IN (:userIds) ORDER BY t.createdAt DESC")
+  Page<Tweet> findTweetsByUserIdsSortedByDate(List<Long> userIds, Pageable pageable);
+
 
   List<Tweet> getAllByUser(UserModel user);
 
-
-
-  @Query(value = "SELECT u FROM UserModel u where u.followings = :followed_id")
-  Optional<List<UserModel>> userFollowings(@Param("followed_id") Long userId);
 
 }
