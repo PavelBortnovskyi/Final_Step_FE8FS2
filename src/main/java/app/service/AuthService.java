@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -27,11 +28,13 @@ public class AuthService {
 
   private final JwtTokenService jwtTokenService;
 
+  private final EmailService emailService;
+
   private final AuthenticationManager authenticationManager;
 
-  private final UserModelFacade userModelFacade;
+  private final UserModelFacade userFacade;
 
-  private final UserModelService userModelService;
+  private final UserModelService userService;
 
   private final PasswordEncoder encoder;
 
@@ -46,7 +49,7 @@ public class AuthService {
     User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
 
     //User extraction from DB by security credentials from Authenticated User (email aka username)
-    Optional<UserModel> maybeCurrentUser = this.userModelService.getUser(authUser.getUsername());
+    Optional<UserModel> maybeCurrentUser = this.userService.getUser(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
     //Token creation
@@ -66,12 +69,12 @@ public class AuthService {
 
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
     //Email duplicate checking
-    if (this.userModelService.checkEmail(signUpDTO.getEmail()))
+    if (this.userService.checkEmail(signUpDTO.getEmail()))
       throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
 
     //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
-    UserModel freshUser = this.userModelService.save(this.userModelFacade.convertToEntity(signUpDTO));
+    UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
 
     //Token creation using user_id
     String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
@@ -84,7 +87,7 @@ public class AuthService {
     HashMap<String, String> response = new HashMap<>();
     response.put("ACCESS_TOKEN", accessToken);
     response.put("REFRESH_TOKEN", refreshToken);
-    response.put("NEW_USER_ID", this.userModelService.save(freshUser).getId().toString());
+    response.put("NEW_USER_ID", this.userService.save(freshUser).getId().toString());
     return ResponseEntity.ok(response);
   }
 
@@ -92,5 +95,25 @@ public class AuthService {
     this.jwtTokenService.changeTokenStatus(userId, true);
     log.info("User id: " + userId + " logged out");
     return "User with Id: " + userId + " logged out";
+  }
+
+  public ResponseEntity<HashMap<String, String>> getPasswordUpdateToken(UserModelRequest passwordUpdateDto) {
+    if (this.userService.checkLoginPassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword())) {
+      String passwordUpdateToken = this.jwtTokenService.createToken(this.userService.getUser(passwordUpdateDto.getEmail()).get().getId(), TokenType.PASSWORD_UPDATE);
+      HashMap<String, String> response = new HashMap<>();
+      response.put("PASSWORD_UPDATE_TOKEN", passwordUpdateToken);
+      return ResponseEntity.ok(response);
+    } else return ResponseEntity.badRequest().body(new HashMap<>() {{
+      put("ERROR", "Wrong login password combination");
+    }});
+  }
+
+  public ResponseEntity<String> getPasswordResetToken(UserModelRequest passwordResetDto) {
+    if (this.userService.checkEmail(passwordResetDto.getEmail())) {
+      String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUser(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
+      String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset?" + passwordResetToken;
+      emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
+      return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
+    } else return ResponseEntity.badRequest().body(passwordResetDto.getEmail() + "is not registered in our DB");
   }
 }

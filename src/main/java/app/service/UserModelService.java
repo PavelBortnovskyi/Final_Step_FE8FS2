@@ -6,6 +6,7 @@ import app.model.UserModel;
 import app.repository.UserModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class UserModelService extends GeneralService<UserModel> {
 
   private final UserModelRepository userModelRepository;
+
+  private final PasswordEncoder encoder;
 
   /**
    * Methods returns Optional of UserModel by different parameters
@@ -56,5 +59,23 @@ public class UserModelService extends GeneralService<UserModel> {
    */
   public boolean checkEmail(String email) {
     return this.userModelRepository.findByEmail(email).isPresent();
+  }
+
+  /**
+   * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
+   */
+  public boolean updatePassword(String email, String oldPassword, String freshPassword) {
+    return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
+      .map(user -> {
+        this.userModelRepository.updatePassword(user.getId(), freshPassword);
+        return true;
+      }).orElseGet(() -> false);
+  }
+
+  /**
+   * Method returns boolean result of checking presence in DB user with login&password combination
+   */
+  public boolean checkLoginPassword(String email, String password) {
+    return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
   }
 }

@@ -43,6 +43,13 @@ public class Tweet extends BaseEntityModel {
   @OneToMany(mappedBy = "tweet")
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
+  @Column(name = "count_likes")
+  private Integer countLikes;
 
+  @Column(name = "count_retweets")
+  private Integer countRetweets;
+
+  @Column(name = "count_reply")
+  private Integer countReply;
 
 }
