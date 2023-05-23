@@ -19,8 +19,8 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
   @PostConstruct
   public void init() {
     super.getMm().typeMap(UserModel.class, UserModelResponse.class)
-            .addMapping(UserModel::getCountFollowers, UserModelResponse::setCountUserFollowers)
-            .addMapping(UserModel::getCountFollowings, UserModelResponse::setCountUserFollowings);
+        .addMapping(UserModel::getCountFollowers, UserModelResponse::setCountUserFollowers)
+        .addMapping(UserModel::getCountFollowings, UserModelResponse::setCountUserFollowings);
 
     // Skip properties with null value
     super.getMm().getConfiguration().setPropertyCondition(u -> u.getSource() != null);
@@ -32,10 +32,10 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
 
   public UserModelResponse updateUser(Long userId, UserModelRequest userModelRequest) {
     userModelService.getUserByTagO(userModelRequest.getUserTag())
-            .ifPresent(u -> {
-              if (!u.getId().equals(userId))
-                throw new EmailAlreadyRegisteredException("tag: " + userModelRequest.getUserTag());
-            });
+        .ifPresent(u -> {
+          if (!u.getId().equals(userId))
+            throw new EmailAlreadyRegisteredException("tag: " + userModelRequest.getUserTag());
+        });
     return this.save(this.mapToEntity(userModelRequest, userModelService.getUser(userId)));
   }
 

@@ -81,11 +81,11 @@ public class JwtTokenService {
     Claims claims = Jwts.claims().setSubject(userId.toString());
 
     return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(expiry)
-            .signWith(SignatureAlgorithm.HS512, signKey)
-            .compact();
+        .setClaims(claims)
+        .setIssuedAt(now)
+        .setExpiration(expiry)
+        .signWith(SignatureAlgorithm.HS512, signKey)
+        .compact();
   }
 
   public String createToken(Long userId, TokenType tokenType, String userTag, String userMail) {
@@ -100,11 +100,11 @@ public class JwtTokenService {
     }
 
     return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(expiry)
-            .signWith(SignatureAlgorithm.HS512, signKey)
-            .compact();
+        .setClaims(claims)
+        .setIssuedAt(now)
+        .setExpiration(expiry)
+        .signWith(SignatureAlgorithm.HS512, signKey)
+        .compact();
   }
 
   /**
@@ -114,8 +114,8 @@ public class JwtTokenService {
     String signKey = this.getSignKey(tokenType);
     try {
       return Optional.ofNullable(Jwts.parser()
-              .setSigningKey(signKey)
-              .parseClaimsJws(token));
+          .setSigningKey(signKey)
+          .parseClaimsJws(token));
     } catch (SignatureException e) {
       log.error("Wrong signature key: " + signKey);
       throw new JwtAuthenticationException("Wrong signature key: " + signKey);
@@ -145,8 +145,8 @@ public class JwtTokenService {
    */
   public Optional<String> extractTokenFromRequest(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-            .filter(h -> h.startsWith(BEARER))
-            .map(h -> h.substring(BEARER.length()));
+        .filter(h -> h.startsWith(BEARER))
+        .map(h -> h.substring(BEARER.length()));
   }
 
   /**
@@ -190,8 +190,8 @@ public class JwtTokenService {
    */
   public Optional<Long> getIdFromRequest(HttpServletRequest request) {
     return this.extractTokenFromRequest(request)
-            .flatMap(t -> this.extractClaimsFromToken(t, TokenType.ACCESS))
-            .flatMap(this::extractIdFromClaims);
+        .flatMap(t -> this.extractClaimsFromToken(t, TokenType.ACCESS))
+        .flatMap(this::extractIdFromClaims);
   }
 
   /**
@@ -220,9 +220,9 @@ public class JwtTokenService {
    */
   public Authentication getAuthentication(String accessToken) {
     UserDetails userDetails = this.userDetailsService
-            .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
-                            .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
-                    .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
+        .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
+                .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
+            .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }
 

@@ -43,11 +43,11 @@ public class ChatService extends GeneralService<Chat> {
    */
   public boolean deleteChat(Long chatId, Long userId) {
     this.chatRepository.findById(chatId)
-            .filter(chat -> chat.getInitiatorUser().getId().equals(userId))
-            .map(chat -> {
-              this.chatRepository.delete(chat);
-              return chat;
-            }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
+        .filter(chat -> chat.getInitiatorUser().getId().equals(userId))
+        .map(chat -> {
+          this.chatRepository.delete(chat);
+          return chat;
+        }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
     return this.chatRepository.existsById(chatId);
   }
 
@@ -57,14 +57,14 @@ public class ChatService extends GeneralService<Chat> {
 
   public Chat addUser(Long userId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     return this.chatRepository
-            .save(this.chatRepository
-                    .findById(chatId)
-                    .map(chat -> {
-                      chat.getUsers().add(this.userService.getUserO(userId)
-                              .orElseThrow(() -> new UserNotFoundException(userId)));
-                      return chat;
-                    })
-                    .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found")));
+        .save(this.chatRepository
+            .findById(chatId)
+            .map(chat -> {
+              chat.getUsers().add(this.userService.getUserO(userId)
+                  .orElseThrow(() -> new UserNotFoundException(userId)));
+              return chat;
+            })
+            .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found")));
   }
 
   /**
@@ -85,11 +85,11 @@ public class ChatService extends GeneralService<Chat> {
    */
   public Chat addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
     return this.chatRepository.save(this.chatRepository.findById(chatId)
-            .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))
-            .map(chat -> {
-              chat.getMessages().add(message);
-              return chat;
-            }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId))));
+        .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))
+        .map(chat -> {
+          chat.getMessages().add(message);
+          return chat;
+        }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId))));
   }
 
   /**

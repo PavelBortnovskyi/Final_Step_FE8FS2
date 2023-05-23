@@ -26,6 +26,6 @@ public class Chat extends BaseEntityModel {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
-          inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+      inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
   private Set<UserModel> users = new HashSet<>();
 }

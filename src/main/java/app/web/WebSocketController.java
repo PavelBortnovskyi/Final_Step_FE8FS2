@@ -77,11 +77,11 @@ public class WebSocketController {
   @SendTo("/specific")
   public void processPrivateNotification(@Payload @Valid NotificationRequest notificationDtoReq) {
     this.userService.getUserO(notificationDtoReq.getReceiverUser().getId())
-            .map(user -> {
-              this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
-              this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
-              return user;
-            })
-            .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUser().getId()));
+        .map(user -> {
+          this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
+          this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
+          return user;
+        })
+        .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUser().getId()));
   }
 }

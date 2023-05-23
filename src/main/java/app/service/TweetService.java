@@ -58,14 +58,14 @@ public class TweetService extends GeneralService<Tweet> {
   public List<Tweet> allUserFollowingTweet(Long userId) {
     Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
     return followingUsers.stream()
-            .flatMap(u -> tweetModelRepository.getAllByUser((UserModel) u).stream())
-            .collect(Collectors.toList());
+        .flatMap(u -> tweetModelRepository.getAllByUser((UserModel) u).stream())
+        .collect(Collectors.toList());
   }
 
   public List<Tweet> getUserTweets(Long userId) {
     Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
     return tweetModelRepository.getAllByUserId(userId).stream()
-            .collect(Collectors.toList());
+        .collect(Collectors.toList());
   }
 
 }
