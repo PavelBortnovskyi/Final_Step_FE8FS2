@@ -57,6 +57,9 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
     tweetResponse.setParentTweetId(savedTweet.getParentTweetId().getId() != 0 ? savedTweet.getParentTweetId().getId() : null);
+    tweetResponse.setCountLikes(0);
+    tweetResponse.setCountRetweets(0);
+    tweetResponse.setCountReply(0);
 
 
     return tweetResponse;
