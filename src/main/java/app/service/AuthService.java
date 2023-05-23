@@ -3,7 +3,7 @@ package app.service;
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
-import app.exceptions.authError.EmailAlreadyRegisteredException;
+import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +69,7 @@ public class AuthService {
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
     //Email duplicate checking
     if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
-      throw new EmailAlreadyRegisteredException("email: " + signUpDTO.getEmail());
+      throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
 
     //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));

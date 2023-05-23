@@ -2,7 +2,7 @@ package app.facade;
 
 import app.dto.rq.UserModelRequest;
 import app.dto.rs.UserModelResponse;
-import app.exceptions.authError.EmailAlreadyRegisteredException;
+import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,7 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     userModelService.getUserByTagO(userModelRequest.getUserTag())
       .ifPresent(u -> {
         if (!u.getId().equals(userId))
-          throw new EmailAlreadyRegisteredException("tag: " + userModelRequest.getUserTag());
+          throw new UserAlreadyRegisteredException("tag: " + userModelRequest.getUserTag());
       });
     return this.save(this.mapToEntity(userModelRequest, userModelService.getUser(userId)));
   }
