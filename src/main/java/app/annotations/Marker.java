@@ -21,5 +21,11 @@ public interface Marker {
 
   interface Update {
   }
+
+  interface PasswordUpdate {
+  }
+
+  interface PasswordReset {
+  }
 }
 
