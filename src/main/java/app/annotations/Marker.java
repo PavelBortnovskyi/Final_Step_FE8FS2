@@ -1,17 +1,23 @@
 package app.annotations;
 
 public interface Marker {
-  interface forNew {
+  interface New {
   }
 
-  interface forExisted {
+  interface Existed {
   }
 
-  interface Details{}
+  interface Details {
+  }
 
-  interface createRetweet{}
+  interface ChatDetails {
+  }
 
-  interface createReply{}
+  interface Preview {
+  }
 
+  interface Delete {}
+
+  interface Update {}
 }
 

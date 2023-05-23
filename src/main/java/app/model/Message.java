@@ -27,5 +27,5 @@ public class Message extends BaseEntityModel {
   private String body;
 
   @Column(name = "sent_at")
-  private LocalDateTime sent;
+  private LocalDateTime sent = LocalDateTime.now();
 }
