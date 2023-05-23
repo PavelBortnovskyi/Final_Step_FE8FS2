@@ -36,12 +36,12 @@ public class UserModelService extends GeneralService<UserModel> {
 
   public UserModel getUser(String email) {
     return this.userModelRepository.findByEmail(email)
-        .orElseThrow(() -> new UserNotFoundException(email));
+      .orElseThrow(() -> new UserNotFoundException(email));
   }
 
   public UserModel getUser(Long userId) {
     return this.userModelRepository.findById(userId)
-        .orElseThrow(() -> new UserNotFoundException(userId));
+      .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
 
@@ -73,10 +73,10 @@ public class UserModelService extends GeneralService<UserModel> {
    */
   public boolean updatePassword(String email, String oldPassword, String freshPassword) {
     return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
-        .map(user -> {
-          this.userModelRepository.updatePassword(user.getId(), freshPassword);
-          return true;
-        }).orElseGet(() -> false);
+      .map(user -> {
+        this.userModelRepository.updatePassword(user.getId(), freshPassword);
+        return true;
+      }).orElseGet(() -> false);
   }
 
 

@@ -40,7 +40,7 @@ public class TweetController {
       return ResponseEntity.notFound().build();
     }
     return tweet.map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
-        .orElseThrow(() -> new TweetIsNotFoundException(id.toString()));
+      .orElseThrow(() -> new TweetIsNotFoundException(id.toString()));
   }
 
   //delete tweet by id
@@ -73,20 +73,20 @@ public class TweetController {
   @GetMapping("/get_following_tweets/{id}")
   public Optional<List<ResponseEntity<TweetResponse>>> getAllTweets(@PathVariable(name = "id") Long id) {
     return Optional.ofNullable(Optional.ofNullable(tweetService.allUserFollowingTweet(id))
-        .map(models -> models.stream()
-            .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
-            .collect(Collectors.toList()))
-        .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
+      .map(models -> models.stream()
+        .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
+        .collect(Collectors.toList()))
+      .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
   }
 
   // get user tweets
   @GetMapping("/get_tweets/{id}")
   public Optional<List<ResponseEntity<TweetResponse>>> getUserTweets(@PathVariable(name = "id") Long id) {
     return Optional.ofNullable(Optional.ofNullable(tweetService.getUserTweets(id))
-        .map(models -> models.stream()
-            .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
-            .collect(Collectors.toList()))
-        .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
+      .map(models -> models.stream()
+        .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
+        .collect(Collectors.toList()))
+      .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
   }
 
 

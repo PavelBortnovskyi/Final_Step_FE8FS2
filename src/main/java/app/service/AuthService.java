@@ -40,7 +40,7 @@ public class AuthService {
   public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
     //Auth procedure handling
     Authentication authentication = authenticationManager
-        .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+      .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     Object principal = authentication.getPrincipal();
 

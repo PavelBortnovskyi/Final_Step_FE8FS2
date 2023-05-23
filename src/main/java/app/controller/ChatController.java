@@ -88,9 +88,9 @@ public class ChatController {
                                                                                                            @Valid ChatRequest chatDTO) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatService.getUserChatsWithLastMessage(currUserId, chatDTO.getPageSize(), chatDTO.getPageNumber() - 1)
-        .stream()
-        .map(this.chatFacade::convertToDto)
-        .collect(Collectors.toList()));
+      .stream()
+      .map(this.chatFacade::convertToDto)
+      .collect(Collectors.toList()));
   }
 
   @Validated({Marker.Existed.class})
@@ -99,11 +99,11 @@ public class ChatController {
                                                              @Valid ChatRequest chatDTO, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     this.chatService.findById(chatDTO.getChatId())
-        .filter(chat -> chat.getUsers().contains(this.userService.findById(currUserId)
-            .orElseThrow(() -> new UserNotFoundException(currUserId))))
-        .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatDTO.getChatId(), currUserId)));
+      .filter(chat -> chat.getUsers().contains(this.userService.findById(currUserId)
+        .orElseThrow(() -> new UserNotFoundException(currUserId))))
+      .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatDTO.getChatId(), currUserId)));
     return ResponseEntity.ok(this.chatService.getMessages(chatDTO.getChatId(), chatDTO.getPageSize(), chatDTO.getPageNumber() - 1)
-        .stream().map(this.messageFacade::convertToDto).collect(Collectors.toList()));
+      .stream().map(this.messageFacade::convertToDto).collect(Collectors.toList()));
 //    return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.findById(chatId)
 //      .filter(chat -> chat.getUsers().contains(this.userService.findById(chatDTO.getInitiatorUserId())
 //        .orElseThrow(() -> new UserNotFoundException(currUserId))) || chat.getInitiatorUser().getId().equals(currUserId))
