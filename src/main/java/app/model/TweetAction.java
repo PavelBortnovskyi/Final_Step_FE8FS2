@@ -13,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 public class TweetAction extends BaseEntityModel {
+  //TODO: male all tweetActions and fix in tweet counters
   @Enumerated(EnumType.STRING)
   private TweetActionType actionType;
 

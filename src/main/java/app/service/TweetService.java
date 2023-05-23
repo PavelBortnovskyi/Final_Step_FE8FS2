@@ -42,12 +42,11 @@ public class TweetService extends GeneralService<Tweet> {
     new TweetIsNotFoundException(String.format("Tweet: %d, has been deleted", tweetId));
   }
 
-
-  public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
+  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, TweetType tweetType){
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
-    tweet.setTweetType(TweetType.TWEET);
+    tweet.setTweetType(tweetType);
 
     tweet.setUser(user);
     Tweet savedTweet = tweetModelRepository.save(tweet);
@@ -57,9 +56,22 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setTweetType(savedTweet.getTweetType());
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
+    tweetResponse.setParentTweetId(savedTweet.getParentTweetId().getId() != 0 ? savedTweet.getParentTweetId().getId() : null);
 
 
     return tweetResponse;
+  }
+
+  public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
+    return create(tweetRequest, request, TweetType.TWEET);
+  }
+
+  public TweetResponse createRetweet(TweetRequest tweetRequest, HttpServletRequest request) {
+    return create(tweetRequest, request, TweetType.QUOTE_TWEET);
+  }
+
+  public TweetResponse createReply(TweetRequest tweetRequest, HttpServletRequest request) {
+    return create(tweetRequest, request, TweetType.REPLY);
   }
 
   public Optional<Tweet> update(Tweet tweetRequest) {
