@@ -2,6 +2,7 @@ package app.facade;
 
 import app.dto.rq.UserModelRequest;
 import app.dto.rs.UserModelResponse;
+import app.exceptions.authError.EmailAlreadyRegisteredException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
 import app.service.UserModelService;
@@ -14,7 +15,7 @@ import javax.annotation.PostConstruct;
 public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, UserModelResponse> {
 
   @Autowired
-  private UserModelService ums;
+  private UserModelService userModelService;
 
   @PostConstruct
   public void init() {
@@ -24,7 +25,12 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
   }
 
   public UserModelResponse getUserById(Long userId) {
-    return ums.getUser(userId).map(this::convertToDto)
-      .orElseThrow(() -> new UserNotFoundException(userId));
+    return this.convertToDto(userModelService.getUser(userId));
   }
+
+  public UserModelResponse updateUser(Long userId, UserModelRequest userModelRequest) {
+    if (userModelService.isUserTagPresentInDB(userModelRequest.getUserTag())) throw new EmailAlreadyRegisteredException("tag: " + userModelRequest.getUserTag());
+    return this.save(this.mapToEntity(userModelRequest, userModelService.getUser(userId)));
+  }
+
 }

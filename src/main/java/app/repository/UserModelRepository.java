@@ -18,6 +18,9 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   @Query(value = "SELECT u FROM UserModel u WHERE u.refreshToken = :refreshToken")
   Optional<UserModel> findByToken(@Param("refreshToken") String refreshToken);
 
+  @Query(value = "SELECT u FROM UserModel u WHERE u.userTag = :userTag")
+  Optional<UserModel> findByUserTag(@Param("userTag") String userTag);
+
   @Query(value = "SELECT u.refreshed FROM UserModel u WHERE u.refreshToken = :refreshToken")
   boolean checkRefreshTokenStatus(@Param("refreshToken") String refreshToken);
 
