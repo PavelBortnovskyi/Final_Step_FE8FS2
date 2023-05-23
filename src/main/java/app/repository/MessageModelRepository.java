@@ -19,5 +19,5 @@ public interface MessageModelRepository extends RepositoryInterface<Message> {
   @Transactional
   @Modifying
   @Query(value = "UPDATE Message m SET m.body = :body WHERE m.id = :id")
-  void changeMessage(@Param ("id") Long messageId, @Param("body") String body);
+  void changeMessage(@Param("id") Long messageId, @Param("body") String body);
 }

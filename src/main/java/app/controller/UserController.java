@@ -43,6 +43,11 @@ public class UserController {
     userModelService.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing);
     return ResponseEntity.ok().build();
   }
+//
+//  @PostMapping("update")
+//  public ResponseEntity<UserModelResponse> updateUser(@JsonView({Views.Update.class}) @RequestBody UserModelRequest userRequestDTO){
+//    return ResponseEntity.ok().build();
+//  }
 
 
 }

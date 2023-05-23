@@ -16,8 +16,10 @@ public interface Marker {
   interface Preview {
   }
 
-  interface Delete {}
+  interface Delete {
+  }
 
-  interface Update {}
+  interface Update {
+  }
 }
 
