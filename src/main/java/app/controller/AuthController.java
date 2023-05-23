@@ -22,22 +22,22 @@ import java.util.HashMap;
 @Validated
 public class AuthController {
 
-  private final AuthService authService;
+    private final AuthService authService;
 
-  @Validated({Marker.Existed.class})
-  @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Marker.Existed.class) @Valid UserModelRequest loginDTO) {
-    return this.authService.makeLogin(loginDTO);
-  }
+    @Validated({Marker.Existed.class})
+    @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Marker.Existed.class) @Valid UserModelRequest loginDTO) {
+        return this.authService.makeLogin(loginDTO);
+    }
 
-  @Validated({Marker.New.class})
-  @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Marker.New.class) @Valid UserModelRequest signUpDTO) {
-    return this.authService.makeSighUp(signUpDTO);
-  }
+    @Validated({Marker.New.class})
+    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Marker.New.class) @Valid UserModelRequest signUpDTO) {
+        return this.authService.makeSighUp(signUpDTO);
+    }
 
-  @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> handleLogout(HttpServletRequest request) {
-    return ResponseEntity.ok(this.authService.makeLogOut((Long) request.getAttribute("userId")));
-  }
+    @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> handleLogout(HttpServletRequest request) {
+        return ResponseEntity.ok(this.authService.makeLogOut((Long) request.getAttribute("userId")));
+    }
 }

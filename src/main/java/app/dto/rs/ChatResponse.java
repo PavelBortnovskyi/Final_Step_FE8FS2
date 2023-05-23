@@ -9,15 +9,15 @@ import java.util.Set;
 
 @Data
 public class ChatResponse {
-  @JsonView(Marker.ChatDetails.class)
-  private Long chatId;
+    @JsonView(Marker.ChatDetails.class)
+    private Long chatId;
 
-  @JsonView(Marker.ChatDetails.class)
-  private Long initiatorUserId;
+    @JsonView(Marker.ChatDetails.class)
+    private Long initiatorUserId;
 
-  @JsonView(Marker.ChatDetails.class)
-  private List<MessageResponse> messages;
+    @JsonView(Marker.ChatDetails.class)
+    private List<MessageResponse> messages;
 
-  @JsonView(Marker.ChatDetails.class)
-  private Set<UserModelResponse> users;
+    @JsonView(Marker.ChatDetails.class)
+    private Set<UserModelResponse> users;
 }

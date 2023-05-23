@@ -19,19 +19,19 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable<T> {
-  @CreatedBy
-  @Column(name = "created_by")
-  private T createdBy;
+    @CreatedBy
+    @Column(name = "created_by")
+    private T createdBy;
 
-  @CreatedDate
-  @Column(name = "created_at")
-  private LocalDateTime createdAt;
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-  @LastModifiedBy
-  @Column(name = "updated_by")
-  private T updatedBy;
+    @LastModifiedBy
+    @Column(name = "updated_by")
+    private T updatedBy;
 
-  @LastModifiedDate
-  @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

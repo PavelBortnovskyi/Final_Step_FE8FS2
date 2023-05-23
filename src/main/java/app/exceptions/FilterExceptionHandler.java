@@ -23,46 +23,46 @@ import java.io.IOException;
 @Component
 public class FilterExceptionHandler extends OncePerRequestFilter {
 
-  @Autowired
-  private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-  @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    try {
-      filterChain.doFilter(request, response);
-    } catch (JwtAuthenticationException ex) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-      response.setCharacterEncoding("UTF-8");
-      response.getWriter()
-        .write(this.objectMapper
-          .writeValueAsString(new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "JWT token empty or invalid!")));
-      log.error("JWT token empty or invalid!");
-    } catch (RuntimeException e) {
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            filterChain.doFilter(request, response);
+        } catch (JwtAuthenticationException ex) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter()
+                    .write(this.objectMapper
+                            .writeValueAsString(new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "JWT token empty or invalid!")));
+            log.error("JWT token empty or invalid!");
+        } catch (RuntimeException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
-  }
 
-  @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) {
-    String requestMethod = request.getMethod();
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String requestMethod = request.getMethod();
 
-    AntPathRequestMatcher[] matchers = {
-      new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
-      new AntPathRequestMatcher("/swagger-resources", requestMethod),
-      new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
-      new AntPathRequestMatcher("/webjars/**", requestMethod),
-      new AntPathRequestMatcher("/v2/api-docs", requestMethod),
-      new AntPathRequestMatcher("/h2-console/**", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod)
-    };
+        AntPathRequestMatcher[] matchers = {
+                new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
+                new AntPathRequestMatcher("/swagger-resources", requestMethod),
+                new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
+                new AntPathRequestMatcher("/webjars/**", requestMethod),
+                new AntPathRequestMatcher("/v2/api-docs", requestMethod),
+                new AntPathRequestMatcher("/h2-console/**", requestMethod),
+                new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
+                new AntPathRequestMatcher("/api/v1/auth/register", requestMethod)
+        };
 
-    for (AntPathRequestMatcher matcher : matchers) {
-      if (matcher.matches(request)) {
-        return true;
-      }
+        for (AntPathRequestMatcher matcher : matchers) {
+            if (matcher.matches(request)) {
+                return true;
+            }
+        }
+        return false;
     }
-    return false;
-  }
 }

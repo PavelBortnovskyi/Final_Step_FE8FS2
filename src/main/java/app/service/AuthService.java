@@ -25,94 +25,94 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService {
 
-  private final JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
 
-  private final EmailService emailService;
+    private final EmailService emailService;
 
-  private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-  private final UserModelFacade userFacade;
+    private final UserModelFacade userFacade;
 
-  private final UserModelService userService;
+    private final UserModelService userService;
 
-  private final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-  public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
-    //Auth procedure handling
-    Authentication authentication = authenticationManager
-      .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    Object principal = authentication.getPrincipal();
+    public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
+        //Auth procedure handling
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Object principal = authentication.getPrincipal();
 
-    Optional<User> maybeAuthUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
-    User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
+        Optional<User> maybeAuthUser = (principal instanceof User) ? Optional.of((User) principal) : Optional.empty();
+        User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
 
-    //User extraction from DB by security credentials from Authenticated User (email aka username)
-    Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
-    UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
+        //User extraction from DB by security credentials from Authenticated User (email aka username)
+        Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
+        UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
-    //Token creation
-    String accessToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.ACCESS, currentUser.getUserTag(), currentUser.getEmail());
-    String refreshToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.REFRESH);
+        //Token creation
+        String accessToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.ACCESS, currentUser.getUserTag(), currentUser.getEmail());
+        String refreshToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.REFRESH);
 
-    //Update refresh token for current user
-    this.jwtTokenService.updateRefreshToken(currentUser, refreshToken);
+        //Update refresh token for current user
+        this.jwtTokenService.updateRefreshToken(currentUser, refreshToken);
 
-    //JWT tokens for response packing
-    HashMap<String, String> response = new HashMap<>();
-    response.put("ACCESS_TOKEN", accessToken);
-    response.put("REFRESH_TOKEN", refreshToken);
-    response.put("LOGIN_USER_ID", currentUser.getId().toString());
-    return ResponseEntity.ok(response);
-  }
+        //JWT tokens for response packing
+        HashMap<String, String> response = new HashMap<>();
+        response.put("ACCESS_TOKEN", accessToken);
+        response.put("REFRESH_TOKEN", refreshToken);
+        response.put("LOGIN_USER_ID", currentUser.getId().toString());
+        return ResponseEntity.ok(response);
+    }
 
-  public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
-    //Email duplicate checking
-    if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
-      throw new EmailAlreadyRegisteredException("email: " + signUpDTO.getEmail());
+    public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
+        //Email duplicate checking
+        if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
+            throw new EmailAlreadyRegisteredException("email: " + signUpDTO.getEmail());
 
-    //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
-    signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
-    UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
+        //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
+        signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
+        UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
 
-    //Token creation using user_id
-    String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
-    String refreshToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.REFRESH);
+        //Token creation using user_id
+        String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
+        String refreshToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.REFRESH);
 
-    //New user saving to DB with refresh token
-    freshUser.setRefreshToken(refreshToken);
+        //New user saving to DB with refresh token
+        freshUser.setRefreshToken(refreshToken);
 
-    //JWT tokens and UserId for response packing
-    HashMap<String, String> response = new HashMap<>();
-    response.put("ACCESS_TOKEN", accessToken);
-    response.put("REFRESH_TOKEN", refreshToken);
-    response.put("NEW_USER_ID", this.userService.save(freshUser).getId().toString());
-    return ResponseEntity.ok(response);
-  }
+        //JWT tokens and UserId for response packing
+        HashMap<String, String> response = new HashMap<>();
+        response.put("ACCESS_TOKEN", accessToken);
+        response.put("REFRESH_TOKEN", refreshToken);
+        response.put("NEW_USER_ID", this.userService.save(freshUser).getId().toString());
+        return ResponseEntity.ok(response);
+    }
 
-  public String makeLogOut(Long userId) {
-    this.jwtTokenService.changeTokenStatus(userId, true);
-    log.info("User id: " + userId + " logged out");
-    return "User with Id: " + userId + " logged out";
-  }
+    public String makeLogOut(Long userId) {
+        this.jwtTokenService.changeTokenStatus(userId, true);
+        log.info("User id: " + userId + " logged out");
+        return "User with Id: " + userId + " logged out";
+    }
 
-  public ResponseEntity<HashMap<String, String>> getPasswordUpdateToken(UserModelRequest passwordUpdateDto) {
-    if (this.userService.checkLoginPassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword())) {
-      String passwordUpdateToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordUpdateDto.getEmail()).get().getId(), TokenType.PASSWORD_UPDATE);
-      HashMap<String, String> response = new HashMap<>();
-      response.put("PASSWORD_UPDATE_TOKEN", passwordUpdateToken);
-      return ResponseEntity.ok(response);
-    } else return ResponseEntity.badRequest().body(new HashMap<>() {{
-      put("ERROR", "Wrong login password combination");
-    }});
-  }
+    public ResponseEntity<HashMap<String, String>> getPasswordUpdateToken(UserModelRequest passwordUpdateDto) {
+        if (this.userService.checkLoginPassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword())) {
+            String passwordUpdateToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordUpdateDto.getEmail()).get().getId(), TokenType.PASSWORD_UPDATE);
+            HashMap<String, String> response = new HashMap<>();
+            response.put("PASSWORD_UPDATE_TOKEN", passwordUpdateToken);
+            return ResponseEntity.ok(response);
+        } else return ResponseEntity.badRequest().body(new HashMap<>() {{
+            put("ERROR", "Wrong login password combination");
+        }});
+    }
 
-  public ResponseEntity<String> getPasswordResetToken(UserModelRequest passwordResetDto) {
-    if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
-      String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
-      String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset?" + passwordResetToken;
-      emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
-      return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
-    } else return ResponseEntity.badRequest().body(passwordResetDto.getEmail() + "is not registered in our DB");
-  }
+    public ResponseEntity<String> getPasswordResetToken(UserModelRequest passwordResetDto) {
+        if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
+            String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
+            String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset?" + passwordResetToken;
+            emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
+            return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
+        } else return ResponseEntity.badRequest().body(passwordResetDto.getEmail() + "is not registered in our DB");
+    }
 }

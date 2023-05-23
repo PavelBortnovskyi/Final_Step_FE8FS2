@@ -9,5 +9,5 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class DeleteMessageNotification {
-  private final Long messageId;
+    private final Long messageId;
 }

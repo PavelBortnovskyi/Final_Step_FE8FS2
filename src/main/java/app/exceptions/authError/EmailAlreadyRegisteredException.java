@@ -4,8 +4,8 @@ import app.exceptions.httpError.BadRequestException;
 
 
 public class EmailAlreadyRegisteredException extends BadRequestException {
-  public EmailAlreadyRegisteredException(String message) {
+    public EmailAlreadyRegisteredException(String message) {
 
-    super("User with " + message + " already registered.");
-  }
+        super("User with " + message + " already registered.");
+    }
 }

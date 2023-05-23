@@ -32,56 +32,56 @@ import javax.validation.Valid;
 @Validated
 public class WebSocketController {
 
-  private final MessageFacade messageFacade;
+    private final MessageFacade messageFacade;
 
-  private final NotificationFacade notificationFacade;
+    private final NotificationFacade notificationFacade;
 
-  private final ChatService chatService;
+    private final ChatService chatService;
 
-  private final UserModelService userService;
+    private final UserModelService userService;
 
-  private final MessageService messageService;
+    private final MessageService messageService;
 
-  private final SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
-  @Validated({Marker.New.class})
-  @MessageMapping("/v1/message")
-  @SendTo("/topic/chats")
-  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
-                                                                                  MessageRequest messageDTO,
-                                                                                  HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    this.chatService.addMessage(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
-    return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
-  }
+    @Validated({Marker.New.class})
+    @MessageMapping("/v1/message")
+    @SendTo("/topic/chats")
+    public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
+                                                                                    MessageRequest messageDTO,
+                                                                                    HttpServletRequest request) {
+        Long currUserId = (Long) request.getAttribute("userId");
+        this.chatService.addMessage(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
+        return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
+    }
 
-  @Validated({Marker.Existed.class})
-  @PutMapping("/v1/message/edit")
-  @SendTo("/topic/chats")
-  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
-                                                                                      MessageRequest messageDTO,
-                                                                                      HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    this.messageService.changeMessage(currUserId, this.messageFacade.convertToEntity(messageDTO));
-    return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
-  }
+    @Validated({Marker.Existed.class})
+    @PutMapping("/v1/message/edit")
+    @SendTo("/topic/chats")
+    public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
+                                                                                        MessageRequest messageDTO,
+                                                                                        HttpServletRequest request) {
+        Long currUserId = (Long) request.getAttribute("userId");
+        this.messageService.changeMessage(currUserId, this.messageFacade.convertToEntity(messageDTO));
+        return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
+    }
 
-  @DeleteMapping("/v1/message/delete/{messageId}")
-  public void deleteMessage(@PathVariable Long messageId, HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    if (this.messageService.deleteMessage(currUserId, messageId))
-      this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageId));
-  }
+    @DeleteMapping("/v1/message/delete/{messageId}")
+    public void deleteMessage(@PathVariable Long messageId, HttpServletRequest request) {
+        Long currUserId = (Long) request.getAttribute("userId");
+        if (this.messageService.deleteMessage(currUserId, messageId))
+            this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageId));
+    }
 
-  @MessageMapping("/v1/notifications")
-  @SendTo("/specific")
-  public void processPrivateNotification(@Payload @Valid NotificationRequest notificationDtoReq) {
-    this.userService.getUserO(notificationDtoReq.getReceiverUser().getId())
-      .map(user -> {
-        this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
-        this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
-        return user;
-      })
-      .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUser().getId()));
-  }
+    @MessageMapping("/v1/notifications")
+    @SendTo("/specific")
+    public void processPrivateNotification(@Payload @Valid NotificationRequest notificationDtoReq) {
+        this.userService.getUserO(notificationDtoReq.getReceiverUser().getId())
+                .map(user -> {
+                    this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
+                    this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
+                    return user;
+                })
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUser().getId()));
+    }
 }

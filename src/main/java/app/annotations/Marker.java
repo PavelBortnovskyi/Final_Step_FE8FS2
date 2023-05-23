@@ -1,31 +1,31 @@
 package app.annotations;
 
 public interface Marker {
-  interface New {
-  }
+    interface New {
+    }
 
-  interface Existed {
-  }
+    interface Existed {
+    }
 
-  interface Details {
-  }
+    interface Details {
+    }
 
-  interface ChatDetails {
-  }
+    interface ChatDetails {
+    }
 
-  interface Preview {
-  }
+    interface Preview {
+    }
 
-  interface Delete {
-  }
+    interface Delete {
+    }
 
-  interface Update {
-  }
+    interface Update {
+    }
 
-  interface PasswordUpdate {
-  }
+    interface PasswordUpdate {
+    }
 
-  interface PasswordReset {
-  }
+    interface PasswordReset {
+    }
 }
 

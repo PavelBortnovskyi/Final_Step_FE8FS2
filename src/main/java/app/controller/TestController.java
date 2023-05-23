@@ -22,26 +22,26 @@ import java.time.LocalDateTime;
 @RequestMapping("/test")
 public class TestController {
 
-  private final UserModelService userService;
+    private final UserModelService userService;
 
-  private final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-  private final JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
 
-  private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-  private final MessageService messageService;
+    private final MessageService messageService;
 
-  private final ChatService chatService;
+    private final ChatService chatService;
 
-  @PostMapping(value = "/addMessages", produces = MediaType.APPLICATION_JSON_VALUE)
-  public void extractId() throws InterruptedException {
-    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(3L).get(), "Hi my friends!", LocalDateTime.now()));
-    Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(3L).get(), "Hi all!", LocalDateTime.now()));
-    Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(1L).get(), "Hello!", LocalDateTime.now()));
-    Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(2L).get(), "Hello Nigga!", LocalDateTime.now()));
-  }
+    @PostMapping(value = "/addMessages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void extractId() throws InterruptedException {
+        this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(3L).get(), "Hi my friends!", LocalDateTime.now()));
+        Thread.sleep(2000);
+        this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(3L).get(), "Hi all!", LocalDateTime.now()));
+        Thread.sleep(2000);
+        this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(1L).get(), "Hello!", LocalDateTime.now()));
+        Thread.sleep(2000);
+        this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(2L).get(), "Hello Nigga!", LocalDateTime.now()));
+    }
 }

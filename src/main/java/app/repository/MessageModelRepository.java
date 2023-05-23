@@ -13,11 +13,11 @@ import javax.transaction.Transactional;
 @Repository
 public interface MessageModelRepository extends RepositoryInterface<Message> {
 
-  @Query(value = "SELECT m FROM Message m WHERE chat.id = :id")
-  Page<Message> getMessagesFromChat(@Param("id") Long chatId, Pageable pageable);
+    @Query(value = "SELECT m FROM Message m WHERE chat.id = :id")
+    Page<Message> getMessagesFromChat(@Param("id") Long chatId, Pageable pageable);
 
-  @Transactional
-  @Modifying
-  @Query(value = "UPDATE Message m SET m.body = :body WHERE m.id = :id")
-  void changeMessage(@Param("id") Long messageId, @Param("body") String body);
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Message m SET m.body = :body WHERE m.id = :id")
+    void changeMessage(@Param("id") Long messageId, @Param("body") String body);
 }

@@ -18,14 +18,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 public class Chat extends BaseEntityModel {
-  @ManyToOne
-  private UserModel initiatorUser;
+    @ManyToOne
+    private UserModel initiatorUser;
 
-  @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
-  private List<Message> messages = new ArrayList<>();
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    private List<Message> messages = new ArrayList<>();
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-  private Set<UserModel> users = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<UserModel> users = new HashSet<>();
 }

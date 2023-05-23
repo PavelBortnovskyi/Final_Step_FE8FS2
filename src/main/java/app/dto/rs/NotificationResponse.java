@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 public class NotificationResponse {
 
-  private NotificationType notificationType;
+    private NotificationType notificationType;
 
-  private Long receiverId;
+    private Long receiverId;
 
-  private Long initiatorId;
+    private Long initiatorId;
 
-  private Long tweetId;
+    private Long tweetId;
 
-  private boolean isRead;
+    private boolean isRead;
 }
