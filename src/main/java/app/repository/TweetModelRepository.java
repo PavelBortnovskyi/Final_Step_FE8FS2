@@ -1,5 +1,6 @@
 package app.repository;
 
+import app.dto.rs.TweetResponse;
 import app.model.Tweet;
 import app.model.UserModel;
 import org.springframework.data.jpa.repository.Query;
@@ -13,9 +14,12 @@ import java.util.Optional;
 public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   void deleteById(Long id);
 
-  List<Tweet> getAllByUserId(Long id);
+  @Query(value = "SELECT t FROM Tweet t WHERE t.user.id =:userId")
+  List<TweetResponse> getAllByUserId(Long userId);
 
   List<Tweet> getAllByUser(UserModel user);
+
+
 
   @Query(value = "SELECT u FROM UserModel u where u.followings = :followed_id")
   Optional<List<UserModel>> userFollowings(@Param("followed_id") Long userId);

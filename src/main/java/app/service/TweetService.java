@@ -78,10 +78,8 @@ public class TweetService extends GeneralService<Tweet> {
       .collect(Collectors.toList());
   }
 
-  public List<Tweet> getUserTweets(Long userId) {
-    Optional<List<UserModel>> followingUsers = tweetModelRepository.userFollowings(userId);
-    return tweetModelRepository.getAllByUserId(userId).stream()
-      .collect(Collectors.toList());
+  public List<TweetResponse> getUserTweets(Long userId) {
+    return tweetModelRepository.getAllByUserId(userId).stream().collect(Collectors.toList());
   }
 
   public Optional<Tweet> updateTweet(Long id, TweetRequest tweetRequest) {
