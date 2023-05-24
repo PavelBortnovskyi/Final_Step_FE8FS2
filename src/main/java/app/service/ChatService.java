@@ -60,7 +60,7 @@ public class ChatService extends GeneralService<Chat> {
       .save(this.chatRepository
         .findById(chatId)
         .map(chat -> {
-          chat.getUsers().add(this.userService.getUser(userId)
+          chat.getUsers().add(this.userService.getUserO(userId)
             .orElseThrow(() -> new UserNotFoundException(userId)));
           return chat;
         })
