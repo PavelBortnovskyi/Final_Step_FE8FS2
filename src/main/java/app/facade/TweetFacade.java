@@ -2,24 +2,17 @@ package app.facade;
 
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
-import app.dto.rs.UserModelResponse;
+import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.exceptions.userError.NotFoundExceptionException;
-import app.exceptions.userError.UserNotFoundException;
 import app.model.Tweet;
 import app.service.TweetService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.io.DataInput;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
@@ -38,12 +31,12 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
   public TweetResponse getTweetById(Long tweetId) {
     return tweetService.getTweet(tweetId).map(this::convertToDto)
-      .orElseThrow(() -> new NotFoundExceptionException(tweetId));
+      .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
   public TweetResponse updateTweet(Long tweetId, TweetRequest tweetRequest){
     return tweetService.updateTweet(tweetId, tweetRequest).map(this::convertToDto)
-      .orElseThrow(() -> new NotFoundExceptionException(tweetId));
+      .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
   public List<TweetResponse> getUserTweets(Long userId){

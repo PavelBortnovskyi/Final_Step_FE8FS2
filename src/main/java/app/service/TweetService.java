@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class TweetService extends GeneralService<Tweet> {
   private final UserModelService userModelService;
   private final TweetActionService tweetActionService;
 
-  public Optional<Tweet> getTweet(Long id){
+  public Optional<Tweet> getTweet(Long id) {
     Optional<Tweet> tweet = findById(id);
     return tweet;
   }
@@ -30,7 +31,7 @@ public class TweetService extends GeneralService<Tweet> {
     this.tweetModelRepository.deleteById(tweetId);
   }
 
-  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, TweetType tweetType){
+  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, TweetType tweetType) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
@@ -45,9 +46,9 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
     tweetResponse.setParentTweetId(savedTweet.getParentTweetId().getId() != 0 ? savedTweet.getParentTweetId().getId() : null);
-    tweetResponse.setCountLikes(0);
-    tweetResponse.setCountRetweets(0);
-    tweetResponse.setCountReply(0);
+    tweetResponse.setCountLikes(tweetActionService.getCountLikes(savedTweet.getId()));
+    tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(savedTweet.getId()));
+    tweetResponse.setCountReply(tweetActionService.getCountBookmarks(savedTweet.getId()));
 
 
     return tweetResponse;
@@ -66,8 +67,8 @@ public class TweetService extends GeneralService<Tweet> {
     return create(tweetRequest, request, TweetType.REPLY);
   }
 
-  public Optional<Tweet> update(Tweet tweetRequest) {
-    Optional<Tweet> tweet = tweetModelRepository.findById(tweetRequest.getId());
+  public Optional<Tweet> updateTweet(Long tweetId, TweetRequest tweetRequest) {
+    Optional<Tweet> tweet = tweetModelRepository.findById(tweetId);
     if (tweet.isPresent()) {
       Tweet tweetToUpdate = tweet.get();
       tweetToUpdate.setBody(tweetRequest.getBody());
@@ -78,18 +79,13 @@ public class TweetService extends GeneralService<Tweet> {
 
   public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
     List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null)
-            .getFollowings().stream().map(u -> u.getId()).toList();
+      .getFollowings().stream().map(u -> u.getId()).toList();
     return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
-            Pageable.ofSize(10).withPage(pageNumber)).toList());
+      Pageable.ofSize(10).withPage(pageNumber)).toList());
   }
 
   public ResponseEntity<List<Tweet>> getUserTweets(Long userId) {
     return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId));
-  }
-
-  public Optional<Tweet> updateTweet(Long id, TweetRequest tweetRequest) {
-    Optional<Tweet> tweet = findById(id);
-    return tweet;
   }
 
 }

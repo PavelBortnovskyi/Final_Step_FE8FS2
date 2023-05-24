@@ -78,7 +78,7 @@ public class TweetController {
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
                                                                                        @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
+    return ResponseEntity.ok(tweetService.createReply(tweetRequest, request));
   }
 
   //get List tweets following users
@@ -101,6 +101,11 @@ public class TweetController {
   @PostMapping("/add_bookmarks/{tweetId}")
   public ResponseEntity addBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
     return ResponseEntity.ok(tweetActionService.addBookmark(tweetId, request));
+  }
+
+  @GetMapping("/get_bookmarks")
+  public ResponseEntity getAllBookmarks(HttpServletRequest request){
+    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
   }
 
 

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,16 +42,30 @@ public class TweetActionService extends GeneralService<TweetAction> {
         return add(tweetId, request, TweetActionType.BOOKMARK);
     }
 
-    //addLike
-    //addRetweet
-    //addBookmarks
+    public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request){
+        return ResponseEntity.ok(tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId")));
+    }
+
+    public Integer getCount(Long tweetId, TweetActionType tweetActionType){
+        return tweetActionRepository.countByTweetIdAndActionType(tweetId, tweetActionType.toString());
+    }
+
+    public Integer getCountLikes(Long tweetId){
+        return getCount(tweetId, TweetActionType.LIKE);
+    }
+
+    public Integer getCountBookmarks(Long tweetId){
+        return getCount(tweetId, TweetActionType.BOOKMARK);
+    }
+
+    public Integer getCountRetweet(Long tweetId){
+        return getCount(tweetId, TweetActionType.RETWEET);
+    }
+
+
     //deleteLike
     //deleteRetweet
     //deleteBookmarks
-    //getLiked
-    //getAllBookmarks
-    //getCountLikes
-    //getCountBookmarks
-    //getCountReply
+
 
 }
