@@ -31,7 +31,7 @@ export const MainMenuSidebar = ({ navElement }) => {
                 <ListItemButtonStyled
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'rgb(39,51,64)',
+                            backgroundColor: `${theme.palette.background.hover}`,
                             borderRadius: { xs: '50%', lg: '30px' },
                         },
                     }}>

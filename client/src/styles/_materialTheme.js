@@ -12,6 +12,7 @@ export const themeSettings = (colorTheme) => {
             primary: {
               main: 'rgb(30, 155, 240)',
               disabled: 'rgb(29, 155, 240)',
+              hover: 'rgb(26,140,216)',
             },
             //text colors
             text: {
@@ -51,6 +52,7 @@ export const themeSettings = (colorTheme) => {
             primary: {
               main: 'rgb(30, 155, 240)',
               disabled: 'rgb(29, 155, 240)',
+              hover: 'rgb(26,140,216)',
             },
             text: {
               primary: 'rgb(15, 20, 26)',

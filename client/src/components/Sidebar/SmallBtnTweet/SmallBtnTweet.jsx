@@ -14,10 +14,10 @@ export default function SmallBtnTweet() {
                 height: '50px',
                 marginTop: '20px',
                 fill: '#FFFF',
-                backgroundColor: 'rgb(30,155,240)',
+                backgroundColor: `${theme.palette.primary.disabled}`,
                 borderRadius: "50%",
                 '&:hover': {
-                    backgroundColor: 'rgb(26, 140, 216)'
+                    backgroundColor: `${theme.palette.primary.hover}`,
                 }
             }}
         >
