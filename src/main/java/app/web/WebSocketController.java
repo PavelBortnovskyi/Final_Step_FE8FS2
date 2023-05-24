@@ -76,7 +76,7 @@ public class WebSocketController {
   @MessageMapping("/v1/notifications")
   @SendTo("/specific")
   public void processPrivateNotification(@Payload @Valid NotificationRequest notificationDtoReq) {
-    this.userService.getUser(notificationDtoReq.getReceiverUser().getId())
+    this.userService.getUserO(notificationDtoReq.getReceiverUser().getId())
       .map(user -> {
         this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
         this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
