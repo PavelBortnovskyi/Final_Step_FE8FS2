@@ -11,6 +11,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { MainMenuSidebar } from './MainMenuSidebar';
 import { LogoTwitter } from './LogoTwitter';
 import { useEffect, useState } from 'react';
+import { useTheme } from '@emotion/react';
 
 
 
@@ -22,6 +23,7 @@ import { useEffect, useState } from 'react';
 
 
 export const Sidebar = (/*{isAuthenticated}*/) => {
+  const theme = useTheme();
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
   console.log(isMobile);
@@ -29,7 +31,7 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
   const isAuthenticated = true;  // удалить как будет готова аутентефикация
 
   const DrawerStyled = styled(Drawer)((props) => ({
-    position: isMobile ? 'absolute' : 'sticky',
+    position: 'sticky',
     top: isMobile ? 0 : 'auto',
     bottom: isMobile ? 'auto' : 0,
     // left: 0,
@@ -44,7 +46,7 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
       width: '100%',
       border: 'none',
       boxSizing: 'border-box',
-      backgroundColor: 'rgb(21,32,43)',
+      backgroundColor: `${theme.palette.background.default}`,
     },
   }))
 
@@ -110,9 +112,7 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
         <Box>
           <LogoTwitter />
 
-          <List
-            sx={{ paddingRight: '10px', width: { xs: '58px', lg: '100%' } }}
-          >
+          <List sx={{ paddingRight: '10px', width: { xs: '58px', lg: '100%' } }}>
             {filteredMainSidebarElements.map((navElement) => (
               <MainMenuSidebar navElement={navElement} key={navElement.id} />
             ))}

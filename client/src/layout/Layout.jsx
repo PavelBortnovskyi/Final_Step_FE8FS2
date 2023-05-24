@@ -70,11 +70,11 @@ export const Layout = () => {
               display: { xs: 'none', md: 'block' },
             }}
           >
-            <Footer />
+            <RightSection />
           </Grid>
         </Grid>
 
-        {/* {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />} */}
+        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
         {/* routes for modal window */}
         <ModalRoutes />
