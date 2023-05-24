@@ -80,6 +80,11 @@ public class ApplicationBeans {
   }
 
   @Bean
+  public TweetActionFacade getTweetActionFacade(){
+    return new TweetActionFacade();
+  }
+
+  @Bean
   public NotificationFacade getNotificationFacade() {
     return new NotificationFacade();
   }

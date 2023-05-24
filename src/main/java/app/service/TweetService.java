@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
   public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, TweetType tweetType) {
-    UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
+    UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetType);
@@ -81,7 +82,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
   public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
-    List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null)
+    List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId"))
       .getFollowings().stream().map(u -> u.getId()).toList();
     return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
       Pageable.ofSize(10).withPage(pageNumber)).toList());
@@ -89,6 +90,10 @@ public class TweetService extends GeneralService<Tweet> {
 
   public ResponseEntity<List<Tweet>> getUserTweets(Long userId) {
     return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId));
+  }
+
+  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request){
+    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
   }
 
 }

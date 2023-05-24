@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.rs.TweetActionResponse;
 import app.enums.TweetActionType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.Tweet;
@@ -20,29 +21,43 @@ public class TweetActionService extends GeneralService<TweetAction> {
     private final UserModelService userModelService;
     private final TweetModelRepository tweetModelRepository;
     private final TweetActionRepository tweetActionRepository;
-    public ResponseEntity add(Long tweetId, HttpServletRequest request, TweetActionType tweetActionType){
-        UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
+    public TweetAction add(Long tweetId, HttpServletRequest request, TweetActionType tweetActionType){
+        UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
         TweetAction tweetAction = new TweetAction();
         tweetAction.setActionType(tweetActionType);
         tweetAction.setTweet(tweetModelRepository.findById(tweetId).orElseThrow(() -> new TweetIsNotFoundException(tweetId)));
         tweetAction.setUser(user);
         TweetAction savedAction = tweetActionRepository.save(tweetAction);
-        return ResponseEntity.ok(savedAction);
+        return savedAction;
     }
-    public ResponseEntity addLike(Long tweetId, HttpServletRequest request){
-        return add(tweetId, request, TweetActionType.LIKE);
+    public TweetActionResponse addLike(Long tweetId, HttpServletRequest request){
+        TweetAction tweetAction = add(tweetId, request, TweetActionType.LIKE);
+        TweetActionResponse response = new TweetActionResponse();
+
+
+        response.setTweetId(tweetAction.getTweet().getId());
+        response.setActionType(tweetAction.getActionType());
+        response.setUserId(tweetAction.getUser().getId());
+        return response;
     }
 
-    public ResponseEntity addRetweet(Long tweetId, HttpServletRequest request){
+    public TweetAction addRetweet(Long tweetId, HttpServletRequest request){
         return add(tweetId, request, TweetActionType.RETWEET);
     }
 
-    public ResponseEntity addBookmark(Long tweetId, HttpServletRequest request){
-        return add(tweetId, request, TweetActionType.BOOKMARK);
+    public TweetActionResponse addBookmark(Long tweetId, HttpServletRequest request){
+        TweetAction tweetAction = add(tweetId, request, TweetActionType.BOOKMARK);
+        TweetActionResponse response = new TweetActionResponse();
+
+
+        response.setTweetId(tweetAction.getTweet().getId());
+        response.setActionType(tweetAction.getActionType());
+        response.setUserId(tweetAction.getUser().getId());
+        return response;
     }
 
-    public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request){
-        return ResponseEntity.ok(tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId")));
+    public List<Tweet> getAllBookmarks(HttpServletRequest request){
+        return tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"));
     }
 
     public Integer getCount(Long tweetId, TweetActionType tweetActionType){

@@ -7,6 +7,7 @@ import app.model.Tweet;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import javax.annotation.PostConstruct;
@@ -54,6 +55,19 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
   public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber){
     ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, pageNumber);
+
+    List<Tweet> tweets = responseEntity.getBody();
+
+    List<TweetResponse> tweetResponses = tweets.stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
+
+
+    return tweetResponses;
+  }
+
+  public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request){
+    ResponseEntity<List<Tweet>> responseEntity = tweetService.getAllBookmarks(request);
 
     List<Tweet> tweets = responseEntity.getBody();
 

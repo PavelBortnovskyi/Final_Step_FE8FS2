@@ -2,10 +2,11 @@ package app.controller;
 
 import app.annotations.Marker;
 import app.dto.rq.TweetRequest;
+import app.dto.rs.TweetActionResponse;
 import app.dto.rs.TweetResponse;
+import app.facade.TweetActionFacade;
 import app.facade.TweetFacade;
 import app.model.Tweet;
-import app.service.TweetActionService;
 import app.service.TweetService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,7 @@ import java.util.Optional;
 public class TweetController {
 
   private final TweetService tweetService;
-
-  private final TweetActionService tweetActionService;
+  private final TweetActionFacade tweetActionFacade;
   private final TweetFacade tweetFacade;
 
   //get tweet by id (don`t need token)
@@ -90,18 +90,18 @@ public class TweetController {
   }
 
   @PostMapping("/add_like/{tweetId}")
-  public ResponseEntity addLikeToTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionService.addLike(tweetId, request));
+  public ResponseEntity<TweetActionResponse> addLikeToTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetActionFacade.addLike(tweetId, request));
   }
 
   @PostMapping("/add_bookmarks/{tweetId}")
-  public ResponseEntity addBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionService.addBookmark(tweetId, request));
+  public ResponseEntity<TweetActionResponse> addBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetActionFacade.addBookmark(tweetId, request));
   }
 
-  @GetMapping("/get_bookmarks")
-  public ResponseEntity getAllBookmarks(HttpServletRequest request){
-    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
+  @GetMapping("/get_bookmarks/{page}")
+  public ResponseEntity getAllBookmarks( HttpServletRequest request){
+    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request));
   }
 
 
