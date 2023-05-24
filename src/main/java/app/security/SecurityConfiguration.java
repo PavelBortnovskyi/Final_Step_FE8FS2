@@ -48,14 +48,14 @@ public class SecurityConfiguration {
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login").permitAll()
-      //.antMatchers("/api/v1/auth/logout").permitAll()
       .antMatchers("/api/v1/auth/password/reset").permitAll()
-      .antMatchers("/test/id").authenticated()
-      .antMatchers("/user/**").authenticated()
-      //.antMatchers("/api/v1/chat/create").permitAll()
+      //.antMatchers("/user/**").permitAll()
+      //.antMatchers("/test/**").permitAll()
       //.antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
-      .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
+      .and()
+      //.oauth2Login();
+      .exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();

@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/tweet")
