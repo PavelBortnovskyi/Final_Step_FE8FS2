@@ -3,7 +3,7 @@ package app.service;
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
-import app.exceptions.authError.EmailAlreadyRegisteredException;
+import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class AuthService {
     User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
 
     //User extraction from DB by security credentials from Authenticated User (email aka username)
-    Optional<UserModel> maybeCurrentUser = this.userService.getUser(authUser.getUsername());
+    Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
     //Token creation
@@ -68,8 +69,8 @@ public class AuthService {
 
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
     //Email duplicate checking
-    if (this.userService.checkEmail(signUpDTO.getEmail()))
-      throw new EmailAlreadyRegisteredException("Email: " + signUpDTO.getEmail() + " already taken!");
+    if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
+      throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
 
     //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
