@@ -3,6 +3,7 @@ package app.service;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetType;
+import app.exceptions.userError.UserNotFoundException;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -33,11 +34,12 @@ public class TweetService extends GeneralService<Tweet> {
 
   public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, TweetType tweetType) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
+    System.out.println(user);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetType);
-
     tweet.setUser(user);
+
     Tweet savedTweet = tweetModelRepository.save(tweet);
     TweetResponse tweetResponse = new TweetResponse();
     tweetResponse.setTweetId(savedTweet.getId());
@@ -45,26 +47,28 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setTweetType(savedTweet.getTweetType());
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
-    tweetResponse.setParentTweetId(savedTweet.getParentTweetId().getId() != 0 ? savedTweet.getParentTweetId().getId() : null);
-    tweetResponse.setCountLikes(tweetActionService.getCountLikes(savedTweet.getId()));
-    tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(savedTweet.getId()));
-    tweetResponse.setCountReply(tweetActionService.getCountBookmarks(savedTweet.getId()));
+    tweetResponse.setParentTweetId(0L);
 
 
     return tweetResponse;
   }
 
   public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
-    tweetActionService.addRetweet(tweetRequest.getParentTweetId(), request);
     return create(tweetRequest, request, TweetType.TWEET);
   }
 
   public TweetResponse createRetweet(TweetRequest tweetRequest, HttpServletRequest request) {
-    return create(tweetRequest, request, TweetType.QUOTE_TWEET);
+    TweetResponse tweetResponse = create(tweetRequest, request, TweetType.QUOTE_TWEET);
+    tweetResponse.setParentTweetId(tweetRequest.getParentTweetId());
+    tweetActionService.addRetweet(tweetRequest.getParentTweetId(), request);
+    return tweetResponse;
   }
 
   public TweetResponse createReply(TweetRequest tweetRequest, HttpServletRequest request) {
-    return create(tweetRequest, request, TweetType.REPLY);
+    TweetResponse tweetResponse = create(tweetRequest, request, TweetType.REPLY);
+    tweetResponse.setParentTweetId(tweetRequest.getParentTweetId());
+    tweetActionService.addRetweet(tweetRequest.getParentTweetId(), request);
+    return tweetResponse;
   }
 
   public Optional<Tweet> updateTweet(Long tweetId, TweetRequest tweetRequest) {

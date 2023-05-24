@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Data
 public class TweetRequest {
-  @NotNull(groups = Marker.Update.class)
   @JsonView(Marker.Update.class)
   private Long id;
 
