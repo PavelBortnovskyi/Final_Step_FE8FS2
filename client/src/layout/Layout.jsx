@@ -75,6 +75,7 @@ export const Layout = () => {
         </Grid>
 
         {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
+        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
         {/* routes for modal window */}
         <ModalRoutes />

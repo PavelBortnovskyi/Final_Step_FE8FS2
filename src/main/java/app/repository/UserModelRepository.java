@@ -1,9 +1,6 @@
 package app.repository;
 
-import app.model.Chat;
 import app.model.UserModel;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +17,9 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
 
   @Query(value = "SELECT u FROM UserModel u WHERE u.refreshToken = :refreshToken")
   Optional<UserModel> findByToken(@Param("refreshToken") String refreshToken);
+
+  @Query(value = "SELECT u FROM UserModel u WHERE u.userTag = :userTag")
+  Optional<UserModel> findByUserTag(@Param("userTag") String userTag);
 
   @Query(value = "SELECT u.refreshed FROM UserModel u WHERE u.refreshToken = :refreshToken")
   boolean checkRefreshTokenStatus(@Param("refreshToken") String refreshToken);
@@ -38,4 +38,10 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   @Transactional
   @Query(value = "UPDATE UserModel u SET u.refreshToken = :refreshToken WHERE u.id = :id")
   void updateRefreshToken(@Param("id") Long userId, @Param("refreshToken") String refreshToken);
+
+  @Modifying
+  @Transactional
+  @Query(value = "UPDATE UserModel u SET u.password = :password WHERE u.id = :id")
+  void updatePassword(@Param("id") Long userId, @Param("password") String freshPassword);
+
 }

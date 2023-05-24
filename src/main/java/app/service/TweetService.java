@@ -33,7 +33,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
   public Tweet createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
-    UserModel user = userModelService.getUser((Long) request.getAttribute("userId")).orElse(null);
+    UserModel user = userModelService.getUserO((Long) request.getAttribute("userId")).orElse(null);
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetRequest.getTweetType());

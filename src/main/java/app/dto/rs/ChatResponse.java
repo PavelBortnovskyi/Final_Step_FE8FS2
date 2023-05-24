@@ -1,8 +1,6 @@
 package app.dto.rs;
 
 import app.annotations.Marker;
-import app.model.Message;
-import app.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 

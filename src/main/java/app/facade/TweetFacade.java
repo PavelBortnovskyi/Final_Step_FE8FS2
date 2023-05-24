@@ -4,7 +4,6 @@ import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.model.Tweet;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 

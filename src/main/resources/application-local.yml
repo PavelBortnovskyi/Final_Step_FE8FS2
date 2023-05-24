@@ -26,6 +26,17 @@ spring:
   url:
     server: http://localhost:8080
     client: http://localhost:3000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: fe8fs2finalstep@gmail.com
+    password: vgrralowhzszavbs
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 jwt:
   secret: verySecretUniqueKey
   secretRefresh: wannaRefresh?

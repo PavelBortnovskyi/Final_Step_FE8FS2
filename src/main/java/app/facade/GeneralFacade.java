@@ -26,14 +26,6 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
   @Autowired
   private ServiceInterface<E> service;
 
-  public O convertToDto(E entity) {
-    return mm.map(entity, getClassO());
-  }
-
-  public E convertToEntity(I rqDto) {
-    return mm.map(rqDto, getClassE());
-  }
-
   private Class<E> getClassE() {
     return (Class<E>) ((ParameterizedType) getClass()
       .getGenericSuperclass()).getActualTypeArguments()[0];
@@ -43,6 +35,20 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
     return (Class<O>) ((ParameterizedType) getClass()
       .getGenericSuperclass()).getActualTypeArguments()[2];
   }
+
+  public O convertToDto(E entity) {
+    return mm.map(entity, getClassO());
+  }
+
+  public E convertToEntity(I rqDto) {
+    return mm.map(rqDto, getClassE());
+  }
+
+  public E mapToEntity(I entityDTO, E entity) {
+    mm.map(entityDTO, entity);
+    return entity;
+  }
+
 
   public O save(E entity) {
     return convertToDto(service.save(entity));

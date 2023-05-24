@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @Log4j2
 @RestController
 @RequiredArgsConstructor
