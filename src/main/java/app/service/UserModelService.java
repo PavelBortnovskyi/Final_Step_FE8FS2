@@ -74,7 +74,7 @@ public class UserModelService extends GeneralService<UserModel> {
   public boolean updatePassword(String email, String oldPassword, String freshPassword) {
     return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
       .map(user -> {
-        this.userModelRepository.updatePassword(user.getId(), freshPassword);
+        this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
       }).orElseGet(() -> false);
   }
