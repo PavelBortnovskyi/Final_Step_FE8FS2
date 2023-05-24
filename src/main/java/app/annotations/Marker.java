@@ -19,5 +19,7 @@ public interface Marker {
   interface Delete {}
 
   interface Update {}
+  interface Retweet{
+  }
 }
 

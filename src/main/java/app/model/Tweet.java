@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -30,7 +31,7 @@ public class Tweet extends BaseEntityModel {
 
   @ManyToOne
   @JoinColumn(name = "parent_tweet")
-  private Tweet parentTweet;
+  private Tweet parentTweetId;
 
   @OneToMany(mappedBy = "tweet")
   @OnDelete(action = OnDeleteAction.CASCADE)
@@ -43,6 +44,16 @@ public class Tweet extends BaseEntityModel {
   @OneToMany(mappedBy = "tweet")
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
-
+  @Override
+  public boolean equals(Object o){
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Tweet tweet = (Tweet) o;
+    return getId().equals(tweet.getId());
+  }
+  @Override
+  public int hashCode(){
+    return Objects.hash(getId(), getBody());
+  }
 
 }
