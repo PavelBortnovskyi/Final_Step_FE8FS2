@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -97,12 +96,11 @@ public class AuthService {
     return "User with Id: " + userId + " logged out";
   }
 
-  public ResponseEntity<HashMap<String, String>> getPasswordUpdateToken(UserModelRequest passwordUpdateDto) {
-    if (this.userService.checkLoginPassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword())) {
-      String passwordUpdateToken = this.jwtTokenService.createToken(this.userService.getUser(passwordUpdateDto.getEmail()).get().getId(), TokenType.PASSWORD_UPDATE);
-      HashMap<String, String> response = new HashMap<>();
-      response.put("PASSWORD_UPDATE_TOKEN", passwordUpdateToken);
-      return ResponseEntity.ok(response);
+  public ResponseEntity<HashMap<String, String>> makePasswordUpdate(UserModelRequest passwordUpdateDto) {
+    if (this.userService.updatePassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword(), passwordUpdateDto.getFreshPassword())) {
+      return ResponseEntity.ok(new HashMap<>() {{
+        put("MESSAGE", "Password for account: " + passwordUpdateDto.getEmail() + " was updated");
+      }});
     } else return ResponseEntity.badRequest().body(new HashMap<>() {{
       put("ERROR", "Wrong login password combination");
     }});
@@ -114,6 +112,7 @@ public class AuthService {
       String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset/apply?token=" + passwordResetToken;
       emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
       return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
-    } else return ResponseEntity.badRequest().body("ERROR: " + passwordResetDto.getEmail() + " is not registered in our DB");
+    } else
+      return ResponseEntity.badRequest().body("ERROR: " + passwordResetDto.getEmail() + " is not registered in our DB");
   }
 }

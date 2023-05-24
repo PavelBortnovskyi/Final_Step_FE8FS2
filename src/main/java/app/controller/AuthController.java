@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 
+@CrossOrigin
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -42,10 +43,10 @@ public class AuthController {
   }
 
   @Validated({Marker.PasswordUpdate.class})
-  @GetMapping(path = "/password/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleGetPasswordUpdateToken(@RequestBody @JsonView({Marker.PasswordUpdate.class})
+  @PostMapping(path = "/password/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handlePasswordUpdate(@RequestBody @JsonView({Marker.PasswordUpdate.class})
                                                                               @Valid UserModelRequest passUpDto) {
-    return this.authService.getPasswordUpdateToken(passUpDto);
+    return this.authService.makePasswordUpdate(passUpDto);
   }
 
   @Validated({Marker.PasswordReset.class})
