@@ -29,7 +29,10 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
-  public void deleteTweet(Long tweetId) {
+  public void deleteTweet(Long tweetId, HttpServletRequest request) {
+    if (findById(tweetId).get().getTweetType().equals(TweetType.QUOTE_TWEET)) {
+      tweetActionService.deleteRetweet(tweetId, request);
+    }
     this.tweetModelRepository.deleteById(tweetId);
   }
 
@@ -48,7 +51,8 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setUserAvatarImage(savedTweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(savedTweet.getUser().getUserTag());
     tweetResponse.setParentTweetId(0L);
-
+    tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweet.getId()));
+    tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
 
     return tweetResponse;
   }
@@ -92,7 +96,7 @@ public class TweetService extends GeneralService<Tweet> {
     return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId));
   }
 
-  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request){
+  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request) {
     return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
   }
 

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
   @Autowired
   TweetService tweetService;
+
   @PostConstruct
   public void init() {
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
@@ -35,45 +36,45 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
-  public TweetResponse updateTweet(Long tweetId, TweetRequest tweetRequest){
+  public TweetResponse updateTweet(Long tweetId, TweetRequest tweetRequest) {
     return tweetService.updateTweet(tweetId, tweetRequest).map(this::convertToDto)
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
-  public List<TweetResponse> getUserTweets(Long userId){
+  public List<TweetResponse> getUserTweets(Long userId) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.getUserTweets(userId);
 
     List<Tweet> tweets = responseEntity.getBody();
 
     List<TweetResponse> tweetResponses = tweets.stream()
-            .map(this::convertToDto)
-            .collect(Collectors.toList());
+      .map(this::convertToDto)
+      .collect(Collectors.toList());
 
 
     return tweetResponses;
   }
 
-  public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber){
+  public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, pageNumber);
 
     List<Tweet> tweets = responseEntity.getBody();
 
     List<TweetResponse> tweetResponses = tweets.stream()
-            .map(this::convertToDto)
-            .collect(Collectors.toList());
+      .map(this::convertToDto)
+      .collect(Collectors.toList());
 
 
     return tweetResponses;
   }
 
-  public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request){
+  public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.getAllBookmarks(request);
 
     List<Tweet> tweets = responseEntity.getBody();
 
     List<TweetResponse> tweetResponses = tweets.stream()
-            .map(this::convertToDto)
-            .collect(Collectors.toList());
+      .map(this::convertToDto)
+      .collect(Collectors.toList());
 
 
     return tweetResponses;
