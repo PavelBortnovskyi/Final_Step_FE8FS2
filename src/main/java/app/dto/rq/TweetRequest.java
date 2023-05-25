@@ -5,7 +5,6 @@ import app.annotations.Marker;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data

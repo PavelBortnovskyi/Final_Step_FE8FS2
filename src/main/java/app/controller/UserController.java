@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -43,17 +44,31 @@ public class UserController {
     return ResponseEntity.ok(userModelFacade.updateUser((Long) httpRequest.getAttribute("userId"), userRequestDTO));
   }
 
+  @PutMapping("profile/avatar_img")
+  public ResponseEntity<UserModelResponse> uploadAvatarImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userModelFacade.convertToDto(
+      userModelService.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file)));
+  }
+
+  @PutMapping("profile/header_img")
+  public ResponseEntity<UserModelResponse> uploadHeaderImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userModelFacade.convertToDto(
+      userModelService.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file)));
+  }
+
 
   @PostMapping("subscribe/{userIdToFollowing}")
-  public ResponseEntity<Void> subscribe(@PathVariable(name = "userIdToFollowing") @Positive Long userIdToFollowing, HttpServletRequest httpRequest) {
-    userModelService.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing);
-    return ResponseEntity.ok().build();
+  public ResponseEntity<UserModelResponse> subscribe(@PathVariable(name = "userIdToFollowing") @Positive Long userIdToFollowing, HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userModelFacade.convertToDto(
+      userModelService.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing)
+    ));
   }
 
   @PostMapping("unsubscribe/{userIdToUnFollowing}")
-  public ResponseEntity<Void> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing, HttpServletRequest httpRequest) {
-    userModelService.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing);
-    return ResponseEntity.ok().build();
+  public ResponseEntity<UserModelResponse> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing, HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userModelFacade.convertToDto(
+      userModelService.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing)
+    ));
   }
 
 }
