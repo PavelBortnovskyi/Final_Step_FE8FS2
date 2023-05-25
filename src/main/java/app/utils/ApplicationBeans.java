@@ -32,6 +32,8 @@ public class ApplicationBeans {
   public ModelMapper modelMapper() {
     ModelMapper mm = new ModelMapper();
     mm.getConfiguration().setFieldMatchingEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+    // Skip properties with null value
+    mm.getConfiguration().setPropertyCondition(u -> u.getSource() != null);
     return mm;
   }
 
@@ -58,37 +60,7 @@ public class ApplicationBeans {
 
     return mailSender;
   }
-
-  @Bean
-  public UserModelFacade getUserModelFacade() {
-    return new UserModelFacade();
-  }
-
-  @Bean
-  public MessageFacade getMessageFacade() {
-    return new MessageFacade();
-  }
-
-  @Bean
-  public ChatFacade getChatFacade() {
-    return new ChatFacade();
-  }
-
-  @Bean
-  public TweetFacade getTweetFacade() {
-    return new TweetFacade();
-  }
-
-  @Bean
-  public TweetActionFacade getTweetActionFacade(){
-    return new TweetActionFacade();
-  }
-
-  @Bean
-  public NotificationFacade getNotificationFacade() {
-    return new NotificationFacade();
-  }
-
+  
   @Bean
   public ObjectMapper getObjectMapper() {
     return new ObjectMapper();
