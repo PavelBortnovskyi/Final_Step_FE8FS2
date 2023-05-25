@@ -79,7 +79,7 @@ public class UserModelService extends GeneralService<UserModel> {
     return userModel;
   }
 
-  
+
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = this.getUser(userId);
     userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
@@ -97,7 +97,7 @@ public class UserModelService extends GeneralService<UserModel> {
       .map(user -> {
         this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
-      }).orElseGet(() -> false);
+      }).orElse(false);
   }
 
   /**
@@ -108,7 +108,7 @@ public class UserModelService extends GeneralService<UserModel> {
       .map(user -> {
         this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
-      }).orElseGet(() -> false);
+      }).orElse(false);
   }
 
 
