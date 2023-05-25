@@ -35,7 +35,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
     // login
@@ -49,7 +49,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
     // logout
@@ -67,7 +67,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(logoutUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
     // getUser
@@ -85,7 +85,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getUser.rejected, (state, action) => {
-      state.error = action.payload.info;
+      state.error = action.payload?.info;
       state.isLoading = false;
     });
   },

@@ -45,11 +45,11 @@ export const FormRegistration = () => {
   const navigate = useNavigate();
 
   // set view message from server after auth
-  // useEffect(() => {
-  //   // if (message) toast.success(message);
-  //   // if (error) toast.error(error);
-  //   if (isAuthenticated) navigate('/');
-  // }, [navigate, isAuthenticated]);
+  useEffect(() => {
+    // if (message) toast.success(message);
+    // if (error) toast.error(error);
+    if (isAuthenticated) navigate('/');
+  }, [navigate, isAuthenticated]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {

@@ -30,13 +30,23 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: fe8fs2finalstep@gmail.com
-    password: temporaryPass
+    password: vgrralowhzszavbs
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+  #security:
+    #oauth2:
+      #client:
+        #registration:
+          #google:
+            #client-id: 833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com
+            #client-secret: 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
+        #facebook:
+        # client-id: <your client id>
+        # client-secret: <your client secret>
 jwt:
   secret: verySecretUniqueKey
   secretRefresh: wannaRefresh?

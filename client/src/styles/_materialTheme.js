@@ -12,6 +12,7 @@ export const themeSettings = (colorTheme) => {
             primary: {
               main: 'rgb(30, 155, 240)',
               disabled: 'rgb(29, 155, 240)',
+              hover: 'rgb(26,140,216)',
             },
             //text colors
             text: {
@@ -22,7 +23,7 @@ export const themeSettings = (colorTheme) => {
             background: {
               default: 'rgb(21, 32, 43)',
               additional: 'rgb(39, 51, 64)',
-              hover: 'rgb(39, 51, 64)',
+              hover: 'rgb(39,51,64)',
             },
             border: {
               main: '#38444d',
@@ -43,11 +44,15 @@ export const themeSettings = (colorTheme) => {
               main: '#000',
               contrastText: '#fff',
             },
+            logo: {
+              main: '#FFF',
+            }
           }
         : {
             primary: {
               main: 'rgb(30, 155, 240)',
               disabled: 'rgb(29, 155, 240)',
+              hover: 'rgb(26,140,216)',
             },
             text: {
               primary: 'rgb(15, 20, 26)',
@@ -56,7 +61,7 @@ export const themeSettings = (colorTheme) => {
             background: {
               default: '#fff',
               additional: 'rgb(238, 241, 241)',
-              hover: 'rgba(15, 20, 25, 0.008)',
+              hover: 'rgb(233,232,233)',
             },
             border: {
               main: '#fff',
@@ -77,6 +82,9 @@ export const themeSettings = (colorTheme) => {
               main: '#000',
               contrastText: '#fff',
             },
+            logo: {
+              main: 'rgb(30, 155, 240)',
+            }
           }),
     },
     breakpoints: {

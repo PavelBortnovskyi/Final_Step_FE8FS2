@@ -18,6 +18,7 @@ import javax.validation.constraints.Positive;
 
 @Log4j2
 @Validated
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
