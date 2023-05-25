@@ -43,8 +43,15 @@ public class TweetActionService extends GeneralService<TweetAction> {
     return response;
   }
 
-  public TweetAction addRetweet(Long tweetId, HttpServletRequest request) {
-    return add(tweetId, request, TweetActionType.RETWEET);
+  public TweetActionResponse addRetweet(Long tweetId, HttpServletRequest request) {
+    TweetAction tweetAction = add(tweetId, request, TweetActionType.RETWEET);
+    TweetActionResponse response = new TweetActionResponse();
+
+
+    response.setTweetId(tweetAction.getTweet().getId());
+    response.setActionType(tweetAction.getActionType());
+    response.setUserId(tweetAction.getUser().getId());
+    return response;
   }
 
   public TweetActionResponse addBookmark(Long tweetId, HttpServletRequest request) {

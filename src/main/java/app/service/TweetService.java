@@ -53,6 +53,7 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setParentTweetId(0L);
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweet.getId()));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
+    tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
 
     return tweetResponse;
   }
@@ -98,6 +99,10 @@ public class TweetService extends GeneralService<Tweet> {
 
   public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request) {
     return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
+  }
+
+  public Integer getCountReply(Long tweetId){
+    return tweetModelRepository.getCountByTweetTypeAndId(TweetType.REPLY, tweetId);
   }
 
 }
