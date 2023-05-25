@@ -32,6 +32,8 @@ public class ApplicationBeans {
   public ModelMapper modelMapper() {
     ModelMapper mm = new ModelMapper();
     mm.getConfiguration().setFieldMatchingEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+    // Skip properties with null value
+    mm.getConfiguration().setPropertyCondition(u -> u.getSource() != null);
     return mm;
   }
 
