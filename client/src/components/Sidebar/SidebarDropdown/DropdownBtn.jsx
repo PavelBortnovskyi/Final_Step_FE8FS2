@@ -2,11 +2,12 @@ import { ListItem, ListItemButton, ListItemIcon, Typography } from '@mui/materia
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 import { bindTrigger } from 'material-ui-popup-state';
 import React from 'react'
+import { useTheme } from '@emotion/react';
 
 export const DropdownBtn = ({ popupState }) => {
+const theme = useTheme();
+
     return (
-
-
             <ListItemButton
                 {...bindTrigger(popupState)}
                 sx={{
@@ -17,7 +18,7 @@ export const DropdownBtn = ({ popupState }) => {
                     padding: '0 4px',
 
                     '&:hover': {
-                        backgroundColor: 'rgb(39,51,64)',
+                        backgroundColor: `${theme.palette.background.hover}`,
                         borderRadius: { xs: '50%', lg: '30px' },
                     }
                 }}
@@ -30,7 +31,7 @@ export const DropdownBtn = ({ popupState }) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <PendingOutlinedIcon sx={{ fontSize: 30, color: '#FFF' }} />
+                    <PendingOutlinedIcon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
                 </ListItemIcon>
 
                 <Typography
@@ -40,7 +41,7 @@ export const DropdownBtn = ({ popupState }) => {
                         width: '100%',
                         textTransform: 'capitalize',
                         fontSize: '18px',
-                        color: '#FFF',
+                        color: `${theme.palette.text.primary}`
                     }}
                 >
                     More
