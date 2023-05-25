@@ -79,6 +79,16 @@ public class UserModelService extends GeneralService<UserModel> {
       }).orElseGet(() -> false);
   }
 
+  /**
+   * Method returns boolean result of updating user password operation (only for reset password case)
+   */
+  public boolean updatePassword(Long userId, String freshPassword) {
+    return this.userModelRepository.findById(userId)
+      .map(user -> {this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
+        return true;
+      }).orElseGet(() -> false);
+  }
+
 
   /**
    * Method returns boolean result of checking presence in DB user with login&password combination
