@@ -3,7 +3,9 @@ package app.service;
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
+import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.authError.UserAlreadyRegisteredException;
+import app.exceptions.userError.UserNotFoundException;
 import app.facade.UserModelFacade;
 import app.model.UserModel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
@@ -52,19 +55,7 @@ public class AuthService {
     Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
-    //Token creation
-    String accessToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.ACCESS, currentUser.getUserTag(), currentUser.getEmail());
-    String refreshToken = this.jwtTokenService.createToken(currentUser.getId(), TokenType.REFRESH);
-
-    //Update refresh token for current user
-    this.jwtTokenService.updateRefreshToken(currentUser, refreshToken);
-
-    //JWT tokens for response packing
-    HashMap<String, String> response = new HashMap<>();
-    response.put("ACCESS_TOKEN", accessToken);
-    response.put("REFRESH_TOKEN", refreshToken);
-    response.put("LOGIN_USER_ID", currentUser.getId().toString());
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(this.generateTokenPair(currentUser));
   }
 
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
@@ -76,19 +67,7 @@ public class AuthService {
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
     UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
 
-    //Token creation using user_id
-    String accessToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
-    String refreshToken = this.jwtTokenService.createToken(freshUser.getId(), TokenType.REFRESH);
-
-    //New user saving to DB with refresh token
-    freshUser.setRefreshToken(refreshToken);
-
-    //JWT tokens and UserId for response packing
-    HashMap<String, String> response = new HashMap<>();
-    response.put("ACCESS_TOKEN", accessToken);
-    response.put("REFRESH_TOKEN", refreshToken);
-    response.put("NEW_USER_ID", this.userService.save(freshUser).getId().toString());
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(this.generateTokenPair(freshUser));
   }
 
   public String makeLogOut(Long userId) {
@@ -116,4 +95,34 @@ public class AuthService {
     } else
       return ResponseEntity.badRequest().body("ERROR: " + passwordResetDto.getEmail() + " is not registered in our DB");
   }
+
+  public ResponseEntity<HashMap<String, String>> makePasswordReset(UserModelRequest passwordResetDto, HttpServletRequest request) {
+    String resetPasswordToken = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException(" Please provide token for reset password!"));
+    if (this.jwtTokenService.validateToken(resetPasswordToken, TokenType.PASSWORD_RESET)) {
+
+      Long userId = this.jwtTokenService.extractIdFromClaims(this.jwtTokenService.extractClaimsFromToken(resetPasswordToken, TokenType.PASSWORD_RESET).get()).get();
+      this.userService.updatePassword(userId, passwordResetDto.getFreshPassword());
+      UserModel currUser = this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+      return ResponseEntity.ok(this.generateTokenPair(currUser));
+    } else return ResponseEntity.badRequest().body(new HashMap<>() {{
+      put("ERROR", "Token is not valid to reset password");
+    }});
+  }
+
+  public HashMap<String, String> generateTokenPair(UserModel user) {
+    String accessToken = this.jwtTokenService.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
+    String refreshToken = this.jwtTokenService.createToken(user.getId(), TokenType.REFRESH);
+
+    //Update refresh token for current user
+    this.jwtTokenService.updateRefreshToken(user, refreshToken);
+
+    //JWT tokens for response packing
+    HashMap<String, String> response = new HashMap<>();
+    response.put("ACCESS_TOKEN", accessToken);
+    response.put("REFRESH_TOKEN", refreshToken);
+    response.put("USER_ID", user.getId().toString());
+    return response;
+  }
 }
+

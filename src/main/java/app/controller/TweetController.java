@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Log4j2
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @Validated
