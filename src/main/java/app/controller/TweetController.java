@@ -27,7 +27,6 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@CrossOrigin
 @RequestMapping("api/v1/tweet")
 public class TweetController {
 
