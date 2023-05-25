@@ -34,7 +34,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
       .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
       .addMapping(src -> tweetActionService.getCountLikes(src.getId()), TweetResponse::setCountLikes)
-      .addMapping(src -> tweetActionService.getCountRetweet(src.getId()), TweetResponse::setCountRetweets);
+      .addMapping(src -> tweetActionService.getCountRetweet(src.getId()), TweetResponse::setCountRetweets)
+      .addMapping(src -> tweetService.getCountReply(src.getId()), TweetResponse::setCountReply);
   }
 
   public TweetResponse getTweetById(Long tweetId) {
