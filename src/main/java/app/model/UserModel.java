@@ -28,10 +28,10 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "email", nullable = false)
+  @Column(name = "email", nullable = false, updatable = false)
   private String email;
 
-  @Column(name = "date_of_birth", updatable = false)
+  @Column(name = "date_of_birth")
   private LocalDate birthDate;
 
   @Column(name = "bio")
