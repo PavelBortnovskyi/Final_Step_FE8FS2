@@ -48,4 +48,12 @@ public class CloudinaryService {
     }
   }
 
+  public boolean deleteFile(String imgId) {
+    try {
+      Map<?, ?> result = cloudinary.uploader().destroy(imgId, ObjectUtils.emptyMap());
+      if (result.containsKey("result") && result.get("result").equals("ok")) return true;
+    } catch (IOException ignored) {
+    }
+    return false;
+  }
 }
