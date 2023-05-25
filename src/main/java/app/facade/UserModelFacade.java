@@ -7,9 +7,11 @@ import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Component
 @NoArgsConstructor
 public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, UserModelResponse> {
 

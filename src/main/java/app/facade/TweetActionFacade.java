@@ -12,11 +12,13 @@ import app.service.TweetService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Component
 @NoArgsConstructor
 public class TweetActionFacade extends GeneralFacade<TweetAction, TweetActionRequest, TweetActionResponse> {
     @Autowired
