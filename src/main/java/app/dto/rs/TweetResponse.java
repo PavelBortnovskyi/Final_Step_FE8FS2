@@ -1,8 +1,7 @@
 package app.dto.rs;
 
-import app.model.Tweet;
+import app.enums.TweetType;
 import lombok.Data;
-
 import java.util.Set;
 
 @Data
@@ -16,5 +15,6 @@ public class TweetResponse {
   private Integer countLikes;
   private Integer countRetweets;
   private Integer countReply;
-  private Tweet parentTweet;
+  private TweetType tweetType;
+  private Long parentTweetId;
 }
