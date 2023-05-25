@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Log4j2
 @Configuration
@@ -58,6 +59,7 @@ public class SecurityConfiguration {
       //.oauth2Login();
       .exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
+
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
 
@@ -66,6 +68,9 @@ public class SecurityConfiguration {
 
     //Filter for interception of JwtAuthenticationException from jwtAuthFilter
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
+
+    //Disable CORS
+    httpSec.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 
     return httpSec.build();
   }
