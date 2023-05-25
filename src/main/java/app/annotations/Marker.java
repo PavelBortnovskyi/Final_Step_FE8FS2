@@ -21,7 +21,8 @@ public interface Marker {
 
   interface Update {
   }
-
+  interface Retweet{
+  }
   interface PasswordUpdate {
   }
 
