@@ -4,6 +4,7 @@ import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.Tweet;
+import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   @Autowired
   TweetService tweetService;
 
+  @Autowired
+  TweetActionService tweetActionService;
+
   @PostConstruct
   public void init() {
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
@@ -28,7 +32,9 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getAttachmentImages(), TweetResponse::setAttachmentsImages)
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
-      .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId);
+      .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
+      .addMapping(src -> tweetActionService.getCountLikes(src.getId()), TweetResponse::setCountLikes)
+      .addMapping(src -> tweetActionService.getCountRetweet(src.getId()), TweetResponse::setCountRetweets);
   }
 
   public TweetResponse getTweetById(Long tweetId) {
