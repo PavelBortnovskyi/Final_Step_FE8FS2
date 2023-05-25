@@ -26,9 +26,11 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     super.getMm().getConfiguration().setPropertyCondition(u -> u.getSource() != null);
   }
 
+
   public UserModelResponse getUserById(Long userId) {
     return this.convertToDto(userModelService.getUser(userId));
   }
+
 
   public UserModelResponse updateUser(Long userId, UserModelRequest userModelRequest) {
     userModelService.getUserByTagO(userModelRequest.getUserTag())
