@@ -51,38 +51,38 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
   }))
 
   const BoxContainerStyled = styled(Box)((props) => ({
-  height: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  alignItems: 'end',
-  marginBottom: '18px',
-  textAlign: 'start',
-}));
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'end',
+    marginBottom: '18px',
+    textAlign: 'start',
+  }));
 
 
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')
     : mainSidebarElements.filter(
-        (button) => button.label === 'Explore' || button.label === 'Settings'
-      );
+      (button) => button.label === 'Explore' || button.label === 'Settings'
+    );
 
 
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth < 1000);
-      };
-  
-      window.addEventListener('resize', handleResize);
-  
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1000);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <DrawerStyled variant="permanent" anchor={isMobile ? 'bottom' : 'top'} >
-     {/* {
+      {/* {
       isMobile ? 
       <Box 
       sx={{
@@ -143,15 +143,23 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
               </Link>
             </Box>
           )}
-          {isAuthenticated && <SmallBtnTweet />}
+          {isAuthenticated &&
+            <Link
+              to="/modal/tweet"
+              state={{ background: location }}
+              component={NavLink}
+            >
+              <SmallBtnTweet />
+            </Link>
+          }
         </Box>
 
         {
           isAuthenticated && <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
         }
-      </BoxContainerStyled> 
-      
-    {/* }  */}
+      </BoxContainerStyled>
+
+      {/* }  */}
     </DrawerStyled>
   );
 };

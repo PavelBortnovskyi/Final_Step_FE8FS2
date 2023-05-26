@@ -3,10 +3,40 @@ import { useState } from 'react';
 import { Box, InputAdornment, TextField } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import { styled } from '@mui/material/styles';
+import { useTheme } from '@emotion/react';
+
+
 
 export const InputSearch = ({ placeholder, fnc }) => {
+    const theme = useTheme();
     const [showClearIcon, setShowClearIcon] = useState('none');
     const [inputValue, setInputValue] = useState('');
+
+    const TextFieldStyle = styled(TextField)((props) => ({
+        width: '100%',
+        borderRadius: '40px',
+        outline: 'none',
+        backgroundColor: `${theme.palette.background.additional}`,
+        '&:hover': {
+            outline: 'none',
+            border: 'none',
+        },
+        input: {
+            '&:hover': {
+                outline: 'none',
+                border: 'none',
+            },
+        },
+        '.MuiOutlinedInput-root': {
+            borderRadius: '40px',
+            color: `${theme.palette.text.secondary}`,
+            '&:hover': {
+                outline: 'none',
+                border: 'none',
+            },
+        },
+    }))
 
     const handleChange = function (event) {
         setShowClearIcon(event === '' ? 'none' : 'flex');
@@ -14,7 +44,6 @@ export const InputSearch = ({ placeholder, fnc }) => {
 
     const handleInput = (e) => {
         setInputValue(e);
-        console.log(e);
     };
 
     const handleClick = function () {
@@ -23,7 +52,7 @@ export const InputSearch = ({ placeholder, fnc }) => {
     };
     return (
         <Box m={1}>
-            <TextField
+            <TextFieldStyle
                 size="small"
                 variant="outlined"
                 placeholder={placeholder}
@@ -32,40 +61,10 @@ export const InputSearch = ({ placeholder, fnc }) => {
                     handleInput(e.target.value);
                     handleChange(e.target.value);
                 }}
-                sx={{
-                    width: '100%',
-                    borderRadius: '40px',
-                    outline: 'none',
-                    backgroundColor: 'rgb(39,51,64)',
-                    '&:hover': {
-                        outline: 'none',
-                        border: 'none',
-                    },
-                    '.Mui-focused': {
-                        backgroundColor: 'rgb(21,32,43)',
-                    },
-                    input: {
-                        '&::placeholder': {
-                            color: 'rgb(231, 233, 234)',
-                        },
-                        '&:hover': {
-                        outline: 'none',
-                        border: 'none',
-                    },
-                    },
-                    '.MuiOutlinedInput-root': {
-                        borderRadius: '40px',
-                        color: '#fff',
-                        '&:hover': {
-                        outline: 'none',
-                        border: 'none',
-                    },
-                    },
-                }}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchOutlinedIcon sx={{ color: 'rgb(113, 118, 123)' }} />
+                            <SearchOutlinedIcon sx={{ color: `${theme.palette.text.secondary}`, }} />
                         </InputAdornment>
                     ),
                     endAdornment: (
@@ -76,7 +75,7 @@ export const InputSearch = ({ placeholder, fnc }) => {
                         >
                             <CancelRoundedIcon
                                 sx={{
-                                    color: 'rgb(29, 155, 240)',
+                                    color: `${theme.palette.primary.main}`,
                                     '&:hover': {
                                         cursor: 'pointer',
                                     },

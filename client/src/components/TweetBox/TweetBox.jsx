@@ -5,25 +5,15 @@ import AddingFile from '../../UI/CreatePostBar/AddingFile';
 import InputAvatar from '../../UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
 
+import { useDispatch } from 'react-redux';
+import { sendData } from 'src/redux/thunk/createPost.js';
+
 function TweetBox() {
   const [postInputText, setPostInputText] = useState('');
   const [postImage, setPostImage] = useState(null);
 
-  // const data = {
-  //   postText: postInputText,
-  //   postImage: postImage,
-  // };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append('file', data);
-  //   const response = await fetch('/upload', {
-  //     method: 'POST',
-  //     body: formData,
-  //   });
-  //   setPostInputText('');
-  //   setPostImage(null);
-  // };
+  const dispatch = useDispatch();
+
   const handleEmojiSelect = (emoji) => {
     setPostInputText(postInputText + emoji);
   };
@@ -33,15 +23,26 @@ function TweetBox() {
   };
 
   const handleFileSelect = (file) => {
-    setPostImage(file);
+    // setPostImage(file);
   };
   const handleCloseFile = () => {
     setPostImage(null);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Dispatch the sendData action with the collected data
+    dispatch(sendData({ postInputText, postImage }));
+    console.log('working');
+    // Reset the form fields
+    setPostInputText('');
+    // setPostImage([]);
+  };
   const objectURL = postImage ? URL.createObjectURL(postImage) : null;
   return (
     <Box>
-      <form>
+      <form autoComplete="off">
         <InputAvatar
           avatarUrl="/img/avatar.JPG"
           placeholder="What's happening?"
@@ -52,7 +53,7 @@ function TweetBox() {
         )}
         <Box
           sx={{
-            borderTop: '1px solid rgb(56, 68, 77)',
+            
             borderBottom: '1px solid rgb(56, 68, 77)',
             paddingBottom: '11px',
           }}
@@ -78,6 +79,7 @@ function TweetBox() {
               text="Tweet"
               w="80px"
               h="34px"
+              fnc={handleSubmit}
             />
           </Box>
         </Box>
