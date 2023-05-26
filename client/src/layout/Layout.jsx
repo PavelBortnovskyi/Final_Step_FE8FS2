@@ -12,63 +12,73 @@ import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolba
 // import { Main } from 'src/components/Main/Main';
 // import { Modal } from 'src/components/Modal/Modal';
 
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { useMode } from 'src/styles/_materialTheme';
+
 export const Layout = () => {
   // get Authentication
   const { isAuthenticated } = useSelector(getAuthorizationData);
-  console.log('auth', isAuthenticated);
 
   // create location for MainRoutes
   const location = useLocation();
   const background = location.state && location.state.background;
 
+  const theme = useMode();
+
   return (
-    <Container
-      maxWidth="lg"
-      sx={{
-        backgroundColor: 'rgb(21,32,43)',
-        color: '#FFF',
-      }}
-    >
-      <Grid container>
-        <Grid
-          item
-          sm={2}
-          md={3}
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-          }}
-        >
-          <Sidebar isAuthenticated={isAuthenticated}/>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container
+        maxWidth="lg"
+        sx={{
+          bgcolor: `${theme.palette.background.default}`,
+          color: `${theme.palette.text.primary}`,
+        }}
+      >
+        <Grid container>
+          <Grid
+            item
+            sm={2}
+            md={3}
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+            }}
+          >
+            <Sidebar />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            sm={10}
+            md={6}
+            sx={{
+              borderLeft: `1px solid ${theme.palette.border.main}`,
+              borderRight: `1px solid ${theme.palette.border.main}`,
+            }}
+          >
+            {/* <Main /> */}
+
+            {/* routes for main components */}
+            <MainRoutes location={background || location} />
+          </Grid>
+
+          <Grid
+            item
+            md={3}
+            sx={{
+              display: { xs: 'none', md: 'block' },
+            }}
+          >
+            {/* <Footer /> */}
+          </Grid>
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          sm={10}
-          md={6}
-          sx={{ borderLeft: '1px solid #333', borderRight: '1px solid #333' }}
-        >
-          {/* <Main /> */}
+        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
-          {/* routes for main components */}
-          <MainRoutes location={background || location} />
-        </Grid>
-
-        <Grid
-          item
-          md={3}
-          sx={{
-            display: { xs: 'none', md: 'block' },
-          }}
-        >
-          <RightSection isAuthenticated={isAuthenticated}/>
-        </Grid>
-      </Grid>
-
-      {/* {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />} */}
-
-      {/* routes for modal window */}
-      <ModalRoutes />
-    </Container>
+        {/* routes for modal window */}
+        <ModalRoutes />
+      </Container>
+    </ThemeProvider>
   );
 };

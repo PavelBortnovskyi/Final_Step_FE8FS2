@@ -21,14 +21,15 @@ public interface Marker {
 
   interface Update {
   }
-
+  interface Retweet{
+  }
   interface PasswordUpdate {
   }
 
-  interface PasswordReset {
+  interface PasswordUpdateAfterReset {
   }
 
-  interface Retweet{
+  interface PasswordReset {
   }
 }
 

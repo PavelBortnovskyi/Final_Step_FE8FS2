@@ -26,6 +26,27 @@ spring:
   url:
     server: http://localhost:8080
     client: http://localhost:3000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: fe8fs2finalstep@gmail.com
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  #security:
+    #oauth2:
+      #client:
+        #registration:
+          #google:
+            #client-id: ${GOOGLE_API_ID}
+            #client-secret: ${GOOGLE_API_SECRET}
+          #facebook:
+            #client-id: ${FB_API_ID}
+            #client-secret: ${FB_API_SECRET}
 jwt:
   secret: ${JWT_SECRET}
   secretRefresh: ${JWT_REFRESH_SECRET}

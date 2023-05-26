@@ -1,36 +1,36 @@
-import { Form } from "formik";
-import { EditFormHeder } from "./EditFormHeder";
-import { UserPageFoto } from "../User/UserPageFoto";
-import { UserPageAvatar } from "../User/UserPageAvatar";
-import { TextField, Typography } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import { ImgInputAvatar } from "./ImgInputAvatar";
-import { UserPageFotoInput } from "./UserPageFotoInput";
-import { ClearPageFoto } from "./ClearPageFoto";
-import { EditBirthDate } from "./EditBirthDate";
+import { Form } from 'formik';
+import { EditFormHeder } from './EditFormHeder';
+import { UserPageFoto } from '../User/UserPageFoto';
+import { UserPageAvatar } from '../User/UserPageAvatar';
+import { TextField, Typography } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import { ImgInputAvatar } from './ImgInputAvatar';
+import { UserPageFotoInput } from './UserPageFotoInput';
+import { ClearPageFoto } from './ClearPageFoto';
+import { EditBirthDate } from './EditBirthDate';
 // import { BirthdayInput } from "./BirthdayInput";
 
 const RedditTextField = styled((props) => (
   <TextField InputProps={{ disableUnderline: true }} {...props} />
 ))(({ theme }) => ({
-  "& .MuiFilledInput-root": {
-    color: "white",
-    border: "1px solid #e2e2e1",
-    overflow: "hidden",
+  '& .MuiFilledInput-root': {
+    color: 'white',
+    border: '1px solid #e2e2e1',
+    overflow: 'hidden',
     borderRadius: 4,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     transition: theme.transitions.create([
-      "border-color",
-      "background-color",
-      "box-shadow",
+      'border-color',
+      'background-color',
+      'box-shadow',
     ]),
 
-    "& label": {
-      color: "white",
+    '& label': {
+      color: 'white',
     },
-    "&.Mui-focused": {
-      backgroundColor: "transparent",
+    '&.Mui-focused': {
+      backgroundColor: 'transparent',
       boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
       borderColor: theme.palette.primary.main,
     },
@@ -43,18 +43,18 @@ export function EditForm() {
       <EditFormHeder />
       <Box
         sx={{
-          position: "relative",
+          position: 'relative',
         }}
       >
         <UserPageFoto />
         <Box
           sx={{
-            display: "flex",
-            gap: "14px",
-            height: "64px",
-            position: "absolute",
-            bottom: "calc(50% - 32px)",
-            left: "calc(50% - 50px)",
+            display: 'flex',
+            gap: '14px',
+            height: '64px',
+            position: 'absolute',
+            bottom: 'calc(50% - 32px)',
+            left: 'calc(50% - 50px)',
           }}
         >
           <UserPageFotoInput />
@@ -64,22 +64,22 @@ export function EditForm() {
 
       <Box
         sx={{
-          position: "relative",
+          position: 'relative',
         }}
       >
         <UserPageAvatar />
-        <Box sx={{ position: "absolute", bottom: "36px", left: "50px" }}>
+        <Box sx={{ position: 'absolute', bottom: '36px', left: '50px' }}>
           <ImgInputAvatar />
         </Box>
       </Box>
 
       <Box
         sx={{
-          padding: "14px",
-          "& div": {
-            width: "100%",
+          padding: '14px',
+          '& div': {
+            width: '100%',
           },
-          "& label": { color: "white" },
+          '& label': { color: 'white' },
         }}
       >
         <RedditTextField
@@ -113,11 +113,11 @@ export function EditForm() {
         <Box>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
-            <Typography style={{ color: "rgb(139, 152, 165)" }}>
+            <Typography style={{ color: 'rgb(139, 152, 165)' }}>
               Birth date
             </Typography>
             <EditBirthDate />
