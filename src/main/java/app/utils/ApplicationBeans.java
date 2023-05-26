@@ -1,6 +1,5 @@
 package app.utils;
 
-import app.facade.*;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +59,7 @@ public class ApplicationBeans {
 
     return mailSender;
   }
-  
+
   @Bean
   public ObjectMapper getObjectMapper() {
     return new ObjectMapper();

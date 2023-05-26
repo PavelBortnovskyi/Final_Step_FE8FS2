@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -18,8 +19,8 @@ import java.util.Optional;
 public class UserModelService extends GeneralService<UserModel> {
 
   private final UserModelRepository userModelRepository;
-
   private final PasswordEncoder encoder;
+  private final CloudinaryService cloudinaryService;
 
 
   /**
@@ -55,16 +56,36 @@ public class UserModelService extends GeneralService<UserModel> {
 
 
   @Transactional
-  public void subscribe(Long userCurrentId, Long userToFollowingId) {
+  public UserModel subscribe(Long userCurrentId, Long userToFollowingId) {
     if (userCurrentId.equals(userToFollowingId))
       throw new IncorrectUserIdException(userToFollowingId);
-    getUser(userCurrentId).getFollowings().add(getUser(userToFollowingId));
+    UserModel userModel = this.getUser(userCurrentId);
+    userModel.getFollowings().add(getUser(userToFollowingId));
+    return userModel;
   }
 
 
   @Transactional
-  public void unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
-    getUser(userCurrentId).getFollowings().remove(getUser(userToUnFollowingId));
+  public UserModel unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
+    UserModel userModel = this.getUser(userCurrentId);
+    userModel.getFollowings().remove(getUser(userToUnFollowingId));
+    return userModel;
+  }
+
+  public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
+    UserModel userModel = this.getUser(userId);
+    userModel.setAvatarImgUrl(cloudinaryService.uploadFile(file, userId + "_avatar_img"));
+    userModelRepository.save(userModel);
+    return userModel;
+  }
+
+
+  public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
+    UserModel userModel = this.getUser(userId);
+    userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
+    System.out.println(userModel);
+    userModelRepository.save(userModel);
+    return userModel;
   }
 
 
@@ -76,7 +97,7 @@ public class UserModelService extends GeneralService<UserModel> {
       .map(user -> {
         this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
-      }).orElseGet(() -> false);
+      }).orElse(false);
   }
 
   /**
@@ -84,9 +105,10 @@ public class UserModelService extends GeneralService<UserModel> {
    */
   public boolean updatePassword(Long userId, String freshPassword) {
     return this.userModelRepository.findById(userId)
-      .map(user -> {this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
+      .map(user -> {
+        this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
-      }).orElseGet(() -> false);
+      }).orElse(false);
   }
 
 

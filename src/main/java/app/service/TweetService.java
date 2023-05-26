@@ -3,7 +3,6 @@ package app.service;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetType;
-import app.exceptions.userError.UserNotFoundException;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -101,7 +99,7 @@ public class TweetService extends GeneralService<Tweet> {
     return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
   }
 
-  public Integer getCountReply(Long tweetId){
+  public Integer getCountReply(Long tweetId) {
     return tweetModelRepository.getCountByTweetTypeAndId(TweetType.REPLY, tweetId);
   }
 
