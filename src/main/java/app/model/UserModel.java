@@ -22,13 +22,13 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "full_name", nullable = false)
   private String fullName;
 
-  @Column(name = "user_tag", nullable = false)
+  @Column(name = "user_tag", nullable = false, unique = true)
   private String userTag;
 
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "email", nullable = false, updatable = false)
+  @Column(name = "email", nullable = false, updatable = false, unique = true)
   private String email;
 
   @Column(name = "date_of_birth")
