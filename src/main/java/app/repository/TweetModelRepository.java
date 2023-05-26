@@ -27,8 +27,4 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   Integer getCountByTweetTypeAndId(@Param("tweetType") TweetType tweetType, @Param("tweetId") Long tweetId);
 
 
-  @Query("SELECT COUNT(*) FROM Tweet t WHERE t.tweetType = :tweetType AND t.id = :tweetId")
-  Integer getCountByTweetTypeAndId(@Param("tweetType") TweetType tweetType, @Param("tweetId") Long tweetId);
-
-
 }

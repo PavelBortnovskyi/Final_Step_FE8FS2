@@ -9,12 +9,14 @@ import app.service.TweetService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 @NoArgsConstructor
 public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
   @Autowired
@@ -37,15 +39,15 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
   }
 
-  private int getCountLikes(Tweet tweet) {
+  private Integer getCountLikes(Tweet tweet) {
     return tweetActionService.getCountLikes(tweet.getId());
   }
 
-  private int getCountReply(Tweet tweet) {
+  private Integer getCountReply(Tweet tweet) {
     return tweetService.getCountReply(tweet.getId());
   }
 
-  private int getCountRetweet(Tweet tweet) {
+  private Integer getCountRetweet(Tweet tweet) {
     return tweetActionService.getCountRetweet(tweet.getId());
   }
 
