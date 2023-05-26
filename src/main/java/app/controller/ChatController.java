@@ -40,7 +40,7 @@ public class ChatController {
   private final UserModelService userService;
 
   //@Validated({Marker.New.class})
-  @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestParam("interlocutorId") Long interlocutorId,
                                                                                            HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -82,7 +82,7 @@ public class ChatController {
 
 
   //@Validated({Marker.Preview.class})
-  @GetMapping(path = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView({Marker.ChatDetails.class}) ResponseEntity<List<ChatResponse>> handleGetChatsForPreview(HttpServletRequest request,
                                                                                                            @RequestParam("page") Integer page,
                                                                                                            @RequestParam("pageSize") Integer pageSize) {

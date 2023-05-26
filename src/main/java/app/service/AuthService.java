@@ -62,6 +62,10 @@ public class AuthService {
     if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
       throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
 
+    //Tag duplicate checking
+    if (this.userService.isUserTagPresentInDB(signUpDTO.getUserTag()))
+      throw new UserAlreadyRegisteredException("tag: " + signUpDTO.getUserTag());
+
     //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
     UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
