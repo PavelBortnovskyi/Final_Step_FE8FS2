@@ -7,9 +7,11 @@ import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Component
 @NoArgsConstructor
 public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, UserModelResponse> {
 
@@ -21,14 +23,13 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     super.getMm().typeMap(UserModel.class, UserModelResponse.class)
       .addMapping(UserModel::getCountFollowers, UserModelResponse::setCountUserFollowers)
       .addMapping(UserModel::getCountFollowings, UserModelResponse::setCountUserFollowings);
-
-    // Skip properties with null value
-    super.getMm().getConfiguration().setPropertyCondition(u -> u.getSource() != null);
   }
+
 
   public UserModelResponse getUserById(Long userId) {
     return this.convertToDto(userModelService.getUser(userId));
   }
+
 
   public UserModelResponse updateUser(Long userId, UserModelRequest userModelRequest) {
     userModelService.getUserByTagO(userModelRequest.getUserTag())

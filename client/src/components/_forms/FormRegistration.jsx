@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Snackbar, TextField } from '@mui/material';
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { registerUser } from 'src/redux/thunk/registerUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
@@ -29,9 +29,9 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, 'must be more than 8 characters')
     .required('required field'),
-  birthday: Yup.date()
-    .max(new Date(), 'Date cannot be greater than current')
-    .required('required field'),
+  // birthDate: Yup.date()
+  //   .max(new Date(), 'Date cannot be greater than current')
+  //   .required('required field'),
 });
 
 // Formik form
@@ -45,11 +45,11 @@ export const FormRegistration = () => {
   const navigate = useNavigate();
 
   // set view message from server after auth
-  // useEffect(() => {
-  //   // if (message) toast.success(message);
-  //   // if (error) toast.error(error);
-  //   if (isAuthenticated) navigate('/');
-  // }, [navigate, isAuthenticated]);
+  useEffect(() => {
+    // if (message) toast.success(message);
+    // if (error) toast.error(error);
+    if (isAuthenticated) navigate('/');
+  }, [navigate, isAuthenticated]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {
@@ -65,20 +65,19 @@ export const FormRegistration = () => {
   };
 
   // default value for form
-  const initialValues = {
-    email: 'test@test.com',
-    fullName: 'Семен Семенович',
-    userTag: 'semen',
-    password: '12345678',
-    birthday: '01.01.1976',
-  };
   // const initialValues = {
-  //   email: '',
-  //   fullName: '',
-  //   userTag: '',
-  //   password: '',
-  //   birthday: new Date(),
+  //   email: 'test@test.com',
+  //   fullName: 'Семен Семенович',
+  //   userTag: 'semen',
+  //   password: '12345678',
   // };
+  const initialValues = {
+    email: '',
+    fullName: '',
+    userTag: '',
+    password: '',
+    // birthDate: '',
+  };
 
   return (
     <>
@@ -156,22 +155,22 @@ export const FormRegistration = () => {
               helperText={touched.password && errors.password}
             />
 
-            {/*  birthday */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/*  birthDate */}
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Birthday"
-                value={values.birthday}
-                id="birthday"
-                name="birthday"
+                label="birthDate"
+                value={values.birthDate}
+                id="birthDate"
+                name="birthDate"
                 onChange={(date) => {
-                  handleChange({ target: { name: 'birthday', value: date } });
+                  handleChange({ target: { name: 'birthDate', value: date } });
                 }}
                 onBlur={handleBlur}
-                error={touched.birthday && Boolean(errors.birthday)}
-                helperText={touched.birthday && errors.birthday}
+                error={touched.birthDate && Boolean(errors.birthDate)}
+                helperText={touched.birthDate && errors.birthDate}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
 
             <div className={styles.actions}>
               <Button variant="outlined" color="black" type="submit">

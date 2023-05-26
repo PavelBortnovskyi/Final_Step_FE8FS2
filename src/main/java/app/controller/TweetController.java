@@ -120,5 +120,9 @@ public class TweetController {
     tweetActionService.deleteBookmark(tweetId, request);
   }
 
+  @GetMapping("/get_likes/{id}")
+  public ResponseEntity getcount(@PathVariable(name = "id") Long tweetId) {
+    return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
+  }
 
 }

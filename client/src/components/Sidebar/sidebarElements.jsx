@@ -63,10 +63,9 @@ export const mainSidebarElements = [
         icon: SettingsOutlinedIcon,
         label: 'Settings',
         route: 'settings',
-      },
+    },
     
 ]
-
 
 
 
