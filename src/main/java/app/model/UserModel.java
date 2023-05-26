@@ -67,18 +67,23 @@ public class UserModel extends BaseEntityModel {
     inverseJoinColumns = @JoinColumn(name = "follower_id"))
   private Set<UserModel> followers = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Tweet> tweets = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Message> messages = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
   private Set<Chat> chat = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Chat> chats = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<TweetAction> tweetAction;
 
@@ -89,6 +94,8 @@ public class UserModel extends BaseEntityModel {
   public Integer getCountFollowings() {
     return followings.size();
   }
+
+  public Integer getCountTweets() {return tweets.size(); }
 
   @Override
   public boolean equals(Object o) {
