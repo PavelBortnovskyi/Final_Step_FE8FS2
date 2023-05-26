@@ -81,15 +81,17 @@ public class TweetController {
   }
 
   //get List tweets following users
-  @GetMapping("/get_following_tweets/{pageNumber}")
-  public List<TweetResponse> getAllUserFollowingsTweets(@PathVariable(name = "pageNumber") Integer pageNumber, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, pageNumber)).getBody();
+  @GetMapping("/get_following_tweets")
+  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page,
+                                                        @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
   }
 
   // get user tweets
   @GetMapping("/get_tweets/{id}")
-  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId) {
-    return ResponseEntity.ok(tweetFacade.getUserTweets(userId)).getBody();
+  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") int page,
+                                           @RequestParam("pageSize") int pageSize) {
+    return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
   }
 
   @PostMapping("/add_like/{tweetId}")
@@ -102,9 +104,10 @@ public class TweetController {
     return ResponseEntity.ok(tweetActionFacade.addBookmark(tweetId, request));
   }
 
-  @GetMapping("/get_bookmarks/{page}")
-  public ResponseEntity getAllBookmarks(HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request));
+  @GetMapping("/bookmarks")
+  public ResponseEntity getAllBookmarks(@RequestParam("page") int page,
+                                        @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request, page, pageSize));
   }
 
   @DeleteMapping("/delete_like/{tweetId}")

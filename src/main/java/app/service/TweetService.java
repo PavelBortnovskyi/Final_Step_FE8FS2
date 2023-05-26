@@ -3,7 +3,6 @@ package app.service;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetType;
-import app.exceptions.userError.UserNotFoundException;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -85,19 +83,23 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
-  public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
+  public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
     List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId"))
       .getFollowings().stream().map(u -> u.getId()).toList();
     return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
-      Pageable.ofSize(10).withPage(pageNumber)).toList());
+      Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public ResponseEntity<List<Tweet>> getUserTweets(Long userId) {
-    return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId));
+  public ResponseEntity<List<Tweet>> getUserTweets(Long userId, int page, int pageSize) {
+    return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
+  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
+    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request, page, pageSize));
+  }
+
+  public Integer getCountReply(Long tweetId) {
+    return tweetModelRepository.getCountByTweetTypeAndId(TweetType.REPLY, tweetId);
   }
 
 }
