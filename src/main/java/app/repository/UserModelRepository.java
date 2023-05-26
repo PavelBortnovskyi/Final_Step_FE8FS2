@@ -23,6 +23,8 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   // Return followers
   Page<UserModel> findByFollowingsContains(UserModel userModel, Pageable pageable);
 
+  Page<UserModel> findByFollowersNotContaining(UserModel userModel, Pageable pageable);
+
   @Query(value = "SELECT u FROM UserModel u WHERE u.email = :email")
   Optional<UserModel> findByEmail(@Param("email") String email);
 

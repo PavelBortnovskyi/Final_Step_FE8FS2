@@ -81,4 +81,11 @@ public class UserController {
                                               HttpServletRequest httpServletRequest){
     return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
+
+  @GetMapping("offer_followings")
+  public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") int size,
+                                                    HttpServletRequest httpServletRequest){
+    return userModelFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
+  }
 }

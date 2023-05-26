@@ -66,4 +66,8 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
   public Page<UserModelResponse> getFollowings(Long userId, int page, int size){
     return userModelService.getFollowings(userId, page, size).map(this::convertToDto);
   }
+
+  public Page<UserModelResponse> getOfferFollowings(Long userId, int page, int size){
+    return userModelService.getOfferFollowings(userId, page, size).map(this::convertToDto);
+  }
 }

@@ -37,7 +37,7 @@ public class UserModelService extends GeneralService<UserModel> {
   public Optional<UserModel> getUserO(Long id) {
     return this.userModelRepository.findById(id);
   }
-  
+
   public UserModel getUser(String email) {
     return this.userModelRepository.findByEmail(email)
       .orElseThrow(() -> new UserNotFoundException(email));
@@ -95,6 +95,9 @@ public class UserModelService extends GeneralService<UserModel> {
     return userModelRepository.findByFollowersContains(getUser(userId), PageRequest.of(page, size));
   }
 
+  public Page<UserModel> getOfferFollowings(Long userId, int page, int size){
+    return userModelRepository.findByFollowersNotContaining(getUser(userId), PageRequest.of(page, size));
+  }
 
   /**
    * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
