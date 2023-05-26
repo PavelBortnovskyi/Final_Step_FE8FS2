@@ -8,13 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.PageRanges;
 import java.util.Optional;
 
 @Log4j2
@@ -99,7 +97,7 @@ public class UserModelService extends GeneralService<UserModel> {
     return userModelRepository.findByFollowersNotContaining(getUser(userId), PageRequest.of(page, size));
   }
 
-  public Page<UserModel> findUser(Long userId, String partFullName, String partUserTag, int page, int size) {
+  public Page<UserModel> searchUser(Long userId, String partFullName, String partUserTag, int page, int size) {
     return userModelRepository.findAllByIdNotLikeAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(
       userId, partFullName, partUserTag, PageRequest.of(page, size));
   }
