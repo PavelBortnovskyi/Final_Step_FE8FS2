@@ -34,14 +34,30 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
       .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
-      .addMapping(src -> tweetActionService.getCountLikes(src.getId()), TweetResponse::setCountLikes)
-      .addMapping(src -> tweetActionService.getCountRetweet(src.getId()), TweetResponse::setCountRetweets)
-      .addMapping(src -> tweetService.getCountReply(src.getId()), TweetResponse::setCountReply);
+      .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
+      .addMapping(this::getCountReply, TweetResponse::setCountReply)
+      .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
+  }
+
+  private Integer getCountLikes(Tweet tweet) {
+    return tweetActionService.getCountLikes(tweet.getId());
+  }
+
+  private Integer getCountReply(Tweet tweet) {
+    return tweetService.getCountReply(tweet.getId());
+  }
+
+  private Integer getCountRetweet(Tweet tweet) {
+    return tweetActionService.getCountRetweet(tweet.getId());
   }
 
   public TweetResponse getTweetById(Long tweetId) {
-    return tweetService.getTweet(tweetId).map(this::convertToDto)
+    TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
+    tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
+    tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
+    tweetResponse.setCountReply(tweetService.getCountReply(tweetResponse.getTweetId()));
+    return tweetResponse;
   }
 
   public TweetResponse updateTweet(Long tweetId, TweetRequest tweetRequest) {
@@ -49,8 +65,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
-  public List<TweetResponse> getUserTweets(Long userId) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.getUserTweets(userId);
+  public List<TweetResponse> getUserTweets(Long userId, int page, int pageSize) {
+    ResponseEntity<List<Tweet>> responseEntity = tweetService.getUserTweets(userId, page, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
 
@@ -62,8 +78,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     return tweetResponses;
   }
 
-  public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, pageNumber);
+  public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
+    ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, page, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
 
@@ -75,8 +91,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     return tweetResponses;
   }
 
-  public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.getAllBookmarks(request);
+  public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request, int page, int pageSize) {
+    ResponseEntity<List<Tweet>> responseEntity = tweetService.getAllBookmarks(request, page, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
 
@@ -87,6 +103,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
     return tweetResponses;
   }
+
+
 
   @Override
   public Tweet convertToEntity(TweetRequest dto) {
