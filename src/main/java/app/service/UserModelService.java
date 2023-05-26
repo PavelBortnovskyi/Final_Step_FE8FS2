@@ -31,56 +31,56 @@ public class UserModelService extends GeneralService<UserModel> {
    * Methods returns Optional of UserModel by different parameters
    */
   public Optional<UserModel> getUserO(String email) {
-    return this.userModelRepository.findByEmail(email);
+    return userModelRepository.findByEmail(email);
   }
 
   public Optional<UserModel> getUserO(Long id) {
-    return this.userModelRepository.findById(id);
+    return userModelRepository.findById(id);
   }
 
   public UserModel getUser(String email) {
-    return this.userModelRepository.findByEmail(email)
+    return userModelRepository.findByEmail(email)
       .orElseThrow(() -> new UserNotFoundException(email));
   }
 
   public UserModel getUser(Long userId) {
-    return this.userModelRepository.findById(userId)
+    return userModelRepository.findById(userId)
       .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
   public Optional<UserModel> getUserByToken(String refreshToken) {
-    return this.userModelRepository.findByToken(refreshToken);
+    return userModelRepository.findByToken(refreshToken);
   }
 
   public Optional<UserModel> getUserByTagO(String userTag) {
-    return this.userModelRepository.findByUserTag(userTag);
+    return userModelRepository.findByUserTag(userTag);
   }
 
   @Transactional
   public UserModel subscribe(Long userCurrentId, Long userToFollowingId) {
     if (userCurrentId.equals(userToFollowingId))
       throw new IncorrectUserIdException(userToFollowingId);
-    UserModel userModel = this.getUser(userCurrentId);
+    UserModel userModel = getUser(userCurrentId);
     userModel.getFollowings().add(getUser(userToFollowingId));
     return userModel;
   }
 
   @Transactional
   public UserModel unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
-    UserModel userModel = this.getUser(userCurrentId);
+    UserModel userModel = getUser(userCurrentId);
     userModel.getFollowings().remove(getUser(userToUnFollowingId));
     return userModel;
   }
 
   public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
-    UserModel userModel = this.getUser(userId);
+    UserModel userModel = getUser(userId);
     userModel.setAvatarImgUrl(cloudinaryService.uploadFile(file, userId + "_avatar_img"));
     userModelRepository.save(userModel);
     return userModel;
   }
 
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
-    UserModel userModel = this.getUser(userId);
+    UserModel userModel = getUser(userId);
     userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
     System.out.println(userModel);
     userModelRepository.save(userModel);
@@ -99,13 +99,18 @@ public class UserModelService extends GeneralService<UserModel> {
     return userModelRepository.findByFollowersNotContaining(getUser(userId), PageRequest.of(page, size));
   }
 
+  public Page<UserModel> findUser(Long userId, String partFullName, String partUserTag, int page, int size) {
+    return userModelRepository.findAllByIdNotLikeAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(
+      userId, partFullName, partUserTag, PageRequest.of(page, size));
+  }
+
   /**
    * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
    */
   public boolean updatePassword(String email, String oldPassword, String freshPassword) {
-    return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
+    return userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
       .map(user -> {
-        this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
+        userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
       }).orElse(false);
   }
@@ -116,7 +121,7 @@ public class UserModelService extends GeneralService<UserModel> {
   public boolean updatePassword(Long userId, String freshPassword) {
     return this.userModelRepository.findById(userId)
       .map(user -> {
-        this.userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
+        userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
         return true;
       }).orElse(false);
   }
@@ -126,7 +131,7 @@ public class UserModelService extends GeneralService<UserModel> {
    * Method returns boolean result of checking presence in DB user with login&password combination
    */
   public boolean checkLoginPassword(String email, String password) {
-    return this.userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
+    return userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
   }
 
 
@@ -134,11 +139,11 @@ public class UserModelService extends GeneralService<UserModel> {
    * Method returns true if provided email address is present in DB
    */
   public boolean isEmailPresentInDB(String email) {
-    return this.userModelRepository.findByEmail(email).isPresent();
+    return userModelRepository.findByEmail(email).isPresent();
   }
 
   public boolean isUserTagPresentInDB(String userTag) {
-    return this.getUserByTagO(userTag).isPresent();
+    return getUserByTagO(userTag).isPresent();
   }
 
 }

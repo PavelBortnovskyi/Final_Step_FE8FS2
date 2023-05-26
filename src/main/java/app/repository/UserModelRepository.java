@@ -25,6 +25,12 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
 
   Page<UserModel> findByFollowersNotContaining(UserModel userModel, Pageable pageable);
 
+  Page<UserModel> findAllByIdNotLikeAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(Long id,
+                                                                                              String partFullName,
+                                                                                              String partUserTag,
+                                                                                              Pageable pageable
+  );
+
   @Query(value = "SELECT u FROM UserModel u WHERE u.email = :email")
   Optional<UserModel> findByEmail(@Param("email") String email);
 

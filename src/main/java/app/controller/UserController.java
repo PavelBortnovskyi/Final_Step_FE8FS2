@@ -88,4 +88,13 @@ public class UserController {
                                                     HttpServletRequest httpServletRequest){
     return userModelFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
+
+  @GetMapping("search")
+  public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") int page,
+                                          @RequestParam(name = "size", defaultValue = "10") int size,
+                                          @RequestParam(name = "part_of_full_name", defaultValue = "") String partFullName,
+                                          @RequestParam(name = "part_of_user_tag", defaultValue = "") String partUserTag,
+                                          HttpServletRequest httpServletRequest){
+    return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), partFullName, partUserTag, page, size);
+  }
 }
