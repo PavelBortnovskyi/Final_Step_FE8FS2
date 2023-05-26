@@ -4,7 +4,6 @@ import app.annotations.Marker;
 import app.dto.rq.UserModelRequest;
 import app.dto.rs.UserModelResponse;
 import app.facade.UserModelFacade;
-import app.service.UserModelService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,8 +23,7 @@ import javax.validation.constraints.Positive;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
-
-  private final UserModelService userModelService;
+  
   private final UserModelFacade userModelFacade;
 
   @GetMapping("{userId}")
@@ -46,29 +44,25 @@ public class UserController {
 
   @PutMapping("profile/avatar_img")
   public ResponseEntity<UserModelResponse> uploadAvatarImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.convertToDto(
-      userModelService.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file)));
+    return ResponseEntity.ok(userModelFacade.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file));
   }
 
   @PutMapping("profile/header_img")
   public ResponseEntity<UserModelResponse> uploadHeaderImg(@RequestParam("file") MultipartFile file, HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.convertToDto(
-      userModelService.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file)));
+    return ResponseEntity.ok(userModelFacade.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file));
   }
 
 
   @PostMapping("subscribe/{userIdToFollowing}")
   public ResponseEntity<UserModelResponse> subscribe(@PathVariable(name = "userIdToFollowing") @Positive Long userIdToFollowing, HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.convertToDto(
-      userModelService.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing)
-    ));
+    return ResponseEntity.ok(userModelFacade.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing));
   }
 
   @PostMapping("unsubscribe/{userIdToUnFollowing}")
   public ResponseEntity<UserModelResponse> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing, HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.convertToDto(
-      userModelService.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing)
-    ));
+    return ResponseEntity.ok(userModelFacade.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing));
   }
-
+//
+//  @GetMapping("followers")
+//  public Pageable<UserModelResponse> getFollowers(){}
 }

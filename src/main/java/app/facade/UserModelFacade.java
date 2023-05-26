@@ -8,6 +8,7 @@ import app.service.UserModelService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 
@@ -28,7 +29,7 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
 
 
   public UserModelResponse getUserById(Long userId) {
-    return this.convertToDto(userModelService.getUser(userId));
+    return convertToDto(userModelService.getUser(userId));
   }
 
 
@@ -38,7 +39,22 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
         if (!u.getId().equals(userId))
           throw new UserAlreadyRegisteredException("tag: " + userModelRequest.getUserTag());
       });
-    return this.save(this.mapToEntity(userModelRequest, userModelService.getUser(userId)));
+    return save(mapToEntity(userModelRequest, userModelService.getUser(userId)));
   }
 
+  public UserModelResponse uploadAvatarImg(Long userId, MultipartFile file) {
+    return convertToDto(userModelService.uploadAvatarImg(userId, file));
+  }
+
+  public UserModelResponse uploadHeaderImg(Long userId, MultipartFile file) {
+    return convertToDto(userModelService.uploadHeaderImg(userId, file));
+  }
+
+  public UserModelResponse subscribe(Long userId, Long userIdToFollowing) {
+    return convertToDto(userModelService.subscribe(userId, userIdToFollowing));
+  }
+
+  public UserModelResponse unsubscribe(Long userId, Long userIdToUnFollowing) {
+    return convertToDto(userModelService.unsubscribe(userId, userIdToUnFollowing));
+  }
 }

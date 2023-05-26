@@ -95,7 +95,9 @@ public class UserModel extends BaseEntityModel {
     return followings.size();
   }
 
-  public Integer getCountTweets() {return tweets.size(); }
+  public Integer getCountTweets() {
+    return tweets.size();
+  }
 
   @Override
   public boolean equals(Object o) {
