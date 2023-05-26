@@ -86,6 +86,7 @@ public class ChatController {
   public @JsonView({Marker.ChatDetails.class}) ResponseEntity<List<ChatResponse>> handleGetChatsForPreview(HttpServletRequest request,
                                                                                                            @RequestParam("page") Integer page,
                                                                                                            @RequestParam("pageSize") Integer pageSize) {
+    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatService.getUserChatsWithLastMessage(currUserId, pageSize, page - 1)
       .stream()
@@ -99,6 +100,7 @@ public class ChatController {
                                                              @Valid ChatRequest chatDTO, HttpServletRequest request,
                                                              @RequestParam("page") Integer page,
                                                              @RequestParam("pageSize") Integer pageSize) {
+    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
     this.chatService.findById(chatDTO.getChatId())
       .filter(chat -> chat.getUsers().contains(this.userService.findById(currUserId)
