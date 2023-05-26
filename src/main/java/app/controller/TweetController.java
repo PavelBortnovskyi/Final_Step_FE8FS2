@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -64,8 +65,9 @@ public class TweetController {
   @PutMapping("/create_tweet")
   @Validated({Marker.New.class})
   public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
-                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
+                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
+                                                   @RequestParam(value = "file", required = false) MultipartFile file) {
+    return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request, file));
   }
 
   @PutMapping("/create_retweet")

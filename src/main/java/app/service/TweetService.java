@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class TweetService extends GeneralService<Tweet> {
   private final TweetModelRepository tweetModelRepository;
   private final UserModelService userModelService;
   private final TweetActionService tweetActionService;
-  private final CloudinaryService cloudinaryService;
+  private final AttachmentImagesService attachmentImagesService;
 
   public Optional<Tweet> getTweet(Long id) {
     Optional<Tweet> tweet = findById(id);
@@ -50,6 +50,21 @@ public class TweetService extends GeneralService<Tweet> {
     return getTweetResponse(tweet);
   }
 
+  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request,
+                              TweetType tweetType, MultipartFile file) {
+    UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
+    Tweet tweet = new Tweet();
+    tweet.setBody(tweetRequest.getBody());
+    tweet.setTweetType(tweetType);
+    tweet.setUser(user);
+
+    if (file != null){
+
+      tweet.setAttachmentImages(new HashSet<>((Collection) attachmentImagesService.createAttachmentImage(file, tweet)));
+    }
+    return getTweetResponse(tweet);
+  }
+
   private TweetResponse getTweetResponse(Tweet tweet) {
     Tweet savedTweet = tweetModelRepository.save(tweet);
     TweetResponse tweetResponse = new TweetResponse();
@@ -63,12 +78,13 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
     tweetResponse.setCountReply(getCountReply(tweet.getId()));
-    tweetResponse.setAttachmentsImages(savedTweet.getAttachmentImages().stream().map(ai -> ai.getImgUrl()).collect(Collectors.toSet()));
+    tweetResponse.setAttachmentsImages(savedTweet.getAttachmentImages()
+      .stream().map(image -> image.getImgUrl()).collect(Collectors.toSet()));
 
     return tweetResponse;
   }
-  public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
-    return create(tweetRequest, request, TweetType.TWEET);
+  public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request, MultipartFile file) {
+    return create(tweetRequest, request, TweetType.TWEET, file);
   }
 
   public TweetResponse createRetweet(TweetRequest tweetRequest, HttpServletRequest request) {

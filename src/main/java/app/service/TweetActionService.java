@@ -68,8 +68,6 @@ public class TweetActionService extends GeneralService<TweetAction> {
   }
 
   public Integer getCountLikes(Long tweetId) {
-    System.out.println(getCount(tweetId, TweetActionType.LIKE));
-    System.out.println(getCount(tweetId, TweetActionType.BOOKMARK));
     return getCount(tweetId, TweetActionType.LIKE);
   }
 
