@@ -7,6 +7,7 @@ import app.model.UserModel;
 import app.service.UserModelService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,5 +57,13 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
 
   public UserModelResponse unsubscribe(Long userId, Long userIdToUnFollowing) {
     return convertToDto(userModelService.unsubscribe(userId, userIdToUnFollowing));
+  }
+
+  public Page<UserModelResponse> getFollowers(Long userId, int page, int size){
+    return userModelService.getFollowers(userId, page, size).map(this::convertToDto);
+  }
+
+  public Page<UserModelResponse> getFollowings(Long userId, int page, int size){
+    return userModelService.getFollowings(userId, page, size).map(this::convertToDto);
   }
 }
