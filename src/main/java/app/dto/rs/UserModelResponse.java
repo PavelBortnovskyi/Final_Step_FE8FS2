@@ -55,4 +55,8 @@ public class UserModelResponse {
   @JsonView({Marker.Details.class})
   @Null(groups = Marker.ChatDetails.class)
   private Integer countUserFollowings;
+
+  private Integer countUserTweets;
+
+  private String createdAt;
 }
