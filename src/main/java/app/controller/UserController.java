@@ -71,21 +71,21 @@ public class UserController {
   @GetMapping("followers")
   public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") int page,
                                               @RequestParam(name = "size", defaultValue = "10") int size,
-                                              HttpServletRequest httpServletRequest){
+                                              HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("followings")
   public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "size", defaultValue = "10") int size,
-                                              HttpServletRequest httpServletRequest){
+                                               @RequestParam(name = "size", defaultValue = "10") int size,
+                                               HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("offer_followings")
   public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
                                                     @RequestParam(name = "size", defaultValue = "10") int size,
-                                                    HttpServletRequest httpServletRequest){
+                                                    HttpServletRequest httpServletRequest) {
     return userModelFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
@@ -94,7 +94,7 @@ public class UserController {
                                           @RequestParam(name = "size", defaultValue = "10") int size,
                                           @RequestParam(name = "part_of_full_name", defaultValue = "") String partFullName,
                                           @RequestParam(name = "part_of_user_tag", defaultValue = "") String partUserTag,
-                                          HttpServletRequest httpServletRequest){
+                                          HttpServletRequest httpServletRequest) {
     return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), partFullName, partUserTag, page, size);
   }
 }

@@ -59,19 +59,19 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     return convertToDto(userModelService.unsubscribe(userId, userIdToUnFollowing));
   }
 
-  public Page<UserModelResponse> getFollowers(Long userId, int page, int size){
+  public Page<UserModelResponse> getFollowers(Long userId, int page, int size) {
     return userModelService.getFollowers(userId, page, size).map(this::convertToDto);
   }
 
-  public Page<UserModelResponse> getFollowings(Long userId, int page, int size){
+  public Page<UserModelResponse> getFollowings(Long userId, int page, int size) {
     return userModelService.getFollowings(userId, page, size).map(this::convertToDto);
   }
 
-  public Page<UserModelResponse> getOfferFollowings(Long userId, int page, int size){
+  public Page<UserModelResponse> getOfferFollowings(Long userId, int page, int size) {
     return userModelService.getOfferFollowings(userId, page, size).map(this::convertToDto);
   }
 
-  public Page<UserModelResponse> findUser(Long userId, String partFullName, String partUserTag, int page, int size){
+  public Page<UserModelResponse> findUser(Long userId, String partFullName, String partUserTag, int page, int size) {
     return userModelService.searchUser(userId, partFullName, partUserTag, page, size).map(this::convertToDto);
   }
 }

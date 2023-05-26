@@ -1,6 +1,5 @@
 package app.repository;
 
-import app.dto.rs.UserModelResponse;
 import app.model.UserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +35,6 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
 
   @Query(value = "SELECT u FROM UserModel u WHERE u.refreshToken = :refreshToken")
   Optional<UserModel> findByToken(@Param("refreshToken") String refreshToken);
-
 
 
   @Query(value = "SELECT u.refreshed FROM UserModel u WHERE u.refreshToken = :refreshToken")

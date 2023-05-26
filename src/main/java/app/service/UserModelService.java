@@ -85,15 +85,15 @@ public class UserModelService extends GeneralService<UserModel> {
     return userModel;
   }
 
-  public Page<UserModel> getFollowers(Long userId, int page, int size){
+  public Page<UserModel> getFollowers(Long userId, int page, int size) {
     return userModelRepository.findByFollowingsContains(getUser(userId), PageRequest.of(page, size));
   }
 
-  public Page<UserModel> getFollowings(Long userId, int page, int size){
+  public Page<UserModel> getFollowings(Long userId, int page, int size) {
     return userModelRepository.findByFollowersContains(getUser(userId), PageRequest.of(page, size));
   }
 
-  public Page<UserModel> getOfferFollowings(Long userId, int page, int size){
+  public Page<UserModel> getOfferFollowings(Long userId, int page, int size) {
     return userModelRepository.findByFollowersNotContaining(getUser(userId), PageRequest.of(page, size));
   }
 
