@@ -1,11 +1,8 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.dto.rq.NotificationRequest;
-import app.dto.rq.UserModelRequest;
 import app.exceptions.httpError.BadRequestException;
 import app.model.Notification;
-import app.service.AuthService;
 import app.service.NotificationService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin

@@ -95,6 +95,7 @@ public class WebSocketController {
       .filter(n -> n.getReceiverUser().getId().equals(currUserId))
       .map(n -> {
         this.notificationService.setNotificationStatus(n.getId(), true);
+        this.template.convertAndSendToUser(this.userService.getOne(currUserId).getEmail(), "/specific", n);
         return n;
       })
       .orElseThrow(() -> new BadRequestException(String.format("No have such notification(id: %d) for user with id: %d", notificationId, currUserId)));
