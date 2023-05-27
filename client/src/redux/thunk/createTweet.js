@@ -13,7 +13,6 @@ export const createTweet = createAsyncThunk(
             postImage,
           "body": `${postInputText}`,
       });
-      
       return data;
 
     } catch (error) {
