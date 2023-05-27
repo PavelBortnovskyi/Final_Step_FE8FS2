@@ -1,9 +1,9 @@
 import { Box, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
 
 import { SearchTabs } from './SearchTabs';
-
-import { styled, alpha } from '@mui/material/styles';
+import { useState } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -50,6 +50,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const SearchField = () => {
+  // set search text
+  const [searchText, setSearchText] = useState('');
+
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+  };
+  console.log(searchText);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Search>
@@ -57,6 +65,8 @@ export const SearchField = () => {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
+          value={searchText}
+          onChange={handleSearch}
           placeholder="Search Direct Messages"
           inputProps={{ 'aria-label': 'search' }}
         />
