@@ -37,6 +37,8 @@ public class TestController {
 
   @PostMapping(value = "/addMessages", produces = MediaType.APPLICATION_JSON_VALUE)
   public void handleAddMessages() throws InterruptedException {
+    this.chatService.createChat(3L, 1L);
+    this.chatService.createChat(3L, 2L);
     this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(3L).get(), "Hi my friends!", LocalDateTime.now()));
     Thread.sleep(2000);
     this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(3L).get(), "Hi all!", LocalDateTime.now()));
@@ -47,7 +49,7 @@ public class TestController {
   }
 
   @PostMapping(value = "/initUsers", produces = MediaType.APPLICATION_JSON_VALUE)
-  public void initUsers() throws InterruptedException {
+  public void handleInitUsers() {
     UserModel sample1 = new UserModel();
     UserModel sample2 = new UserModel();
     UserModel sample3 = new UserModel();
