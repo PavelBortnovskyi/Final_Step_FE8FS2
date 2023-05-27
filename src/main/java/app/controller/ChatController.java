@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,17 +77,17 @@ public class ChatController {
                                                          @Valid ChatRequest chatDTO, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     if (this.chatService.removeUser(userIdToRemove, currUserId, chatDTO.getChatId()))
-      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by chat initiator id: %d", userIdToRemove, chatDTO.getChatId(), currUserId));
+      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by chat initiator id: %d",
+        userIdToRemove, chatDTO.getChatId(), currUserId));
     else
-      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d", userIdToRemove, chatDTO.getChatId(), currUserId));
+      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+        userIdToRemove, chatDTO.getChatId(), currUserId));
   }
-
 
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
-                                                     @RequestParam("page") Integer page,
-                                                     @RequestParam("pageSize") Integer pageSize) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+                                                     @RequestParam("page") @NotNull @Positive Integer page,
+                                                     @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatService.getUserChatsWithLastMessage(currUserId, pageSize, page - 1);
   }
@@ -94,9 +96,10 @@ public class ChatController {
   @GetMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
                                              @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                             @RequestParam("page") Integer page,
-                                             @RequestParam("pageSize") Integer pageSize) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class)
+                                             @Positive(groups = Marker.ChatDetails.class) Integer page,
+                                             @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                             @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     this.chatService.findById(chatDTO.getChatId())
       .filter(chat -> chat.getUsers().contains(this.userService.findById(currUserId)
@@ -109,20 +112,20 @@ public class ChatController {
   @PostMapping(path = "/messages/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChat(@RequestBody @JsonView(Marker.ChatDetails.class)
                                                              @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                                             @RequestParam("page") Integer page,
-                                                             @RequestParam("pageSize") Integer pageSize,
+                                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class)
+                                                             @Positive(groups = Marker.ChatDetails.class) Integer page,
+                                                             @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                                             @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                              @RequestParam("keyword") String keyword) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatService.searchMessageInChat(chatDTO.getChatId(), currUserId, pageSize, page - 1, keyword);
   }
 
   @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChats(HttpServletRequest request,
-                                                              @RequestParam("page") Integer page,
-                                                              @RequestParam("pageSize") Integer pageSize,
+                                                              @RequestParam("page") @NotNull @Positive Integer page,
+                                                              @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
                                                               @RequestParam("keyword") String keyword) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatService.searchMessageInChats(currUserId, pageSize, page - 1, keyword);
   }

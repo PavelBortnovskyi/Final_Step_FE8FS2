@@ -67,8 +67,8 @@ public class WebSocketController {
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
-  @DeleteMapping("/v1/message/delete/{messageId}")
-  public void deleteMessage(@PathVariable Long messageId, HttpServletRequest request) {
+  @DeleteMapping("/v1/message/delete")
+  public void deleteMessage(@RequestParam("messageId") Long messageId, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     if (this.messageService.deleteMessage(currUserId, messageId))
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageId));
