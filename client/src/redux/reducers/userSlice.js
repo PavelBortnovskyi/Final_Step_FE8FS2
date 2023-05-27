@@ -6,7 +6,6 @@ const initialState = {
   user: {},
   findUser: {},
   isLoading: false,
-  message: '',
   error: '',
 };
 
@@ -19,12 +18,10 @@ export const userSlice = createSlice({
     builder.addCase(getUser.pending, (state, action) => {
       state.user = {};
       state.isLoading = true;
-      state.message = '';
       state.error = '';
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.message = action.payload.message;
       state.isAuthenticated = true;
       state.isLoading = false;
     });

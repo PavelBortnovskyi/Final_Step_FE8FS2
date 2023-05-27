@@ -11,6 +11,7 @@ export const logoutUser = createAsyncThunk(
 
       return data;
     } catch (error) {
+      window.localStorage.removeItem('accessToken');
       // set message error from server
       const errorMessage = error.response.data || error.message;
       return rejectWithValue(errorMessage);
