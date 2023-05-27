@@ -4,6 +4,7 @@ import { getUser } from '../thunk/getUser.js';
 
 const initialState = {
   user: {},
+  findUser: {},
   isLoading: false,
   message: '',
   error: '',
@@ -16,6 +17,7 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     // getUser
     builder.addCase(getUser.pending, (state, action) => {
+      state.user = {};
       state.isLoading = true;
       state.message = '';
       state.error = '';
