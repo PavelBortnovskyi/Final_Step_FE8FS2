@@ -30,11 +30,9 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
       .addMapping(UserModel::getCountTweets, UserModelResponse::setCountUserTweets);
   }
 
-
   public UserModelResponse getUserById(Long userId) {
     return convertToDto(userModelService.getUser(userId));
   }
-
 
   public UserModelResponse updateUser(Long userId, UserModelRequest userModelRequest) {
     userModelService.getUserByTagO(userModelRequest.getUserTag())
