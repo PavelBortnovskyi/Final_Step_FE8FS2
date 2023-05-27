@@ -6,6 +6,9 @@ import { UserDateRegistration } from "./UserDateRegistration";
 import { UserFolower } from "./UserFolower";
 import { UserNick } from "./UserNIck";
 import { Box } from "@mui/material";
+import { UserBio } from "./UserBio";
+import { UserLocation } from "./UserLocation";
+import { UserWebsite } from "./UserWebsite";
 
 export function UserInfo() {
   return (
@@ -32,8 +35,14 @@ export function UserInfo() {
         <Box sx={{ margin: "12px 0" }}>
           <UserName />
           <UserNick />
+          <UserBio />
         </Box>
-        <UserDateRegistration />
+        <Box sx={{ display: "flex", gap: "8px" }}>
+          <UserLocation />
+          <UserWebsite />
+          <UserDateRegistration />
+        </Box>
+
         <UserFolower />
       </Box>
     </Box>

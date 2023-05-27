@@ -1,5 +1,15 @@
 import { Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export function UserTweetsNumber() {
-  return <Typography>tweets</Typography>;
+  const tweetsCounter = useSelector((state) => state.auth.countUserTweets);
+  return (
+    <Typography
+      sx={{
+        color: "rgb(139, 152, 165)",
+      }}
+    >
+      {tweetsCounter} tweets
+    </Typography>
+  );
 }
