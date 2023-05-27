@@ -1,99 +1,131 @@
 package app.controller;
 
+import app.annotations.Marker;
 import app.dto.rq.TweetRequest;
+import app.dto.rs.TweetActionResponse;
 import app.dto.rs.TweetResponse;
-import app.exceptions.tweetError.TweetIsNotFoundException;
+import app.facade.TweetActionFacade;
 import app.facade.TweetFacade;
 import app.model.Tweet;
+import app.service.TweetActionService;
 import app.service.TweetService;
-import app.service.UserModelService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Log4j2
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("api/v1/tweet")
 public class TweetController {
 
   private final TweetService tweetService;
-
-  private final UserModelService userModelService;
-
+  private final TweetActionService tweetActionService;
+  private final TweetActionFacade tweetActionFacade;
   private final TweetFacade tweetFacade;
-
 
   //get tweet by id (don`t need token)
   @GetMapping("{id}")
   public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id) {
-    Optional<Tweet> tweet = tweetService.findById(id);
-
-    if (!tweet.isPresent()) {
-      return ResponseEntity.notFound().build();
-    }
-    return tweet.map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
-      .orElseThrow(() -> new TweetIsNotFoundException(id.toString()));
+    return ResponseEntity.ok(tweetFacade.getTweetById(id));
   }
 
   //delete tweet by id
-  @GetMapping("/delete/{id}")
+  @DeleteMapping("/delete/{id}")
   public void deleteTweet(@PathVariable String id, HttpServletRequest request) {
     Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
     if (tweet.isPresent() && tweet.get().getUser().getId().equals(request.getAttribute("userId"))) {
-      tweetService.deleteTweet(Long.valueOf(id));
+      tweetService.deleteTweet(Long.valueOf(id), request);
     }
   }
 
   //update tweet
-  @PostMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> updateTweet(@PathVariable String id, @RequestBody TweetRequest tweetRequest) {
-    Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
-    if (tweet.isPresent()) {
-      this.tweetService.update(this.tweetFacade.convertToEntity(tweetRequest));
-      return ResponseEntity.ok("response");
-    }
-    return null;
+  @PutMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @Validated({Marker.Update.class})
+  public ResponseEntity<TweetResponse> updateTweet(@Valid @JsonView({Marker.Update.class}) @PathVariable Long id,
+                                                   @RequestBody TweetRequest tweetRequest) {
+    return ResponseEntity.ok(tweetFacade.updateTweet(id, tweetRequest));
   }
 
   //create new tweet
-  @PostMapping("/create")
-  public ResponseEntity<Tweet> createTweet(@RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
+  @PutMapping("/create_tweet")
+  @Validated({Marker.New.class})
+  public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
+                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
   }
 
+  @PutMapping("/create_retweet")
+  @Validated({Marker.Retweet.class})
+  public ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.Retweet.class})
+                                                     @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
+  }
+
+  @PutMapping("/create_reply")
+  @Validated({Marker.Retweet.class})
+  public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
+                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
+                                                   @RequestParam("files") MultipartFile[] files) {
+    return ResponseEntity.ok(tweetService.createReply(tweetRequest, request));
+  }
+
   //get List tweets following users
-  @GetMapping("/get_following_tweets/{id}")
-  public Optional<List<ResponseEntity<TweetResponse>>> getAllTweets(@PathVariable(name = "id") Long id) {
-    return Optional.ofNullable(Optional.ofNullable(tweetService.allUserFollowingTweet(id))
-      .map(models -> models.stream()
-        .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
-        .collect(Collectors.toList()))
-      .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
+  @GetMapping("/get_following_tweets")
+  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page,
+                                                        @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
   }
 
   // get user tweets
   @GetMapping("/get_tweets/{id}")
-  public Optional<List<ResponseEntity<TweetResponse>>> getUserTweets(@PathVariable(name = "id") Long id) {
-    return Optional.ofNullable(Optional.ofNullable(tweetService.getUserTweets(id))
-      .map(models -> models.stream()
-        .map(model -> ResponseEntity.ok(tweetFacade.convertToDto(model)))
-        .collect(Collectors.toList()))
-      .orElseThrow(() -> new TweetIsNotFoundException(id.toString())));
+  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") int page,
+                                           @RequestParam("pageSize") int pageSize) {
+    return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
   }
 
-
-  @PostMapping("/add_like/{id}")
-  public void addLikeToTweet(@PathVariable(name = "id") Long tweetId, HttpServletRequest request) {
-    tweetService.addLikeToTweet((Long) request.getAttribute("userId"), tweetId);
+  @PostMapping("/add_like/{tweetId}")
+  public ResponseEntity<TweetActionResponse> addLikeToTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetActionFacade.addLike(tweetId, request));
   }
 
+  @PostMapping("/add_bookmark/{tweetId}")
+  public ResponseEntity<TweetActionResponse> addBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetActionFacade.addBookmark(tweetId, request));
+  }
+
+  @GetMapping("/bookmarks")
+  public ResponseEntity getAllBookmarks(@RequestParam("page") int page,
+                                        @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request, page, pageSize));
+  }
+
+  @DeleteMapping("/delete_like/{tweetId}")
+  public void deleteLike(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    tweetActionService.deleteLike(tweetId, request);
+  }
+
+  @DeleteMapping("/delete_bookmark/{tweetId}")
+  public void deleteBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
+    tweetActionService.deleteBookmark(tweetId, request);
+  }
+
+  @GetMapping("/get_likes/{id}")
+  public ResponseEntity getcount(@PathVariable(name = "id") Long tweetId) {
+    return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
+  }
 
 }

@@ -110,7 +110,7 @@ public class JwtTokenService {
   /**
    * Method for extraction claims from token according to token type (Enum)
    */
-  public Optional<Jws<Claims>> extractClaimsFromToken(String token, TokenType tokenType) {
+  public Optional<Jws<Claims>> extractClaimsFromToken(String token, TokenType tokenType) throws JwtAuthenticationException {
     String signKey = this.getSignKey(tokenType);
     try {
       return Optional.ofNullable(Jwts.parser()

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Log4j2
 @Configuration
@@ -48,14 +50,17 @@ public class SecurityConfiguration {
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login").permitAll()
-      //.antMatchers("/api/v1/auth/logout").permitAll()
       .antMatchers("/api/v1/auth/password/reset").permitAll()
-      .antMatchers("/test/id").authenticated()
-      .antMatchers("/user/**").authenticated()
-      //.antMatchers("/api/v1/chat/create").permitAll()
+      .antMatchers("/api/v1/auth/password/reset/**").permitAll()
+      .antMatchers("/test/**").permitAll()
+      //.antMatchers("/user/**").permitAll()
+      .antMatchers("/test/**").permitAll()
       //.antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
-      .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
+      .and()
+      //.oauth2Login();
+      .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
@@ -65,6 +70,16 @@ public class SecurityConfiguration {
 
     //Filter for interception of JwtAuthenticationException from jwtAuthFilter
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
+
+    //Disable CORS
+   // httpSec.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+
+    CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+    configuration.addAllowedMethod(HttpMethod.GET);
+    configuration.addAllowedMethod(HttpMethod.DELETE);
+    configuration.addAllowedMethod(HttpMethod.PUT);
+    configuration.addAllowedMethod(HttpMethod.POST);
+    httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
 
     return httpSec.build();
   }

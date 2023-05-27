@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.validation.constraints.Null;
-import java.time.LocalDate;
 
 
 /**
@@ -29,7 +28,7 @@ public class UserModelResponse {
 
   @JsonView({Marker.Details.class})
   @Null(groups = Marker.ChatDetails.class)
-  private LocalDate birthdate;
+  private String birthDate;
 
   @JsonView({Marker.Details.class})
   @Null(groups = Marker.ChatDetails.class)
@@ -56,4 +55,8 @@ public class UserModelResponse {
   @JsonView({Marker.Details.class})
   @Null(groups = Marker.ChatDetails.class)
   private Integer countUserFollowings;
+
+  private Integer countUserTweets;
+
+  private String createdAt;
 }

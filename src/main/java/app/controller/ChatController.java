@@ -39,20 +39,19 @@ public class ChatController {
 
   private final UserModelService userService;
 
-  @Validated({Marker.New.class})
-  @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestBody @JsonView(Marker.New.class)
-                                                                                           @Valid ChatRequest chatDTO,
+  //@Validated({Marker.New.class})
+  @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestParam("interlocutorId") Long interlocutorId,
                                                                                            HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (currUserId.equals(chatDTO.getInterlocutorUserId()))
+    if (currUserId.equals(interlocutorId))
       throw new BadRequestException("Please find somebody else to chat except yourself!");
-    return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.createChat(currUserId, chatDTO.getInterlocutorUserId())));
+    return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.createChat(currUserId, interlocutorId)));
   }
 
-  @Validated({Marker.Delete.class})
+  @Validated({Marker.ChatDetails.class})
   @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.Delete.class)
+  public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.ChatDetails.class)
                                                  @Valid ChatRequest chatDTO,
                                                  HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -61,18 +60,18 @@ public class ChatController {
     else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatDTO.getChatId());
   }
 
-  @Validated({Marker.Details.class})
-  @PostMapping(path = "/add/{userToAddId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleAddUserToChat(@PathVariable("userToAddId") Long userIdToAdd,
-                                                                                              @RequestBody @JsonView(Marker.Details.class)
+  @Validated({Marker.ChatDetails.class})
+  @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleAddUserToChat(@RequestParam("userId") Long userIdToAdd,
+                                                                                              @RequestBody @JsonView(Marker.ChatDetails.class)
                                                                                               @Valid ChatRequest chatDTO) {
     return ResponseEntity.ok(this.chatFacade.save(this.chatService.addUser(userIdToAdd, chatDTO.getChatId())));
   }
 
-  @Validated({Marker.Details.class})
-  @DeleteMapping(path = "/remove/{userToRemove}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> handleRemoveUserFromChat(@PathVariable("userToRemove") Long userIdToRemove,
-                                                         @RequestBody @JsonView(Marker.Details.class)
+  @Validated({Marker.ChatDetails.class})
+  @DeleteMapping(path = "/remove", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> handleRemoveUserFromChat(@PathVariable("userId") Long userIdToRemove,
+                                                         @RequestBody @JsonView(Marker.ChatDetails.class)
                                                          @Valid ChatRequest chatDTO, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     if (this.chatService.removeUser(userIdToRemove, currUserId, chatDTO.getChatId()))
@@ -82,28 +81,32 @@ public class ChatController {
   }
 
 
-  @Validated({Marker.Preview.class})
-  @GetMapping(path = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  //@Validated({Marker.Preview.class})
+  @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView({Marker.ChatDetails.class}) ResponseEntity<List<ChatResponse>> handleGetChatsForPreview(HttpServletRequest request,
-                                                                                                           @RequestBody @JsonView(Marker.Preview.class)
-                                                                                                           @Valid ChatRequest chatDTO) {
+                                                                                                           @RequestParam("page") Integer page,
+                                                                                                           @RequestParam("pageSize") Integer pageSize) {
+    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
-    return ResponseEntity.ok(this.chatService.getUserChatsWithLastMessage(currUserId, chatDTO.getPageSize(), chatDTO.getPageNumber() - 1)
+    return ResponseEntity.ok(this.chatService.getUserChatsWithLastMessage(currUserId, pageSize, page - 1)
       .stream()
       .map(this.chatFacade::convertToDto)
       .collect(Collectors.toList()));
   }
 
-  @Validated({Marker.Existed.class})
+  @Validated({Marker.ChatDetails.class})
   @GetMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<MessageResponse>> handleGetChat(@RequestBody @JsonView(Marker.Existed.class)
-                                                             @Valid ChatRequest chatDTO, HttpServletRequest request) {
+  public ResponseEntity<List<MessageResponse>> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
+                                                             @Valid ChatRequest chatDTO, HttpServletRequest request,
+                                                             @RequestParam("page") Integer page,
+                                                             @RequestParam("pageSize") Integer pageSize) {
+    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
     this.chatService.findById(chatDTO.getChatId())
       .filter(chat -> chat.getUsers().contains(this.userService.findById(currUserId)
         .orElseThrow(() -> new UserNotFoundException(currUserId))))
       .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatDTO.getChatId(), currUserId)));
-    return ResponseEntity.ok(this.chatService.getMessages(chatDTO.getChatId(), chatDTO.getPageSize(), chatDTO.getPageNumber() - 1)
+    return ResponseEntity.ok(this.chatService.getMessages(chatDTO.getChatId(), pageSize, page - 1)
       .stream().map(this.messageFacade::convertToDto).collect(Collectors.toList()));
 //    return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.findById(chatId)
 //      .filter(chat -> chat.getUsers().contains(this.userService.findById(chatDTO.getInitiatorUserId())

@@ -1,5 +1,6 @@
 package app.dto.rq;
 
+import app.annotations.Marker;
 import app.enums.NotificationType;
 import app.model.Tweet;
 import app.model.UserModel;
@@ -10,17 +11,18 @@ import javax.validation.constraints.NotNull;
 @Data
 public class NotificationRequest {
 
-  @NotNull(message = "Notification type must be specified")
+
+  @NotNull(message = "Notification type must be specified", groups = {Marker.New.class})
   private NotificationType notificationType;
 
-  @NotNull(message = "Receiver user must be specified")
-  private UserModel receiverUser;
+  @NotNull(message = "Receiver user must be specified", groups = {Marker.New.class})
+  private Long receiverUserId;
 
-  @NotNull(message = "Sender must be specified")
-  private UserModel initiatorUser;
+  @NotNull(message = "Sender must be specified", groups = {Marker.New.class})
+  private Long initiatorUserId;
 
-  @NotNull(message = "Tweet must be specified")
-  private Tweet tweet;
+  @NotNull(message = "Tweet must be specified", groups = {Marker.New.class})
+  private Long tweetId;
 
   private boolean isRead = false;
 }

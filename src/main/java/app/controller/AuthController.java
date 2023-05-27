@@ -45,19 +45,28 @@ public class AuthController {
   @Validated({Marker.PasswordUpdate.class})
   @PostMapping(path = "/password/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handlePasswordUpdate(@RequestBody @JsonView({Marker.PasswordUpdate.class})
-                                                                              @Valid UserModelRequest passUpDto) {
+                                                                      @Valid UserModelRequest passUpDto) {
     return this.authService.makePasswordUpdate(passUpDto);
   }
 
+  /**
+   * This endpoint waiting for DTO with user email to send letter with link includes password reset token
+   */
+  //TODO: get from frontend url to specify link in letter
   @Validated({Marker.PasswordReset.class})
-  @GetMapping(path = "/password/reset", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/password/reset", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleGetPasswordResetToken(@RequestBody @JsonView({Marker.PasswordReset.class})
                                                             @Valid UserModelRequest passResetDto) {
     return this.authService.getPasswordResetToken(passResetDto);
   }
 
-//  @GetMapping(path = "/password/reset/apply", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//  public ResponseEntity<String> handleGetPasswordChange(HttpServletRequest request, @RequestParam("token") String token) {
-//
-//  }
+  /**
+   * This endpoint waiting for DTO with password reset token and new password to replace
+   */
+  @Validated({Marker.PasswordUpdateAfterReset.class})
+  @PostMapping(path = "/password/reset/apply", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleGetPasswordChange(@RequestBody @JsonView({Marker.PasswordUpdateAfterReset.class})
+                                                                         @Valid UserModelRequest passResetDto, HttpServletRequest request) {
+    return this.authService.makePasswordReset(passResetDto, request);
+  }
 }

@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "tweet_actions")
+@Table(name = "tweet_actions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "tweet_id", "actionType"}))
 @NoArgsConstructor
 @Data
 public class TweetAction extends BaseEntityModel {

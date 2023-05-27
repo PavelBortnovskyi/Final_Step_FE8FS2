@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (user, { dispatch, rejectWithValue }) => {
     try {
-      const { email, fullName, userTag, password, birthday } = user;
+      const { email, fullName, userTag, password } = user;
 
       // request for server
       const { data } = await myAxios.post('/auth/register', {
@@ -14,7 +14,6 @@ export const registerUser = createAsyncThunk(
         fullName,
         userTag,
         password,
-        birthday,
       });
 
       // if a token is received, store it in localStorage

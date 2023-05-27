@@ -29,11 +29,11 @@ export const FormLogin = () => {
   const navigate = useNavigate();
 
   // set view message from server after auth
-  // useEffect(() => {
-  //   // if (message) <Alert severity="success">{message}</Alert>;
-  //   // if (error) <Alert severity="error">{error}</Alert>;
-  //   if (isAuthenticated) navigate('/');
-  // }, [navigate, isAuthenticated]);
+  useEffect(() => {
+    // if (message) <Alert severity="success">{message}</Alert>;
+    // if (error) <Alert severity="error">{error}</Alert>;
+    if (isAuthenticated) navigate('/');
+  }, [navigate, isAuthenticated]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {
@@ -50,8 +50,8 @@ export const FormLogin = () => {
 
   // default value for form
   const initialValues = {
-    email: 'test@test.com',
-    password: '12345678',
+    email: 'user1@gmail.com',
+    password: '11111111',
   };
   // const initialValues = {
   //   email: '',

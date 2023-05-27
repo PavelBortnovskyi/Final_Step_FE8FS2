@@ -13,29 +13,20 @@ import { LogoTwitter } from './LogoTwitter';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@emotion/react';
 
-
-
-
-
-
-
-
-
-
 export const Sidebar = (/*{isAuthenticated}*/) => {
   const theme = useTheme();
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
-  console.log(isMobile);
+  // console.log(isMobile);
 
-  const isAuthenticated = true;  // удалить как будет готова аутентефикация
+  const isAuthenticated = true; // удалить как будет готова аутентефикация
 
   const DrawerStyled = styled(Drawer)((props) => ({
     position: 'sticky',
     top: isMobile ? 0 : 'auto',
     bottom: isMobile ? 'auto' : 0,
     // left: 0,
-    // right: 0, 
+    // right: 0,
     zIndex: 10,
     flexShrink: 0,
     paddingRight: '10px',
@@ -48,7 +39,7 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
       boxSizing: 'border-box',
       backgroundColor: `${theme.palette.background.default}`,
     },
-  }))
+  }));
 
   const BoxContainerStyled = styled(Box)((props) => ({
     height: '100vh',
@@ -112,7 +103,9 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
         <Box>
           <LogoTwitter />
 
-          <List sx={{ paddingRight: '10px', width: { xs: '58px', lg: '100%' } }}>
+          <List
+            sx={{ paddingRight: '10px', width: { xs: '58px', lg: '100%' } }}
+          >
             {filteredMainSidebarElements.map((navElement) => (
               <MainMenuSidebar navElement={navElement} key={navElement.id} />
             ))}

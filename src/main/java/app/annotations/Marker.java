@@ -22,7 +22,13 @@ public interface Marker {
   interface Update {
   }
 
+  interface Retweet {
+  }
+
   interface PasswordUpdate {
+  }
+
+  interface PasswordUpdateAfterReset {
   }
 
   interface PasswordReset {
