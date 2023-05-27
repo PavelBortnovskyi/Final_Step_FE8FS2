@@ -56,7 +56,7 @@ public class TestController {
 
     sample1.setFullName("User1 Petrovich");
     sample1.setUserTag("@user1Tag");
-    sample1.setPassword("11111111");
+    sample1.setPassword(encoder.encode("11111111"));
     sample1.setEmail("user1@gmail.com");
     sample1.setBio("man");
     sample1.setBirthDate(LocalDate.of(1995, 02, 11));
@@ -66,7 +66,7 @@ public class TestController {
 
     sample2.setFullName("User2 Vasilevich");
     sample2.setUserTag("@user2Tag");
-    sample2.setPassword("11111111");
+    sample2.setPassword(encoder.encode("11111111"));
     sample2.setEmail("user2@gmail.com");
     sample2.setBio("man");
     sample2.setBirthDate(LocalDate.of(1985, 05, 12));
@@ -76,7 +76,7 @@ public class TestController {
 
     sample3.setFullName("User3 Genadevich");
     sample3.setUserTag("@user3Tag");
-    sample3.setPassword("11111111");
+    sample3.setPassword(encoder.encode("11111111"));
     sample3.setEmail("user3@gmail.com");
     sample3.setBio("man");
     sample3.setBirthDate(LocalDate.of(1975, 05, 12));
@@ -86,7 +86,7 @@ public class TestController {
 
     sample4.setFullName("User4 Mukolaivna");
     sample4.setUserTag("@user4Tag");
-    sample4.setPassword("11111111");
+    sample4.setPassword(encoder.encode("11111111"));
     sample4.setEmail("user4@gmail.com");
     sample4.setBio("woman");
     sample4.setBirthDate(LocalDate.of(2000, 05, 12));
@@ -96,7 +96,7 @@ public class TestController {
 
     sample5.setFullName("User5 Nikitichna");
     sample5.setUserTag("@user5Tag");
-    sample5.setPassword("11111111");
+    sample5.setPassword(encoder.encode("11111111"));
     sample5.setEmail("user5@gmail.com");
     sample5.setBio("woman");
     sample5.setBirthDate(LocalDate.of(2010, 05, 12));
