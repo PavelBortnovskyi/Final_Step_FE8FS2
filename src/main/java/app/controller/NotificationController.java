@@ -4,7 +4,6 @@ import app.annotations.Marker;
 import app.dto.rs.NotificationResponse;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.NotificationFacade;
-import app.model.Notification;
 import app.service.NotificationService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
