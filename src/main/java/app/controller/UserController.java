@@ -92,9 +92,8 @@ public class UserController {
   @GetMapping("search")
   public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") int page,
                                           @RequestParam(name = "size", defaultValue = "10") int size,
-                                          @RequestParam(name = "part_of_full_name", defaultValue = "") String partFullName,
-                                          @RequestParam(name = "part_of_user_tag", defaultValue = "") String partUserTag,
+                                          @RequestParam(name = "search_string", defaultValue = "") String serchString,
                                           HttpServletRequest httpServletRequest) {
-    return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), partFullName, partUserTag, page, size);
+    return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, page, size);
   }
 }
