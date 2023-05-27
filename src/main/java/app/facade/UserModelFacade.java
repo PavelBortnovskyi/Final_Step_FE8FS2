@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @NoArgsConstructor
@@ -43,12 +45,16 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     return save(mapToEntity(userModelRequest, userModelService.getUser(userId)));
   }
 
-  public UserModelResponse uploadAvatarImg(Long userId, MultipartFile file) {
-    return convertToDto(userModelService.uploadAvatarImg(userId, file));
+  public Map<String, String> uploadAvatarImg(Long userId, MultipartFile file) {
+    return new HashMap<>() {{
+      put("avatar_url", userModelService.uploadAvatarImg(userId, file).getAvatarImgUrl());
+    }};
   }
 
-  public UserModelResponse uploadHeaderImg(Long userId, MultipartFile file) {
-    return convertToDto(userModelService.uploadHeaderImg(userId, file));
+  public Map<String, String> uploadHeaderImg(Long userId, MultipartFile file) {
+    return new HashMap<>() {{
+      put("header_url", userModelService.uploadHeaderImg(userId, file).getHeaderImgUrl());
+    }};
   }
 
   public UserModelResponse subscribe(Long userId, Long userIdToFollowing) {

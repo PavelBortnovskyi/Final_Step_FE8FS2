@@ -4,7 +4,6 @@ import app.annotations.Marker;
 import app.dto.rs.NotificationResponse;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.NotificationFacade;
-import app.model.Notification;
 import app.service.NotificationService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +41,8 @@ public class NotificationController {
 
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView({Marker.Existed.class}) ResponseEntity<List<NotificationResponse>> handleGetSeenUserNotifications(HttpServletRequest request,
-                                                                                                             @RequestParam("page") Integer page,
-                                                                                                             @RequestParam("pageSize") Integer pageSize) {
+                                                                                                                     @RequestParam("page") Integer page,
+                                                                                                                     @RequestParam("pageSize") Integer pageSize) {
     if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("useId");
     return ResponseEntity.ok(this.notificationService.getUserSeenNotificationsList(currUserId, pageSize, page - 1)
@@ -52,11 +51,11 @@ public class NotificationController {
 
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView({Marker.Existed.class}) ResponseEntity<List<NotificationResponse>> handleGetUnSeenUserNotifications(HttpServletRequest request,
-                                                                                                               @RequestParam("page") Integer page,
-                                                                                                               @RequestParam("pageSize") Integer pageSize) {
+                                                                                                                       @RequestParam("page") Integer page,
+                                                                                                                       @RequestParam("pageSize") Integer pageSize) {
     if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("useId");
-    return ResponseEntity.ok(this.notificationService.getUserUnreadNotificationsList(currUserId, pageSize, page - 1) .stream()
+    return ResponseEntity.ok(this.notificationService.getUserUnreadNotificationsList(currUserId, pageSize, page - 1).stream()
       .map(this.notificationFacade::convertToDto).collect(Collectors.toList()));
   }
 }

@@ -1,17 +1,11 @@
 package app.service;
 
-import app.model.Message;
 import app.model.Notification;
 import app.repository.NotificationModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +42,7 @@ public class NotificationService extends GeneralService<Notification> {
     } else return false;
   }
 
-  public Optional<Notification> findById(Long id){
+  public Optional<Notification> findById(Long id) {
     return this.notificationRepository.findById(id);
   }
 }
