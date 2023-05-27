@@ -71,7 +71,7 @@ public class UserModelFacade extends GeneralFacade<UserModel, UserModelRequest, 
     return userModelService.getOfferFollowings(userId, page, size).map(this::convertToDto);
   }
 
-  public Page<UserModelResponse> findUser(Long userId, String partFullName, String partUserTag, int page, int size) {
-    return userModelService.searchUsers(userId, partFullName, partUserTag, page, size).map(this::convertToDto);
+  public Page<UserModelResponse> findUser(Long userId, String searchString, int page, int size) {
+    return userModelService.searchUsers(userId, searchString, page, size).map(this::convertToDto);
   }
 }

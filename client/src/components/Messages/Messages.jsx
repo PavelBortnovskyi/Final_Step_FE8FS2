@@ -28,12 +28,12 @@ export const Messages = () => {
           <Typography variant="h6">Messages</Typography>
           <Box>
             <Tooltip title="Settings">
-              <IconButton color="white" href="">
+              <IconButton color="primary" href="">
                 <SettingsOutlinedIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="New message">
-              <IconButton color="white" href="">
+              <IconButton color="primary" href="">
                 <MarkEmailReadOutlinedIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Tooltip>

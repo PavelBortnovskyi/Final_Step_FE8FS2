@@ -65,19 +65,19 @@ export const FormRegistration = () => {
   };
 
   // default value for form
-  // const initialValues = {
-  //   email: 'test@test.com',
-  //   fullName: 'Семен Семенович',
-  //   userTag: 'semen',
-  //   password: '12345678',
-  // };
   const initialValues = {
-    email: '',
-    fullName: '',
-    userTag: '',
-    password: '',
-    // birthDate: '',
+    email: 'test@test.com',
+    fullName: 'Семен Семенович',
+    userTag: 'semen',
+    password: '12345678',
   };
+  // const initialValues = {
+  //   email: '',
+  //   fullName: '',
+  //   userTag: '',
+  //   password: '',
+  //   // birthDate: '',
+  // };
 
   return (
     <>
