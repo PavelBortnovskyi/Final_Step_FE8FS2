@@ -1,5 +1,5 @@
 import React from 'react';
-import { dropdownElements } from './DropdownElements'; 
+import { dropdownElements } from './DropdownElements';
 import { DropdownHeader } from './DropdownHeader';
 import { Box, Menu } from '@mui/material';
 import { bindMenu } from 'material-ui-popup-state';
@@ -41,16 +41,16 @@ export const SidebarDropdownMenu = ({ popupState }) => {
                 }
             </Box>
 
-{
-    selectElements.map(selectEl => (
-        <DropdownFooterSelect 
-            key={selectEl.id}
-            mainLabel={selectEl.label}
-            selects={selectEl.selects}
-        />
-    )) 
-}
-        
+            {
+                selectElements.map(selectEl => (
+                    <DropdownFooterSelect
+                        key={selectEl.id}
+                        mainLabel={selectEl.label}
+                        selects={selectEl.selects}
+                    />
+                ))
+            }
+
         </MenuStyled>
     )
 }

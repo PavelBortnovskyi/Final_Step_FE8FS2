@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Tab, Tabs } from '@mui/material';
+import { Avatar, Tab, Tabs } from '@mui/material';
 import styled from '@emotion/styled';
 import { useMode } from 'src/styles/_materialTheme';
 
 const CustomTab = styled(Tab)((props) => ({
-  color: '#fff',
   fontWeight: '800',
   width: '50%',
   textTransform: 'capitalize',
@@ -40,6 +39,7 @@ function MainPage_header() {
       <NavLink to="/">
         <Box
           sx={{
+            display: { xs: 'none', sm: 'block' },
             paddingTop: '15px',
             pl: '20px',
             fontSize: '20px',
@@ -49,6 +49,7 @@ function MainPage_header() {
         >
           Home
         </Box>
+        <Avatar src="./img/avatar2.JPG" sx={{display: { xs: 'block', sm: 'none' },}}/>
       </NavLink>
 
       <Tabs value={tabIndex} onChange={handleTabChange}>

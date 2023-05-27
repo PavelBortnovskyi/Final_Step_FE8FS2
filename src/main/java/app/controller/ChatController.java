@@ -14,6 +14,8 @@ import app.service.UserModelService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,8 +34,6 @@ import java.util.stream.Collectors;
 @Validated
 public class ChatController {
   private final ChatFacade chatFacade;
-
-  private final MessageFacade messageFacade;
 
   private final ChatService chatService;
 
@@ -81,41 +81,49 @@ public class ChatController {
   }
 
 
-  //@Validated({Marker.Preview.class})
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView({Marker.ChatDetails.class}) ResponseEntity<List<ChatResponse>> handleGetChatsForPreview(HttpServletRequest request,
-                                                                                                           @RequestParam("page") Integer page,
-                                                                                                           @RequestParam("pageSize") Integer pageSize) {
+  public Page<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
+                                                     @RequestParam("page") Integer page,
+                                                     @RequestParam("pageSize") Integer pageSize) {
     if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
-    return ResponseEntity.ok(this.chatService.getUserChatsWithLastMessage(currUserId, pageSize, page - 1)
-      .stream()
-      .map(this.chatFacade::convertToDto)
-      .collect(Collectors.toList()));
+    return this.chatService.getUserChatsWithLastMessage(currUserId, pageSize, page - 1);
   }
 
   @Validated({Marker.ChatDetails.class})
   @GetMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<MessageResponse>> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
-                                                             @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                                             @RequestParam("page") Integer page,
-                                                             @RequestParam("pageSize") Integer pageSize) {
+  public Page<MessageResponse> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
+                                             @Valid ChatRequest chatDTO, HttpServletRequest request,
+                                             @RequestParam("page") Integer page,
+                                             @RequestParam("pageSize") Integer pageSize) {
     if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
     Long currUserId = (Long) request.getAttribute("userId");
     this.chatService.findById(chatDTO.getChatId())
       .filter(chat -> chat.getUsers().contains(this.userService.findById(currUserId)
         .orElseThrow(() -> new UserNotFoundException(currUserId))))
       .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatDTO.getChatId(), currUserId)));
-    return ResponseEntity.ok(this.chatService.getMessages(chatDTO.getChatId(), pageSize, page - 1)
-      .stream().map(this.messageFacade::convertToDto).collect(Collectors.toList()));
-//    return ResponseEntity.ok(this.chatFacade.convertToDto(this.chatService.findById(chatId)
-//      .filter(chat -> chat.getUsers().contains(this.userService.findById(chatDTO.getInitiatorUserId())
-//        .orElseThrow(() -> new UserNotFoundException(currUserId))) || chat.getInitiatorUser().getId().equals(currUserId))
-//      .map(chat -> {
-//        chat.setMessages(this.chatService.getMessages(chatDTO.getChatId(), chatDTO.getPageSize(), chatDTO.getPageNumber() - 1));
-//        return chat;
-//      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, currUserId)))));
+    return this.chatService.getMessages(chatDTO.getChatId(), pageSize, page - 1);
+  }
 
+  @Validated({Marker.ChatDetails.class})
+  @PostMapping(path = "/messages/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponse> handleGetSearchResultFromChat(@RequestBody @JsonView(Marker.ChatDetails.class)
+                                                             @Valid ChatRequest chatDTO, HttpServletRequest request,
+                                                             @RequestParam("page") Integer page,
+                                                             @RequestParam("pageSize") Integer pageSize,
+                                                             @RequestParam("keyword") String keyword) {
+    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+    Long currUserId = (Long) request.getAttribute("userId");
+    return this.chatService.searchMessageInChat(chatDTO.getChatId(), currUserId, pageSize, page - 1, keyword);
+  }
 
+  @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponse> handleGetSearchResultFromChats(HttpServletRequest request,
+                                                              @RequestParam("page") Integer page,
+                                                              @RequestParam("pageSize") Integer pageSize,
+                                                              @RequestParam("keyword") String keyword) {
+    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+    Long currUserId = (Long) request.getAttribute("userId");
+    return this.chatService.searchMessageInChats(currUserId, pageSize, page - 1, keyword);
   }
 }

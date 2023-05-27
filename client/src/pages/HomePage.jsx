@@ -13,6 +13,7 @@ export const HomePage = () => {
       <MainPage_header />
       <TweetBox />
       <PostList />
+      
     </Box>
   );
 };

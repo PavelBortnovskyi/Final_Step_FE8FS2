@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { Container, Grid } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
@@ -74,7 +74,18 @@ export const Layout = () => {
           </Grid>
         </Grid>
 
-        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
+        <Box sx={{
+          display: { xs: 'block', sm: 'none' },
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        background: "blue",
+        height: '100px',
+        width: '100%',
+        zIndex: '10',
+      }}>
+
+      </Box>
         {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
         {/* routes for modal window */}

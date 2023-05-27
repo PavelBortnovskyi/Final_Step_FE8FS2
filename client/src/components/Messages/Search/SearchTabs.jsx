@@ -18,7 +18,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Box>{children}</Box>
         </Box>
       )}
     </div>
@@ -49,8 +49,6 @@ export const SearchTabs = () => {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          // custom props 'colorTheme' in style file - /src/styles/_materialTheme.js
-          colorTheme="dark"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
