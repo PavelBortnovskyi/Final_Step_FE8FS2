@@ -7,8 +7,8 @@ import { editUser } from "src/redux/thunk/editUser";
 export function EditFormShema() {
   const teg = useSelector((state) => state.auth.userTag);
   const name = useSelector((state) => state.auth.fullName);
-  const bio = useSelector((state) => state.auth.bio);
-  const location = useSelector((state) => state.auth.location);
+  const bio = useSelector((state) => state.auth.bio) || "";
+  const location = useSelector((state) => state.auth.location) || "";
   // const birthDate = useSelector((state) => state.auth.birthDate);
   // console.log(birthDate);
   // const birthDate = new Date(getBirthDate);
@@ -16,7 +16,7 @@ export function EditFormShema() {
   const handleSubmit = async (values, actions) => {
     // send user data to redux thunk
     dispatch(editUser(values));
-    // console.log(values);//////////////
+
     // reset form
     await new Promise((resolve) => {
       setTimeout(resolve, 1000);

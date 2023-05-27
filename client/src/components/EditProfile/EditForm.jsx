@@ -1,18 +1,17 @@
-import { ErrorMessage, Field, Form } from "formik";
+import { Field, Form } from "formik";
 
 import { EditFormHeder } from "./EditFormHeder";
 import { UserPageFoto } from "../User/UserPageFoto";
 import { UserPageAvatar } from "../User/UserPageAvatar";
-import { TextField, Typography } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
+
 import Box from "@mui/material/Box";
-import { ImgInputAvatar } from "./ImgInputAvatar";
-import { UserPageFotoInput } from "./UserPageFotoInput";
+
 import { ClearPageFoto } from "./ClearPageFoto";
 import { EditBirthDate } from "./EditBirthDate";
 import { EditInput } from "./EditInput";
 
-export function EditForm(props) {
+export function EditForm() {
   return (
     <Form>
       <EditFormHeder />
