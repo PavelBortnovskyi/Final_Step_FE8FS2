@@ -1,5 +1,7 @@
 import { Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export function UserName() {
-  return <Typography variant="h4">Firstname Lastname</Typography>;
+  const fullName = useSelector((state) => state.user.user.fullName);
+  return <Typography variant="h4">{fullName}</Typography>;
 }
