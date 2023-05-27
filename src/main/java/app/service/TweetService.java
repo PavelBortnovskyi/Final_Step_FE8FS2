@@ -3,6 +3,7 @@ package app.service;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetType;
+import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -10,10 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,7 @@ public class TweetService extends GeneralService<Tweet> {
   private final TweetModelRepository tweetModelRepository;
   private final UserModelService userModelService;
   private final TweetActionService tweetActionService;
+  private final CloudinaryService cloudinaryService;
 
   public Optional<Tweet> getTweet(Long id) {
     Optional<Tweet> tweet = findById(id);
@@ -34,13 +40,17 @@ public class TweetService extends GeneralService<Tweet> {
     this.tweetModelRepository.deleteById(tweetId);
   }
 
-  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request, TweetType tweetType) {
+  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request,
+                              TweetType tweetType) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
     tweet.setBody(tweetRequest.getBody());
     tweet.setTweetType(tweetType);
     tweet.setUser(user);
+    return getTweetResponse(tweet);
+  }
 
+  private TweetResponse getTweetResponse(Tweet tweet) {
     Tweet savedTweet = tweetModelRepository.save(tweet);
     TweetResponse tweetResponse = new TweetResponse();
     tweetResponse.setTweetId(savedTweet.getId());
@@ -52,10 +62,11 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweet.getId()));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
+    tweetResponse.setCountReply(getCountReply(tweet.getId()));
+    tweetResponse.setAttachmentsImages(savedTweet.getAttachmentImages().stream().map(ai -> ai.getImgUrl()).collect(Collectors.toSet()));
 
     return tweetResponse;
   }
-
   public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
     return create(tweetRequest, request, TweetType.TWEET);
   }
@@ -84,19 +95,19 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
-  public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, Integer pageNumber) {
+  public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
     List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId"))
       .getFollowings().stream().map(u -> u.getId()).toList();
     return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
-      Pageable.ofSize(10).withPage(pageNumber)).toList());
+      Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public ResponseEntity<List<Tweet>> getUserTweets(Long userId) {
-    return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId));
+  public ResponseEntity<List<Tweet>> getUserTweets(Long userId, int page, int pageSize) {
+    return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request));
+  public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
+    return ResponseEntity.ok(tweetActionService.getAllBookmarks(request, page, pageSize));
   }
 
   public Integer getCountReply(Long tweetId) {
