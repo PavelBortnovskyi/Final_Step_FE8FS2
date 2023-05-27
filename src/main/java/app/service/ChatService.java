@@ -1,14 +1,20 @@
 package app.service;
 
+import app.dto.rs.ChatResponse;
+import app.dto.rs.MessageResponse;
 import app.exceptions.chatError.ChatNotFoundException;
+import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
+import app.facade.ChatFacade;
 import app.model.Chat;
 import app.model.Message;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +31,8 @@ public class ChatService extends GeneralService<Chat> {
   private final ChatModelRepository chatRepository;
 
   private final MessageModelRepository messageRepository;
+
+  private final ModelMapper modelMapper;
 
   /**
    * Method returns created chat between 2 users
@@ -95,8 +103,9 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns pageable list of chat messages
    */
-  public List<Message> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
-    return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
+  public Page<MessageResponse> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
+    return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber))
+      .map(m -> modelMapper.map(m, MessageResponse.class));
   }
 
   /**
@@ -109,18 +118,29 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns collection of user chats for only last message in each
    */
-  public List<Chat> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
+  public Page<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
     Page<Object[]> result = chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber));
 
-    List<Chat> chats = new ArrayList<>();
+    List<ChatResponse> chats = new ArrayList<>();
     for (Object[] objects : result.getContent()) {
       Chat chat = (Chat) objects[0];
       Message lastMessage = (Message) objects[1];
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
-      chats.add(chat);
+      chats.add(modelMapper.map(chat, ChatResponse.class));
     }
-    return chats;
+    return new PageImpl<>(chats);
+  }
+
+  public Page<MessageResponse> searchMessageInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+    this.chatRepository.findById(chatId)
+      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()))
+      .orElseThrow(() -> new BadRequestException(String.format("User with id: %d cannot search in chat with id: %d", userId, chatId)));
+    return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
+  }
+
+  public Page<MessageResponse> searchMessageInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+    return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
   }
 }

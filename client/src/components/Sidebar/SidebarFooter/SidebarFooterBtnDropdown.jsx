@@ -1,31 +1,37 @@
 import React from 'react';
 import { bindTrigger } from 'material-ui-popup-state';
 import { Avatar, Box, Button, Hidden, Typography } from '@mui/material';
+import { useTheme } from '@emotion/react';
 
 export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) => {
+    const theme = useTheme();
+
     return (
         <Button variant="text"
             {...bindTrigger(popupState)}
             sx={{
-                px: 0,
+                px: 1,
                 minWidth: '64px',
                 height: '64px',
                 '&:hover': {
-                    backgroundColor: 'rgb(39,51,64)',
+                    backgroundColor: `${theme.palette.background.hover}`,
                     borderRadius: '30px',
                 }
-                
+
             }}
         >
             <Avatar src="./img/avatar2.JPG" />
 
             <Hidden lgDown>
-                <Box ml={1}>
+                <Box ml={1}
+                    sx={{
+                        textAlign: 'start',
+                    }}>
                     <Typography
                         variant="subtitle1"
                         sx={{
                             textTransform: 'capitalize',
-                            color: '#FFF',
+                            color: `${theme.palette.text.active}`,
                             fontSize: '15px',
                             fontWeight: 700,
                         }}
@@ -37,7 +43,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                         display="block"
                         sx={{
                             textTransform: 'lowercase',
-                            color: 'rgb(139,152,165)',
+                            color: `${theme.palette.text.primary}`,
                             fontSize: '15px',
                             fontWeight: 400,
                         }}
@@ -46,17 +52,25 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                     </Typography>
                 </Box>
 
-                <Typography
+                <Box
                     ml={2.5}
-                    variant="h5"
-                    display="block"
+                    display="flex"
+                    alignItems="center"
                     sx={{
-                        color: '#FFF',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100%'
+                        color: (theme) => theme.palette.text.primary,
+                        minHeight: '100%',
                     }}
                 >
-                    ...
-                </Typography>
+                    <Box
+                        sx={{
+                            alignSelf: 'flex-start',
+                            transform: 'translateY(5%)',
+                            fontSize: '22px',
+                        }}
+                    >
+                        ...
+                    </Box>
+                </Box>
             </Hidden>
         </Button>
     )

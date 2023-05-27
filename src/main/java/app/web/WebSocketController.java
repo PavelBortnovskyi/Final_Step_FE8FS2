@@ -4,10 +4,12 @@ import app.annotations.Marker;
 import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
+import app.exceptions.httpError.BadRequestException;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.ChatService;
 import app.service.MessageService;
+import app.service.NotificationService;
 import app.service.UserModelService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +20,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -41,6 +40,8 @@ public class WebSocketController {
   private final UserModelService userService;
 
   private final MessageService messageService;
+
+  private final NotificationService notificationService;
 
   private final SimpMessagingTemplate template;
 
@@ -73,15 +74,30 @@ public class WebSocketController {
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageId));
   }
 
+  @Validated({Marker.New.class})
   @MessageMapping("/v1/notifications")
   @SendTo("/specific")
-  public void processPrivateNotification(@Payload @Valid NotificationRequest notificationDtoReq) {
-    this.userService.getUserO(notificationDtoReq.getReceiverUser().getId())
+  public void processPrivateNotification(@Payload NotificationRequest notificationDtoReq) {
+    this.userService.getUserO(notificationDtoReq.getReceiverUserId())
       .map(user -> {
         this.template.convertAndSendToUser(user.getEmail(), "/specific", notificationDtoReq);
         this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationDtoReq));
         return user;
       })
-      .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUser().getId()));
+      .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationDtoReq.getReceiverUserId()));
+  }
+
+  @PutMapping("/v1/notifications")
+  @SendTo("/specific")
+  public void markReadNotification(HttpServletRequest request, @RequestParam("notificationId") Long notificationId) {
+    Long currUserId = (Long) request.getAttribute("userId");
+    this.notificationService.findById(notificationId)
+      .filter(n -> n.getReceiverUser().getId().equals(currUserId))
+      .map(n -> {
+        this.notificationService.setNotificationStatus(n.getId(), true);
+        this.template.convertAndSendToUser(this.userService.getOne(currUserId).getEmail(), "/specific", n);
+        return n;
+      })
+      .orElseThrow(() -> new BadRequestException(String.format("No have such notification(id: %d) for user with id: %d", notificationId, currUserId)));
   }
 }

@@ -20,4 +20,11 @@ public interface MessageModelRepository extends RepositoryInterface<Message> {
   @Modifying
   @Query(value = "UPDATE Message m SET m.body = :body WHERE m.id = :id")
   void changeMessage(@Param("id") Long messageId, @Param("body") String body);
+
+  @Query(value = "SELECT m FROM Message m WHERE m.chat.id = :id AND LOWER(m.body) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+  Page<Message> getSearchMessageInChat(@Param("id") Long chatId, @Param("keyword") String keyword, Pageable pageable);
+
+  @Query("SELECT m FROM UserModel u JOIN u.chats c LEFT JOIN c.messages m " +
+    "WHERE u.id = :id AND LOWER(m.body) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+  Page<Message> getSearchMessages(@Param("id") Long userId, @Param("keyword") String keyword, Pageable pageable);
 }

@@ -51,11 +51,13 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
     textAlign: 'start',
   }));
 
+
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')
     : mainSidebarElements.filter(
-        (button) => button.label === 'Explore' || button.label === 'Settings'
-      );
+      (button) => button.label === 'Explore' || button.label === 'Settings'
+    );
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,7 +72,7 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
   }, []);
 
   return (
-    <DrawerStyled variant="permanent" anchor={isMobile ? 'bottom' : 'top'}>
+    <DrawerStyled variant="permanent" anchor={isMobile ? 'bottom' : 'top'} >
       {/* {
       isMobile ? 
       <Box 
@@ -134,12 +136,20 @@ export const Sidebar = (/*{isAuthenticated}*/) => {
               </Link>
             </Box>
           )}
-          {isAuthenticated && <SmallBtnTweet />}
+          {isAuthenticated &&
+            <Link
+              to="/modal/tweet"
+              state={{ background: location }}
+              component={NavLink}
+            >
+              <SmallBtnTweet />
+            </Link>
+          }
         </Box>
 
-        {isAuthenticated && (
-          <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
-        )}
+        {
+          isAuthenticated && <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
+        }
       </BoxContainerStyled>
 
       {/* }  */}

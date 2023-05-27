@@ -1,3 +1,8 @@
+// user-owner Authorization
 export const getAuthorizationData = (state) => state.auth;
-// export const getModalState = (state) => state.modal;
+
+// MUI Theme
 export const getTheme = (state) => state.settingsTheme;
+
+// user-owner data
+export const getUserData = (state) => state.user;

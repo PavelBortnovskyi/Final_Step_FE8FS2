@@ -54,12 +54,12 @@ public class UserModelRequest {
 
   @JsonView({Marker.Update.class})
   @ApiModelProperty(value = "bio", required = true)
-  @NotNull(groups = {Marker.Update.class})
+  //@NotNull(groups = {Marker.Update.class})
   private String bio;
 
   @JsonView({Marker.Update.class})
   @ApiModelProperty(value = "location", required = true)
-  @NotNull(groups = {Marker.Update.class})
+  //@NotNull(groups = {Marker.Update.class})
   private String location;
 }
 

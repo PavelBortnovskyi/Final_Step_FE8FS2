@@ -6,6 +6,7 @@ function TweetButton({ isDisabled, fnc, text, w, h, fw=400 }) {
   const theme = useTheme();
   return (
     <Button
+      onClick={fnc}
       disabled={isDisabled}
       variant="contained"
       sx={{
@@ -14,13 +15,16 @@ function TweetButton({ isDisabled, fnc, text, w, h, fw=400 }) {
         fontSize: '20px',
         fontWeight: `${fw}px`,
         borderRadius: '30px',
-        backgroundColor: `${theme.palette.primary.disabled}`,
         '&.MuiButton-root': {
           color: '#fff',
           '&:hover': {
             backgroundColor: `${theme.palette.primary.hover}`,
           }
         },
+        ":disabled": {
+      backgroundColor: `${theme.palette.primary.disabled}` 
+    }
+
       }}
     >
       {text}

@@ -1,7 +1,9 @@
+import { useTheme } from '@emotion/react'
 import { ListItemIcon, MenuItem } from '@mui/material'
 import React from 'react'
 
 export const DropdownHeader = ({dropdownEl, popupState}) => {
+    const theme = useTheme();
     return (
         <MenuItem
             onClick={popupState.close}
@@ -10,15 +12,16 @@ export const DropdownHeader = ({dropdownEl, popupState}) => {
                 padding: '12px 16px',
                 fontSize: '20px',
                 fontWeight: '700',
-                backgroundColor: "rgb(21,32,43)",
+                color: `${theme.palette.text.primary}`,
+                backgroundColor: `${theme.palette.background.default}`,
                 '&:hover': {
                     cursor: 'pointer',
-                    backgroundColor: 'rgb(30,39,50)'
+                    backgroundColor: `${theme.palette.background.hover}`,
                 }
             }}
         >
 
-            <ListItemIcon sx={{ fontSize: 24, paddingRight: "24px", color: '#FFF' }}>
+            <ListItemIcon sx={{ fontSize: 24, paddingRight: "24px", color: `${theme.palette.text.primary}`, }}>
                 <dropdownEl.icon sx={{ fontSize: 24 }} />
             </ListItemIcon>
             {dropdownEl.label}
