@@ -17,12 +17,6 @@ export const editUser = createAsyncThunk(
         location,
       });
 
-      // if a token is received, store it in localStorage
-      if (data.ACCESS_TOKEN) {
-        window.localStorage.setItem("accessToken", data.ACCESS_TOKEN);
-
-        // get user data
-      }
       dispatch(getUser());
       return data;
     } catch (error) {
