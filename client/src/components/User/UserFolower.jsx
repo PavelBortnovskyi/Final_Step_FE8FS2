@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 
 export function UserFolower() {
   const countUserFollowers = useSelector(
-    (state) => state.auth.countUserFollowers
+    (state) => state.user.user.countUserFollowers
   );
   const countUserFollowings = useSelector(
-    (state) => state.auth.countUserFollowings
+    (state) => state.user.user.countUserFollowings
   );
 
   return (

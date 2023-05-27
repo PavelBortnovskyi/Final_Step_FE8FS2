@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "src/redux/thunk/editUser";
 
 export function EditFormShema() {
-  const teg = useSelector((state) => state.auth.userTag);
-  const name = useSelector((state) => state.auth.fullName);
-  const bio = useSelector((state) => state.auth.bio) || "";
-  const location = useSelector((state) => state.auth.location) || "";
+  const teg = useSelector((state) => state.user.user.userTag);
+  const name = useSelector((state) => state.user.user.fullName);
+  const bio = useSelector((state) => state.user.user.bio) || "";
+  const location = useSelector((state) => state.user.user.location) || "";
   // const birthDate = useSelector((state) => state.auth.birthDate);
   // console.log(birthDate);
   // const birthDate = new Date(getBirthDate);

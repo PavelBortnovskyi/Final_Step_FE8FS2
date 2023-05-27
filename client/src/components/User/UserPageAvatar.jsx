@@ -3,7 +3,7 @@ import { UserAvatarBG } from "./UserAvatarBG";
 import { UserAvatarFoto } from "./UserAvatarFoto";
 
 export function UserPageAvatar() {
-  const userAvatar = useSelector((state) => state.auth.avatarImgUrl);
+  const userAvatar = useSelector((state) => state.user.user.avatarImgUrl);
   return (
     (userAvatar && <UserAvatarFoto userAvatar={userAvatar} />) || (
       <UserAvatarBG />

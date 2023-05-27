@@ -39,7 +39,7 @@ export function UserInfo() {
         </Box>
         <Box sx={{ display: "flex", gap: "8px" }}>
           <UserLocation />
-          <UserWebsite />
+          {/* <UserWebsite /> */}
           <UserDateRegistration />
         </Box>
 
