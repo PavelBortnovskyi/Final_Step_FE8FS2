@@ -62,7 +62,7 @@ public class TweetController {
   }
 
   //create new tweet
-  @PutMapping("/create_tweet")
+  @PutMapping("/tweet")
   @Validated({Marker.New.class})
   public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
                                                    @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
@@ -70,14 +70,14 @@ public class TweetController {
     return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request, file));
   }
 
-  @PutMapping("/create_retweet")
+  @PutMapping("/retweet")
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.Retweet.class})
                                                      @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
   }
 
-  @PutMapping("/create_reply")
+  @PutMapping("/reply")
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
                                                    @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
@@ -86,20 +86,20 @@ public class TweetController {
   }
 
   //get List tweets following users
-  @GetMapping("/get_following_tweets")
+  @GetMapping("/following_tweets")
   public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page,
                                                         @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
     return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
   }
 
   // get user tweets
-  @GetMapping("/get_tweets/{id}")
+  @GetMapping("/tweets/{id}")
   public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") int page,
                                            @RequestParam("pageSize") int pageSize) {
     return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
   }
 
-  @PostMapping("/add_like/{tweetId}")
+  @PostMapping("/like/{tweetId}")
   public ResponseEntity<TweetActionResponse> addLikeToTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
     return ResponseEntity.ok(tweetActionFacade.addLike(tweetId, request));
   }
@@ -126,8 +126,11 @@ public class TweetController {
   }
 
   @GetMapping("/get_likes/{id}")
-  public ResponseEntity getcount(@PathVariable(name = "id") Long tweetId) {
+  public ResponseEntity getCount(@PathVariable(name = "id") Long tweetId) {
     return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
   }
+
+
+
 
 }
