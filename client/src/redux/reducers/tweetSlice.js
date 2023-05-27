@@ -7,8 +7,8 @@ const initialState = {
   error: null,
 };
 
-const dataSlice = createSlice({
-  name: 'data',
+const tweetSlice = createSlice({
+  name: 'tweet',
   initialState,
   reducers: {
     setText: (state, action) => {
@@ -33,5 +33,5 @@ const dataSlice = createSlice({
 });
 
 export const { setText, setFiles, setLoading, setError, clearData } =
-  dataSlice.actions;
-export default dataSlice.reducer;
+  tweetSlice.actions;
+export default tweetSlice.reducer;

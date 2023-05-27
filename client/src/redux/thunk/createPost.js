@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setLoading, clearData, setError } from '../reducers/postSlice.js';
+import { setLoading, clearData, setError } from '../reducers/tweetSlice.js';
 import { myAxios } from 'src/utils/axiosSetup.js';
 
-export const sendData = createAsyncThunk(
-  'data/sendData',
+export const createTweet = createAsyncThunk(
+  'tweet/create_tweet',
   async ({ text, files }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(setLoading(true));

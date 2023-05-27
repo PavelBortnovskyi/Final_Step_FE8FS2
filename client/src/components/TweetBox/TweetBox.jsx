@@ -6,7 +6,7 @@ import InputAvatar from '../../UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
 
 import { useDispatch } from 'react-redux';
-import { sendData } from 'src/redux/thunk/createPost.js';
+import { createTweet } from 'src/redux/thunk/createPost.js';
 
 function TweetBox() {
   const [postInputText, setPostInputText] = useState('');
@@ -32,8 +32,8 @@ function TweetBox() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Dispatch the sendData action with the collected data
-    dispatch(sendData({ postInputText, postImage }));
+    // Dispatch the createTweet action with the collected data
+    dispatch(createTweet({ postInputText, postImage }));
     console.log('working');
     // Reset the form fields
     setPostInputText('');
