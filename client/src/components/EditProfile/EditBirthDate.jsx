@@ -1,5 +1,7 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
+import { ErrorMessage, Field, Form } from "formik";
+import { EditInput } from "./EditInput";
 
 export function EditBirthDate() {
   const [editBirthDate, setEditBirthDate] = useState(false);
@@ -11,7 +13,14 @@ export function EditBirthDate() {
       <Button variant="conteined" onClick={openInput}>
         Edit
       </Button>
-      {editBirthDate && <input name="birthDate" type="date" />}
+      {editBirthDate && (
+        <Field
+          name="birthDate"
+          type="date"
+          // label="location"
+          component={EditInput}
+        />
+      )}
     </>
   );
 }
