@@ -5,7 +5,6 @@ import app.dto.rs.MessageResponse;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
-import app.facade.ChatFacade;
 import app.model.Chat;
 import app.model.Message;
 import app.model.UserModel;

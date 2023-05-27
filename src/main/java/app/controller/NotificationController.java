@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.dto.rs.NotificationResponse;
-import app.exceptions.httpError.BadRequestException;
 import app.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
