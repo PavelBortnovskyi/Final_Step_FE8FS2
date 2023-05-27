@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -62,6 +61,10 @@ public class AuthService {
     //Email duplicate checking
     if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
       throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
+
+    //Tag duplicate checking
+    if (this.userService.isUserTagPresentInDB(signUpDTO.getUserTag()))
+      throw new UserAlreadyRegisteredException("tag: " + signUpDTO.getUserTag());
 
     //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));

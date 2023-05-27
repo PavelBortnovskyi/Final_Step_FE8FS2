@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -51,8 +52,9 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/login").permitAll()
       .antMatchers("/api/v1/auth/password/reset").permitAll()
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
+      .antMatchers("/test/**").permitAll()
       //.antMatchers("/user/**").permitAll()
-      //.antMatchers("/test/**").permitAll()
+      .antMatchers("/test/**").permitAll()
       //.antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
       .and()
@@ -70,7 +72,13 @@ public class SecurityConfiguration {
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
 
     //Disable CORS
-    httpSec.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+    CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+    configuration.addAllowedMethod(HttpMethod.GET);
+    configuration.addAllowedMethod(HttpMethod.DELETE);
+    configuration.addAllowedMethod(HttpMethod.PUT);
+    configuration.addAllowedMethod(HttpMethod.POST);
+    httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
+    //httpSec.cors().disable();
 
     return httpSec.build();
   }

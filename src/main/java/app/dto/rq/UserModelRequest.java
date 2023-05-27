@@ -6,11 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 /**
@@ -58,12 +54,12 @@ public class UserModelRequest {
 
   @JsonView({Marker.Update.class})
   @ApiModelProperty(value = "bio", required = true)
-  @NotNull(groups = {Marker.Update.class})
+  //@NotNull(groups = {Marker.Update.class})
   private String bio;
 
   @JsonView({Marker.Update.class})
   @ApiModelProperty(value = "location", required = true)
-  @NotNull(groups = {Marker.Update.class})
+  //@NotNull(groups = {Marker.Update.class})
   private String location;
 }
 

@@ -9,6 +9,7 @@ import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -58,15 +59,17 @@ public class TweetActionService extends GeneralService<TweetAction> {
     return response;
   }
 
-  public List<Tweet> getAllBookmarks(HttpServletRequest request) {
-    return tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"));
+  public List<Tweet> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
+    return tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"), Pageable.ofSize(pageSize).withPage(page)).toList();
   }
 
   public Integer getCount(Long tweetId, TweetActionType tweetActionType) {
-    return tweetActionRepository.countByTweetIdAndActionType(tweetId, tweetActionType);
+    return tweetActionRepository.getCountByTweetIdAndActionType(tweetId, tweetActionType);
   }
 
   public Integer getCountLikes(Long tweetId) {
+    System.out.println(getCount(tweetId, TweetActionType.LIKE));
+    System.out.println(getCount(tweetId, TweetActionType.BOOKMARK));
     return getCount(tweetId, TweetActionType.LIKE);
   }
 

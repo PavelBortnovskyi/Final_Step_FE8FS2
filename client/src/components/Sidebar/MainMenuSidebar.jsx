@@ -9,14 +9,6 @@ import {
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-const ListItemButtonStyled = styled(ListItemButton)((props) => ({
-  height: '50px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '0 4px',
-}));
-
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
 
@@ -35,11 +27,7 @@ export const MainMenuSidebar = ({ navElement }) => {
       key={navElement.id}
       component={NavLink}
     >
-      <ListItem
-        key={navElement.id}
-        disablePadding
-        sx={{ color: '#FFF', width: '100%' }}
-      >
+      <ListItem key={navElement.id} disablePadding sx={{ width: '100%' }}>
         <ListItemButtonStyled
           sx={{
             '&:hover': {

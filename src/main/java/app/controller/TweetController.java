@@ -16,9 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +53,7 @@ public class TweetController {
   }
 
   //update tweet
-  @PostMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @Validated({Marker.Update.class})
   public ResponseEntity<TweetResponse> updateTweet(@Valid @JsonView({Marker.Update.class}) @PathVariable Long id,
                                                    @RequestBody TweetRequest tweetRequest) {
@@ -59,37 +61,40 @@ public class TweetController {
   }
 
   //create new tweet
-  @PostMapping("/create_tweet")
+  @PutMapping("/create_tweet")
   @Validated({Marker.New.class})
   public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
                                                    @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request));
   }
 
-  @PostMapping("/create_retweet")
+  @PutMapping("/create_retweet")
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.Retweet.class})
                                                      @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
   }
 
-  @PostMapping("/create_reply")
+  @PutMapping("/create_reply")
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
-                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
+                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
+                                                   @RequestParam("files") MultipartFile[] files) {
     return ResponseEntity.ok(tweetService.createReply(tweetRequest, request));
   }
 
   //get List tweets following users
-  @GetMapping("/get_following_tweets/{pageNumber}")
-  public List<TweetResponse> getAllUserFollowingsTweets(@PathVariable(name = "pageNumber") Integer pageNumber, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, pageNumber)).getBody();
+  @GetMapping("/get_following_tweets")
+  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page,
+                                                        @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
   }
 
   // get user tweets
   @GetMapping("/get_tweets/{id}")
-  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId) {
-    return ResponseEntity.ok(tweetFacade.getUserTweets(userId)).getBody();
+  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") int page,
+                                           @RequestParam("pageSize") int pageSize) {
+    return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
   }
 
   @PostMapping("/add_like/{tweetId}")
@@ -102,9 +107,10 @@ public class TweetController {
     return ResponseEntity.ok(tweetActionFacade.addBookmark(tweetId, request));
   }
 
-  @GetMapping("/get_bookmarks/{page}")
-  public ResponseEntity getAllBookmarks(HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request));
+  @GetMapping("/bookmarks")
+  public ResponseEntity getAllBookmarks(@RequestParam("page") int page,
+                                        @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request, page, pageSize));
   }
 
   @DeleteMapping("/delete_like/{tweetId}")
@@ -117,5 +123,9 @@ public class TweetController {
     tweetActionService.deleteBookmark(tweetId, request);
   }
 
+  @GetMapping("/get_likes/{id}")
+  public ResponseEntity getcount(@PathVariable(name = "id") Long tweetId) {
+    return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
+  }
 
 }

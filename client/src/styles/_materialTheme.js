@@ -11,13 +11,14 @@ export const themeSettings = (colorTheme) => {
             //colors for elements
             primary: {
               main: 'rgb(30, 155, 240)',
-              disabled: 'rgb(29, 155, 240)',
+              disabled: 'rgb(25,93,142)',
               hover: 'rgb(26,140,216)',
             },
             //text colors
             text: {
               primary: '#fff',
               secondary: 'rgb(139, 152, 165)',
+              active: '#fff',
             },
             //background colors
             background: {
@@ -51,12 +52,13 @@ export const themeSettings = (colorTheme) => {
         : {
             primary: {
               main: 'rgb(30, 155, 240)',
-              disabled: 'rgb(29, 155, 240)',
+              disabled: 'rgb(25,93,142)',
               hover: 'rgb(26,140,216)',
             },
             text: {
               primary: 'rgb(15, 20, 26)',
               secondary: 'rgb(82, 99, 113)',
+              active: 'rgb(15, 20, 25)',
             },
             background: {
               default: '#fff',
