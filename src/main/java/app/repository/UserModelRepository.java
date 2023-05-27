@@ -28,8 +28,8 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
 
   // Search users by part of full name and part of user tag
   Page<UserModel> findByIdNotAndFullNameContainsIgnoreCaseOrUserTagContainsIgnoreCase(Long id,
-                                                                                      String searchString,
-                                                                                      String searchString1,
+                                                                                      String fullName,
+                                                                                      String userTag,
                                                                                       Pageable pageable
   );
 
