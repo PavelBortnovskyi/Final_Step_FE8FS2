@@ -2,7 +2,7 @@ import Avatar from "@mui/material/Avatar";
 import { useSelector } from "react-redux";
 
 export function UserAvatarBG() {
-  const userInitials = useSelector((state) => state.auth.fullName);
+  const userInitials = useSelector((state) => state.user.user.fullName);
 
   // const leter = userInitials.toUpperCase().substring(0, 1);
 
