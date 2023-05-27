@@ -56,7 +56,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
       new AntPathRequestMatcher("/h2-console/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
-      new AntPathRequestMatcher("/test/**")
+      new AntPathRequestMatcher("/test/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
