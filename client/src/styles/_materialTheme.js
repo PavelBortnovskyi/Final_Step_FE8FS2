@@ -46,7 +46,7 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: '#FFF',
-            }
+            },
           }
         : {
             primary: {
@@ -84,7 +84,7 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: 'rgb(30, 155, 240)',
-            }
+            },
           }),
     },
     breakpoints: {

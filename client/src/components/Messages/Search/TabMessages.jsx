@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+import { getUserData } from 'src/redux/selectors/selectors';
+
 export const TabMessages = () => {
-  return <div>tabMessages</div>;
+  return <div>find messages ...</div>;
 };

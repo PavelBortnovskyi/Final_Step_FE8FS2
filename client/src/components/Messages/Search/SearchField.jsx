@@ -10,10 +10,10 @@ import { findUser } from 'src/redux/thunk/findUser';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   // borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.text.primary, 0.15),
   borderRadius: '20px',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.text.primary, 0.25),
   },
   marginLeft: 0,
   width: '100%',
@@ -59,13 +59,13 @@ export const SearchField = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      dispatch(findUser(searchText));
+      dispatch(findUser({ search: searchText }));
     }
   };
 
   const handleChange = (e) => {
     setSearchText(e.target.value);
-    dispatch(findUser(e.target.value));
+    dispatch(findUser({ search: e.target.value }));
   };
 
   return (
