@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Log4j2
 @Validated
@@ -69,29 +70,29 @@ public class UserController {
   }
 
   @GetMapping("followers")
-  public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                               HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("followings")
-  public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
-                                               @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("offer_followings")
-  public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                    @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                     HttpServletRequest httpServletRequest) {
     return userModelFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("search")
-  public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") int page,
-                                          @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                          @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                           @RequestParam(name = "search_string", defaultValue = "") String serchString,
                                           HttpServletRequest httpServletRequest) {
     return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, page, size);
