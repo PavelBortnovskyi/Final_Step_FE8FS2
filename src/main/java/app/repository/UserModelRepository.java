@@ -23,8 +23,10 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   // Return followers
   Page<UserModel> findByFollowingsContains(UserModel userModel, Pageable pageable);
 
+  // Search users to offer followings
   Page<UserModel> findByIdNotAndFollowersNotContaining(Long userId, UserModel userModel, Pageable pageable);
 
+  // Search users by part of full name and part of user tag
   Page<UserModel> findByIdNotAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(Long id,
                                                                                        String partFullName,
                                                                                        String partUserTag,
