@@ -27,10 +27,10 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   Page<UserModel> findByIdNotAndFollowersNotContaining(Long userId, UserModel userModel, Pageable pageable);
 
   // Search users by part of full name and part of user tag
-  Page<UserModel> findByIdNotAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(Long id,
-                                                                                       String partFullName,
-                                                                                       String partUserTag,
-                                                                                       Pageable pageable
+  Page<UserModel> findByIdNotAndFullNameContainsIgnoreCaseOrUserTagContainsIgnoreCase(Long id,
+                                                                                      String searchString,
+                                                                                      String searchString1,
+                                                                                      Pageable pageable
   );
 
   @Query(value = "SELECT u FROM UserModel u WHERE u.email = :email")
