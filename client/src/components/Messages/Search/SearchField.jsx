@@ -1,9 +1,11 @@
 import { Box, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
 
 import { SearchTabs } from './SearchTabs';
-
-import { styled, alpha } from '@mui/material/styles';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { findUser } from 'src/redux/thunk/findUser';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -50,6 +52,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const SearchField = () => {
+  const dispatch = useDispatch();
+
+  // set search text
+  const [searchText, setSearchText] = useState('');
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      dispatch(findUser(searchText));
+    }
+  };
+
+  const handleChange = (e) => {
+    setSearchText(e.target.value);
+    dispatch(findUser(e.target.value));
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Search>
@@ -57,6 +75,9 @@ export const SearchField = () => {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
+          value={searchText}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
           placeholder="Search Direct Messages"
           inputProps={{ 'aria-label': 'search' }}
         />

@@ -22,13 +22,13 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "full_name", nullable = false)
   private String fullName;
 
-  @Column(name = "user_tag", nullable = false)
+  @Column(name = "user_tag", nullable = false, unique = true)
   private String userTag;
 
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "email", nullable = false, updatable = false)
+  @Column(name = "email", nullable = false, updatable = false, unique = true)
   private String email;
 
   @Column(name = "date_of_birth")
@@ -67,18 +67,23 @@ public class UserModel extends BaseEntityModel {
     inverseJoinColumns = @JoinColumn(name = "follower_id"))
   private Set<UserModel> followers = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Tweet> tweets = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<Message> messages = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
   private Set<Chat> chat = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Chat> chats = new HashSet<>();
 
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<TweetAction> tweetAction;
 
@@ -88,6 +93,10 @@ public class UserModel extends BaseEntityModel {
 
   public Integer getCountFollowings() {
     return followings.size();
+  }
+
+  public Integer getCountTweets() {
+    return tweets.size();
   }
 
   @Override

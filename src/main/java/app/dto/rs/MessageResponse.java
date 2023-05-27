@@ -11,15 +11,11 @@ import java.time.LocalDateTime;
 @ApiModel(description = "Message response")
 public class MessageResponse {
 
-  @JsonView({Marker.ChatDetails.class})
   private Long chatId;
 
-  @JsonView({Marker.ChatDetails.class})
   private Long userId;
 
-  @JsonView({Marker.ChatDetails.class})
   private String body;
 
-  @JsonView({Marker.ChatDetails.class})
   private LocalDateTime sent;
 }

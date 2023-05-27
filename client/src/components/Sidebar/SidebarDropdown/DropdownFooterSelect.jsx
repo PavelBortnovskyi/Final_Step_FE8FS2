@@ -1,9 +1,42 @@
-import { Box, FormControl, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Box, FormControl, MenuItem, MenuList, OutlinedInput, Select } from '@mui/material';
 import React, { useState } from 'react';
+import InputAdornment from '@mui/material/InputAdornment';
 // import { selectElements } from './DropdownElements';
 
 
+
+
+
+
 export const DropdownFooterSelect = ({ mainLabel, selects }) => {
+    const theme = useTheme();
+
+
+    const SelectStyled = styled(Select)((props) => ({
+        backgroundColor: `${theme.palette.background.default}`,
+        border: 'none',
+        color: `${theme.palette.text.primary}`,
+
+        '& .MuiList-padding': {
+            backgroundColor: `${theme.palette.background.default}`,
+            border: 'none',
+            padding: 0,
+        },
+    }))
+
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                background: `${theme.palette.background.default}`,
+                cursor: 'pointer',
+
+
+            },
+        },
+    };
+
 
     const handleChange = (event) => {
         // const {
@@ -19,75 +52,60 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
         mainLabel && <FormControl
             sx={{
                 display: 'flex',
-                fill: '#FFF'
-            }}
-
-        >
-            <Select
-                displayEmpty
-                sx={{
-                    backgroundColor: "rgb(21,32,43)",
+                backgroundColor: `${theme.palette.background.default}`,
+                '& .MuiMenu-list': {
+                    backgroundColor: `${theme.palette.background.default}`,
                     border: 'none',
-                    color: '#FFF',
+                },
+            }}
+        >
 
-                    '& .MuiPaper': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-                    '& .MuiPaper-root': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-
-                    '& .MuiMenu': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-                    '& .MuiMenu-paper': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-                    '& .MuiPopover': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-                    '& .MuiPopover-paper': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-
-
-                    '& .Mui-selected': {
-                        backgroundColor: "rgb(21,32,43)",
-                        border: 'none',
-                    },
-                }}
+            <SelectStyled
+                displayEmpty
                 value={mainLabel}
                 onChange={handleChange}
                 input={<OutlinedInput />}
-
+                MenuProps={MenuProps}
             >
 
 
-                <MenuItem disabled value={mainLabel}>
+                <MenuItem disabled value={mainLabel} sx={{
+                    '& .MuiList-padding': {
+                        backgroundColor: `${theme.palette.background.default}`,
+                        border: 'none',
+                        color: 'green',
+                        padding: 0,
+                    },
+                }}>
                     <em>{mainLabel}</em>
                 </MenuItem>
 
 
 
                 {selects && selects.map((selectEl) => (
-                    <Box display="flex" alignItems="center" px='12px'>
-                        <selectEl.icon sx={{ fontSize: 20 }} />
-                        <MenuItem
-                            key={selectEl.id}
-                            value={selectEl.label}
-
-                        >
-                            {selectEl.label}
-                        </MenuItem>
+                    <Box display="flex" alignItems="center"
+                        sx={{
+                            backgroundColor: `${theme.palette.background.default}`,
+                            padding: '0 12px',
+                            '&:hover': {
+                                backgroundColor: `${theme.palette.background.hover}`,
+                            }
+                        }}>
+                        {selectEl.icon && (
+                            <selectEl.icon sx={{ fontSize: 20, color: `${theme.palette.text.primary}`, }} />
+                        )}
+                        {selectEl.label && (
+                            <MenuItem
+                                key={selectEl.id}
+                                value={selectEl.label}
+                            >
+                                {selectEl.label}
+                            </MenuItem>
+                        )
+                        }
                     </Box>
                 ))}
-            </Select>
+            </SelectStyled>
         </FormControl>
     )
 }

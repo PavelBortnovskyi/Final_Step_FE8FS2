@@ -27,7 +27,7 @@ export const MainMenuSidebar = ({ navElement }) => {
 
     return (
         <Link to={navElement.route} underline="none" key={navElement.id} component={NavLink}>
-            <ListItem key={navElement.id} disablePadding sx={{ color: '#FFF', width: '100%' }}>
+            <ListItem key={navElement.id} disablePadding sx={{  width: '100%' }}>
                 <ListItemButtonStyled
                     sx={{
                         '&:hover': {
