@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 
-export const getUser = createAsyncThunk(
-  'user/getUser',
+export const findUser = createAsyncThunk(
+  'user/findUser',
   async (_, { rejectWithValue }) => {
     try {
       // request to server if we have token in localStorage it will inject src/utils/axiosSetup into request
