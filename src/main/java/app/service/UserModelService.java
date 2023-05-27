@@ -80,7 +80,6 @@ public class UserModelService extends GeneralService<UserModel> {
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
     userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
-    System.out.println(userModel);
     userModelRepository.save(userModel);
     return userModel;
   }
