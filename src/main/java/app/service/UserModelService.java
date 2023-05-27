@@ -94,11 +94,11 @@ public class UserModelService extends GeneralService<UserModel> {
   }
 
   public Page<UserModel> getOfferFollowings(Long userId, int page, int size) {
-    return userModelRepository.findByFollowersNotContaining(getUser(userId), PageRequest.of(page, size));
+    return userModelRepository.findByIdNotAndFollowersNotContaining(userId, getUser(userId), PageRequest.of(page, size));
   }
 
   public Page<UserModel> searchUser(Long userId, String partFullName, String partUserTag, int page, int size) {
-    return userModelRepository.findAllByIdNotLikeAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(
+    return userModelRepository.findByIdNotAndFullNameContainsIgnoreCaseAndUserTagContainsIgnoreCase(
       userId, partFullName, partUserTag, PageRequest.of(page, size));
   }
 
