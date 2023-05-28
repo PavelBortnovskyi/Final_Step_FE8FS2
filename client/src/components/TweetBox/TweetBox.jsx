@@ -10,8 +10,7 @@ import { createTweet } from 'src/redux/thunk/createTweet.js';
 
 function TweetBox() {
   const [postInputText, setPostInputText] = useState('');
-  const [postImage, setPostImage] = useState([]);
-
+  const [postImages, setPostImages] = useState([]);
   const dispatch = useDispatch();
 
   const handleEmojiSelect = (emoji) => {
@@ -22,26 +21,25 @@ function TweetBox() {
     setPostInputText(ev);
   };
 
-  const handleFileSelect = (imges) => {
-    setPostImage(imges);
+  const handleFileSelect = (img) => {
+    setPostImages([...postImages, img]);
   };
-  const handleCloseFile = () => {
-    setPostImage([]);
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...postImages];
+    updatedImages.splice(index, 1);
+    setPostImages(updatedImages);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Dispatch the createTweet action with the collected data
-    dispatch(createTweet({ postInputText, postImage }));
+    dispatch(createTweet({ postInputText, postImages }));
     console.log('working');
     // Reset the form fields
     setPostInputText('');
-    setPostImage([]);
+    setPostImages([]);
   };
-  // const objectURL = postImage ? URL.createObjectURL(postImage) : [];
-  const objectURL = 'sdsd';
-
 
   return (
     <Box>
@@ -51,12 +49,14 @@ function TweetBox() {
           placeholder="What's happening?"
           feature={handleInput}
         />
-        {postImage && (
-          <AddingFile handleCloseFile={handleCloseFile} photo={objectURL} />
+        {postImages.length > 0 && (
+          <AddingFile
+            handleDeleteImage={handleDeleteImage}
+            images={postImages}
+          />
         )}
         <Box
           sx={{
-            
             borderBottom: '1px solid rgb(56, 68, 77)',
             paddingBottom: '11px',
           }}
@@ -77,7 +77,9 @@ function TweetBox() {
           >
             <TweetButton
               isDisabled={
-                postInputText.length === 0 && postImage === null ? true : false
+                postInputText.length === 0 && postImages.length === 0
+                  ? true
+                  : false
               }
               text="Tweet"
               w="80px"

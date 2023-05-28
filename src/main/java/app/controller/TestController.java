@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.facade.AuthFacade;
 import app.model.Message;
 import app.model.UserModel;
 import app.service.*;
@@ -29,7 +30,7 @@ public class TestController {
 
   private final AuthenticationManager authenticationManager;
 
-  private final AuthService authService;
+  private final AuthFacade authFacade;
 
   private final MessageService messageService;
 
@@ -106,11 +107,11 @@ public class TestController {
     sample5.setVerified(true);
     sample5.setRefreshToken("11111111111");
 
-    this.authService.generateTokenPair(this.userService.save(sample1));
-    this.authService.generateTokenPair(this.userService.save(sample2));
-    this.authService.generateTokenPair(this.userService.save(sample3));
-    this.authService.generateTokenPair(this.userService.save(sample4));
-    this.authService.generateTokenPair(this.userService.save(sample5));
+    this.authFacade.generateTokenPair(this.userService.save(sample1));
+    this.authFacade.generateTokenPair(this.userService.save(sample2));
+    this.authFacade.generateTokenPair(this.userService.save(sample3));
+    this.authFacade.generateTokenPair(this.userService.save(sample4));
+    this.authFacade.generateTokenPair(this.userService.save(sample5));
 
     this.userService.subscribe(1L, 3L);
     this.userService.subscribe(1L, 4L);
