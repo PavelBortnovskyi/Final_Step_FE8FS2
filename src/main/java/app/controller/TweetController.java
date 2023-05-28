@@ -130,10 +130,10 @@ public class TweetController {
     return ResponseEntity.ok(tweetActionService.statusLike(tweetId, request));
   }
 
-/*  @GetMapping("/status_bookmark/{tweetId}")
+  @GetMapping("/status_bookmark/{tweetId}")
   public ResponseEntity statusBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request){
     return ResponseEntity.ok(tweetActionService.statusBookmark(tweetId, request));
-  }*/
+  }
 
   @GetMapping("/get_likes/{id}")
   public ResponseEntity getCount(@PathVariable(name = "id") Long tweetId) {
