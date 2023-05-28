@@ -1,8 +1,8 @@
-import { ListItem, ListItemButton, ListItemIcon, Typography } from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, Typography, useTheme } from '@mui/material';
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 import { bindTrigger } from 'material-ui-popup-state';
 import React from 'react'
-import { useTheme } from '@emotion/react';
+
 import styled from '@emotion/styled';
 
 const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
@@ -11,6 +11,7 @@ const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: '0 4px',
+    borderRadius: '30px',
 
     '&:hover': {
         backgroundColor: `${theme.palette.background.hover}`,

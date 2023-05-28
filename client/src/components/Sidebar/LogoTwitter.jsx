@@ -1,7 +1,6 @@
 import { Link, styled } from '@mui/material';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import React from 'react';
-import { useTheme } from '@emotion/react';
 import { NavLink } from 'react-router-dom';
 
 
