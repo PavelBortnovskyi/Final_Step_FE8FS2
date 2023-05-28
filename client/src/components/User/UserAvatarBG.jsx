@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 export function UserAvatarBG() {
   const userInitials = useSelector((state) => state.user.user.fullName);
 
-  // const leter = userInitials.toUpperCase().substring(0, 1);
-
   return (
     <Avatar
       color="neutral"
       variant="outlined"
       sx={{
+        overflow: "hidden",
         background: "rgb(87 75 179)",
         width: "134px",
         height: "134px",

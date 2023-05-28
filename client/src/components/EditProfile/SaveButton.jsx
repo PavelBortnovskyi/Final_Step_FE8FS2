@@ -1,8 +1,9 @@
 import Button from "@mui/material/Button";
 
-export function SaveButton() {
+export function SaveButton({ handleClose }) {
   return (
     <Button
+      onClick={handleClose}
       variant="plain"
       type="submit"
       sx={{
