@@ -5,6 +5,7 @@ import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
 import app.exceptions.httpError.BadRequestException;
+import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.ChatService;
@@ -20,7 +21,10 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,7 +39,7 @@ public class WebSocketController {
 
   private final NotificationFacade notificationFacade;
 
-  private final ChatService chatService;
+  private final ChatFacade chatFacade;
 
   private final UserModelService userService;
 
@@ -52,7 +56,7 @@ public class WebSocketController {
                                                                                   MessageRequest messageDTO,
                                                                                   HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    this.chatService.addMessage(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
+    this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
@@ -67,8 +71,8 @@ public class WebSocketController {
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
-  @DeleteMapping("/v1/message/delete/{messageId}")
-  public void deleteMessage(@PathVariable Long messageId, HttpServletRequest request) {
+  @DeleteMapping("/v1/message/delete")
+  public void deleteMessage(@RequestParam("messageId") Long messageId, HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     if (this.messageService.deleteMessage(currUserId, messageId))
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageId));

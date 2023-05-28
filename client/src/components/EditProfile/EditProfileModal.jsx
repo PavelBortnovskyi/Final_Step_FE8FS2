@@ -29,7 +29,6 @@ export function EditProfileModal() {
           sx={{
             color: "white",
             backgroundColor: "rgba(21, 32, 43, 1)",
-            width: "600px",
           }}
         >
           <EditFormShema />

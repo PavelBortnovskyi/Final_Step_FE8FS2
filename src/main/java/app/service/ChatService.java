@@ -5,7 +5,6 @@ import app.dto.rs.MessageResponse;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
-import app.facade.ChatFacade;
 import app.model.Chat;
 import app.model.Message;
 import app.model.UserModel;
@@ -63,7 +62,7 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns chat after adding new user to it
    */
 
-  public Chat addUser(Long userId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
+  public Chat addUserToChat(Long userId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     return this.chatRepository
       .save(this.chatRepository
         .findById(chatId)
@@ -82,14 +81,14 @@ public class ChatService extends GeneralService<Chat> {
     Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
     UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
     if (chat.getInitiatorUser().getId().equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
-      chat.getUsers().remove(this.userService.findById(userToRemoveId).get());
+      chat.getUsers().remove(userToRemove);
       this.chatRepository.save(chat);
       return true;
     } else return false;
   }
 
   /**
-   * Method returns caht with added message
+   * Method returns chat with added message
    */
   public Chat addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
     return this.chatRepository.save(this.chatRepository.findById(chatId)
@@ -133,14 +132,20 @@ public class ChatService extends GeneralService<Chat> {
     return new PageImpl<>(chats);
   }
 
-  public Page<MessageResponse> searchMessageInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+  /**
+   * Method returns page of message responses from user chat according to keyword matches
+   */
+  public Page<MessageResponse> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     this.chatRepository.findById(chatId)
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()))
       .orElseThrow(() -> new BadRequestException(String.format("User with id: %d cannot search in chat with id: %d", userId, chatId)));
     return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
   }
 
-  public Page<MessageResponse> searchMessageInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+  /**
+   * Method returns page of message responses from user chats according to keyword matches
+   */
+  public Page<MessageResponse> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
   }
 }

@@ -6,11 +6,11 @@ import InputAvatar from '../../UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
 
 import { useDispatch } from 'react-redux';
-import { createTweet } from 'src/redux/thunk/createPost.js';
+import { createTweet } from 'src/redux/thunk/createTweet.js';
 
 function TweetBox() {
   const [postInputText, setPostInputText] = useState('');
-  const [postImage, setPostImage] = useState(null);
+  const [postImage, setPostImage] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -22,11 +22,11 @@ function TweetBox() {
     setPostInputText(ev);
   };
 
-  const handleFileSelect = (file) => {
-    // setPostImage(file);
+  const handleFileSelect = (imges) => {
+    setPostImage(imges);
   };
   const handleCloseFile = () => {
-    setPostImage(null);
+    setPostImage([]);
   };
 
   const handleSubmit = (e) => {
@@ -37,9 +37,12 @@ function TweetBox() {
     console.log('working');
     // Reset the form fields
     setPostInputText('');
-    // setPostImage([]);
+    setPostImage([]);
   };
-  const objectURL = postImage ? URL.createObjectURL(postImage) : null;
+  // const objectURL = postImage ? URL.createObjectURL(postImage) : [];
+  const objectURL = 'sdsd';
+
+
   return (
     <Box>
       <form autoComplete="off">

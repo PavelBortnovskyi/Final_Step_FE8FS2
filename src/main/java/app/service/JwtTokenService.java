@@ -246,14 +246,14 @@ public class JwtTokenService {
   /**
    * Method changes refresh token refreshed status
    */
-  public void changeTokenStatus(Long userId, boolean usedStatus) {
-    this.userModelRepository.changeTokenStatusById(userId, usedStatus);
+  public void changeRefreshTokenStatus(Long userId, boolean usedStatus) {
+    this.userModelRepository.changeRefreshTokenStatusById(userId, usedStatus);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
-  public void changeTokenStatus(String token, boolean usedStatus) {
+  public void changeRefreshTokenStatus(String token, boolean usedStatus) {
     this.userModelRepository.changeTokenStatusByValue(token, usedStatus);
   }
 

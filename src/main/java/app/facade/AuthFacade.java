@@ -1,4 +1,4 @@
-package app.service;
+package app.facade;
 
 import app.dto.rq.UserModelRequest;
 import app.enums.TokenType;
@@ -6,8 +6,10 @@ import app.exceptions.authError.AuthErrorException;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.exceptions.userError.UserNotFoundException;
-import app.facade.UserModelFacade;
 import app.model.UserModel;
+import app.service.EmailService;
+import app.service.JwtTokenService;
+import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ import java.util.Optional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthFacade {
 
   private final JwtTokenService jwtTokenService;
 
@@ -39,6 +41,10 @@ public class AuthService {
   private final UserModelService userService;
 
   private final PasswordEncoder encoder;
+
+  /**
+   * Method performs user login operation based on provided in DTO credentials and returns new token pair
+   */
 
   public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
     //Auth procedure handling
@@ -57,6 +63,9 @@ public class AuthService {
     return ResponseEntity.ok(this.generateTokenPair(currentUser));
   }
 
+  /**
+   * Method performs user sighUp operation based on provided in DTO credentials and returns new token pair
+   */
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
     //Email duplicate checking
     if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
@@ -73,12 +82,18 @@ public class AuthService {
     return ResponseEntity.ok(this.generateTokenPair(freshUser));
   }
 
+  /**
+   * Method performs user logout by refresh token invalidation
+   */
   public String makeLogOut(Long userId) {
-    this.jwtTokenService.changeTokenStatus(userId, true);
+    this.jwtTokenService.changeRefreshTokenStatus(userId, true);
     log.info("User id: " + userId + " logged out");
     return "User with Id: " + userId + " logged out";
   }
 
+  /**
+   * Method performs user password update operation with email-old password combination checking
+   */
   public ResponseEntity<HashMap<String, String>> makePasswordUpdate(UserModelRequest passwordUpdateDto) {
     if (this.userService.updatePassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword(), passwordUpdateDto.getFreshPassword())) {
       return ResponseEntity.ok(new HashMap<>() {{
@@ -89,6 +104,9 @@ public class AuthService {
     }});
   }
 
+  /**
+   * Method send link with password reset token to user email
+   */
   public ResponseEntity<String> getPasswordResetToken(UserModelRequest passwordResetDto) {
     if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
       String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
@@ -99,6 +117,9 @@ public class AuthService {
       return ResponseEntity.badRequest().body("ERROR: " + passwordResetDto.getEmail() + " is not registered in our DB");
   }
 
+  /**
+   * Method performs user password reset and update with validating reset token in request
+   */
   public ResponseEntity<HashMap<String, String>> makePasswordReset(UserModelRequest passwordResetDto, HttpServletRequest request) {
     String resetPasswordToken = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException(" Please provide token for reset password!"));
     if (this.jwtTokenService.validateToken(resetPasswordToken, TokenType.PASSWORD_RESET)) {
@@ -113,6 +134,9 @@ public class AuthService {
     }});
   }
 
+  /**
+   * Method returns generated access and refresh token pair based on provided user model
+   */
   public HashMap<String, String> generateTokenPair(UserModel user) {
     String accessToken = this.jwtTokenService.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
     String refreshToken = this.jwtTokenService.createToken(user.getId(), TokenType.REFRESH);

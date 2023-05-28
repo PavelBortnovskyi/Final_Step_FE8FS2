@@ -104,7 +104,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   }
 
 
-
   @Override
   public Tweet convertToEntity(TweetRequest dto) {
     Tweet sample = new Tweet();
