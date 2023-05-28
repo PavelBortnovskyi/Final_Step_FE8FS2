@@ -14,12 +14,7 @@ export function EditBirthDate() {
         Edit
       </Button>
       {editBirthDate && (
-        <Field
-          name="birthDate"
-          type="date"
-          // label="location"
-          component={EditInput}
-        />
+        <Field name="birthDate" type="date" component={EditInput} />
       )}
     </>
   );
