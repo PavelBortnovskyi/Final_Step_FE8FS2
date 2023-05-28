@@ -63,8 +63,14 @@ export const SearchField = () => {
     }
   };
 
-  const handleChange = (e) => {
+  // TODO: Need create debounce rerquest
+  const handleChange = async (e) => {
     setSearchText(e.target.value);
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 300);
+    });
+
     dispatch(findUser({ search: e.target.value }));
   };
 

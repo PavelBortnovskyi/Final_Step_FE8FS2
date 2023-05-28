@@ -9,6 +9,14 @@ import {
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+const ListItemButtonStyled = styled(ListItemButton)((props) => ({
+  height: '50px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '0 4px',
+}));
+
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
 
