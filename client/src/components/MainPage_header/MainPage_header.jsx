@@ -19,6 +19,7 @@ const CustomTab = styled(Tab)((props) => ({
 function MainPage_header() {
   const [tabIndex, setTabIndex] = useState(0);
   const theme = useMode();
+  
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);

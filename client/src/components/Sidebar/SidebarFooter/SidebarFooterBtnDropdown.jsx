@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindTrigger } from 'material-ui-popup-state';
-import { Avatar, Box, Button, Hidden, Typography } from '@mui/material';
-import { useTheme } from '@emotion/react';
+import { Avatar, Box, Button, Hidden, Typography, useTheme } from '@mui/material';
 
 export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) => {
     const theme = useTheme();

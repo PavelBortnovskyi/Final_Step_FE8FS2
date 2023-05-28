@@ -42,10 +42,10 @@ const BoxContainerStyled = styled(Box)((props) => ({
 
 
 
-export const Sidebar = (/*{isAuthenticated}*/) => {
+export const Sidebar = ({isAuthenticated}) => {
   const location = useLocation();
+console.log(isAuthenticated);
 
-  const isAuthenticated = true; // удалить как будет готова аутентефикация
 
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')

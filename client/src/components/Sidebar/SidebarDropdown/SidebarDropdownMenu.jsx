@@ -35,9 +35,11 @@ export const SidebarDropdownMenu = ({ popupState, isAuthenticated }) => {
             <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)' }}>
                 {
                     dropdownElements.map(dropdownEl => (
-                        <DropdownHeader key={dropdownEl.id}
+                        <DropdownHeader
+                            key={dropdownEl.id}
                             dropdownEl={dropdownEl}
                             popupState={popupState}
+
                         />
                     ))
                 }

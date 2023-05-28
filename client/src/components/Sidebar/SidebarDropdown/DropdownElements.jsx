@@ -45,11 +45,11 @@ export const dropdownElements = [
 
 export const selectElements = [
     {
-        id: 31,
+        id: 831,
         label: 'Creator Studio',
         selects: [
             {
-                id: 311,
+                id: 6311,
                 icon: BarChartOutlinedIcon,
                 label: 'Analytics',
                 route: 'analytics',
@@ -59,23 +59,23 @@ export const selectElements = [
 
     
     {
-        id: 32,
+        id: 832,
         label: 'Professional Tools',
         selects: [
             {
-                id: 321,
+                id: 7321,
                 icon: RocketLaunchOutlinedIcon,
                 label: 'Twitter for Professionals',
                 route: 'professionals',
             },
             {
-                id: 322,
+                id: 7322,
                 icon: InstallDesktopOutlinedIcon,
                 label: 'Twitter Ads',
                 route: 'ads',
             },
             {
-                id: 323,
+                id: 7323,
                 icon: PaymentsOutlinedIcon,
                 label: 'Monetization',
                 route: 'monetization',
@@ -83,29 +83,29 @@ export const selectElements = [
         ]
     },
     {
-        id: 33,
+        id: 833,
         label: 'Settings and Support',
         selects: [
             {
-                id: 331,
+                id: 9331,
                 icon: SettingsOutlinedIcon,
                 label: 'Settings and privacy',
                 route: 'privacy',
             },
             {
-                id: 332,
+                id: 9332,
                 icon: HelpOutlineOutlinedIcon,
                 label: 'Help Cenyer',
                 route: 'help',
             },
             {
-                id: 333,
+                id: 9333,
                 icon: RemoveFromQueueOutlinedIcon,
                 label: 'Display',
                 route: 'display',
             },
             {
-                id: 334,
+                id: 9334,
                 icon: AccountCircleOutlinedIcon,
                 label: 'Keyboard shortcuts',
                 route: 'keyboard',

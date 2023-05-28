@@ -1,5 +1,4 @@
-import { useTheme } from '@emotion/react'
-import { ListItemIcon, MenuItem } from '@mui/material'
+import { ListItemIcon, MenuItem, useTheme } from '@mui/material'
 import React from 'react'
 
 export const DropdownHeader = ({dropdownEl, popupState}) => {

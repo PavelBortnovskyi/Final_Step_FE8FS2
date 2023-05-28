@@ -1,5 +1,4 @@
-import { useTheme } from '@emotion/react';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from 'src/redux/thunk/logoutUser';
 

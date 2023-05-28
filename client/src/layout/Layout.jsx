@@ -46,7 +46,7 @@ export const Layout = () => {
               justifyContent: 'end',
             }}
           >
-            <Sidebar />
+            <Sidebar isAuthenticated={isAuthenticated}/>
           </Grid>
 
           <Grid
@@ -109,7 +109,7 @@ export const Layout = () => {
 
           }
         </Box>
-        {/* {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />} */}
+        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
 
         {/* routes for modal window */}
         <ModalRoutes />
