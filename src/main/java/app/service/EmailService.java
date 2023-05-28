@@ -11,6 +11,9 @@ public class EmailService {
   @Autowired
   private JavaMailSender mailSender;
 
+  /**
+   * Method send email from app email address (reset password link)
+   */
   public void sendEmail(String to, String subject, String text) {
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(to);

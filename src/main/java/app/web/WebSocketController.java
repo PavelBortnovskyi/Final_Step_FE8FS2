@@ -5,6 +5,7 @@ import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
 import app.exceptions.httpError.BadRequestException;
+import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.ChatService;
@@ -35,7 +36,7 @@ public class WebSocketController {
 
   private final NotificationFacade notificationFacade;
 
-  private final ChatService chatService;
+  private final ChatFacade chatFacade;
 
   private final UserModelService userService;
 
@@ -52,7 +53,7 @@ public class WebSocketController {
                                                                                   MessageRequest messageDTO,
                                                                                   HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    this.chatService.addMessage(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
+    this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
