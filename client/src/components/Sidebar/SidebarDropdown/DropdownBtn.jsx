@@ -12,6 +12,7 @@ const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
     alignItems: 'center',
     padding: '0 4px',
     borderRadius: '30px',
+    
 
     '&:hover': {
         backgroundColor: `${theme.palette.background.hover}`,
