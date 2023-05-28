@@ -1,37 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { createTweet } from '../thunk/createTweet.js'
 
 const initialState = {
   text: '',
   files: [],
-  loading: false,
+  isLoading: false,
   error: null,
 };
 
-const tweetSlice = createSlice({
+export const tweetSlice = createSlice({
   name: 'tweet',
   initialState,
-  reducers: {
-    setText: (state, action) => {
-      state.text = action.payload;
-    },
-    setFiles: (state, action) => {
-      state.files = action.payload;
-    },
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
-    setError: (state, action) => {
+
+  extraReducers: (builder) => {
+    // create_tweet
+    builder.addCase(createTweet.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = '';
+    });
+    builder.addCase(createTweet.fulfilled, (state, action) => {
+      state.text = action.payload.text;
+      state.files = action.payload.files;
+      state.isLoading = false;
+    });
+    builder.addCase(createTweet.rejected, (state, action) => {
       state.error = action.payload;
-    },
-    clearData: (state) => {
-      state.text = '';
-      state.files = [];
-      state.loading = false;
-      state.error = null;
-    },
+      state.error = action.payload?.info;
+      state.isLoading = false;
+    });
   },
 });
 
-export const { setText, setFiles, setLoading, setError, clearData } =
-  tweetSlice.actions;
 export default tweetSlice.reducer;

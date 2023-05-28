@@ -1,6 +1,14 @@
 import { Box, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export function UserFolower() {
+  const countUserFollowers = useSelector(
+    (state) => state.user.user.countUserFollowers
+  );
+  const countUserFollowings = useSelector(
+    (state) => state.user.user.countUserFollowings
+  );
+
   return (
     <Box
       sx={{
@@ -9,7 +17,7 @@ export function UserFolower() {
       }}
     >
       <Typography>
-        0
+        {countUserFollowings}
         <span
           style={{
             color: "rgb(139, 152, 165)",
@@ -19,7 +27,7 @@ export function UserFolower() {
         </span>
       </Typography>
       <Typography>
-        0
+        {countUserFollowers}
         <span
           style={{
             color: "rgb(139, 152, 165)",

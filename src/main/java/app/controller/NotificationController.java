@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 
 @CrossOrigin
@@ -25,27 +27,24 @@ public class NotificationController {
 
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
-                                                                  @RequestParam("page") Integer page,
-                                                                  @RequestParam("pageSize") Integer pageSize) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+                                                                  @RequestParam("page") @NotNull @Positive Integer page,
+                                                                  @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
     return this.notificationService.getUserNotifications(currUserId, pageSize, page - 1);
   }
 
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
-                                                                   @RequestParam("page") Integer page,
-                                                                   @RequestParam("pageSize") Integer pageSize) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+                                                                   @RequestParam("page") @NotNull @Positive Integer page,
+                                                                   @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
     return this.notificationService.getUserSeenNotificationsList(currUserId, pageSize, page - 1);
   }
 
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
-                                                                     @RequestParam("page") Integer page,
-                                                                     @RequestParam("pageSize") Integer pageSize) {
-    if (pageSize <= 0 && page <= 0) throw new BadRequestException("Page number and page size must be > 0");
+                                                                     @RequestParam("page") @NotNull @Positive Integer page,
+                                                                     @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
     return this.notificationService.getUserUnreadNotificationsList(currUserId, pageSize, page - 1);
   }
