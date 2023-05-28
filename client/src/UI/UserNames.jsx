@@ -7,9 +7,9 @@ import { Box, Typography, alpha, useTheme } from '@mui/material';
 // modify by Portnov Dmytro
 
 function UserNames({
-  fullName,
+  fullName = '',
   verified = false,
-  userTag,
+  userTag = '',
   postTime = '',
   text = null,
 }) {
