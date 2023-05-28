@@ -64,25 +64,26 @@ public class TweetController {
   //create new tweet
   @PutMapping("/tweet")
   @Validated({Marker.New.class})
-  public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class})
-                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
-                                                   @RequestParam(value = "file", required = false) MultipartFile file) {
-    return ResponseEntity.ok(tweetService.createTweet(tweetRequest, request, file));
+  public ResponseEntity<TweetResponse> createTweet(@Valid @JsonView({Marker.New.class}) @RequestBody
+                                                   @RequestParam(value = "data") String jsonData, HttpServletRequest request,
+                                                   @RequestParam(value = "file", required = false) MultipartFile[] file) {
+    return ResponseEntity.ok(tweetService.createTweet(request, jsonData, file));
   }
 
   @PutMapping("/retweet")
   @Validated({Marker.Retweet.class})
-  public ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.Retweet.class})
-                                                     @RequestBody TweetRequest tweetRequest, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createRetweet(tweetRequest, request));
+  public ResponseEntity<TweetResponse> createRetweet(@Valid @JsonView({Marker.New.class}) @RequestBody
+                                                     @RequestParam(value = "data") String jsonData, HttpServletRequest request,
+                                                     @RequestParam(value = "file", required = false) MultipartFile[] file) {
+    return ResponseEntity.ok(tweetService.createRetweet(request, jsonData, file));
   }
 
   @PutMapping("/reply")
   @Validated({Marker.Retweet.class})
-  public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.Retweet.class})
-                                                   @RequestBody TweetRequest tweetRequest, HttpServletRequest request,
-                                                   @RequestParam("files") MultipartFile[] files) {
-    return ResponseEntity.ok(tweetService.createReply(tweetRequest, request));
+  public ResponseEntity<TweetResponse> createReply(@Valid @JsonView({Marker.New.class}) @RequestBody
+                                                   @RequestParam(value = "data") String jsonData, HttpServletRequest request,
+                                                   @RequestParam(value = "file", required = false) MultipartFile[] file) {
+    return ResponseEntity.ok(tweetService.createReply(request, jsonData, file));
   }
 
   //get List tweets following users
@@ -104,7 +105,7 @@ public class TweetController {
     return ResponseEntity.ok(tweetActionFacade.addLike(tweetId, request));
   }
 
-  @PostMapping("/add_bookmark/{tweetId}")
+  @PostMapping("/bookmark/{tweetId}")
   public ResponseEntity<TweetActionResponse> addBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
     return ResponseEntity.ok(tweetActionFacade.addBookmark(tweetId, request));
   }
@@ -124,6 +125,16 @@ public class TweetController {
   public void deleteBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
     tweetActionService.deleteBookmark(tweetId, request);
   }
+
+  @GetMapping("/status_like/{tweetId}")
+  public ResponseEntity statusLike(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request){
+    return ResponseEntity.ok(tweetActionService.statusLike(tweetId, request));
+  }
+
+/*  @GetMapping("/status_bookmark/{tweetId}")
+  public ResponseEntity statusBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request){
+    return ResponseEntity.ok(tweetActionService.statusBookmark(tweetId, request));
+  }*/
 
   @GetMapping("/get_likes/{id}")
   public ResponseEntity getCount(@PathVariable(name = "id") Long tweetId) {

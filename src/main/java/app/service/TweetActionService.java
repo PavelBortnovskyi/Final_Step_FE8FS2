@@ -59,10 +59,6 @@ public class TweetActionService extends GeneralService<TweetAction> {
     return response;
   }
 
-  public List<Tweet> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
-    return tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"), Pageable.ofSize(pageSize).withPage(page)).toList();
-  }
-
   public Integer getCount(Long tweetId, TweetActionType tweetActionType) {
     return tweetActionRepository.getCountByTweetIdAndActionType(tweetId, tweetActionType);
   }
@@ -95,6 +91,22 @@ public class TweetActionService extends GeneralService<TweetAction> {
     delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
       userModelService.getUser((Long) request.getAttribute("userId")).getId(),
       TweetActionType.BOOKMARK));
+  }
+
+  public boolean statusLike(Long tweetId, HttpServletRequest request){
+    if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.LIKE,
+            userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+            tweetId) == 0) return false;
+    else return true;
+
+  }
+
+  public boolean statusBookmark(Long tweetId, HttpServletRequest request){
+    if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.BOOKMARK,
+            userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+            tweetId) == 0) return false;
+    else return true;
+
   }
 
 

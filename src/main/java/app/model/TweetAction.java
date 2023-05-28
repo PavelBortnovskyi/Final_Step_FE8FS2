@@ -6,21 +6,35 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "tweet_actions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "tweet_id", "actionType"}))
+@Table(name = "tweet_actions")
 @NoArgsConstructor
 @Data
 public class TweetAction extends BaseEntityModel {
   @Enumerated(EnumType.STRING)
   private TweetActionType actionType;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private UserModel user;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "tweet_id")
   private Tweet tweet;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Tweet tweet = (Tweet) o;
+    return getId().equals(tweet.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getId());
+  }
 }
