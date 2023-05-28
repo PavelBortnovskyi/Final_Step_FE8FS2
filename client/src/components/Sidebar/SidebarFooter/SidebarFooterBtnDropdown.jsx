@@ -23,12 +23,8 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
             <Avatar src="./img/avatar2.JPG" />
 
             <Hidden lgDown>
-                <Box ml={1}
-                    sx={{
-                        textAlign: 'start',
-                    }}>
-                    <Typography
-                        variant="subtitle1"
+                <Box ml={1} sx={{textAlign: 'start'}}>
+                    <Typography variant="subtitle1"
                         sx={{
                             textTransform: 'capitalize',
                             color: `${theme.palette.text.active}`,

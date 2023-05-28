@@ -10,6 +10,8 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import RemoveFromQueueOutlinedIcon from '@mui/icons-material/RemoveFromQueueOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 
 export const dropdownElements = [
@@ -37,6 +39,7 @@ export const dropdownElements = [
         label: 'Verified Orgs',
         route: 'verified_orgs_signup',
     },
+    
 ]
 
 

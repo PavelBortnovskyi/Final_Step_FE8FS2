@@ -12,19 +12,18 @@ const ListItemButtonStyled = styled(ListItemButton)((props) => ({
     padding: '0 4px',
 }))
 
+const ListItemIconStyled = styled(ListItemIcon)(({theme}) => ({
+    fontSize: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: `${theme.palette.text.primary}`,
+}))
 
 
 export const MainMenuSidebar = ({ navElement }) => {
     const theme = useTheme();
-
-    const ListItemIconStyled = styled(ListItemIcon)((props) => ({
-        fontSize: 30,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: `${theme.palette.text.primary}`,
-    }))
-
+    
     return (
         <Link to={navElement.route} underline="none" key={navElement.id} component={NavLink}>
             <ListItem key={navElement.id} disablePadding sx={{  width: '100%' }}>
