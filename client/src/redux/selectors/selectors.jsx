@@ -6,3 +6,6 @@ export const getTheme = (state) => state.settingsTheme;
 
 // user-owner data
 export const getUserData = (state) => state.user;
+
+// following tweets
+export const getFollowingTweets = (state) => state.tweets;
