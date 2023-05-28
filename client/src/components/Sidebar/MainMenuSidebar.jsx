@@ -1,10 +1,10 @@
-import { useTheme } from '@emotion/react';
 import {
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   styled,
+  useTheme,
 } from '@mui/material';
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
@@ -17,16 +17,16 @@ const ListItemButtonStyled = styled(ListItemButton)((props) => ({
   padding: '0 4px',
 }));
 
+const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
+  fontSize: 30,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: `${theme.palette.text.primary}`,
+}));
+
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
-
-  const ListItemIconStyled = styled(ListItemIcon)((props) => ({
-    fontSize: 30,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: `${theme.palette.text.primary}`,
-  }));
 
   return (
     <Link

@@ -7,7 +7,6 @@ export function UserBio() {
     userBio && (
       <Typography
         sx={{
-          // color: "rgb(139, 152, 165)",
           padding: "14px 0 0",
         }}
       >

@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { Avatar, Tab, Tabs } from '@mui/material';
 import styled from '@emotion/styled';
 import { useMode } from 'src/styles/_materialTheme';
+import { LogoTwitter } from '../Sidebar/LogoTwitter';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -18,6 +19,7 @@ const CustomTab = styled(Tab)((props) => ({
 function MainPage_header() {
   const [tabIndex, setTabIndex] = useState(0);
   const theme = useMode();
+  
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -44,13 +46,21 @@ function MainPage_header() {
             pl: '20px',
             fontSize: '20px',
             textDecoration: 'none',
-            color: 'rgb(255, 255, 255)',
+            color: `${theme.palette.text.primary}`,
           }}
         >
           Home
         </Box>
-        <Avatar src="./img/avatar2.JPG" sx={{display: { xs: 'block', sm: 'none' },}}/>
       </NavLink>
+      <Box sx={{
+        display: { xs: 'flex', sm: 'none' },
+        marginTop: '12px',
+        alignItems: 'center',
+        }}>
+      <Avatar src="./img/avatar2.JPG" sx={{marginRight: '35%'}}/>
+      <LogoTwitter/>
+      </Box>
+      
 
       <Tabs value={tabIndex} onChange={handleTabChange}>
         <CustomTab label="For you" />

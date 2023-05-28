@@ -1,13 +1,6 @@
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Box, FormControl, MenuItem, MenuList, OutlinedInput, Select } from '@mui/material';
-import React, { useState } from 'react';
-import InputAdornment from '@mui/material/InputAdornment';
-// import { selectElements } from './DropdownElements';
-
-
-
-
+import { Box, FormControl, MenuItem,  OutlinedInput, Select, useTheme } from '@mui/material';
+import React from 'react';
 
 
 export const DropdownFooterSelect = ({ mainLabel, selects }) => {
@@ -83,7 +76,7 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
 
 
                 {selects && selects.map((selectEl) => (
-                    <Box display="flex" alignItems="center"
+                    <Box display="flex" alignItems="center" key={selectEl.id}
                         sx={{
                             backgroundColor: `${theme.palette.background.default}`,
                             padding: '0 12px',
