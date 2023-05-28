@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.Map;
 
 @Log4j2
 @Validated
@@ -45,15 +48,17 @@ public class UserController {
   }
 
   @PutMapping("profile/avatar_img")
-  public ResponseEntity<UserModelResponse> uploadAvatarImg(@RequestParam("file") MultipartFile file,
-                                                           HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file));
+  @ResponseStatus(HttpStatus.OK)
+  public Map<String, String> uploadAvatarImg(@RequestParam("file") MultipartFile file,
+                                             HttpServletRequest httpRequest) {
+    return userModelFacade.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file);
   }
 
   @PutMapping("profile/header_img")
-  public ResponseEntity<UserModelResponse> uploadHeaderImg(@RequestParam("file") MultipartFile file,
-                                                           HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file));
+  @ResponseStatus(HttpStatus.OK)
+  public Map<String, String> uploadHeaderImg(@RequestParam("file") MultipartFile file,
+                                             HttpServletRequest httpRequest) {
+    return userModelFacade.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file);
   }
 
   @PostMapping("subscribe/{userIdToFollowing}")
@@ -69,29 +74,29 @@ public class UserController {
   }
 
   @GetMapping("followers")
-  public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                               HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("followings")
-  public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
-                                               @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("offer_followings")
-  public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                    @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                     HttpServletRequest httpServletRequest) {
     return userModelFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("search")
-  public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") int page,
-                                          @RequestParam(name = "size", defaultValue = "10") int size,
+  public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                          @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                           @RequestParam(name = "search_string", defaultValue = "") String serchString,
                                           HttpServletRequest httpServletRequest) {
     return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, page, size);

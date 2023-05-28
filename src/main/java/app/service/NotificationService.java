@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,7 +47,7 @@ public class NotificationService extends GeneralService<Notification> {
     } else return false;
   }
 
-  public Optional<Notification> findById(Long id){
+  public Optional<Notification> findById(Long id) {
     return this.notificationRepository.findById(id);
   }
 }

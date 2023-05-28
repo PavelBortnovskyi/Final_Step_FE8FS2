@@ -3,7 +3,6 @@ package app.service;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetType;
-import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetModelRepository;
@@ -11,11 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,6 +63,7 @@ public class TweetService extends GeneralService<Tweet> {
 
     return tweetResponse;
   }
+
   public TweetResponse createTweet(TweetRequest tweetRequest, HttpServletRequest request) {
     return create(tweetRequest, request, TweetType.TWEET);
   }
