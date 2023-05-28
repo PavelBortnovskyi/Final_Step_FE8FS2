@@ -63,7 +63,7 @@ export const SearchField = () => {
     }
   };
 
-  // TODO: Need create debounce rerquest
+  // TODO: Need create debounce request
   const handleChange = async (e) => {
     setSearchText(e.target.value);
 

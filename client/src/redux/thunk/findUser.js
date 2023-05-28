@@ -10,11 +10,13 @@ export const findUser = createAsyncThunk(
       // console.log(
       //   `/user/search?search_string=${search}&size=${size}&page=${page}`
       // );
+      if (search.trim() === '') return { searchStr: search.trim() };
+
       const { data } = await myAxios.get(
-        `/user/search?search_string=${search}&size=${size}&page=${page}`
+        `/user/search?search_string=${search.trim()}&size=${size}&page=${page}`
       );
 
-      return data;
+      return { ...data, searchStr: search.trim() };
     } catch (error) {
       // set message error from server
       const errorMessage = error.response.data || error.message;
