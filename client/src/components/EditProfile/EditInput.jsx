@@ -40,14 +40,6 @@ export function EditInput({ field, ...props }) {
         {...props}
         placeholder={props.label}
       />
-      {/* <div>
-      <input
-        className="orderInput"
-        {...field}
-        {...props}
-        placeholder={props.label}
-      />
-    </div> */}
     </>
   );
 }

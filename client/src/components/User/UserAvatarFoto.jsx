@@ -4,7 +4,9 @@ export function UserAvatarFoto({ userAvatar }) {
   return (
     <Box
       sx={{
-        fontSize: "76px",
+        overflow: "hidden",
+        width: "134px",
+        height: "134px",
         marginTop: "-70px",
         boxShadow: "0px 0px 0px 5px #15202b",
         marginLeft: "15px",
