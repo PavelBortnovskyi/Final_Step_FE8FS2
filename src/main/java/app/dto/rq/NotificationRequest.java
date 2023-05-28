@@ -2,8 +2,6 @@ package app.dto.rq;
 
 import app.annotations.Marker;
 import app.enums.NotificationType;
-import app.model.Tweet;
-import app.model.UserModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
