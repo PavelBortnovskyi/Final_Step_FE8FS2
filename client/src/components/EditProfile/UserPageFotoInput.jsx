@@ -15,7 +15,7 @@ export function UserPageFotoInput() {
       }}
     >
       <AddAPhotoOutlinedIcon sx={{ fontSize: "18px" }} />
-      <input name="fotoPage" type="file" hidden />
+      <input name="foto" type="file" hidden />
     </Button>
   );
 }
