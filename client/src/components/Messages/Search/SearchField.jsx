@@ -1,6 +1,7 @@
 import { Box, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 import { SearchTabs } from './SearchTabs';
 import { useState } from 'react';
@@ -12,6 +13,9 @@ const Search = styled('div')(({ theme }) => ({
   // borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.text.primary, 0.15),
   borderRadius: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
   '&:hover': {
     backgroundColor: alpha(theme.palette.text.primary, 0.25),
   },
@@ -57,6 +61,12 @@ export const SearchField = () => {
   // set search text
   const [searchText, setSearchText] = useState('');
 
+  // clear search input
+  const handleClear = () => {
+    setSearchText('');
+    dispatch(findUser({ search: '' }));
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       dispatch(findUser({ search: searchText }));
@@ -87,6 +97,28 @@ export const SearchField = () => {
           placeholder="Search Direct Messages"
           inputProps={{ 'aria-label': 'search' }}
         />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={handleClear}
+        >
+          <CancelRoundedIcon
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              margin: '0 10px',
+              // color: `${theme.palette.primary.main}`,
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
+          />
+        </Box>
       </Search>
       <Box sx={{ marginTop: '16px' }}>
         <SearchTabs />

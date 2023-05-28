@@ -102,9 +102,8 @@ export const themeSettings = (colorTheme) => {
       MuiTabs: {
         styleOverrides: {
           root: {
-            // Ваши стили здесь
-
             '& .MuiTab-root': {
+              textTransform: 'none',
               fontSize: '16px',
             },
           },
