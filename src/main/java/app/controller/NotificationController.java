@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.dto.rs.NotificationResponse;
-import app.service.NotificationService;
+import app.facade.NotificationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -22,29 +22,38 @@ import javax.validation.constraints.Positive;
 @Validated
 public class NotificationController {
 
-  private final NotificationService notificationService;
+  private final NotificationFacade notificationFacade;
 
+  /**
+   * This endpoint waiting for valid url params to return all user notifications in page format
+   */
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
                                                                   @RequestParam("page") @NotNull @Positive Integer page,
                                                                   @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
-    return this.notificationService.getUserNotifications(currUserId, pageSize, page - 1);
+    return this.notificationFacade.getAllUserNotifications(currUserId, pageSize, page);
   }
 
+  /**
+   * This endpoint waiting for valid url params to return all user seen notifications in page format
+   */
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
                                                                    @RequestParam("page") @NotNull @Positive Integer page,
                                                                    @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
-    return this.notificationService.getUserSeenNotificationsList(currUserId, pageSize, page - 1);
+    return this.notificationFacade.getSeenUserNotifications(currUserId, pageSize, page);
   }
 
+  /**
+   * This endpoint waiting for valid url params to return all user not seen notifications in page format
+   */
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
                                                                      @RequestParam("page") @NotNull @Positive Integer page,
                                                                      @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
-    return this.notificationService.getUserUnreadNotificationsList(currUserId, pageSize, page - 1);
+    return this.notificationFacade.getUnseenUserNotifications(currUserId, pageSize, page);
   }
 }

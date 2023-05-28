@@ -45,7 +45,7 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   @Modifying
   @Transactional
   @Query(value = "UPDATE UserModel u SET u.refreshed = :used WHERE u.id = :id")
-  void changeTokenStatusById(@Param("id") Long id, @Param("used") boolean used);
+  void changeRefreshTokenStatusById(@Param("id") Long id, @Param("used") boolean used);
 
   @Modifying
   @Transactional
@@ -61,5 +61,4 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   @Transactional
   @Query(value = "UPDATE UserModel u SET u.password = :password WHERE u.id = :id")
   void updatePassword(@Param("id") Long userId, @Param("password") String freshPassword);
-
 }
