@@ -53,6 +53,14 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
+//  @ExceptionHandler({IllegalArgumentException.class})
+//  @ResponseBody
+//  public ErrorInfo handleUrlException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+//    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//    log.error("Illegal url params: " + request.getRequestURI());
+//    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+//  }
+
 //  @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
 //  @ResponseBody
 //  public ErrorInfo handleValidation(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {

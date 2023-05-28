@@ -13,6 +13,9 @@ public class MessageService extends GeneralService<Message> {
 
   private final MessageModelRepository messageRepository;
 
+  /**
+   * Method for change message body (checks userId as author of message)
+   */
   public void changeMessage(Long userId, Message message) throws MessageNotFoundException, MessageException {
     if (userId.equals(message.getUser().getId())) {
       this.messageRepository.findById(message.getId())
@@ -25,6 +28,9 @@ public class MessageService extends GeneralService<Message> {
       throw new MessageException(String.format("User with id: %d is not the author of message with id: %d", userId, message.getId()));
   }
 
+  /**
+   * Method for delete message (checks userId as author of message)
+   */
   public boolean deleteMessage(Long userId, Long messageId) throws MessageNotFoundException, MessageException {
     if (this.messageRepository.findById(messageId)
       .orElseThrow(() -> new MessageNotFoundException(String.format("Message with id: %d not found", messageId)))
