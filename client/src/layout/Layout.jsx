@@ -46,7 +46,7 @@ export const Layout = () => {
               justifyContent: 'end',
             }}
           >
-            <Sidebar isAuthenticated={isAuthenticated}/>
+            <Sidebar isAuthenticated={isAuthenticated} />
           </Grid>
 
           <Grid
@@ -76,40 +76,44 @@ export const Layout = () => {
           </Grid>
         </Grid>
 
-        <Box sx={{
-          display: { xs: 'flex', sm: 'none' },
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          background: `${theme.palette.background.default}`,
-          height: '50px',
-          width: '100%',
-          zIndex: '10',
-        }}>
-          {
-
-            mainSidebarElementsMobile.map(navElement => (
-              <Link to={navElement.route} underline="none" key={navElement.id} component={NavLink}>
-                <ListItemIcon sx={{
+        <Box
+          sx={{
+            display: { xs: 'flex', sm: 'none' },
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            background: `${theme.palette.background.default}`,
+            height: '50px',
+            width: '100%',
+            zIndex: '10',
+          }}
+        >
+          {mainSidebarElementsMobile.map((navElement) => (
+            <Link
+              to={navElement.route}
+              underline="none"
+              key={navElement.id}
+              component={NavLink}
+            >
+              <ListItemIcon
+                sx={{
                   fontSize: 30,
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                   color: `${theme.palette.text.primary}`,
                   zIndex: '11',
-                }}>
-                  <navElement.icon sx={{ fontSize: 30 }} />
-                </ListItemIcon>
-              </Link>
-
-
-            ))
-
-          }
+                }}
+              >
+                <navElement.icon sx={{ fontSize: 30 }} />
+              </ListItemIcon>
+            </Link>
+          ))}
         </Box>
-        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
+
+        {!isAuthenticated && <BottomToolbar />}
 
         {/* routes for modal window */}
         <ModalRoutes />

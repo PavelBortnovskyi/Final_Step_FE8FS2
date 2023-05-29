@@ -27,9 +27,9 @@ function TweetPost({
 
       <Box padding={1}>
         <UserNames
-          username={username}
+          fullName={username}
           verified={verified}
-          displayName={displayName}
+          userTag={displayName}
           postTime="10h"
         />
 

@@ -47,7 +47,7 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: '#FFF',
-            }
+            },
           }
         : {
             primary: {
@@ -86,7 +86,7 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: 'rgb(30, 155, 240)',
-            }
+            },
           }),
     },
     breakpoints: {
@@ -102,9 +102,8 @@ export const themeSettings = (colorTheme) => {
       MuiTabs: {
         styleOverrides: {
           root: {
-            // Ваши стили здесь
-
             '& .MuiTab-root': {
+              textTransform: 'none',
               fontSize: '16px',
             },
           },
