@@ -2,11 +2,14 @@ package app.service;
 
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
+import app.dto.rs.TweetResponse;
+import app.dto.rs.UserModelResponse;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.Chat;
 import app.model.Message;
+import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
@@ -148,4 +151,29 @@ public class ChatService extends GeneralService<Chat> {
   public Page<MessageResponse> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
   }
+
+//  public List<Page> getSearchResult(Long userId, Integer pageSize, Integer pageNumber, String keyword){
+//    Page<Object[]> result = chatRepository.getSearchResults(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber));
+//    List<UserModelResponse> fullnameUsers = new ArrayList<>();
+//    List<UserModelResponse> tagUsers = new ArrayList<>();
+//    List<MessageResponse> messages = new ArrayList<>();
+//    List<TweetResponse> tweets = new ArrayList<>();
+//    List<Page> all = new ArrayList<>();
+//
+//    for (Object[] objects : result.getContent()){
+//      UserModel fullnameUser = (UserModel) objects[0];
+//      UserModel tagUser = (UserModel) objects[1];
+//      Message message = (Message) objects[2];
+//      Tweet tweet = (Tweet) objects[3];
+//      fullnameUsers.add(modelMapper.map(fullnameUser, UserModelResponse.class));
+//      tagUsers.add(modelMapper.map(tagUser, UserModelResponse.class));
+//      messages.add(modelMapper.map(message, MessageResponse.class));
+//      tweets.add(modelMapper.map(tweet, TweetResponse.class));
+//    }
+//    all.add(new PageImpl(fullnameUsers));
+//    all.add(new PageImpl(tagUsers));
+//    all.add(new PageImpl(messages));
+//    all.add(new PageImpl(tweets));
+//    return all;
+//  }
 }
