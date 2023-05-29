@@ -20,7 +20,7 @@ spring:
     show-sql: false
     generate-ddl: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
   sql:
     init:
       mode: always
