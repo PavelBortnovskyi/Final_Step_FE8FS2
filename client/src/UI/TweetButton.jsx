@@ -1,6 +1,5 @@
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import React from 'react';
-import { useTheme } from '@emotion/react';
 
 function TweetButton({ isDisabled, fnc, text, w, h, fw=400 }) {
   const theme = useTheme();

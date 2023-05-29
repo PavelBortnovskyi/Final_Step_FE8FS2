@@ -6,11 +6,6 @@ import { Box, styled } from '@mui/material';
 
 const BoxFooterSliderStyled = styled(Box)((props) => ({
     marginLeft: '12px',
-
-    // alignSelf: {xs: 'end', lg: 'start'},
-    // '& .MuiButton-root': {
-    //     padding: 0, 
-    // }
 }))
 
 

@@ -6,39 +6,48 @@ import { bindMenu } from 'material-ui-popup-state';
 import styled from '@emotion/styled';
 import { DropdownFooterSelect } from './DropdownFooterSelect';
 import { selectElements } from './DropdownElements';
+import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher';
+import { LogoutButton } from 'src/UI/LogoutButton/LogoutButton';
 
-
-
-const MenuStyled = styled(Menu)((props) => ({
+const MenuStyled = styled(Menu)(({ theme }) => ({
     left: 0,
     top: '-260px',
-    color: 'rgb(21,32,43)',
     '& .MuiPopover-paper': {
         borderRadius: '10px',
         boxShadow: '2px 1px 10px 0.5px rgb(56, 68, 77)',
     },
     '& .MuiList-padding': {
         padding: 0,
-        backgroundColor: "rgb(21,32,43)",
+        backgroundColor: `${theme.palette.background.default}`,
     },
     '&:hover': {
         backgroundColor: 'rgba(0, 0, 0, 0)'
     }
 }))
 
-export const SidebarDropdownMenu = ({ popupState }) => {
+
+
+export const SidebarDropdownMenu = ({ popupState, isAuthenticated }) => {
+
     return (
         <MenuStyled {...bindMenu(popupState)}>
 
-            <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)', color: '#FFF' }}>
+            <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)' }}>
                 {
                     dropdownElements.map(dropdownEl => (
-                        <DropdownHeader key={dropdownEl.id}
+                        <DropdownHeader
+                            key={dropdownEl.id}
                             dropdownEl={dropdownEl}
                             popupState={popupState}
+
                         />
                     ))
                 }
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '4px 0' }}>
+                <LogoutButton />
+                <ThemeSwitcher />
             </Box>
 
             {

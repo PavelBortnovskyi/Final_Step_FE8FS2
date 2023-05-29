@@ -6,15 +6,22 @@ import app.model.UserModel;
 import app.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Log4j2
 @RestController
@@ -46,7 +53,7 @@ public class TestController {
     Thread.sleep(2000);
     this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(1L).get(), "Hello!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(2L).get(), "Hello Nigga!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(2L).get(), "Hello there!", LocalDateTime.now()));
   }
 
   @PostMapping(value = "/initUsers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -123,4 +130,13 @@ public class TestController {
     this.userService.subscribe(5L, 3L);
     this.userService.subscribe(5L, 4L);
   }
+
+//  @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+//  public List<Page> handleSearch(HttpServletRequest request,
+//                                 @RequestParam("page") @NotNull @Positive Integer page,
+//                                 @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
+//                                 @RequestParam("keyword") @NotNull String keyword,
+//                                 @RequestParam("id") Long currUserId) {
+//    return this.chatService.getSearchResult(currUserId, pageSize, page, keyword);
+//  }
 }
