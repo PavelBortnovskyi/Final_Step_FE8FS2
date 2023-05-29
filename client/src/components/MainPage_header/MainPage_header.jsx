@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Avatar, Tab, Tabs } from '@mui/material';
-import styled from '@emotion/styled';
+import { Avatar, Tab, Tabs, styled } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { LogoTwitter } from '../Sidebar/LogoTwitter';
 
