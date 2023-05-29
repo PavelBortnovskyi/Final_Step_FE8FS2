@@ -4,6 +4,7 @@ import app.annotations.Marker;
 import app.dto.rq.UserModelRequest;
 import app.facade.AuthFacade;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
