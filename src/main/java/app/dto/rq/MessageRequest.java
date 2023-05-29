@@ -6,12 +6,18 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
 @ApiModel(description = "Chat request")
 public class MessageRequest {
+
+  @JsonView({Marker.Delete.class, Marker.Existed.class})
+  @NotNull(message = "Message id must be specified", groups = {Marker.Delete.class, Marker.Existed.class})
+  @Null(groups = {Marker.New.class, Marker.Existed.class})
+  private Long id;
 
   @JsonView({Marker.New.class, Marker.Existed.class})
   @NotNull(message = "Chat id must be specified", groups = {Marker.New.class, Marker.Existed.class})
@@ -26,5 +32,4 @@ public class MessageRequest {
   private String body;
 
   private LocalDateTime sent = LocalDateTime.now();
-
 }
