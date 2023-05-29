@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Avatar, Tab, Tabs, styled } from '@mui/material';
+import { Avatar, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, SwipeableDrawer, Tab, Tabs, styled } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { LogoTwitter } from '../Sidebar/LogoTwitter';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
+import { SidebarMobileElements } from './SidebarMobile/SidebarMobileElements';
+import { SidebarDropdownMenu } from '../Sidebar/SidebarDropdown/SidebarDropdownMenu';
+import PopupState from 'material-ui-popup-state';
+import { DropdownBtn } from '../Sidebar/SidebarDropdown/DropdownBtn';
+import { selectElements } from '../Sidebar/SidebarDropdown/DropdownElements';
+import { DropdownFooterSelect } from '../Sidebar/SidebarDropdown/DropdownFooterSelect';
+import { User } from '../User/User';
+import { UserInfo } from '../User/UserInfo';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -17,8 +26,25 @@ const CustomTab = styled(Tab)((props) => ({
 
 function MainPage_header() {
   const [tabIndex, setTabIndex] = useState(0);
+  const [state, setState] = React.useState({
+    left: false,
+  });
   const theme = useMode();
-  
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+
+
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -34,7 +60,7 @@ function MainPage_header() {
         borderBottom: '1px solid rgb(56, 68, 77)',
         position: 'sticky',
         top: '0',
-        zIndex: 1300,
+        // zIndex: 1300,
       }}
     >
       <NavLink to="/">
@@ -53,13 +79,70 @@ function MainPage_header() {
       </NavLink>
       <Box sx={{
         display: { xs: 'flex', sm: 'none' },
-        marginTop: '12px',
+        marginTop: '10px',
         alignItems: 'center',
-        }}>
-      <Avatar src="./img/avatar2.JPG" sx={{marginRight: '35%'}}/>
-      <LogoTwitter/>
+      }}>
+        <Avatar
+          src="./img/avatar2.JPG"
+          sx={{ marginRight: '35%', marginLeft: '10px' }}
+          onClick={toggleDrawer('left', true)} />
+
+{/* start */}
+        <SwipeableDrawer
+          anchor='left'
+          open={state['left']}
+          onClose={toggleDrawer('left', false)}
+          onOpen={toggleDrawer('left', true)}
+          sx={{
+            '& .MuiDrawer-paper': {
+                backgroundColor: `${theme.palette.background.default}`,
+              }
+          }}
+        >
+          <Box
+            
+            role="presentation"
+            onClick={toggleDrawer('left', false)}
+            onKeyDown={toggleDrawer('left', false)}
+            sx={{ width: '75vw'}}
+          >
+          <UserInfo/>
+            <List>
+              {SidebarMobileElements.map((navElement) => (
+                <ListItem key={navElement.id} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                    <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
+                    </ListItemIcon>
+                    <ListItemText primary={navElement.label} sx={{color: `${theme.palette.text.primary}`,}}/>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <Divider />
+            <List>
+            {
+              selectElements.map(selectEl => (
+                    <DropdownFooterSelect
+                        key={selectEl.id}
+                        mainLabel={selectEl.label}
+                        selects={selectEl.selects}
+                    />
+                ))
+            }
+            </List>
+          </Box>
+          {/* fin */}
+        </SwipeableDrawer>
+
+
+
+
+
+        {/* ------------- */}
+        <LogoTwitter />
       </Box>
-      
+
 
       <Tabs value={tabIndex} onChange={handleTabChange}>
         <CustomTab label="For you" />

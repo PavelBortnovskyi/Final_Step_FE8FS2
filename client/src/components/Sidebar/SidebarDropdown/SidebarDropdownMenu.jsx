@@ -26,7 +26,7 @@ const MenuStyled = styled(Menu)(({ theme }) => ({
 
 
 
-export const SidebarDropdownMenu = ({ popupState, isAuthenticated }) => {
+export const SidebarDropdownMenu = ({ popupState }) => {
 
     return (
         <MenuStyled {...bindMenu(popupState)}>
