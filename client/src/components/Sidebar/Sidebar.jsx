@@ -11,7 +11,6 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { MainMenuSidebar } from './MainMenuSidebar';
 import { LogoTwitter } from './LogoTwitter';
 
-
 const DrawerStyled = styled(Drawer)(({ theme }) => ({
   position: 'fixed',
   zIndex: 10,
@@ -39,23 +38,18 @@ const BoxContainerStyled = styled(Box)((props) => ({
   textAlign: 'start',
 }));
 
-
-
-
-export const Sidebar = ({isAuthenticated}) => {
+export const Sidebar = ({ isAuthenticated }) => {
   const location = useLocation();
-console.log(isAuthenticated);
-
+  // console.log(isAuthenticated);
 
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')
     : mainSidebarElements.filter(
-      (button) => button.label === 'Explore' || button.label === 'Settings'
-    );
+        (button) => button.label === 'Explore' || button.label === 'Settings'
+      );
 
   return (
-    <DrawerStyled variant="permanent" anchor='left' >
-
+    <DrawerStyled variant="permanent" anchor="left">
       <BoxContainerStyled>
         <Box>
           <LogoTwitter />
@@ -67,7 +61,9 @@ console.log(isAuthenticated);
               <MainMenuSidebar navElement={navElement} key={navElement.id} />
             ))}
 
-            {isAuthenticated && <SidebarDropdown isAuthenticated={isAuthenticated} />}
+            {isAuthenticated && (
+              <SidebarDropdown isAuthenticated={isAuthenticated} />
+            )}
           </List>
 
           {isAuthenticated && (
@@ -93,7 +89,7 @@ console.log(isAuthenticated);
               </Link>
             </Box>
           )}
-          {isAuthenticated &&
+          {isAuthenticated && (
             <Link
               to="/modal/tweet"
               state={{ background: location }}
@@ -101,12 +97,12 @@ console.log(isAuthenticated);
             >
               <SmallBtnTweet />
             </Link>
-          }
+          )}
         </Box>
 
-        {
-          isAuthenticated && <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
-        }
+        {isAuthenticated && (
+          <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
+        )}
       </BoxContainerStyled>
 
       {/* }  */}

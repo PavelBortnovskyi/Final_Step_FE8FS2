@@ -11,7 +11,7 @@ function PostList() {
     dispatch(getTweets({ page: 0, pageSize: 5 }));
   }, []);
   const tweets = useSelector(getFollowingTweets);
-  console.log(tweets.tweets);
+  // console.log(tweets.tweets);
   return (
     <Box>
       <Post
