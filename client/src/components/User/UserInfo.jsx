@@ -1,8 +1,7 @@
 import { UserPageFoto } from "./UserPageFoto";
 
 import { Box } from "@mui/material";
-import { UserBio } from "./UserBio";
-import { UserLocation } from "./UserLocation";
+
 import { UserInformationBlock } from "./UserInformationBlock";
 
 export function UserInfo() {
