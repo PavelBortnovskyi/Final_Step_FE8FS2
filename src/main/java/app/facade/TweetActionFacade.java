@@ -26,11 +26,11 @@ public class TweetActionFacade extends GeneralFacade<TweetAction, TweetActionReq
 
   }
 
-  public TweetActionResponse addLike(Long tweetId, HttpServletRequest request) {
+  public Boolean addLike(Long tweetId, HttpServletRequest request) {
     return tweetActionService.addLike(tweetId, request);
   }
 
-  public TweetActionResponse addBookmark(Long tweetId, HttpServletRequest request) {
+  public Boolean addBookmark(Long tweetId, HttpServletRequest request) {
     return tweetActionService.addBookmark(tweetId, request);
   }
 

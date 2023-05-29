@@ -10,6 +10,7 @@ import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,30 +33,31 @@ public class TweetActionService extends GeneralService<TweetAction> {
     return savedAction;
   }
 
-  public TweetActionResponse addLike(Long tweetId, HttpServletRequest request) {
-    TweetAction tweetAction = add(tweetId, request, TweetActionType.LIKE);
-    TweetActionResponse response = new TweetActionResponse();
+  public Boolean addLike(Long tweetId, HttpServletRequest request) {
+    if (!statusLike(tweetId, request)){
+      add(tweetId, request, TweetActionType.LIKE);
+      return true;
+    }else{
+      delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
+          userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.LIKE));
+    }
+    return false;
 
-
-    response.setTweetId(tweetAction.getTweet().getId());
-    response.setActionType(tweetAction.getActionType());
-    response.setUserId(tweetAction.getUser().getId());
-    return response;
   }
 
   public TweetAction addRetweet(Long tweetId, HttpServletRequest request) {
     return add(tweetId, request, TweetActionType.RETWEET);
   }
 
-  public TweetActionResponse addBookmark(Long tweetId, HttpServletRequest request) {
-    TweetAction tweetAction = add(tweetId, request, TweetActionType.BOOKMARK);
-    TweetActionResponse response = new TweetActionResponse();
-
-
-    response.setTweetId(tweetAction.getTweet().getId());
-    response.setActionType(tweetAction.getActionType());
-    response.setUserId(tweetAction.getUser().getId());
-    return response;
+  public Boolean addBookmark(Long tweetId, HttpServletRequest request) {
+    if (!statusBookmark(tweetId, request)){
+      add(tweetId, request, TweetActionType.BOOKMARK);
+      return true;
+    }else{
+      delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
+          userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.BOOKMARK));
+    }
+    return false;
   }
 
   public Integer getCount(Long tweetId, TweetActionType tweetActionType) {
