@@ -1,13 +1,9 @@
 import { UserPageFoto } from "./UserPageFoto";
-import { UserPageAvatar } from "./UserPageAvatar";
-import { ButtonEditProfile } from "./ButtonEditProfile";
-import { UserName } from "./UserName";
-import { UserDateRegistration } from "./UserDateRegistration";
-import { UserFolower } from "./UserFolower";
-import { UserNick } from "./UserNIck";
+
 import { Box } from "@mui/material";
 import { UserBio } from "./UserBio";
 import { UserLocation } from "./UserLocation";
+import { UserInformationBlock } from "./UserInformationBlock";
 
 export function UserInfo() {
   return (
@@ -22,26 +18,7 @@ export function UserInfo() {
           padding: "11px 15px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <UserPageAvatar />
-          <ButtonEditProfile />
-        </Box>
-        <Box sx={{ margin: "12px 0" }}>
-          <UserName />
-          <UserNick />
-          <UserBio />
-        </Box>
-        <Box sx={{ display: "flex", gap: "8px" }}>
-          <UserLocation />
-          <UserDateRegistration />
-        </Box>
-
-        <UserFolower />
+        <UserInformationBlock />
       </Box>
     </Box>
   );
