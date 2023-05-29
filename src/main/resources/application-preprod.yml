@@ -13,8 +13,9 @@ spring:
       enabled: always
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: validate
+    show-sql: false
+    generate-ddl: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
   sql:
