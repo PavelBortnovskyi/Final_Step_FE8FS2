@@ -22,6 +22,7 @@ export const Layout = () => {
 
   // create location for MainRoutes
   const location = useLocation();
+  // background from BottomToolbar where state={{ background: location }}
   const background = location.state && location.state.background;
 
   const theme = useMode();
