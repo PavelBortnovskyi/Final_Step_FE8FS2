@@ -3,12 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { Alert, Button, Snackbar, TextField } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Snackbar,
+  TextField,
+  styled,
+  useTheme,
+} from '@mui/material';
 
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 import styles from 'src/styles/Forms.module.scss';
+
+const TextFieldWhite = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    color: theme.palette.black.main,
+
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}));
 
 // structure data for form
 const SignupSchema = Yup.object().shape({
@@ -20,6 +37,7 @@ const SignupSchema = Yup.object().shape({
 
 // Formik form
 export const FormLogin = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   // get message from server after authorization
@@ -78,7 +96,7 @@ export const FormLogin = () => {
         {({ errors, touched, values, handleChange, handleBlur }) => (
           <Form className={styles.FormBody} autoComplete="off">
             {/* email */}
-            <TextField
+            <TextFieldWhite
               fullWidth
               id="email"
               name="email"
@@ -91,7 +109,7 @@ export const FormLogin = () => {
             />
 
             {/* password */}
-            <TextField
+            <TextFieldWhite
               fullWidth
               id="password"
               name="password"

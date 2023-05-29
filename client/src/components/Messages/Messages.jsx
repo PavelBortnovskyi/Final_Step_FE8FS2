@@ -11,8 +11,13 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import { NavLink } from 'react-router-dom';
 import { SearchField } from './Search/SearchField';
+import { useTheme } from '@emotion/react';
+
+// color: `${theme.palette.text.primary}`,
 
 export const Messages = () => {
+  const theme = useTheme();
+
   return (
     <Box>
       <Container>
@@ -28,12 +33,18 @@ export const Messages = () => {
           <Typography variant="h6">Messages</Typography>
           <Box>
             <Tooltip title="Settings">
-              <IconButton color="primary" href="">
+              <IconButton
+                href=""
+                sx={{ color: `${theme.palette.text.primary}` }}
+              >
                 <SettingsOutlinedIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="New message">
-              <IconButton color="primary" href="">
+              <IconButton
+                href=""
+                sx={{ color: `${theme.palette.text.primary}` }}
+              >
                 <MarkEmailReadOutlinedIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Tooltip>

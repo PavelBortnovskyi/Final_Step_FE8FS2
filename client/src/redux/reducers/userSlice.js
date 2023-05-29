@@ -4,8 +4,8 @@ import { getUser } from '../thunk/getUser.js';
 import { findUser } from '../thunk/findUser.js';
 
 const initialState = {
-  user: {},
-  findUser: {},
+  user: null,
+  findUser: null,
   isLoading: false,
   error: '',
 };
@@ -17,7 +17,7 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     // getUser
     builder.addCase(getUser.pending, (state, action) => {
-      state.user = {};
+      state.user = null;
       state.isLoading = true;
       state.error = '';
     });
@@ -33,7 +33,7 @@ export const userSlice = createSlice({
 
     // findUser
     builder.addCase(findUser.pending, (state, action) => {
-      state.findUser = {};
+      state.findUser = null;
       state.isLoading = true;
       state.error = '';
     });
