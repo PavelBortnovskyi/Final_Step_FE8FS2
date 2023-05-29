@@ -29,7 +29,7 @@ export function EditFormHeder() {
         x
       </Box>
       <Typography>Edit profile</Typography>
-      <SaveButton />
+      <SaveButton handleClose={handleClose} />
     </Box>
   );
 }

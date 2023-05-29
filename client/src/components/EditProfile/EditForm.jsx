@@ -10,6 +10,8 @@ import Box from "@mui/material/Box";
 import { ClearPageFoto } from "./ClearPageFoto";
 import { EditBirthDate } from "./EditBirthDate";
 import { EditInput } from "./EditInput";
+import { UserPageFotoInput } from "./UserPageFotoInput";
+import { ImgInputAvatar } from "./ImgInputAvatar";
 
 export function EditForm() {
   return (
@@ -31,7 +33,7 @@ export function EditForm() {
             left: "calc(50% - 50px)",
           }}
         >
-          {/* <UserPageFotoInput /> */}
+          <UserPageFotoInput />
           <ClearPageFoto />
         </Box>
       </Box>
@@ -43,7 +45,7 @@ export function EditForm() {
       >
         <UserPageAvatar />
         <Box sx={{ position: "absolute", bottom: "36px", left: "50px" }}>
-          {/* <ImgInputAvatar /> */}
+          <ImgInputAvatar />
         </Box>
       </Box>
 
@@ -66,12 +68,6 @@ export function EditForm() {
           label="location"
           component={EditInput}
         />
-        {/* <Field
-          name="website"
-          type="text"
-          label="website"
-          component={EditInput}
-        /> */}
 
         <Box>
           <Box

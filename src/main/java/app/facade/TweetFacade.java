@@ -69,10 +69,9 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     ResponseEntity<List<Tweet>> responseEntity = tweetService.getUserTweets(userId, page, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
-
     List<TweetResponse> tweetResponses = tweets.stream()
       .map(this::convertToDto)
-      .collect(Collectors.toList());
+            .toList();
 
 
     return tweetResponses;

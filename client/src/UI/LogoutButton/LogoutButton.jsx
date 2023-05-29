@@ -1,15 +1,16 @@
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from 'src/redux/thunk/logoutUser';
 
 export const LogoutButton = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   const handleClick = () => {
     dispatch(logoutUser());
   };
   return (
-    <Button variant="outlined" color="transparent" onClick={handleClick}>
+    <Button variant="outlined"  onClick={handleClick} sx={{color: `${theme.palette.text.primary}`}}>
       Log out
     </Button>
   );
