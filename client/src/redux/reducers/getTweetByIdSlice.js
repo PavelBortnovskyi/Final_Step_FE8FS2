@@ -1,32 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweets } from '../thunk/getTweets.js';
+import { getTweetById } from '../thunk/getTweetById.js';
 
 const initialState = {
-  tweets: [],
+  tweet: {},
   isLoading: false,
   error: '',
 };
 
-export const tweetSlice = createSlice({
-  name: 'tweets',
+export const tweetByIdSlice = createSlice({
+  name: 'tweet',
   initialState,
 
   extraReducers: (builder) => {
     builder
-      .addCase(getTweets.pending, (state) => {
+      .addCase(getTweetById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getTweets.fulfilled, (state, action) => {
-        state.tweets = action.payload;
+      .addCase(getTweetById.fulfilled, (state, action) => {
+        state.tweet = action.payload.tweet;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getTweets.rejected, (state, action) => {
+      .addCase(getTweetById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
   },
 });
-export default tweetSlice.reducer;
+export default tweetByIdSlice.reducer;

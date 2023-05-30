@@ -3,15 +3,40 @@ import React, { useEffect } from 'react';
 import Post from './Post';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTweets } from 'src/redux/thunk/getTweets';
-import { getFollowingTweets } from 'src/redux/selectors/selectors';
+import { getUserTweets } from 'src/redux/thunk/getUserTweets';
+import { getTweetById } from 'src/redux/thunk/getTweetById';
+import {
+  getFollowingTweets,
+  getTweetByID,
+} from 'src/redux/selectors/selectors';
 
 function PostList() {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.user.id);
+  console.log(userId);
   useEffect(() => {
     dispatch(getTweets({ page: 0, pageSize: 5 }));
   }, []);
-  const tweets = useSelector(getFollowingTweets);
-  console.log(tweets.tweets);
+  // const tweets = useSelector(getFollowingTweets);
+
+  // useEffect(() => {
+  //   dispatch(getTweetById(userId));
+  // }, []);
+  // const tweet = useSelector(getTweetByID);
+  // console.log(tweet);
+
+  // useEffect(() => {
+  //   dispatch(getTweetById(userId));
+  // }, []);
+  // const tweet = useSelector(getTweetByID);
+  // console.log(tweet);
+
+  useEffect(() => {
+    dispatch(getUserTweets({ userId: 1, page: 0, pageSize: 1 }));
+  }, []);
+  const tweet = useSelector(getTweetByID);
+  console.log(tweet);
+
   return (
     <Box>
       <Post
