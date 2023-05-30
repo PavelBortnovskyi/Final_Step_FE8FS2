@@ -12,6 +12,12 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState,
 
+  reducers: {
+    chatCloseConnection(state, actions) {
+      state.guest = null;
+    },
+  },
+
   extraReducers: (builder) => {
     // getGuest
     builder.addCase(getGuest.pending, (state, action) => {
@@ -30,4 +36,5 @@ export const chatSlice = createSlice({
   },
 });
 
+export const { chatCloseConnection } = chatSlice.actions;
 export default chatSlice.reducer;
