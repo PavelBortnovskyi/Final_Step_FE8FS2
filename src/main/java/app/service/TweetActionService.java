@@ -1,20 +1,15 @@
 package app.service;
 
-import app.dto.rs.TweetActionResponse;
 import app.enums.TweetActionType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
-import app.model.Tweet;
 import app.model.TweetAction;
 import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -109,6 +104,4 @@ public class TweetActionService extends GeneralService<TweetAction> {
     else return true;
 
   }
-
-
 }

@@ -46,7 +46,7 @@ public class TweetService extends GeneralService<Tweet> {
     this.tweetModelRepository.deleteById(tweetId);
   }
 
-  public TweetResponse create(HttpServletRequest request,String tweetBody, TweetType tweetType, MultipartFile[] files, String parentTweetId) {
+  public TweetResponse create(HttpServletRequest request, String tweetBody, TweetType tweetType, MultipartFile[] files, String parentTweetId) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
     tweet.setBody(tweetBody);
@@ -55,7 +55,7 @@ public class TweetService extends GeneralService<Tweet> {
     if (parentTweetId != null) tweet.setParentTweetId(getTweetById(Long.valueOf(parentTweetId)));
     tweetModelRepository.save(tweet);
 
-    if(tweetType.equals(TweetType.QUOTE_TWEET)) tweetActionService.addRetweet(tweet.getId(), request);
+    if (tweetType.equals(TweetType.QUOTE_TWEET)) tweetActionService.addRetweet(tweet.getId(), request);
 
     if (files != null) {
       Set<AttachmentImage> attachmentImageSet = new HashSet<>();
@@ -86,16 +86,16 @@ public class TweetService extends GeneralService<Tweet> {
     return tweetResponse;
   }
 
-  public TweetResponse createTweet(HttpServletRequest request,String tweetBody,MultipartFile[] files) {
+  public TweetResponse createTweet(HttpServletRequest request, String tweetBody, MultipartFile[] files) {
 
     return create(request, tweetBody, TweetType.TWEET, files, null);
   }
 
-  public TweetResponse createRetweet(HttpServletRequest request, String tweetBody, String parentTweetId,MultipartFile[] files) {
+  public TweetResponse createRetweet(HttpServletRequest request, String tweetBody, String parentTweetId, MultipartFile[] files) {
     return create(request, tweetBody, TweetType.QUOTE_TWEET, files, parentTweetId);
   }
 
-  public TweetResponse createReply(HttpServletRequest request, String tweetBody, String parrentTweetId,MultipartFile[] files) {
+  public TweetResponse createReply(HttpServletRequest request, String tweetBody, String parrentTweetId, MultipartFile[] files) {
     return create(request, tweetBody, TweetType.REPLY, files, parrentTweetId);
   }
 

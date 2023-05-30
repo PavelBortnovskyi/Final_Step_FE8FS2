@@ -22,11 +22,8 @@ public interface TweetActionRepository extends RepositoryInterface<TweetAction> 
   @Query("SELECT t FROM TweetAction ta JOIN ta.tweet t WHERE ta.actionType = :actionType AND t.user.id = :userId")
   Page<Tweet> findTweetsByActionTypeAndUserId(Long userId, @Param("actionType") TweetActionType actionType, Pageable pageable);
 
-  /*@Query("SELECT t.tweet FROM TweetAction t WHERE t.actionType = :actionType AND t.user.id = :userId")
-  Page<Tweet> findTweetsByActionTypeAndUserId(Long userId, @Param("actionType") TweetActionType actionType, Pageable pageable);*/
-
   @Query("SELECT COUNT(t) FROM TweetAction t WHERE t.actionType = :actionType AND t.user.id = :userId AND t.tweet.id = :tweetId")
-  int countByActionTypeAndUserIdAndTweetId(@Param("actionType") TweetActionType actionType, @Param("userId") Long userId,  @Param("tweetId") Long tweetId);
+  int countByActionTypeAndUserIdAndTweetId(@Param("actionType") TweetActionType actionType, @Param("userId") Long userId, @Param("tweetId") Long tweetId);
 
 }
 
