@@ -2,12 +2,14 @@ import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export function UserFolower() {
-  const countUserFollowers = useSelector(
-    (state) => state.user.user.countUserFollowers
-  );
-  const countUserFollowings = useSelector(
-    (state) => state.user.user.countUserFollowings
-  );
+  const countUserFollowers = "1";
+  // useSelector(
+  //   (state) => state.user.user.countUserFollowers
+  // );
+  const countUserFollowings = "1";
+  // useSelector(
+  //   (state) => state.user.user.countUserFollowings
+  // );
 
   return (
     <Box
