@@ -10,6 +10,7 @@ import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
+import { Chat } from 'src/components/Chat/Chat';
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: '/settings/profile',
         element: <EditProfileModal />,
+      },
+      {
+        path: '/messages',
+        element: <Chat />,
       },
     ],
   },

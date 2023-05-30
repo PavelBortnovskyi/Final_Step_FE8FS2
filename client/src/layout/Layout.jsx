@@ -15,6 +15,7 @@ import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolba
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { mainSidebarElementsMobile } from 'src/components/Sidebar/sidebarElementsMobile';
+import { RightRoutes } from './../routes/RightRoutes';
 
 export const Layout = () => {
   // get Authentication
@@ -60,8 +61,6 @@ export const Layout = () => {
               borderRight: `1px solid ${theme.palette.border.main}`,
             }}
           >
-            {/* <Main /> */}
-
             {/* routes for main components */}
             <MainRoutes location={background || location} />
           </Grid>
@@ -73,7 +72,13 @@ export const Layout = () => {
               display: { xs: 'none', md: 'block' },
             }}
           >
-            <RightSection />
+            {/* temporarily commented out for chat testing */}
+            {/* did: <RightSection /> move in <RightRoutes /> */}
+            {/* <RightSection /> */}
+            {/* ******************** */}
+
+            {/* for chat */}
+            <RightRoutes />
           </Grid>
         </Grid>
 
