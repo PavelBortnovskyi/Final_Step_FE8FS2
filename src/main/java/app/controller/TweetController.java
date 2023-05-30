@@ -62,25 +62,33 @@ public class TweetController {
   //create new tweet
   @PutMapping("/tweet")
   @Validated({Marker.New.class})
-  public ResponseEntity<TweetResponse> createTweet(@RequestParam(value = "tweetBody") String tweetBody, @RequestParam(value = "file", required = false) MultipartFile[] file, HttpServletRequest request) {
+  public ResponseEntity<TweetResponse> createTweet(@RequestParam(value = "tweetBody") String tweetBody,
+                                                   @RequestParam(value = "file", required = false) MultipartFile[] file,
+                                                   HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createTweet(request, tweetBody, file));
   }
 
   @PutMapping("/retweet")
   @Validated({Marker.Retweet.class})
-  public ResponseEntity<TweetResponse> createRetweet(@RequestParam(value = "tweetBody", required = false) String tweetBody, @RequestParam(value = "parentTweetId") String parentweetId, @RequestParam(value = "file", required = false) MultipartFile[] file, HttpServletRequest request) {
+  public ResponseEntity<TweetResponse> createRetweet(@RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                     @RequestParam(value = "parentTweetId") String parentweetId,
+                                                     @RequestParam(value = "file", required = false) MultipartFile[] file, HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createRetweet(request, tweetBody, parentweetId, file));
   }
 
   @PutMapping("/reply")
   @Validated({Marker.Retweet.class})
-  public ResponseEntity<TweetResponse> createReply(@RequestParam(value = "tweetBody", required = false) String tweetBody, @RequestParam(value = "parentTweetId") String parentweetId, @RequestParam(value = "file", required = false) MultipartFile[] file, HttpServletRequest request) {
+  public ResponseEntity<TweetResponse> createReply(@RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                   @RequestParam(value = "parentTweetId") String parentweetId,
+                                                   @RequestParam(value = "file", required = false) MultipartFile[] file,
+                                                   HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createReply(request, tweetBody, parentweetId, file));
   }
 
   //get List tweets following users
   @GetMapping("/following_tweets")
-  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize,
+                                                        HttpServletRequest request) {
     return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
   }
 
