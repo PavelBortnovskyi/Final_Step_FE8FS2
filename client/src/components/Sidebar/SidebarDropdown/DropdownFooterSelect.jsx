@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Box, FormControl, MenuItem,  OutlinedInput, Select, useTheme } from '@mui/material';
 import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
 
 export const DropdownFooterSelect = ({ mainLabel, selects }) => {
@@ -76,6 +77,12 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
 
 
                 {selects && selects.map((selectEl) => (
+                    <Link
+            to={selectEl.route}
+            underline="none"
+            key={selectEl.id}
+            component={NavLink}
+        >
                     <Box display="flex" alignItems="center" key={selectEl.id}
                         sx={{
                             backgroundColor: `${theme.palette.background.default}`,
@@ -97,6 +104,7 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
                         )
                         }
                     </Box>
+                    </Link>
                 ))}
             </SelectStyled>
         </FormControl>
