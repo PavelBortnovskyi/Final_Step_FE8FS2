@@ -13,6 +13,10 @@ import { selectElements } from '../Sidebar/SidebarDropdown/DropdownElements';
 import { DropdownFooterSelect } from '../Sidebar/SidebarDropdown/DropdownFooterSelect';
 import { User } from '../User/User';
 import { UserInfo } from '../User/UserInfo';
+import { UserInformationBlock } from '../User/UserInformationBlock';
+import { LogoutButton } from 'src/UI/LogoutButton/LogoutButton';
+import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher';
+import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -26,25 +30,8 @@ const CustomTab = styled(Tab)((props) => ({
 
 function MainPage_header() {
   const [tabIndex, setTabIndex] = useState(0);
-  const [state, setState] = React.useState({
-    left: false,
-  });
+  const [isOpen, setIsOpen] = useState(false);
   const theme = useMode();
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
-
-
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -85,61 +72,74 @@ function MainPage_header() {
         <Avatar
           src="./img/avatar2.JPG"
           sx={{ marginRight: '35%', marginLeft: '10px' }}
-          onClick={toggleDrawer('left', true)} />
+          onClick={() => setIsOpen(true)} />
 
-{/* start */}
-        <SwipeableDrawer
-          anchor='left'
-          open={state['left']}
-          onClose={toggleDrawer('left', false)}
-          onOpen={toggleDrawer('left', true)}
-          sx={{
-            '& .MuiDrawer-paper': {
-                backgroundColor: `${theme.palette.background.default}`,
-              }
-          }}
-        >
-          <Box
-            
-            role="presentation"
-            onClick={toggleDrawer('left', false)}
-            onKeyDown={toggleDrawer('left', false)}
-            sx={{ width: '75vw'}}
-          >
-          <UserInfo/>
-            <List>
-              {SidebarMobileElements.map((navElement) => (
-                <ListItem key={navElement.id} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                    <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
-                    </ListItemIcon>
-                    <ListItemText primary={navElement.label} sx={{color: `${theme.palette.text.primary}`,}}/>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-            {
-              selectElements.map(selectEl => (
-                    <DropdownFooterSelect
-                        key={selectEl.id}
-                        mainLabel={selectEl.label}
-                        selects={selectEl.selects}
-                    />
-                ))
-            }
-            </List>
-          </Box>
-          {/* fin */}
-        </SwipeableDrawer>
+{/* start ----------------------------------------------------------*/}
+{/* <SidebarMobile toggleDrawer={toggleDrawer}/> */}
 
 
+<SwipeableDrawer
+      anchor='left'
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
+      onOpen={() => setIsOpen(true)}
+      sx={{
+        '& .MuiDrawer-paper': {
+          backgroundColor: `${theme.palette.background.default}`,
+        }
+      }}
+    >
+      <Box
+        role="presentation"
+        onClick={() => setIsOpen(false)}
+        onKeyDown={() => setIsOpen(false)}
+        sx={{ width: '75vw' }}
+      >
+        <Box sx={{ m: '16px' }}>
+          <UserInformationBlock w="40" h="40" mt="0" />
+        </Box>
+
+        <List>
+          {SidebarMobileElements.map((navElement) => (
+            <ListItem key={navElement.id} disablePadding>
+              <ListItemButton sx={{
+            '&:hover': {
+              backgroundColor: `${theme.palette.background.hover}`,
+              borderRadius: '30px',
+            },
+          }}>
+                <ListItemIcon>
+                  <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
+                </ListItemIcon>
+                <ListItemText primary={navElement.label} sx={{ color: `${theme.palette.text.primary}`, }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+
+        <Divider />
+        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '4px 0' }}>
+          <LogoutButton />
+          <ThemeSwitcher />
+        </Box>
+        <List sx={{ padding: 0 }}>
+          {
+            selectElements.map(selectEl => (
+              <DropdownFooterSelect
+                key={selectEl.id}
+                mainLabel={selectEl.label}
+                selects={selectEl.selects}
+              />
+            ))
+          }
+        </List>
+      </Box>
+    </SwipeableDrawer>
 
 
 
-        {/* ------------- */}
+
+        {/* ------------------------------------------------------ */}
         <LogoTwitter />
       </Box>
 
