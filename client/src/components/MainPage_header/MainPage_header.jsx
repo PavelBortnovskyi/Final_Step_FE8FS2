@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { Avatar, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, SwipeableDrawer, Tab, Tabs, styled } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
@@ -74,67 +74,74 @@ function MainPage_header() {
           sx={{ marginRight: '35%', marginLeft: '10px' }}
           onClick={() => setIsOpen(true)} />
 
-{/* start ----------------------------------------------------------*/}
-{/* <SidebarMobile toggleDrawer={toggleDrawer}/> */}
+        {/* start ----------------------------------------------------------*/}
+        {/* <SidebarMobile toggleDrawer={toggleDrawer}/> */}
 
 
-<SwipeableDrawer
-      anchor='left'
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
-      onOpen={() => setIsOpen(true)}
-      sx={{
-        '& .MuiDrawer-paper': {
-          backgroundColor: `${theme.palette.background.default}`,
-        }
-      }}
-    >
-      <Box
-        role="presentation"
-        onClick={() => setIsOpen(false)}
-        onKeyDown={() => setIsOpen(false)}
-        sx={{ width: '75vw' }}
-      >
-        <Box sx={{ m: '16px' }}>
-          <UserInformationBlock w="40" h="40" mt="0" />
-        </Box>
+        <SwipeableDrawer
+          anchor='left'
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
+          onOpen={() => setIsOpen(true)}
+          sx={{
+            '& .MuiDrawer-paper': {
+              backgroundColor: `${theme.palette.background.default}`,
+            }
+          }}
+        >
+          <Box
+            role="presentation"
+            onClick={() => setIsOpen(false)}
+            onKeyDown={() => setIsOpen(false)}
+            sx={{ width: '75vw' }}
+          >
+            <Box sx={{ m: '16px' }}>
+              <UserInformationBlock w="40" h="40" mt="0" />
+            </Box>
 
-        <List>
-          {SidebarMobileElements.map((navElement) => (
-            <ListItem key={navElement.id} disablePadding>
-              <ListItemButton sx={{
-            '&:hover': {
-              backgroundColor: `${theme.palette.background.hover}`,
-              borderRadius: '30px',
-            },
-          }}>
-                <ListItemIcon>
-                  <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
-                </ListItemIcon>
-                <ListItemText primary={navElement.label} sx={{ color: `${theme.palette.text.primary}`, }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+            <List>
+              {SidebarMobileElements.map((navElement) => (
+                <Link
+                  to={navElement.route}
+                  underline="none"
+                  key={navElement.id}
+                  component={NavLink}
+                >
+                  <ListItem key={navElement.id} disablePadding>
+                    <ListItemButton sx={{
+                      '&:hover': {
+                        backgroundColor: `${theme.palette.background.hover}`,
+                        borderRadius: '30px',
+                      },
+                    }}>
+                      <ListItemIcon>
+                        <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
+                      </ListItemIcon>
+                      <ListItemText primary={navElement.label} sx={{ color: `${theme.palette.text.primary}`, }} />
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
 
-        <Divider />
-        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '4px 0' }}>
-          <LogoutButton />
-          <ThemeSwitcher />
-        </Box>
-        <List sx={{ padding: 0 }}>
-          {
-            selectElements.map(selectEl => (
-              <DropdownFooterSelect
-                key={selectEl.id}
-                mainLabel={selectEl.label}
-                selects={selectEl.selects}
-              />
-            ))
-          }
-        </List>
-      </Box>
-    </SwipeableDrawer>
+            <Divider />
+            <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '4px 0' }}>
+              <LogoutButton />
+              <ThemeSwitcher />
+            </Box>
+            <List sx={{ padding: 0 }}>
+              {
+                selectElements.map(selectEl => (
+                  <DropdownFooterSelect
+                    key={selectEl.id}
+                    mainLabel={selectEl.label}
+                    selects={selectEl.selects}
+                  />
+                ))
+              }
+            </List>
+          </Box>
+        </SwipeableDrawer>
 
 
 

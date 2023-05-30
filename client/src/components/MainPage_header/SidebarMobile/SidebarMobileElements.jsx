@@ -3,13 +3,14 @@ import TagIcon from '@mui/icons-material/Tag';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'; 
+import PersonIcon from '@mui/icons-material/Person';
 
 
 
 export const SidebarMobileElements = [
     {
         id: 0,
-        icon: HomeIcon,
+        icon: PersonIcon,
         label: 'Profile',
         route: 'profile',
     },

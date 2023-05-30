@@ -6,6 +6,8 @@ import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
+import { Chat } from 'src/components/Chat/Chat';
+import { RightSection } from 'src/components/RightSection/RightSection';
 
 export const mainRoutes = () => {
   return [
@@ -71,6 +73,19 @@ export const modalRoutes = () => {
     {
       path: '/settings/profile',
       element: <EditProfileModal />,
+    },
+  ];
+};
+
+export const rightRoutes = () => {
+  return [
+    {
+      path: '/messages',
+      element: <Chat />,
+    },
+    {
+      path: '*',
+      element: <RightSection />,
     },
   ];
 };
