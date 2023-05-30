@@ -1,9 +1,8 @@
 import React from 'react';
 import { dropdownElements } from './DropdownElements';
 import { DropdownHeader } from './DropdownHeader';
-import { Box, Menu } from '@mui/material';
+import { Box, Menu, styled } from '@mui/material';
 import { bindMenu } from 'material-ui-popup-state';
-import styled from '@emotion/styled';
 import { DropdownFooterSelect } from './DropdownFooterSelect';
 import { selectElements } from './DropdownElements';
 import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher';
@@ -27,7 +26,7 @@ const MenuStyled = styled(Menu)(({ theme }) => ({
 
 
 
-export const SidebarDropdownMenu = ({ popupState, isAuthenticated }) => {
+export const SidebarDropdownMenu = ({ popupState }) => {
 
     return (
         <MenuStyled {...bindMenu(popupState)}>

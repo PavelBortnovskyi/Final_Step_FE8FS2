@@ -14,7 +14,7 @@ import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolba
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
-import { mainSidebarElementsMobile } from 'src/components/Sidebar/sidebarElementsMobile';
+import { mainSidebarElementsMobile } from 'src/components/SidebarMobile/sidebarElementsMobile';
 import { RightRoutes } from './../routes/RightRoutes';
 
 export const Layout = () => {
