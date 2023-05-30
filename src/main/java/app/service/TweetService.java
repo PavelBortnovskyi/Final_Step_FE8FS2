@@ -4,14 +4,12 @@ import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
-import app.facade.TweetFacade;
+import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +34,11 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
+  public Tweet getTweetById(Long id) {
+    Tweet tweet = findById(id).orElseThrow(() -> new TweetIsNotFoundException(id));
+    return tweet;
+  }
+
   public void deleteTweet(Long tweetId, HttpServletRequest request) {
     if (findById(tweetId).get().getTweetType().equals(TweetType.QUOTE_TWEET)) {
       tweetActionService.deleteRetweet(tweetId, request);
@@ -43,24 +46,16 @@ public class TweetService extends GeneralService<Tweet> {
     this.tweetModelRepository.deleteById(tweetId);
   }
 
-  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request,
-                              TweetType tweetType) {
+  public TweetResponse create(HttpServletRequest request, String tweetBody, TweetType tweetType, MultipartFile[] files, String parentTweetId) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
-    tweet.setBody(tweetRequest.getBody());
+    tweet.setBody(tweetBody);
     tweet.setTweetType(tweetType);
     tweet.setUser(user);
-    return getTweetResponse(tweet);
-  }
-
-  public TweetResponse create(TweetRequest tweetRequest, HttpServletRequest request,
-                              TweetType tweetType, MultipartFile[] files) {
-    UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
-    Tweet tweet = new Tweet();
-    tweet.setBody(tweetRequest.getBody());
-    tweet.setTweetType(tweetType);
-    tweet.setUser(user);
+    if (parentTweetId != null) tweet.setParentTweetId(getTweetById(Long.valueOf(parentTweetId)));
     tweetModelRepository.save(tweet);
+
+    if (tweetType.equals(TweetType.QUOTE_TWEET)) tweetActionService.addRetweet(tweet.getId(), request);
 
     if (files != null) {
       Set<AttachmentImage> attachmentImageSet = new HashSet<>();
@@ -91,37 +86,17 @@ public class TweetService extends GeneralService<Tweet> {
     return tweetResponse;
   }
 
-  public TweetResponse createTweet(HttpServletRequest request, String jsonData, MultipartFile[] file) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    TweetRequest tweetRequest = null;
-    try {
-      tweetRequest = objectMapper.readValue(jsonData, TweetRequest.class);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-    return create(tweetRequest, request, TweetType.TWEET, file);
+  public TweetResponse createTweet(HttpServletRequest request, String tweetBody, MultipartFile[] files) {
+
+    return create(request, tweetBody, TweetType.TWEET, files, null);
   }
 
-  public TweetResponse createRetweet(HttpServletRequest request, String jsonData, MultipartFile[] file) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    TweetRequest tweetRequest = null;
-    try {
-      tweetRequest = objectMapper.readValue(jsonData, TweetRequest.class);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-    return create(tweetRequest, request, TweetType.QUOTE_TWEET, file);
+  public TweetResponse createRetweet(HttpServletRequest request, String tweetBody, String parentTweetId, MultipartFile[] files) {
+    return create(request, tweetBody, TweetType.QUOTE_TWEET, files, parentTweetId);
   }
 
-  public TweetResponse createReply(HttpServletRequest request, String jsonData, MultipartFile[] file) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    TweetRequest tweetRequest = null;
-    try {
-      tweetRequest = objectMapper.readValue(jsonData, TweetRequest.class);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-    return create(tweetRequest, request, TweetType.REPLY, file);
+  public TweetResponse createReply(HttpServletRequest request, String tweetBody, String parrentTweetId, MultipartFile[] files) {
+    return create(request, tweetBody, TweetType.REPLY, files, parrentTweetId);
   }
 
   public Optional<Tweet> updateTweet(Long tweetId, TweetRequest tweetRequest) {
@@ -145,9 +120,13 @@ public class TweetService extends GeneralService<Tweet> {
     return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
+  public ResponseEntity<List<Tweet>> listTweets(int page, int pageSize) {
+    return ResponseEntity.ok(tweetModelRepository.listTweets(Pageable.ofSize(pageSize).withPage(page)).toList());
+  }
+
   public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
-    System.out.println(tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"), Pageable.ofSize(pageSize).withPage(page), TweetActionType.BOOKMARK).toList());
-    return ResponseEntity.ok(tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"), Pageable.ofSize(pageSize).withPage(page), TweetActionType.BOOKMARK).toList());
+    return ResponseEntity.ok(tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"),
+        TweetActionType.BOOKMARK, Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
   public Integer getCountReply(Long tweetId) {

@@ -3,10 +3,12 @@ import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export function UserDateRegistration() {
-  const date = useSelector((state) => state.user.user.createdAt);
-  const dataRegistration = new Date(date);
-  const month = dataRegistration.toLocaleString("default", { month: "long" });
-  const year = dataRegistration.getFullYear();
+  // const date = useSelector((state) => state.user.user.createdAt);
+  // const dataRegistration = new Date(date);
+  const month = "12";
+  // dataRegistration.toLocaleString("default", { month: "long" });
+  const year = "12";
+  // dataRegistration.getFullYear();
 
   return (
     <Box>
