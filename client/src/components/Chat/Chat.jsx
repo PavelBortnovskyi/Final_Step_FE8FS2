@@ -30,8 +30,6 @@ export const Chat = () => {
 
   const { isLoading, guest } = useSelector(getGuestChat);
 
-  console.log(guest);
-
   const handleCloseConnection = () => {
     dispatch(chatCloseConnection());
   };
