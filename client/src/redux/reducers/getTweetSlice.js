@@ -15,16 +15,16 @@ export const tweetSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTweets.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(getTweets.fulfilled, (state, action) => {
         state.tweets = action.payload;
-        state.loading = false;
+        state.isLoading = false;
         state.error = null;
       })
       .addCase(getTweets.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

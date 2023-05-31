@@ -13,7 +13,7 @@ export const SidebarDropdown = ({isAuthenticated}) => {
 
                         <DropdownBtn popupState={popupState} />
 
-                        <SidebarDropdownMenu popupState={popupState} isAuthenticated={isAuthenticated} />
+                        <SidebarDropdownMenu popupState={popupState} />
 
                     </ListItem>
                 </React.Fragment>

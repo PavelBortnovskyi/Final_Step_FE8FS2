@@ -117,7 +117,7 @@ export const themeSettings = (colorTheme) => {
             style: {
               // background: 'transparent',
               // color: 'red',
-              borderBottom: '1px solid #273340',
+              // borderBottom: '1px solid #273340',
               // '&:hover': {
               //   backgroundColor: '#ffffff33',
               //   border: '1px solid #ffffff85',

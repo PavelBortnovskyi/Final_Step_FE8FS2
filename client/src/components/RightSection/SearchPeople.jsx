@@ -4,8 +4,6 @@ import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 import { getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
-import { getGuest } from 'src/redux/thunk/getGuest';
-import { useDispatch } from 'react-redux';
 
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
   '&:hover': {
@@ -14,22 +12,15 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const TabPeople = () => {
-  const dispatch = useDispatch();
+export const SearchPeople = () => {
   const { isLoading, findUser } = useSelector(getUserData);
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)
-    return <Typography>Try searching for people or messages</Typography>;
+    return <Typography sx={{margin: "16px"}}>Try searching for people or messages</Typography>;
 
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
-
-  // TODO: function for set guest for chat
-  // set Guest for chat
-  const handleClick = (id) => {
-    dispatch(getGuest(id));
-  };
 
   // check data not empty
   const isResult = findUser?.content?.length ? true : false;
@@ -38,13 +29,15 @@ export const TabPeople = () => {
   return (
     <>
       {!isResult ? (
-        <Box>
-          <Typography variant="h5">no results</Typography>
-          The term you entered did not bring up any results
+        <Box >
+          <Typography variant="h5" sx={{margin: "16px 0"}}>no results</Typography>
+          <Typography variant="body2">The term you entered did not bring up any results</Typography>
+          
         </Box>
       ) : (
         <Box
           sx={{
+            marginTop: "16px",
             display: 'flex',
             gap: '8px',
             flexDirection: 'column',
@@ -56,7 +49,6 @@ export const TabPeople = () => {
               <BoxSearchPerson
                 key={id}
                 sx={{ display: 'flex', gap: '12px', padding: '8px' }}
-                onClick={() => handleClick(id)}
               >
                 <Avatar
                   sx={{ width: 56, height: 56 }}
