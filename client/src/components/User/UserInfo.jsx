@@ -17,7 +17,7 @@ export function UserInfo() {
           padding: "11px 15px",
         }}
       >
-        <UserInformationBlock />
+        <UserInformationBlock w={"140"} h={"140"} mt={"-70"} />
       </Box>
     </Box>
   );
