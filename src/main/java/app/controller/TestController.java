@@ -146,7 +146,6 @@ public class TestController {
     tweet1.setUser(sample1);
     tweet1.setTweetType(TweetType.TWEET);
 
-
     Tweet tweet2 = new Tweet();
     tweet2.setBody("Second tweet for sample1");
     AttachmentImage attachmentImage2 = new AttachmentImage(tweet2, "https://images.unian.net/photos/2022_05/1652013870-1213.jpg");
@@ -155,7 +154,6 @@ public class TestController {
     tweet2.setAttachmentImages(attachmentImageSet2);
     tweet2.setUser(sample1);
     tweet2.setTweetType(TweetType.TWEET);
-
 
     Tweet tweet3 = new Tweet();
     tweet3.setBody("Third tweet for sample1");
@@ -319,7 +317,6 @@ public class TestController {
     tweet20.setUser(sample4);
     tweet20.setTweetType(TweetType.TWEET);
 
-    // Твиты для sample5
     Tweet tweet21 = new Tweet();
     tweet21.setBody("First tweet for sample5");
     AttachmentImage attachmentImage21 = new AttachmentImage(tweet21, "https://images.unian.net/photos/2021_08/1629469199-3761.jpg");

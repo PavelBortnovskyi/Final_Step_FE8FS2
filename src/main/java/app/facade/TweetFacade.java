@@ -30,7 +30,7 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
         .addMapping(src -> src.getBody(), TweetResponse::setBody)
         .addMapping(src -> src.getId(), TweetResponse::setTweetId)
-        .addMapping(src -> src.getAttachmentImages(), TweetResponse::setAttachmentsImages)
+        .addMapping(src -> src.getAttachmentImages().stream().map(attachmentImage -> attachmentImage.getImgUrl()).collect(Collectors.toSet()), TweetResponse::setAttachmentsImages)
         .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
         .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
         .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
