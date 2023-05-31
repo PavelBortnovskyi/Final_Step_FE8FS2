@@ -17,6 +17,7 @@ import java.util.Set;
 @Table(name = "tweets")
 @NoArgsConstructor
 @Data
+@SequenceGenerator(name = "custom_gen", sequenceName = "tweets_id_seq", allocationSize = 1)
 public class Tweet extends BaseEntityModel {
   @Column(name = "body", nullable = false)
   private String body;
@@ -56,5 +57,4 @@ public class Tweet extends BaseEntityModel {
   public int hashCode() {
     return Objects.hash(getId(), getBody());
   }
-
 }

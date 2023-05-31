@@ -13,6 +13,7 @@ import java.util.Objects;
 @Table(name = "tweet_actions")
 @NoArgsConstructor
 @Data
+@SequenceGenerator(name = "custom_gen", sequenceName = "tweet_actions_id_seq", allocationSize = 1)
 public class TweetAction extends BaseEntityModel {
   @Enumerated(EnumType.STRING)
   private TweetActionType actionType;

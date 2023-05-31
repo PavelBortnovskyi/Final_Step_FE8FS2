@@ -1,5 +1,5 @@
 INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, avatar_img_url, bio, date_of_birth, email, full_name, header_img_url, is_verified, location, password, refresh_token, token_used, user_tag)
-                   VALUES (1,
+                   VALUES (DEFAULT,
                    '2023-05-29 09:36:03.600959',
                    null,
                    '2023-05-29 09:36:03.600959',
@@ -19,7 +19,7 @@ INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, av
 );
 
 INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, avatar_img_url, bio, date_of_birth, email, full_name, header_img_url, is_verified, location, password, refresh_token, token_used, user_tag)
-                   VALUES (2,
+                   VALUES (DEFAULT,
                    '2023-05-29 09:36:03.870049',
                    null,
                    '2023-05-29 09:36:03.870049',
@@ -39,7 +39,7 @@ INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, av
 );
 
 INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, avatar_img_url, bio, date_of_birth, email, full_name, header_img_url, is_verified, location, password, refresh_token, token_used, user_tag)
-                   VALUES (3,
+                   VALUES (DEFAULT,
                    '2023-05-29 09:36:04.029078',
                    null,
                    '2023-05-29 09:36:04.029078',
@@ -59,7 +59,7 @@ INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, av
 );
 
 INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, avatar_img_url, bio, date_of_birth, email, full_name, header_img_url, is_verified, location, password, refresh_token, token_used, user_tag)
-                   VALUES (4,
+                   VALUES (DEFAULT,
                    '2023-05-29 09:36:04.187566',
                    null,
                    '2023-05-29 09:36:04.187566',
@@ -79,7 +79,7 @@ INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, av
 );
 
 INSERT INTO public.users (id, created_at, created_by, updated_at, updated_by, avatar_img_url, bio, date_of_birth, email, full_name, header_img_url, is_verified, location, password, refresh_token, token_used, user_tag)
-                   VALUES (5,
+                   VALUES (DEFAULT,
                    '2023-05-29 09:36:04.345328',
                    null,
                    '2023-05-29 09:36:04.345328',

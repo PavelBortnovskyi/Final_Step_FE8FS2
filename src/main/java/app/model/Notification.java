@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "notifications")
 @NoArgsConstructor
 @Data
+@SequenceGenerator(name = "custom_gen", sequenceName = "notifications_id_seq", allocationSize = 1)
 public class Notification extends BaseEntityModel {
   @Enumerated(EnumType.STRING)
   @Column(name = "notification_type", nullable = false, updatable = false)
