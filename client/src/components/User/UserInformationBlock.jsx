@@ -7,7 +7,7 @@ import { UserNick } from "./UserNIck";
 import { Box } from "@mui/material";
 import { UserBio } from "./UserBio";
 import { UserLocation } from "./UserLocation";
-export function UserInformationBlock({w, h, mt}) {
+export function UserInformationBlock({ w, h, mt }) {
   return (
     <>
       <Box
@@ -16,7 +16,7 @@ export function UserInformationBlock({w, h, mt}) {
           justifyContent: "space-between",
         }}
       >
-        <UserPageAvatar w={w} h={h} mt={mt}/>
+        <UserPageAvatar w={w} h={h} mt={mt} />
         <ButtonEditProfile />
       </Box>
       <Box sx={{ margin: "12px 0" }}>

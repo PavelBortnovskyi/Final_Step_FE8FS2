@@ -3,6 +3,7 @@ package app.dto.rs;
 import app.enums.TweetType;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -10,7 +11,7 @@ public class TweetResponse {
 
   private Long tweetId;
   private String body;
-  private Set<String> attachmentsImages;
+  private Set<String> attachmentsImages = new HashSet<>();
   private String userAvatarImage;
   private String userTag;
   private Integer countLikes;

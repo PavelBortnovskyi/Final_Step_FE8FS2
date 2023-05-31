@@ -17,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@SequenceGenerator(name = "custom_gen", sequenceName = "chats_id_seq", allocationSize = 1)
 public class Chat extends BaseEntityModel {
   @ManyToOne
   private UserModel initiatorUser;
