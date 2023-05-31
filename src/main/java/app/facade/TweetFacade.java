@@ -4,6 +4,7 @@ import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.Tweet;
+import app.service.AttachmentImagesService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,12 +28,15 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   @Autowired
   TweetActionService tweetActionService;
 
+  @Autowired
+  AttachmentImagesService attachmentImagesService;
+
   @PostConstruct
   public void init() {
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
         .addMapping(src -> src.getBody(), TweetResponse::setBody)
         .addMapping(src -> src.getId(), TweetResponse::setTweetId)
-        .addMapping(src -> src.getAttachmentImages().stream().map(attachmentImage -> attachmentImage.getImgUrl()).collect(Collectors.toSet()), TweetResponse::setAttachmentsImages)
+        .addMapping(src -> getImagesUrl(src), TweetResponse::setAttachmentsImages)
         .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
         .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
         .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
@@ -50,6 +56,11 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   private Integer getCountRetweet(Tweet tweet) {
     return tweetActionService.getCountRetweet(tweet.getId());
   }
+
+  private Set<String> getImagesUrl(Tweet tweet) {return tweetService.getTweet(tweet.getId())
+    .map(t -> t.getAttachmentImages())
+    .map(imageSet -> imageSet.stream()
+      .map(image -> image.getImgUrl()).collect(Collectors.toSet())).orElse(new HashSet<>());}
 
   public TweetResponse getTweetById(Long tweetId) {
     TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
@@ -114,7 +125,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
     return tweetResponses;
   }
-
 
   @Override
   public Tweet convertToEntity(TweetRequest dto) {
