@@ -11,7 +11,6 @@ export function UserPageFotoInput() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (file) {
-      console.log(file);
       let sendFoto = new FormData();
       sendFoto.append("file", file);
 
