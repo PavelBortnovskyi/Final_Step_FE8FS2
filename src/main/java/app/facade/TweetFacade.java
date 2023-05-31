@@ -34,15 +34,15 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   @PostConstruct
   public void init() {
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
-        .addMapping(src -> src.getBody(), TweetResponse::setBody)
-        .addMapping(src -> src.getId(), TweetResponse::setTweetId)
-        .addMapping(src -> getImagesUrl(src), TweetResponse::setAttachmentsImages)
-        .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
-        .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
-        .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
-        .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
-        .addMapping(this::getCountReply, TweetResponse::setCountReply)
-        .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
+      .addMapping(src -> src.getBody(), TweetResponse::setBody)
+      .addMapping(src -> src.getId(), TweetResponse::setTweetId)
+      .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
+      .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
+      .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
+      //.addMapping(this::getImagesUrl, TweetResponse::setAttachmentsImages)
+      .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
+      .addMapping(this::getCountReply, TweetResponse::setCountReply)
+      .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
   }
 
   private Integer getCountLikes(Tweet tweet) {
@@ -57,23 +57,26 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     return tweetActionService.getCountRetweet(tweet.getId());
   }
 
-  private Set<String> getImagesUrl(Tweet tweet) {return tweetService.getTweet(tweet.getId())
-    .map(t -> t.getAttachmentImages())
-    .map(imageSet -> imageSet.stream()
-      .map(image -> image.getImgUrl()).collect(Collectors.toSet())).orElse(new HashSet<>());}
+  private Set<String> getImagesUrl(Tweet tweet) {
+    return tweetService.getTweet(tweet.getId())
+      .map(t -> t.getAttachmentImages())
+      .map(imageSet -> imageSet.stream()
+        .map(image -> image.getImgUrl()).collect(Collectors.toSet())).orElse(new HashSet<>());
+  }
 
   public TweetResponse getTweetById(Long tweetId) {
     TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
-        .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
+      .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
     tweetResponse.setCountReply(tweetService.getCountReply(tweetResponse.getTweetId()));
+    tweetResponse.setAttachmentsImages(this.getImagesUrl(tweetService.getTweetById(tweetId)));
     return tweetResponse;
   }
 
   public TweetResponse updateTweet(Long tweetId, TweetRequest tweetRequest) {
     return tweetService.updateTweet(tweetId, tweetRequest).map(this::convertToDto)
-        .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
+      .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
   public List<TweetResponse> getUserTweets(Long userId, int page, int pageSize) {
@@ -81,8 +84,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
     List<Tweet> tweets = responseEntity.getBody();
     List<TweetResponse> tweetResponses = tweets.stream()
-        .map(this::convertToDto)
-        .toList();
+      .map(this::convertToDto)
+      .toList();
 
 
     return tweetResponses;
@@ -93,8 +96,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
     List<Tweet> tweets = responseEntity.getBody();
     List<TweetResponse> tweetResponses = tweets.stream()
-        .map(this::convertToDto)
-        .toList();
+      .map(this::convertToDto)
+      .toList();
 
 
     return tweetResponses;
@@ -106,8 +109,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     List<Tweet> tweets = responseEntity.getBody();
 
     List<TweetResponse> tweetResponses = tweets.stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
+      .map(this::convertToDto)
+      .collect(Collectors.toList());
 
 
     return tweetResponses;
@@ -119,8 +122,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     List<Tweet> tweets = responseEntity.getBody();
 
     List<TweetResponse> tweetResponses = tweets.stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
+      .map(this::convertToDto)
+      .collect(Collectors.toList());
 
 
     return tweetResponses;

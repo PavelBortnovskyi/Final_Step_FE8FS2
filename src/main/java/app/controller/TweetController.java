@@ -38,7 +38,7 @@ public class TweetController {
   private final TweetFacade tweetFacade;
 
   //get tweet by id (don`t need token)
-  @GetMapping("{id}")
+  @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id) {
     return ResponseEntity.ok(tweetFacade.getTweetById(id));
   }

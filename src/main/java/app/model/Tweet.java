@@ -42,7 +42,8 @@ public class Tweet extends BaseEntityModel {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet")
+  @OneToMany(mappedBy = "tweet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
   @Override
