@@ -37,7 +37,7 @@ export const dropdownElements = [
         id: 24,
         icon: VerifiedOutlinedIcon,
         label: 'Verified Orgs',
-        route: 'verified_orgs_signup',
+        route: 'verified-orgs',
     },
     
 ]
