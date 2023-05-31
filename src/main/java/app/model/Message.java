@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@SequenceGenerator(name = "custom_gen", sequenceName = "messages_id_seq", allocationSize = 1)
 public class Message extends BaseEntityModel {
   @ManyToOne
   @JoinColumn(name = "chat_id")

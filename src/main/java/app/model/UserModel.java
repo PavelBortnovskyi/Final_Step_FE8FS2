@@ -18,6 +18,7 @@ import java.util.Set;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@SequenceGenerator(name = "custom_gen", sequenceName = "users_id_seq", allocationSize = 1)
 public class UserModel extends BaseEntityModel {
   @Column(name = "full_name", nullable = false)
   private String fullName;
@@ -111,6 +112,5 @@ public class UserModel extends BaseEntityModel {
   public int hashCode() {
     return Objects.hash(userTag, email);
   }
-
 }
 
