@@ -38,11 +38,11 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getId(), TweetResponse::setTweetId)
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
-      .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
-      //.addMapping(this::getImagesUrl, TweetResponse::setAttachmentsImages)
+      .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId);
+      /*.addMapping(this::getImagesUrl, TweetResponse::setAttachmentsImages)
       .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
       .addMapping(this::getCountReply, TweetResponse::setCountReply)
-      .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
+      .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets)*/
   }
 
   private Integer getCountLikes(Tweet tweet) {

@@ -2,7 +2,6 @@ package app.controller;
 
 import app.annotations.Marker;
 import app.dto.rq.TweetRequest;
-import app.dto.rs.TweetActionResponse;
 import app.dto.rs.TweetResponse;
 import app.facade.TweetActionFacade;
 import app.facade.TweetFacade;
@@ -17,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -93,8 +90,8 @@ public class TweetController {
   }
 
   // get user tweets
-  @GetMapping("/tweets/{id}")
-  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
+  @GetMapping("/tweets/{tweetId}")
+  public List<TweetResponse> getUserTweets(@PathVariable(name = "tweetId") Long userId, @RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
     return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
   }
 
@@ -133,7 +130,7 @@ public class TweetController {
     return ResponseEntity.ok(tweetActionService.statusBookmark(tweetId, request));
   }
 
-  @GetMapping("/get_likes/{id}")
+  @GetMapping("/get_likes/{tweetId}")
   public ResponseEntity getCount(@PathVariable(name = "id") Long tweetId) {
     return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
   }
