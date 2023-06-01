@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@SequenceGenerator(name = "custom_gen", sequenceName = "attachment_images_id_seq", allocationSize = 1)
 public class AttachmentImage extends BaseEntityModel {
   @ManyToOne
   @JoinColumn(name = "tweet_id")

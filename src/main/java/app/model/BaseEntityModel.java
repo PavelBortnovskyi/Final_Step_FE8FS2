@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public abstract class BaseEntityModel extends Auditable<String> implements Serializable {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom_gen")
   @Column(name = "id", nullable = false, insertable = false, updatable = false)
   private Long id;
 }

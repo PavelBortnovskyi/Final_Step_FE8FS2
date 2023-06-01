@@ -132,5 +132,4 @@ public class TweetService extends GeneralService<Tweet> {
   public Integer getCountReply(Long tweetId) {
     return tweetModelRepository.getCountByTweetTypeAndId(TweetType.REPLY, tweetId);
   }
-
 }

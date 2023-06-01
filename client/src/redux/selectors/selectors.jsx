@@ -9,3 +9,6 @@ export const getUserData = (state) => state.user;
 
 // following tweets
 export const getFollowingTweets = (state) => state.tweets;
+
+// get guest for chat
+export const getGuestChat = (state) => state.chat;

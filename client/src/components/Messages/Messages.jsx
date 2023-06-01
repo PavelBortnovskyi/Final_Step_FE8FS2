@@ -1,19 +1,9 @@
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Link,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Container, IconButton, Tooltip, Typography } from '@mui/material';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
-import { NavLink } from 'react-router-dom';
-import { SearchField } from './Search/SearchField';
-import { useTheme } from '@emotion/react';
 
-// color: `${theme.palette.text.primary}`,
+import { useTheme } from '@emotion/react';
+import { SearchMessages } from './Search/SearchMessages';
 
 export const Messages = () => {
   const theme = useTheme();
@@ -50,8 +40,9 @@ export const Messages = () => {
             </Tooltip>
           </Box>
         </Box>
+
         {/* Search */}
-        <SearchField />
+        <SearchMessages />
       </Container>
     </Box>
   );

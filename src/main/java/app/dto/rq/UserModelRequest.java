@@ -49,7 +49,7 @@ public class UserModelRequest {
   @JsonView({Marker.Update.class})
   @ApiModelProperty(value = "BirthDate", required = true)
   @PastOrPresent(groups = {Marker.Update.class})
-  @NotNull(groups = {Marker.Update.class})
+  //@NotNull(groups = {Marker.Update.class})
   private LocalDate birthDate;
 
   @JsonView({Marker.Update.class})

@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export function UserBio() {
-  const userBio = useSelector((state) => state.user.user.bio);
+  const userBio = useSelector((state) => state.user.user);
   return (
     userBio && (
       <Typography
@@ -10,7 +10,7 @@ export function UserBio() {
           padding: "14px 0 0",
         }}
       >
-        {userBio}
+        {userBio.bio}
       </Typography>
     )
   );

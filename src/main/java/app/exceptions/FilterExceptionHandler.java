@@ -31,7 +31,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
     try {
       filterChain.doFilter(request, response);
     } catch (JwtAuthenticationException ex) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setCharacterEncoding("UTF-8");
       response.getWriter()
@@ -48,6 +48,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
     String requestMethod = request.getMethod();
 
     AntPathRequestMatcher[] matchers = {
+      new AntPathRequestMatcher("/", requestMethod),
       new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
       new AntPathRequestMatcher("/swagger-resources", requestMethod),
       new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
