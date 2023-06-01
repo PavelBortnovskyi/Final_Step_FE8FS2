@@ -11,7 +11,6 @@ export function ImgInputAvatar() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (file) {
-      console.log(file);
       let sendAvatar = new FormData();
       sendAvatar.append("file", file);
 
@@ -19,7 +18,6 @@ export function ImgInputAvatar() {
     }
     if (file) {
       // setFilePath(URL.createObjectURL(file));
-      // console.log(URL.createObjectURL(file));
     }
   }, [file]);
   return (
