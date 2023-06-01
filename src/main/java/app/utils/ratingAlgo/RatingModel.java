@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "tweets")
+@Table(name = "rating_tweets")
 @NoArgsConstructor
 @Data
 @SequenceGenerator(name = "custom_gen", sequenceName = "tweets_id_seq", allocationSize = 1)

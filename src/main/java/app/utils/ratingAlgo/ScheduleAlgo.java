@@ -1,7 +1,10 @@
 package app.utils.ratingAlgo;
 
 import app.model.Tweet;
+import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
+import app.service.TweetActionService;
+import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,37 +22,39 @@ import java.util.List;
 public class ScheduleAlgo {
   private final TweetModelRepository tweetModelRepository;
   private final RatingModelRepository ratingModelRepository;
-  @Scheduled(fixedRate = 1000) // Выполнять каждый час
-  public void yourScheduledMethod() {
-/*    ArrayList<RatingModel> tweetsRating = new ArrayList<>();
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime oneHourAgo = now.minusHours(1);
-    System.out.println(oneHourAgo);
-    // присвоить рейтинг
-    tweetModelRepository.listTweetsFromLastHour(oneHourAgo).stream()
+  private final TweetActionService tweetActionService;
+  @Scheduled(fixedRate = 10000) // Выполнять каждый час
+  public void ratingAlgorithm() {
+    ArrayList<RatingModel> tweetsRating = new ArrayList<>();
+    LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+    //получаем все твиты за последний час
+
+    /*tweetModelRepository.listTweetsFromLastHour(oneHourAgo).stream()
+      .forEach(t -> tweetsRating.add(new RatingModel(t.getId(), getRating(t))));*/
+
+    tweetModelRepository.findAll().stream()
       .forEach(t -> tweetsRating.add(new RatingModel(t.getId(), getRating(t))));
 
-    // достать значения с базы
-    // объеденить с посчитаным
-    ratingModelRepository.getAll().forEach(r -> tweetsRating.add(r));
+    // получаем предыдущие твиты, которые попали в рейтинг
+    ratingModelRepository.findAll().forEach(r -> tweetsRating.add(r));
 
-
+    // создаем параметр сравнения и сортируем по рейтингу
     Comparator<RatingModel> ratingModelComparator = Comparator.comparingDouble(RatingModel::getTweetRating);
-
-    // Сортируем список по возрасту с использованием компаратора
     Collections.sort(tweetsRating, ratingModelComparator);
+
+    //записываем отсортированые твиты по рейтингу первые 50 или до 50
+    List<RatingModel> savedRating;
     ratingModelRepository.deleteAll();
-    List<RatingModel> savedRating = tweetsRating.subList(0, 50);
+    if(tweetsRating.size() > 50) {savedRating = tweetsRating.subList(0, 49);}
+    else savedRating = tweetsRating;
     savedRating.forEach(r -> ratingModelRepository.save(r));
-
-
-    // оставить 50
-    // записать в базу
-    //System.out.println("Метод, выполняющийся каждый час.");*/
   }
 
   private double getRating(Tweet tweet){
-    return 4455 + tweet.getId();
+    double coef;
+    coef = tweetActionService.getCountLikes(tweet.getId()) / 60;
+    if (tweet.getUser().isVerified()) coef *= 1.5;
+    return coef;
   }
 }
 
