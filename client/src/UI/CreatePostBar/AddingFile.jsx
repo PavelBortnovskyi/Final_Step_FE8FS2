@@ -1,7 +1,7 @@
 // import React from 'react';
 // import CancelIcon from '@mui/icons-material/Cancel';
 // import { Box } from '@mui/material';
-// import Masonry from 'react-masonry-css';
+
 
 // const imgStyle = {
 //   width: '100%',

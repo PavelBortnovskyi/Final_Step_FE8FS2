@@ -7,9 +7,10 @@ import { Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
 
-import { ClearPageFoto } from "./ClearPageFoto";
 import { EditBirthDate } from "./EditBirthDate";
 import { EditInput } from "./EditInput";
+import { UserPageFotoInput } from "./UserPageFotoInput";
+import { ImgInputAvatar } from "./ImgInputAvatar";
 
 export function EditForm() {
   return (
@@ -30,10 +31,7 @@ export function EditForm() {
             bottom: "calc(50% - 32px)",
             left: "calc(50% - 50px)",
           }}
-        >
-          {/* <UserPageFotoInput /> */}
-          <ClearPageFoto />
-        </Box>
+        ></Box>
       </Box>
 
       <Box
@@ -41,9 +39,9 @@ export function EditForm() {
           position: "relative",
         }}
       >
-        <UserPageAvatar />
+        <UserPageAvatar w={"140"} h={"140"} mt={"-70"} />
         <Box sx={{ position: "absolute", bottom: "36px", left: "50px" }}>
-          {/* <ImgInputAvatar /> */}
+          <ImgInputAvatar />
         </Box>
       </Box>
 
@@ -66,12 +64,6 @@ export function EditForm() {
           label="location"
           component={EditInput}
         />
-        {/* <Field
-          name="website"
-          type="text"
-          label="website"
-          component={EditInput}
-        /> */}
 
         <Box>
           <Box
@@ -85,7 +77,6 @@ export function EditForm() {
             </Typography>
             <EditBirthDate />
           </Box>
-          {/* <BirthdayInput /> */}
           <Typography>Birth date</Typography>
         </Box>
       </Box>

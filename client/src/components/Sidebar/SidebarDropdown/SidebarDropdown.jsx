@@ -4,7 +4,7 @@ import React from 'react';
 import { DropdownBtn } from './DropdownBtn';
 import { SidebarDropdownMenu } from './SidebarDropdownMenu';
 
-export const SidebarDropdown = () => {
+export const SidebarDropdown = ({isAuthenticated}) => {
     return (
         <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (

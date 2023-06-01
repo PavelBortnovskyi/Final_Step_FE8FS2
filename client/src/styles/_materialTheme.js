@@ -47,7 +47,7 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: '#FFF',
-            }
+            },
           }
         : {
             primary: {
@@ -86,7 +86,7 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: 'rgb(30, 155, 240)',
-            }
+            },
           }),
     },
     breakpoints: {
@@ -102,9 +102,8 @@ export const themeSettings = (colorTheme) => {
       MuiTabs: {
         styleOverrides: {
           root: {
-            // Ваши стили здесь
-
             '& .MuiTab-root': {
+              textTransform: 'none',
               fontSize: '16px',
             },
           },
@@ -118,7 +117,7 @@ export const themeSettings = (colorTheme) => {
             style: {
               // background: 'transparent',
               // color: 'red',
-              borderBottom: '1px solid #273340',
+              // borderBottom: '1px solid #273340',
               // '&:hover': {
               //   backgroundColor: '#ffffff33',
               //   border: '1px solid #ffffff85',

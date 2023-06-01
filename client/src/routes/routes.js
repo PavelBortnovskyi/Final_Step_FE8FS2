@@ -6,6 +6,9 @@ import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
+import { Chat } from 'src/components/Chat/Chat';
+import { RightSection } from 'src/components/RightSection/RightSection';
+import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 
 export const mainRoutes = () => {
   return [
@@ -21,11 +24,11 @@ export const mainRoutes = () => {
 
     {
       path: '/explore',
-      element: <UserPage />,
+      element: <PageDeveloping/>
     },
     {
       path: '/notifications',
-      element: <UserPage />,
+      element: <PageDeveloping/>
     },
     {
       path: '/tweet',
@@ -37,19 +40,71 @@ export const mainRoutes = () => {
     },
     {
       path: '/bookmarks',
-      element: <UserPage />,
+      element: <PageDeveloping/>
     },
     {
       path: '/twitter_blue',
-      element: <UserPage />,
+      element: <PageDeveloping/>
     },
     {
       path: '/verified-orgs',
-      element: <UserPage />,
+      element: <PageDeveloping/>
     },
     {
       path: '/profile',
       element: <UserPage />,
+    },
+    {
+      path: '/topics',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/lists',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/members',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/analytics',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/professionals',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/ads',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/monetization',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/privacy',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/help',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/display',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/keyboard',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/search',
+      element: <PageDeveloping/>
+    },
+    {
+      path: '/page-developing',
+      element: <PageDeveloping/>
     },
   ];
 };
@@ -71,6 +126,19 @@ export const modalRoutes = () => {
     {
       path: '/settings/profile',
       element: <EditProfileModal />,
+    },
+  ];
+};
+
+export const rightRoutes = () => {
+  return [
+    {
+      path: '/messages',
+      element: <Chat />,
+    },
+    {
+      path: '*',
+      element: <RightSection />,
     },
   ];
 };

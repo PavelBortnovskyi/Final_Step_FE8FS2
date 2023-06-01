@@ -30,12 +30,9 @@ function TweetBox() {
     setPostImages(updatedImages);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     // Dispatch the createTweet action with the collected data
-    dispatch(createTweet({ postInputText, postImages }));
-    console.log('working');
+    dispatch(createTweet({postInputText, postImages}));
     // Reset the form fields
     setPostInputText('');
     setPostImages([]);
@@ -45,6 +42,7 @@ function TweetBox() {
     <Box>
       <form autoComplete="off">
         <InputAvatar
+        value={postInputText}
           avatarUrl="/img/avatar.JPG"
           placeholder="What's happening?"
           feature={handleInput}

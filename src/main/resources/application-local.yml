@@ -11,6 +11,8 @@ spring:
   output:
     ansi:
       enabled: always
+  flyway:
+    enabled: false
   jpa:
     hibernate:
       ddl-auto: create

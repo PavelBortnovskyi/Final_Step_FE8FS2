@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Avatar, Tab, Tabs } from '@mui/material';
-import styled from '@emotion/styled';
+import { Avatar, Tab, Tabs, styled } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
+import { LogoTwitter } from '../Sidebar/LogoTwitter';
+import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -17,6 +18,7 @@ const CustomTab = styled(Tab)((props) => ({
 
 function MainPage_header() {
   const [tabIndex, setTabIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
   const theme = useMode();
 
   const handleTabChange = (event, newTabIndex) => {
@@ -33,7 +35,7 @@ function MainPage_header() {
         borderBottom: '1px solid rgb(56, 68, 77)',
         position: 'sticky',
         top: '0',
-        zIndex: 1300,
+        // zIndex: 1300,
       }}
     >
       <NavLink to="/">
@@ -44,13 +46,27 @@ function MainPage_header() {
             pl: '20px',
             fontSize: '20px',
             textDecoration: 'none',
-            color: 'rgb(255, 255, 255)',
+            color: `${theme.palette.text.primary}`,
           }}
         >
           Home
         </Box>
-        <Avatar src="./img/avatar2.JPG" sx={{display: { xs: 'block', sm: 'none' },}}/>
       </NavLink>
+      <Box sx={{
+        display: { xs: 'flex', sm: 'none' },
+        marginTop: '10px',
+        alignItems: 'center',
+      }}>
+        <Avatar
+          src="./img/avatar2.JPG"
+          sx={{ marginRight: '35%', marginLeft: '10px', cursor: 'pointer' }}
+          onClick={() => setIsOpen(true)} />
+
+        <SidebarMobile isOpen={isOpen} setIsOpen={setIsOpen}/>
+
+        <LogoTwitter />
+      </Box>
+
 
       <Tabs value={tabIndex} onChange={handleTabChange}>
         <CustomTab label="For you" />

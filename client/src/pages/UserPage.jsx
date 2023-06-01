@@ -1,9 +1,17 @@
+import { Box } from '@mui/material';
 import { User } from 'src/components/User/User';
 
 export const UserPage = () => {
   return (
-    <div className="flex flex-col flex-auto gap-5">
+    <Box  sx={{
+      display: 'flex',
+      // display: { xs: 'flex', md: 'block'}, приклад брейкпоінтів
+      // gap-5 flex-col flex-auto
+      direction: "column",
+    }}>
       <User />
-    </div>
+    </Box>
+      
+    // </div>
   );
 };

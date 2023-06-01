@@ -12,8 +12,7 @@ import {
 
 function PostList() {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user.user.id);
-  console.log(userId);
+  // const userId = useSelector((state) => state.user.user.id);
   useEffect(() => {
     dispatch(getTweets({ page: 0, pageSize: 5 }));
   }, []);
@@ -31,11 +30,11 @@ function PostList() {
   // const tweet = useSelector(getTweetByID);
   // console.log(tweet);
 
-  useEffect(() => {
-    if (userId) {
-      dispatch(getUserTweets({ userId, page: 0, pageSize: 1 }));
-    }
-  }, [userId]);
+  // useEffect(() => {
+  //   if (userId) {
+  //     dispatch(getUserTweets({ userId, page: 0, pageSize: 1 }));
+  //   }
+  // }, [userId]);
 
   const [userTweets, setUserTweets] = useState([]);
 

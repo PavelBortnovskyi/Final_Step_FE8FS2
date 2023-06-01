@@ -1,19 +1,21 @@
-import { useLocation } from 'react-router-dom';
-import { Box, Container, Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Box, Container, Grid, ListItemIcon } from "@mui/material";
+import { useSelector } from "react-redux";
 
-import { getAuthorizationData } from 'src/redux/selectors/selectors';
-import { Sidebar } from 'src/components/Sidebar/Sidebar';
-import { RightSection } from 'src/components/RightSection/RightSection';
-import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
-import { MainRoutes } from 'src/routes/MainRoutes';
-import { ModalRoutes } from 'src/routes/ModalRoutes';
-import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolbar';
+import { getAuthorizationData } from "src/redux/selectors/selectors";
+import { Sidebar } from "src/components/Sidebar/Sidebar";
+import { RightSection } from "src/components/RightSection/RightSection";
+import { BottomToolbar } from "src/components/BottomToolbar/BottomToolbar";
+import { MainRoutes } from "src/routes/MainRoutes";
+import { ModalRoutes } from "src/routes/ModalRoutes";
+import { TempBottomToolbar } from "src/components/BottomToolbar/TempBottomToolbar";
 // import { Main } from 'src/components/Main/Main';
 // import { Modal } from 'src/components/Modal/Modal';
 
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { useMode } from 'src/styles/_materialTheme';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { useMode } from "src/styles/_materialTheme";
+import { RightRoutes } from "./../routes/RightRoutes";
+import { mainSidebarElementsMobile } from "src/components/SidebarMobile/SidebarMobileElements";
 
 export const Layout = () => {
   // get Authentication
@@ -21,6 +23,7 @@ export const Layout = () => {
 
   // create location for MainRoutes
   const location = useLocation();
+  // background from BottomToolbar where state={{ background: location }}
   const background = location.state && location.state.background;
 
   const theme = useMode();
@@ -41,24 +44,23 @@ export const Layout = () => {
             sm={2}
             md={3}
             sx={{
-              display: { xs: 'none', sm: 'block' },
+              display: { xs: "none", sm: "flex" },
+              justifyContent: "end",
             }}
           >
-            <Sidebar />
+            <Sidebar isAuthenticated={isAuthenticated} />
           </Grid>
 
           <Grid
             item
             xs={12}
-            sm={10}
-            md={6}
+            sm={9}
+            md={5}
             sx={{
               borderLeft: `1px solid ${theme.palette.border.main}`,
               borderRight: `1px solid ${theme.palette.border.main}`,
             }}
           >
-            {/* <Main /> */}
-
             {/* routes for main components */}
             <MainRoutes location={background || location} />
           </Grid>
@@ -67,26 +69,57 @@ export const Layout = () => {
             item
             md={3}
             sx={{
-              display: { xs: 'none', md: 'block' },
+              display: { xs: "none", md: "block" },
             }}
           >
-            <RightSection />
+            {/* temporarily commented out for chat testing */}
+            {/* did: <RightSection /> move in <RightRoutes /> */}
+            {/* <RightSection /> */}
+            {/* ******************** */}
+
+            {/* for chat */}
+            <RightRoutes />
           </Grid>
         </Grid>
 
-        <Box sx={{
-          display: { xs: 'block', sm: 'none' },
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        background: "blue",
-        height: '100px',
-        width: '100%',
-        zIndex: '10',
-      }}>
+        <Box
+          sx={{
+            display: { xs: "flex", sm: "none" },
+            justifyContent: "space-around",
+            alignItems: "center",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            background: `${theme.palette.background.default}`,
+            height: "50px",
+            width: "100%",
+            zIndex: "10",
+          }}
+        >
+          {mainSidebarElementsMobile.map((navElement) => (
+            <Link
+              to={navElement.route}
+              underline="none"
+              key={navElement.id}
+              component={NavLink}
+            >
+              <ListItemIcon
+                sx={{
+                  fontSize: 30,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: `${theme.palette.text.primary}`,
+                  zIndex: "11",
+                }}
+              >
+                <navElement.icon sx={{ fontSize: 30 }} />
+              </ListItemIcon>
+            </Link>
+          ))}
+        </Box>
 
-      </Box>
-        {isAuthenticated ? <TempBottomToolbar /> : <BottomToolbar />}
+        {!isAuthenticated && <BottomToolbar />}
 
         {/* routes for modal window */}
         <ModalRoutes />

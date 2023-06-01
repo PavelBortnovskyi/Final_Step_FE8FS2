@@ -7,7 +7,7 @@ import {
   Link,
   Switch,
 } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { LogoutButton } from 'src/UI/LogoutButton/LogoutButton';
 import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher';
 

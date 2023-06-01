@@ -1,7 +1,25 @@
 import { Button } from "@mui/material";
 import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { sendUserAvatar } from "src/redux/thunk/sendUserAvatar";
+
 export function ImgInputAvatar() {
+  const [file, setFile] = useState(null);
+  const [filePath, setFilePath] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (file) {
+      let sendAvatar = new FormData();
+      sendAvatar.append("file", file);
+
+      dispatch(sendUserAvatar(sendAvatar));
+    }
+    if (file) {
+      // setFilePath(URL.createObjectURL(file));
+    }
+  }, [file]);
   return (
     <Button
       variant="conteined"
@@ -16,7 +34,15 @@ export function ImgInputAvatar() {
       }}
     >
       <AddAPhotoOutlinedIcon sx={{ fontSize: "18px" }} />
-      <input name="logo" type="file" hidden />
+      <input
+        name="logo"
+        type="file"
+        hidden
+        onChange={(e) => {
+          setFile(e.target.files[0]);
+        }}
+        accept="image/png, image/gif, image/jpeg"
+      />
     </Button>
   );
 }

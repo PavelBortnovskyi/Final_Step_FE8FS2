@@ -30,24 +30,12 @@ export function EditInput({ field, ...props }) {
   return (
     <>
       <RedditTextField
-        // name="fullName"
-        // label="Name"
-        // defaultValue="12"
-        // id="fullName"
         variant="filled"
         style={{ marginTop: 11 }}
         {...field}
         {...props}
         placeholder={props.label}
       />
-      {/* <div>
-      <input
-        className="orderInput"
-        {...field}
-        {...props}
-        placeholder={props.label}
-      />
-    </div> */}
     </>
   );
 }

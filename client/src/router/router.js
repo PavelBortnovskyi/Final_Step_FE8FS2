@@ -10,6 +10,8 @@ import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
+import { Chat } from 'src/components/Chat/Chat';
+import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 
 export const router = createBrowserRouter([
   {
@@ -33,11 +35,11 @@ export const router = createBrowserRouter([
 
       {
         path: '/explore',
-        element: <UserPage />,
+        element: <PageDeveloping/>
       },
       {
         path: '/notifications',
-        element: <UserPage />,
+        element: <PageDeveloping/>
       },
       {
         path: '/messages',
@@ -45,15 +47,15 @@ export const router = createBrowserRouter([
       },
       {
         path: '/bookmarks',
-        element: <UserPage />,
+        element: <PageDeveloping/>
       },
       {
         path: '/twitter_blue',
-        element: <UserPage />,
+        element: <PageDeveloping/>
       },
       {
         path: '/verified-orgs',
-        element: <UserPage />,
+        element: <PageDeveloping/>
       },
       {
         path: '/profile',
@@ -74,6 +76,62 @@ export const router = createBrowserRouter([
       {
         path: '/settings/profile',
         element: <EditProfileModal />,
+      },
+      {
+        path: '/messages',
+        element: <Chat />,
+      },
+      {
+        path: '/topics',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/lists',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/members',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/analytics',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/professionals',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/ads',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/monetization',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/privacy',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/help',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/display',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/keyboard',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/search',
+        element: <PageDeveloping/>
+      },
+      {
+        path: '/page-developing',
+        element: <PageDeveloping/>
       },
     ],
   },

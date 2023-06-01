@@ -5,7 +5,7 @@ import user from 'src/redux/reducers/userSlice';
 import tweets from 'src/redux/reducers/getTweetSlice';
 import tweet from 'src/redux/reducers/getTweetByIdSlice';
 import userTweets from 'src/redux/reducers/getUserTweetsSlice';
-
+import chat from 'src/redux/reducers/chatSlice';
 export const store = configureStore({
   reducer: {
     auth,
@@ -14,5 +14,6 @@ export const store = configureStore({
     tweets,
     tweet,
     userTweets,
+    chat,
   },
 });
