@@ -49,7 +49,7 @@ export const SidebarDropdownMenu = ({ popupState }) => {
                 <ThemeSwitcher />
             </Box>
 
-            {
+            {/* {
                 selectElements.map(selectEl => (
                     <DropdownFooterSelect
                         key={selectEl.id}
@@ -57,7 +57,7 @@ export const SidebarDropdownMenu = ({ popupState }) => {
                         selects={selectEl.selects}
                     />
                 ))
-            }
+            } */}
 
         </MenuStyled>
     )
