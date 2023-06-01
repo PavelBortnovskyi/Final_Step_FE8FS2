@@ -4,6 +4,7 @@ import app.model.Tweet;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import app.service.TweetActionService;
+import app.service.TweetService;
 import app.service.UserModelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,6 +24,7 @@ public class ScheduleAlgo {
   private final TweetModelRepository tweetModelRepository;
   private final RatingModelRepository ratingModelRepository;
   private final TweetActionService tweetActionService;
+  private final TweetService tweetService;
   @Scheduled(fixedRate = 10000) // Выполнять каждый час
   public void ratingAlgorithm() {
     ArrayList<RatingModel> tweetsRating = new ArrayList<>();
@@ -52,7 +54,12 @@ public class ScheduleAlgo {
 
   private double getRating(Tweet tweet){
     double coef;
+    // сколько лайков
     coef = tweetActionService.getCountLikes(tweet.getId()) / 60;
+    // сколько прокоментировали
+    coef += tweetService.getCountReply(tweet.getId())*0.4;
+    // сколько сохранили
+    coef += (tweetActionService.getCountBookmarks(tweet.getId())*0.2);
     if (tweet.getUser().isVerified()) coef *= 1.5;
     return coef;
   }
