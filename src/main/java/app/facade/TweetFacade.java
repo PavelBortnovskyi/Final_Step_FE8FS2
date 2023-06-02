@@ -3,11 +3,15 @@ package app.facade;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.exceptions.tweetError.TweetIsNotFoundException;
+import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.service.AttachmentImagesService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,18 +37,19 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   @Autowired
   TweetActionService tweetActionService;
 
-  @Autowired
-  AttachmentImagesService attachmentImagesService;
 
   @PostConstruct
   public void init() {
+    Converter<Set<AttachmentImage>, Set<String>> imagesToURL = sa -> sa.getSource().stream()
+      .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
+
     super.getMm().typeMap(Tweet.class, TweetResponse.class)
       .addMapping(src -> src.getBody(), TweetResponse::setBody)
       .addMapping(src -> src.getId(), TweetResponse::setTweetId)
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
       .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
-      .addMapping(this::getImagesUrl, TweetResponse::setAttachmentsImages)
+      .addMappings(mapper -> mapper.using(imagesToURL).map(Tweet::getAttachmentImages, TweetResponse::setAttachmentsImages))
       .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
       .addMapping(this::getCountReply, TweetResponse::setCountReply)
       .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
@@ -74,7 +80,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
     tweetResponse.setCountReply(tweetService.getCountReply(tweetResponse.getTweetId()));
-    tweetResponse.setAttachmentsImages(this.getImagesUrl(tweetService.getTweetById(tweetId)));
     return tweetResponse;
   }
 
@@ -88,8 +93,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     List<TweetResponse> tweetsR = tweetsP.stream()
       .map(this::convertToDto)
       .collect(Collectors.toList());
-    IntStream.range(0, tweetsR.size())
-      .forEach(i -> tweetsR.get(i).setAttachmentsImages(this.getImagesUrl(tweetsP.getContent().get(i))));
     return new PageImpl<>(tweetsR);
   }
 
@@ -111,7 +114,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     List<TweetResponse> tweetResponses = tweets.stream()
       .map(this::convertToDto)
       .collect(Collectors.toList());
-
 
     return tweetResponses;
   }
