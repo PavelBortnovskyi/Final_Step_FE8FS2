@@ -42,7 +42,7 @@ function PostList() {
   useEffect(() => {
     if (user.id !== undefined && user.id !== '') {
       const userId = user.id;
-      dispatch(getUserTweetsThunk({ userId, page: 0, pageSize: 18 }));
+      dispatch(getUserTweetsThunk({ userId, page: 0, pageSize: 100 }));
     }
   }, [user]);
 
@@ -65,41 +65,6 @@ function PostList() {
             />
           );
         })}
-      <Post
-        displayName="Artem Shevchuk"
-        username="Jocellyn Flores"
-        logoUrl="./img/avatar.JPG"
-        verified={true}
-        image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
-      />
-      <Post
-        displayName="Artem Shevchuk"
-        username="Jocellyn Flores"
-        logoUrl="./img/avatar.JPG"
-        verified={true}
-        image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
-      />
-      <Post
-        displayName="Artem Shevchuk"
-        username="Jocellyn Flores"
-        logoUrl="./img/avatar.JPG"
-        verified={true}
-        image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
-      />
-      <Post
-        displayName="Artem Shevchuk"
-        username="Jocellyn Flores"
-        logoUrl="./img/avatar.JPG"
-        verified={true}
-        image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
-      />
-      <Post
-        displayName="Artem Shevchuk"
-        username="Jocellyn Flores"
-        logoUrl="./img/avatar.JPG"
-        verified={true}
-        image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
-      />
       <Post
         displayName="Artem Shevchuk"
         username="Jocellyn Flores"
