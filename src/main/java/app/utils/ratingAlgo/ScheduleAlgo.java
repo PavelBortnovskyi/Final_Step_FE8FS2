@@ -25,7 +25,7 @@ public class ScheduleAlgo {
   private final RatingModelRepository ratingModelRepository;
   private final TweetActionService tweetActionService;
   private final TweetService tweetService;
-  @Scheduled(fixedRate = 10000) // Выполнять каждый час
+  @Scheduled(fixedRate = 10000000000L) // Выполнять каждый час
   public void ratingAlgorithm() {
     ArrayList<RatingModel> tweetsRating = new ArrayList<>();
     LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
