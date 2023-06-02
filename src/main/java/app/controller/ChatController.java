@@ -43,7 +43,7 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to delete chat (can be deleted only by chat initiator!)
    */
   @Validated({Marker.ChatDetails.class})
-  @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.ChatDetails.class)
                                                  @Valid ChatRequest chatDTO,
                                                  HttpServletRequest request) {
@@ -56,9 +56,9 @@ public class ChatController {
   /**
    * This endpoint waiting for valid url params and DTO to add user to chat and return updated chat response
    */
-  //TODO: discuss about who can perform that operation
+  //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
-  @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleAddUserToChat(@RequestParam("userId")
                                                                                               @NotNull(groups = Marker.ChatDetails.class)
                                                                                               @Positive(groups = Marker.ChatDetails.class)
@@ -71,9 +71,9 @@ public class ChatController {
   /**
    * This endpoint waiting for valid url params, DTO and token to remove user from chat (can be performed only by chat initiator)
    */
-  //TODO: discuss about who can perform that operation
+  //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
-  @DeleteMapping(path = "/remove", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(path = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleRemoveUserFromChat(@PathVariable("userId") Long userIdToRemove,
                                                          @RequestBody @JsonView(Marker.ChatDetails.class)
                                                          @Valid ChatRequest chatDTO, HttpServletRequest request) {

@@ -61,7 +61,6 @@ public class SecurityConfiguration {
       //.oauth2Login();
       .exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
-
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
 
