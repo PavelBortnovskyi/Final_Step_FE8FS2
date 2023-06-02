@@ -11,8 +11,8 @@ export const createTweet = createAsyncThunk(
       formData.append('tweetBody', postInputText);
       formData.append('file', postImages);
 
-      const data = await myAxios.put("/tweet/tweet", formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      const data = await myAxios.put('/tweet/tweet', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       return data;

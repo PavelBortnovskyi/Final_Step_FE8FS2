@@ -1,29 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getUserTweets } from '../thunk/getUserTweets.js';
+import { getUserTweetsThunk } from '../thunk/getUserTweets.js';
 
 const initialState = {
-  tweetsById: [],
+  userTweets: [],
   isLoading: false,
   error: '',
 };
 
 export const getUserTweetsSlice = createSlice({
-  name: 'userTweetsSlice',
+  name: 'userTweets',
   initialState,
 
   extraReducers: (builder) => {
     builder
-      .addCase(getUserTweets.pending, (state) => {
+      .addCase(getUserTweetsThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getUserTweets.fulfilled, (state, action) => {
-        state.tweetsById = action.payload.tweet;
+      .addCase(getUserTweetsThunk.fulfilled, (state, action) => {
+        state.userTweets = action.payload;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getUserTweets.rejected, (state, action) => {
+      .addCase(getUserTweetsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

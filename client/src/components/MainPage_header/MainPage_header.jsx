@@ -35,7 +35,7 @@ function MainPage_header() {
         borderBottom: '1px solid rgb(56, 68, 77)',
         position: 'sticky',
         top: '0',
-        // zIndex: 1300,
+        zIndex: 13,
       }}
     >
       <NavLink to="/">
@@ -52,21 +52,23 @@ function MainPage_header() {
           Home
         </Box>
       </NavLink>
-      <Box sx={{
-        display: { xs: 'flex', sm: 'none' },
-        marginTop: '10px',
-        alignItems: 'center',
-      }}>
+      <Box
+        sx={{
+          display: { xs: 'flex', sm: 'none' },
+          marginTop: '10px',
+          alignItems: 'center',
+        }}
+      >
         <Avatar
           src="./img/avatar2.JPG"
           sx={{ marginRight: '35%', marginLeft: '10px', cursor: 'pointer' }}
-          onClick={() => setIsOpen(true)} />
+          onClick={() => setIsOpen(true)}
+        />
 
-        <SidebarMobile isOpen={isOpen} setIsOpen={setIsOpen}/>
+        <SidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
 
         <LogoTwitter />
       </Box>
-
 
       <Tabs value={tabIndex} onChange={handleTabChange}>
         <CustomTab label="For you" />
