@@ -1,11 +1,11 @@
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   useTheme,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -34,11 +34,19 @@ export const Modal = (props) => {
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle sx={{ color: `${theme.palette.black.main}` }}>
+        <DialogTitle 
+        sx={{
+          backgroundColor: `${theme.palette.background.default}`, 
+          color: `${theme.palette.text.primary}`, 
+          display: 'flex', 
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          }}>
           {title}
-          {/* <Button onClick={handleClose}>X</Button> */}
+
+          <CloseIcon onClick={handleClose} sx={{ color: `${theme.palette.text.primary}`, cursor: 'pointer'}}/>
         </DialogTitle>
-        <DialogContent dividers sx={{ color: `${theme.palette.black.main}` }}>
+        <DialogContent dividers sx={{ backgroundColor: `${theme.palette.background.default}`, color: `${theme.palette.black.main}` }}>
           {children}
         </DialogContent>
         {actionsBtn && <DialogActions dividers>{actionsBtn}</DialogActions>}

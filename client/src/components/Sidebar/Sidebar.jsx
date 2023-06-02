@@ -45,8 +45,8 @@ export const Sidebar = ({ isAuthenticated }) => {
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')
     : mainSidebarElements.filter(
-        (button) => button.label === 'Explore' || button.label === 'Settings'
-      );
+      (button) => button.label === 'Explore' || button.label === 'Settings'
+    );
 
   return (
     <DrawerStyled variant="permanent" anchor="left">
