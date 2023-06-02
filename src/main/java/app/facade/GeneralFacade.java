@@ -49,7 +49,6 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
     return entity;
   }
 
-
   public O save(E entity) {
     return convertToDto(service.save(entity));
   }

@@ -91,7 +91,7 @@ public class ChatController {
    */
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
-                                                     @RequestParam("page") @NotNull @Positive Integer page,
+                                                     @RequestParam("page") @NotNull Integer page,
                                                      @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatsForPreview(currUserId, pageSize, page);
@@ -105,8 +105,7 @@ public class ChatController {
   @GetMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
                                              @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class)
-                                             @Positive(groups = Marker.ChatDetails.class) Integer page,
+                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                              @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -120,8 +119,7 @@ public class ChatController {
   @PostMapping(path = "/messages/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChat(@RequestBody @JsonView(Marker.ChatDetails.class)
                                                              @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class)
-                                                             @Positive(groups = Marker.ChatDetails.class) Integer page,
+                                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                                              @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                              @RequestParam("keyword") String keyword) {
@@ -134,7 +132,7 @@ public class ChatController {
    */
   @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChats(HttpServletRequest request,
-                                                              @RequestParam("page") @NotNull @Positive Integer page,
+                                                              @RequestParam("page") @NotNull Integer page,
                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
                                                               @RequestParam("keyword") String keyword) {
     Long currUserId = (Long) request.getAttribute("userId");
