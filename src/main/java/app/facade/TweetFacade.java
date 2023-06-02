@@ -9,6 +9,8 @@ import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Component
 @NoArgsConstructor
@@ -39,7 +43,7 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
       .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
       .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
-      //.addMapping(this::getImagesUrl, TweetResponse::setAttachmentsImages)
+      .addMapping(this::getImagesUrl, TweetResponse::setAttachmentsImages)
       .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
       .addMapping(this::getCountReply, TweetResponse::setCountReply)
       .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
@@ -79,27 +83,23 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
-  public List<TweetResponse> getUserTweets(Long userId, int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.getUserTweets(userId, page, pageSize);
-
-    List<Tweet> tweets = responseEntity.getBody();
-    List<TweetResponse> tweetResponses = tweets.stream()
+  public Page<TweetResponse> getUserTweets(Long userId, int page, int pageSize) {
+    Page<Tweet> tweetsP = tweetService.getUserTweets(userId, page - 1, pageSize);
+    List<TweetResponse> tweetsR = tweetsP.stream()
       .map(this::convertToDto)
-      .toList();
-
-
-    return tweetResponses;
+      .collect(Collectors.toList());
+    IntStream.range(0, tweetsR.size())
+      .forEach(i -> tweetsR.get(i).setAttachmentsImages(this.getImagesUrl(tweetsP.getContent().get(i))));
+    return new PageImpl<>(tweetsR);
   }
 
   public List<TweetResponse> listTweets(int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page, pageSize);
+    ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page - 1, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
     List<TweetResponse> tweetResponses = tweets.stream()
       .map(this::convertToDto)
       .toList();
-
-
     return tweetResponses;
   }
 

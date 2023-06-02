@@ -12,6 +12,7 @@ import app.service.TweetService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,8 +89,9 @@ public class TweetController {
 
   // get user tweets
   @GetMapping("/tweets/{id}")
-  public List<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
-    return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
+  public Page<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId, @RequestParam("page") @NotNull @Positive Integer page,
+                                           @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+    return tweetFacade.getUserTweets(userId, page, pageSize);
   }
 
   @PostMapping("/like/{tweetId}")
