@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "src/redux/thunk/editUser";
 
 export function EditFormShema() {
-  const teg = useSelector((state) => state.user.user.userTag);
-  const name = useSelector((state) => state.user.user.fullName);
-  const bio = useSelector((state) => state.user.user.bio) || "";
-  const location = useSelector((state) => state.user.user.location) || "";
+  const teg = useSelector((state) => state.user.user) || "";
+  const name = useSelector((state) => state.user.user) || "";
+  const bio = useSelector((state) => state.user.user) || "";
+  const location = useSelector((state) => state.user.user) || "";
 
   const dispatch = useDispatch();
   const handleSubmit = async (values, actions) => {
@@ -25,11 +25,11 @@ export function EditFormShema() {
   return (
     <Formik
       initialValues={{
-        userTag: teg,
+        userTag: teg.userTag,
 
-        fullName: name,
-        bio: bio,
-        location: location,
+        fullName: name.fullName,
+        bio: bio.bio,
+        location: location.location,
 
         birthDate: "",
       }}
