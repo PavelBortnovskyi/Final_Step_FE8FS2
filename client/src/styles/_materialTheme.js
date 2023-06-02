@@ -17,7 +17,6 @@ export const themeSettings = (colorTheme) => {
             //text colors
             text: {
               primary: '#fff',
-              secondary: 'rgb(139, 152, 165)',
               active: '#fff',
             },
             //background colors
@@ -47,6 +46,9 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: '#FFF',
+            },
+            border: {
+              main: '#4d4d4d',
             },
           }
         : {
@@ -86,6 +88,9 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: 'rgb(30, 155, 240)',
+            },
+            border: {
+              main: '#dfdfdf',
             },
           }),
     },

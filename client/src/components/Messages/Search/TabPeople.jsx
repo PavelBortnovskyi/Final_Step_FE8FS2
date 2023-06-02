@@ -25,7 +25,7 @@ export const TabPeople = () => {
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
 
-  // TODO: function for set guest for chat
+  // TODO: function to set guest for chat
   // set Guest for chat
   const handleClick = (id) => {
     dispatch(getGuest(id));

@@ -10,13 +10,14 @@ import { findUser } from 'src/redux/thunk/findUser';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  backgroundColor: alpha(theme.palette.text.primary, 0.15),
+  backgroundColor: alpha(theme.palette.text.primary, 0.05),
+  border: `1px solid ${theme.palette.border.main}`,
   borderRadius: '20px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.text.primary, 0.25),
+    backgroundColor: alpha(theme.palette.text.primary, 0.1),
   },
   marginLeft: 0,
   width: '100%',
