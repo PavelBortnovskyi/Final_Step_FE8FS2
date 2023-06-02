@@ -1,5 +1,6 @@
 import { SaveButton } from "./SaveButton";
 import { Box, Typography } from "@mui/material";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,11 +24,12 @@ export function EditFormHeder() {
         display: "flex",
         justifyContent: "space-between",
         padding: "8px 12px",
+        alignItems: "center",
       }}
     >
-      <Box onClick={handleClose} sx={{ cursor: "pointer" }}>
+      <CloseOutlinedIcon onClick={handleClose} sx={{ cursor: "pointer" }}>
         x
-      </Box>
+      </CloseOutlinedIcon>
       <Typography>Edit profile</Typography>
       <SaveButton handleClose={handleClose} />
     </Box>
