@@ -5,28 +5,21 @@ import app.dto.rs.TweetResponse;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.AttachmentImage;
 import app.model.Tweet;
-import app.service.AttachmentImagesService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
 import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Component
 @NoArgsConstructor
@@ -89,15 +82,11 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   }
 
   public Page<TweetResponse> getUserTweets(Long userId, int page, int pageSize) {
-    Page<Tweet> tweetsP = tweetService.getUserTweets(userId, page - 1, pageSize);
-    List<TweetResponse> tweetsR = tweetsP.stream()
-      .map(this::convertToDto)
-      .collect(Collectors.toList());
-    return new PageImpl<>(tweetsR);
+    return tweetService.getUserTweets(userId, page, pageSize).map(this::convertToDto);
   }
 
   public List<TweetResponse> listTweets(int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page - 1, pageSize);
+    ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
     List<TweetResponse> tweetResponses = tweets.stream()

@@ -121,18 +121,14 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns collection of user chats for only last message in each
    */
   public Page<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
-    Page<Object[]> result = chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber));
-
-    List<ChatResponse> chats = new ArrayList<>();
-    for (Object[] objects : result.getContent()) {
-      Chat chat = (Chat) objects[0];
-      Message lastMessage = (Message) objects[1];
+    return chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
+      Chat chat = (Chat) array[0];
+      Message lastMessage = (Message) array[1];
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
-      chats.add(modelMapper.map(chat, ChatResponse.class));
-    }
-    return new PageImpl<>(chats);
+      return this.modelMapper.map(chat, ChatResponse.class);
+    });
   }
 
   /**
