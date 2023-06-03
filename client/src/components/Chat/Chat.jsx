@@ -10,11 +10,15 @@ import { useSelector } from 'react-redux';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import { useTheme } from '@emotion/react';
 import { useDispatch } from 'react-redux';
+import { useRef, useState } from 'react';
+import { useEffect } from 'react';
+import { socketUrl } from 'src/utils/socketSetup';
+import { io } from 'socket.io-client';
 
 import { Loading } from 'src/UI/Loading';
 import { getGuestChat } from 'src/redux/selectors/selectors';
 import { chatCloseConnection } from 'src/redux/reducers/chatSlice';
-import { BodyChat } from './BodyChat';
+import { ChatBox, Conversation } from './ChatBox';
 
 // id:2
 // fullName:"User2 Vasilevich"
@@ -28,8 +32,10 @@ export const Chat = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  // get guest data from redux
   const { isLoading, guest } = useSelector(getGuestChat);
 
+  // close chat
   const handleCloseConnection = () => {
     dispatch(chatCloseConnection());
   };
@@ -39,6 +45,53 @@ export const Chat = () => {
 
   // check data not empty
   const isResult = guest ? true : false;
+
+  // ************** CHAT ***************
+  // create link on socket
+  const socket = useRef();
+
+  // set online guests
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  // set message for socket server
+  const [sendMessage, setSendMessage] = useState(null);
+
+  // receive message from socket server
+  const [receiveMessage, setReceiveMessage] = useState(null);
+
+  // set chats where user be
+  const [chats, setChats] = useState([]);
+
+  // current chat
+  const [currentChat, setCurrentChat] = useState(null);
+
+  // create socket and send guest.id
+  useEffect(() => {
+    // /chat-ws
+    socket.current = io(socketUrl);
+    // TODO: send id guest
+    socket.current.emit('add-new-user', guest.id);
+    // TODO: get users online
+    socket.current.on('get-users', (users) => {
+      setOnlineUsers(users);
+    });
+  }, [guest]);
+
+  // send message to socket server
+  useEffect(() => {
+    if (sendMessage !== null) {
+      // TODO: set event for send message
+      socket.current.emit('send-message', sendMessage);
+    }
+  }, [sendMessage]);
+
+  // receive message from socket server
+  useEffect(() => {
+    // TODO: get all messages
+    socket.current.on('receive-message', (data) => {
+      setReceiveMessage(data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -78,7 +131,7 @@ export const Chat = () => {
               flexDirection: 'column',
               margin: '10px 0 12px',
               paddingBottom: '12px',
-              borderBottom: '1px solid #333',
+              borderBottom: `1px solid ${theme.palette.border.main}`,
             }}
           >
             <Tooltip title="Close connection">
@@ -104,7 +157,12 @@ export const Chat = () => {
           </Box>
 
           {/* body Chat */}
-          <BodyChat />
+          <ChatBox
+            chat={currentChat}
+            currentUser={guest.id}
+            setSendMessage={setSendMessage}
+            receiveMessage={receiveMessage}
+          />
         </>
       )}
     </Container>

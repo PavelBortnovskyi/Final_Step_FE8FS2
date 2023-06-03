@@ -4,7 +4,7 @@ import axios from 'axios';
 // Server default URL
 export const myAxios = axios.create({
   // baseURL: process.env.REACT_APP_SERVER_URL_AXIOS,
-  baseURL: 'https://final-step-fe2fs8tw.herokuapp.com/api/v1',
+  baseURL: 'https://final-step-fe2fs8tw.herokuapp.com/api/v1/',
 });
 
 // add authorization token from localStorage to request header

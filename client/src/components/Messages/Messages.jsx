@@ -4,6 +4,7 @@ import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined
 
 import { useTheme } from '@emotion/react';
 import { SearchMessages } from './Search/SearchMessages';
+import { ChatList } from './ChatsList/ChatList';
 
 export const Messages = () => {
   const theme = useTheme();
@@ -40,6 +41,8 @@ export const Messages = () => {
             </Tooltip>
           </Box>
         </Box>
+        {/* chat list */}
+        <ChatList />
 
         {/* Search */}
         <SearchMessages />
