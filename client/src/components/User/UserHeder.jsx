@@ -19,13 +19,21 @@ export function UserHeder() {
         padding: "8px",
       }}
     >
-      <Button onClick={handleBack}>
+      <Button
+        onClick={handleBack}
+        sx={{
+          "&:hover": {
+            backgroundColor: "transparent !important",
+          },
+        }}
+      >
         <ArrowBackOutlinedIcon
           sx={{
             fill: "rgb(139, 152, 165)",
             padding: "12px",
             borderRadius: "50%",
             boxSizing: "content-box",
+
             "&:hover": {
               backgroundColor: "#b3b3b32b",
             },

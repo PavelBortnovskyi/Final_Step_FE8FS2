@@ -7,11 +7,11 @@ import { sendUserAvatar } from "src/redux/thunk/sendUserAvatar";
 
 export function ImgInputAvatar() {
   const [file, setFile] = useState(null);
-  const [filePath, setFilePath] = useState(null);
+  // const [filePath, setFilePath] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     if (file) {
-      let sendAvatar = new FormData();
+      const sendAvatar = new FormData();
       sendAvatar.append("file", file);
 
       dispatch(sendUserAvatar(sendAvatar));
