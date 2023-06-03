@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { UserAvatarBG } from "./UserAvatarBG";
 import { Avatar } from "@mui/material";
 
-export function UserPageAvatar({ w, h, mt }) {
-  const userAvatar = useSelector((state) => state.user.user);
+export function UserPageAvatar({ w, h, mt, userAvatar }) {
+  // const userAvatar = useSelector((state) => state.user.user);
   return (
     (userAvatar && (
       <Avatar
         alt="Remy Sharp"
-        src={userAvatar.avatarImgUrl}
+        src={userAvatar}
         sx={{
           overflow: "hidden",
           width: `${w}px`,

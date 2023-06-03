@@ -4,7 +4,7 @@ import { UserTweetsNumber } from "./UserTweensNumber";
 import { Box, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export function UserHeder() {
+export function UserHeder({ fullName, tweetsCounter }) {
   const navigate = useNavigate();
   const location = useLocation();
   const handleBack = async () => {
@@ -22,6 +22,7 @@ export function UserHeder() {
       <Button
         onClick={handleBack}
         sx={{
+          color: "transparent !important",
           "&:hover": {
             backgroundColor: "transparent !important",
           },
@@ -42,8 +43,8 @@ export function UserHeder() {
       </Button>
 
       <Box>
-        <UserName />
-        <UserTweetsNumber />
+        <UserName fullName={fullName} />
+        <UserTweetsNumber tweetsCounter={tweetsCounter} />
       </Box>
     </Box>
   );
