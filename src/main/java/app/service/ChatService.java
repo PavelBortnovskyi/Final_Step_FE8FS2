@@ -2,27 +2,24 @@ package app.service;
 
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
-import app.dto.rs.TweetResponse;
-import app.dto.rs.UserModelResponse;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.Chat;
 import app.model.Message;
-import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -93,13 +90,15 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns chat with added message
    */
-  public Chat addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
+  public Message addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
+    AtomicInteger last = new AtomicInteger();
     return this.chatRepository.save(this.chatRepository.findById(chatId)
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))
       .map(chat -> {
         chat.getMessages().add(message);
+        last.set(chat.getMessages().size());
         return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId))));
+      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId)))).getMessages().get(last.get());
   }
 
   /**
