@@ -19,6 +19,7 @@ export function UserFolower() {
           <span
             style={{
               color: "rgb(139, 152, 165)",
+              marginLeft: "6px",
             }}
           >
             foloving
@@ -29,6 +30,7 @@ export function UserFolower() {
           <span
             style={{
               color: "rgb(139, 152, 165)",
+              marginLeft: "6px",
             }}
           >
             folovers

@@ -18,8 +18,8 @@ function UserNames({
     <Box
       display="flex"
       sx={{
-        gap: '4px',
         alignItems: 'baseline',
+        justifyContent: 'space-between',
         marginBottom: '10px',
         flexDirection: 'column',
         width: '100%',

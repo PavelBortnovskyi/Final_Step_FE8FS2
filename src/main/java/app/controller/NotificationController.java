@@ -29,7 +29,7 @@ public class NotificationController {
    */
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
-                                                                  @RequestParam("page") @NotNull @Positive Integer page,
+                                                                  @RequestParam("page") @NotNull Integer page,
                                                                   @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
     return this.notificationFacade.getAllUserNotifications(currUserId, pageSize, page);
@@ -40,7 +40,7 @@ public class NotificationController {
    */
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
-                                                                   @RequestParam("page") @NotNull @Positive Integer page,
+                                                                   @RequestParam("page") @NotNull Integer page,
                                                                    @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
     return this.notificationFacade.getSeenUserNotifications(currUserId, pageSize, page);
@@ -51,7 +51,7 @@ public class NotificationController {
    */
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
-                                                                     @RequestParam("page") @NotNull @Positive Integer page,
+                                                                     @RequestParam("page") @NotNull Integer page,
                                                                      @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("useId");
     return this.notificationFacade.getUnseenUserNotifications(currUserId, pageSize, page);

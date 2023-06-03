@@ -63,7 +63,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
    * Method returns page of user chat responses with last message to preview
    */
   public Page<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
-    return this.chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber - 1);
+    return this.chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber);
   }
 
   /**
@@ -74,20 +74,20 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId)
         .orElseThrow(() -> new UserNotFoundException(userId))))
       .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId)));
-    return this.chatService.getMessages(chatId, pageSize, pageNumber - 1);
+    return this.chatService.getMessages(chatId, pageSize, pageNumber);
   }
 
   /**
    * Method returns page of message responses from user chat according to keyword matches
    */
   public Page<MessageResponse> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.chatService.searchMessagesInChat(chatId, userId, pageSize, pageNumber - 1, keyword);
+    return this.chatService.searchMessagesInChat(chatId, userId, pageSize, pageNumber, keyword);
   }
 
   /**
    * Method returns page of message responses from user chats according to keyword matches
    */
   public Page<MessageResponse> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.chatService.searchMessagesInChats(userId, pageSize, pageNumber - 1, keyword);
+    return this.chatService.searchMessagesInChats(userId, pageSize, pageNumber, keyword);
   }
 }

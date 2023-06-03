@@ -7,11 +7,11 @@ import { sendUserHederFoto } from "src/redux/thunk/sendUserHederFoto";
 
 export function UserPageFotoInput() {
   const [file, setFile] = useState(null);
-  const [filePath, setFilePath] = useState(null);
+  // const [filePath, setFilePath] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     if (file) {
-      let sendFoto = new FormData();
+      const sendFoto = new FormData();
       sendFoto.append("file", file);
 
       dispatch(sendUserHederFoto(sendFoto));
