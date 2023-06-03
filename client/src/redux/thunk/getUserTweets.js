@@ -8,7 +8,8 @@ export const getUserTweetsThunk = createAsyncThunk(
       const { data } = await myAxios.get(
         `/tweet/tweets/${userId}?page=${page}&pageSize=${pageSize}`
       );
-      return data;
+      console.log(data);
+      return data.content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
