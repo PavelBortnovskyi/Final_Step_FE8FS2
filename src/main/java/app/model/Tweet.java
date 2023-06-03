@@ -1,7 +1,6 @@
 package app.model;
 
 import app.enums.TweetType;
-import app.utils.ratingAlgo.ViewedPersonInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -46,10 +45,6 @@ public class Tweet extends BaseEntityModel {
   @OneToMany(mappedBy = "tweet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
-
-  @OneToMany(mappedBy = "tweet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  private Set<ViewedPersonInfo> viewedPersonInfos = new HashSet<>();
 
   @Column(name = "tweet_raiting", nullable = false)
   private double tweetRating;

@@ -10,7 +10,6 @@ import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
-import app.utils.ratingAlgo.ViewedInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,6 @@ public class TweetService extends GeneralService<Tweet> {
   private final TweetActionService tweetActionService;
   private final TweetActionRepository tweetActionRepository;
   private final AttachmentImagesService attachmentImagesService;
-  private final ViewedInfoService viewedInfoService;
 
   public Optional<Tweet> getTweet(Long id) {
     Optional<Tweet> tweet = findById(id);

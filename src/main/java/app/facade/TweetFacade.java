@@ -7,7 +7,6 @@ import app.model.Tweet;
 import app.service.AttachmentImagesService;
 import app.service.TweetActionService;
 import app.service.TweetService;
-import app.utils.ratingAlgo.ViewedInfoService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +30,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
   @Autowired
   AttachmentImagesService attachmentImagesService;
-
-  @Autowired
-  ViewedInfoService viewedInfoService;
 
   @PostConstruct
   public void init() {
@@ -71,8 +67,6 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   public TweetResponse getTweetById(Long tweetId , HttpServletRequest request) {
     TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
-
-    viewedInfoService.addView(tweetService.getTweetById(tweetId), request);
 
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
