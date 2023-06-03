@@ -2,13 +2,12 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { UserName } from "./UserName";
 import { UserTweetsNumber } from "./UserTweensNumber";
 import { Box, Button } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function UserHeder({ fullName, tweetsCounter }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const handleBack = async () => {
-    !!location.state ? navigate(-1) : navigate("/");
+    navigate(-1);
   };
   return (
     <Box
