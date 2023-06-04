@@ -39,18 +39,24 @@ public class JwtTokenService {
   private String secretPasswordResetKey;
   @Value("${jwt.secretPasswordUpdate}")
   private String secretPasswordUpdateKey;
+
+  @Value("${jwt.secretRegister}")
+  private String secretRegisterKey;
   @Value("${jwt.header}")
   private String authorizationHeader;
 
   //All fields below in milliseconds
   @Value("${jwt.expiration}")
-  private long AccessTokenLiveTime;
+  private long accessTokenLiveTime;
   @Value("${jwt.expirationRefresh}")
-  private long RefreshTokenLiveTime;
+  private long refreshTokenLiveTime;
   @Value("${jwt.expirationPasswordReset}")
-  private long PasswordResetTokenLiveTime;
+  private long passwordResetTokenLiveTime;
   @Value("${jwt.expirationPasswordUpdate}")
-  private long PasswordUpdateTokenLiveTime;
+  private long passwordUpdateTokenLiveTime;
+
+  @Value("${jwt.expirationRegister}")
+  private long registerTokenLiveTime;
 
   private static final String BEARER = "Bearer ";
 
@@ -92,7 +98,10 @@ public class JwtTokenService {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
     Date expiry = this.getExpirationDate(tokenType);
-    Claims claims = Jwts.claims().setSubject(userId.toString());
+    Claims claims = userId == null ? Jwts.claims().setSubject(userMail):Jwts.claims().setSubject(userId.toString());
+
+    if (tokenType.equals(TokenType.REGISTER)){
+      claims.put("email", userMail);}
 
     if (tokenType.equals(TokenType.ACCESS)) {
       claims.put("username", userTag);
@@ -287,16 +296,16 @@ public class JwtTokenService {
     Date now = new Date();
     switch (tokenType) {
       case ACCESS -> {
-        return new Date(now.getTime() + AccessTokenLiveTime);
+        return new Date(now.getTime() + accessTokenLiveTime);
       }
       case REFRESH -> {
-        return new Date(now.getTime() + RefreshTokenLiveTime);
+        return new Date(now.getTime() + refreshTokenLiveTime);
       }
       case PASSWORD_RESET -> {
-        return new Date(now.getTime() + PasswordResetTokenLiveTime);
+        return new Date(now.getTime() + passwordResetTokenLiveTime);
       }
       case PASSWORD_UPDATE -> {
-        return new Date(now.getTime() + PasswordUpdateTokenLiveTime);
+        return new Date(now.getTime() + passwordUpdateTokenLiveTime);
       }
       default -> {
         return now;
