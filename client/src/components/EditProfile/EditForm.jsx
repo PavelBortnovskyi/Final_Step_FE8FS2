@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 
 export function EditForm() {
   const userHederFoto = useSelector((state) => state.user.user) || "";
-  console.log(userHederFoto);
   return (
     <Form>
       <EditFormHeder />
