@@ -11,8 +11,11 @@ import { EditBirthDate } from "./EditBirthDate";
 import { EditInput } from "./EditInput";
 import { UserPageFotoInput } from "./UserPageFotoInput";
 import { ImgInputAvatar } from "./ImgInputAvatar";
+import { useSelector } from "react-redux";
 
 export function EditForm() {
+  const userHederFoto = useSelector((state) => state.user.user) || "";
+  console.log(userHederFoto);
   return (
     <Form>
       <EditFormHeder />
@@ -21,7 +24,7 @@ export function EditForm() {
           position: "relative",
         }}
       >
-        <UserPageFoto />
+        <UserPageFoto hederImg={userHederFoto.headerImgUrl} />
         <Box
           sx={{
             display: "flex",
@@ -41,7 +44,12 @@ export function EditForm() {
           position: "relative",
         }}
       >
-        <UserPageAvatar w={"140"} h={"140"} mt={"-70"} />
+        <UserPageAvatar
+          w={"140"}
+          h={"140"}
+          mt={"-70"}
+          userAvatar={userHederFoto.avatarImgUrl}
+        />
         <Box sx={{ position: "absolute", bottom: "36px", left: "50px" }}>
           <ImgInputAvatar />
         </Box>
