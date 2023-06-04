@@ -8,6 +8,7 @@ import userTweets from "src/redux/reducers/getUserTweetsSlice";
 import chat from "src/redux/reducers/chatSlice";
 import followers from "src/redux/reducers/followersSlice";
 import followings from "src/redux/reducers/followingsSlice";
+import userBiId from "src/redux/reducers/userBiIdSlice";
 export const store = configureStore({
   reducer: {
     auth,
@@ -19,5 +20,6 @@ export const store = configureStore({
     chat,
     followers,
     followings,
+    userBiId,
   },
 });

@@ -5,6 +5,9 @@ import { Box } from "@mui/material";
 import { UserInformationBlock } from "./UserInformationBlock";
 
 export function UserInfo({
+  userButton,
+  lincToFollowers,
+  lincToFollowings,
   hederImg,
   userAvatar,
   fullName,
@@ -28,6 +31,9 @@ export function UserInfo({
         }}
       >
         <UserInformationBlock
+          userButton={userButton}
+          lincToFollowers={lincToFollowers}
+          lincToFollowings={lincToFollowings}
           w={"140"}
           h={"140"}
           mt={"-70"}

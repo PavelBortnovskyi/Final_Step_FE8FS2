@@ -9,11 +9,11 @@ export const FollowersPage = () => {
   const follower = useSelector((state) => state.followers.followers) || [];
 
   useEffect(() => {
-    if (follower.length === 0) {
-      dispatch(getFollowers());
-      return;
-    }
-  }, [follower]);
+    // if (follower.length === 0) {
+    dispatch(getFollowers());
+    // return;
+    // }
+  }, [follower.length]);
 
   return (
     follower.content && (

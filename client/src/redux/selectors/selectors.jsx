@@ -24,3 +24,6 @@ export const getFollowers = (state) => state.followers;
 
 // get followings
 export const getFollowings = (state) => state.followings;
+
+// get user bi id
+export const getUserBiId = (state) => state.userBiId;

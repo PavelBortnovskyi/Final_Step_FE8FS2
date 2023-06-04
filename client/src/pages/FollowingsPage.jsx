@@ -8,10 +8,10 @@ export const FollowingsPage = () => {
   const dispatch = useDispatch();
   const following = useSelector((state) => state.followings.followings) || [];
   useEffect(() => {
-    if (following.length === 0) {
-      dispatch(getFollowings());
-      return;
-    }
+    // if (following.length === 0) {
+    dispatch(getFollowings());
+    //   return;
+    // }
   }, [following.length, dispatch]);
 
   return (

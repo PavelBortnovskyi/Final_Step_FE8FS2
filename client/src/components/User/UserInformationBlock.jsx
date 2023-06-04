@@ -8,6 +8,9 @@ import { Box } from "@mui/material";
 import { UserBio } from "./UserBio";
 import { UserLocation } from "./UserLocation";
 export function UserInformationBlock({
+  userButton,
+  lincToFollowers,
+  lincToFollowings,
   w,
   h,
   mt,
@@ -29,7 +32,7 @@ export function UserInformationBlock({
         }}
       >
         <UserPageAvatar w={w} h={h} mt={mt} userAvatar={userAvatar} />
-        <ButtonEditProfile />
+        <ButtonEditProfile userButton={userButton} />
       </Box>
       <Box sx={{ margin: "12px 0" }}>
         <UserName fullName={fullName} />
@@ -42,6 +45,8 @@ export function UserInformationBlock({
       </Box>
 
       <UserFolower
+        lincToFollowers={lincToFollowers}
+        lincToFollowings={lincToFollowings}
         countUserFollowings={countUserFollowings}
         countUserFollowers={countUserFollowers}
       />

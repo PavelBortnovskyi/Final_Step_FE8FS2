@@ -2,7 +2,12 @@ import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export function UserFolower({ countUserFollowings, countUserFollowers }) {
+export function UserFolower({
+  countUserFollowings,
+  countUserFollowers,
+  lincToFollowings,
+  lincToFollowers,
+}) {
   const theme = useTheme();
   return (
     <Box
@@ -12,7 +17,7 @@ export function UserFolower({ countUserFollowings, countUserFollowers }) {
       }}
     >
       <Link
-        to="/followings"
+        to={lincToFollowings}
         color="white"
         sx={{ color: "white" }}
         underline="none"
@@ -25,13 +30,13 @@ export function UserFolower({ countUserFollowings, countUserFollowers }) {
               marginLeft: "6px",
             }}
           >
-            folowing
+            folowings
           </span>
         </Typography>
       </Link>
 
       <Link
-        to="/followers"
+        to={lincToFollowers}
         color="white"
         sx={{ color: "white" }}
         underline="none"

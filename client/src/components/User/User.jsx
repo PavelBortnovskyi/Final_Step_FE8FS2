@@ -4,6 +4,9 @@ import { UserHeder } from "./UserHeder";
 import { UserInfo } from "./UserInfo";
 
 export const User = ({
+  userButton,
+  lincToFollowers,
+  lincToFollowings,
   fullName,
   tweetsCounter,
   hederImg,
@@ -25,6 +28,9 @@ export const User = ({
     >
       <UserHeder fullName={fullName} tweetsCounter={tweetsCounter} />
       <UserInfo
+        userButton={userButton}
+        lincToFollowers={lincToFollowers}
+        lincToFollowings={lincToFollowings}
         hederImg={hederImg}
         userAvatar={userAvatar}
         fullName={fullName}
