@@ -98,7 +98,7 @@ public class JwtTokenService {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
     Date expiry = this.getExpirationDate(tokenType);
-    Claims claims = userId == null ? Jwts.claims().setSubject(userMail):Jwts.claims().setSubject(userId.toString());
+    Claims claims = (userId == null) ? Jwts.claims().setSubject(userMail):Jwts.claims().setSubject(userId.toString());
 
     if (tokenType.equals(TokenType.REGISTER)){
       claims.put("email", userMail);}
