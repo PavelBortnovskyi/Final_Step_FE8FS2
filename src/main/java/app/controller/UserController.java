@@ -87,6 +87,20 @@ public class UserController {
     return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
+  @GetMapping("{userId}/followers")
+  public Page<UserModelResponse> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
+                                              @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return userModelFacade.getFollowers(userId, page, size);
+  }
+
+  @GetMapping("{userId}/followings")
+  public Page<UserModelResponse> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
+                                                       @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                       @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return userModelFacade.getFollowings(userId, page, size);
+  }
+
   @GetMapping("offer_followings")
   public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                     @RequestParam(name = "size", defaultValue = "10") @Positive int size,
