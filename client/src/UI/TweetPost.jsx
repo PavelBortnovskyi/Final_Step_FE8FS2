@@ -12,11 +12,15 @@ function TweetPost({
   image,
   logoUrl,
   showIconList,
+  likes,
+  reply,
+  retweet,
 }) {
   return (
     <Box
       sx={{
         borderBottom: '1px solid rgb(56, 68, 77)',
+        width: '100%',
       }}
       padding={2}
       display="flex"
@@ -25,7 +29,12 @@ function TweetPost({
         <Avatar src={logoUrl} />
       </Box>
 
-      <Box padding={1}>
+      <Box
+        padding={1}
+        sx={{
+          width: '100%',
+        }}
+      >
         <UserNames
           fullName={username}
           verified={verified}
@@ -51,7 +60,11 @@ function TweetPost({
         ) : (
           false
         )}
-        {showIconList ? <PostIconList /> : false}
+        {showIconList ? (
+          <PostIconList likes={likes} reply={reply} retweet={retweet} />
+        ) : (
+          false
+        )}
       </Box>
     </Box>
   );
