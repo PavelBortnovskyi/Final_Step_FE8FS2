@@ -1,9 +1,10 @@
 import Button from "@mui/material/Button";
-import { NavLink, useLocation } from "react-router-dom";
-import { Link } from "@mui/material";
+// import { NavLink, useLocation } from "react-router-dom";
+// import { Link } from "@mui/material";
 
-export function ButtonEditProfile() {
-  const location = useLocation();
+export function ButtonEditProfile({ userButton }) {
+  // const location = useLocation();
+
   return (
     <Button
       variant="plain"
@@ -19,7 +20,8 @@ export function ButtonEditProfile() {
         },
       }}
     >
-      <Link
+      {userButton}
+      {/* <Link
         component={NavLink}
         to="/settings/profile"
         state={{ background: location }}
@@ -27,7 +29,7 @@ export function ButtonEditProfile() {
         underline="none"
       >
         Edit profile
-      </Link>
+      </Link> */}
     </Button>
   );
 }

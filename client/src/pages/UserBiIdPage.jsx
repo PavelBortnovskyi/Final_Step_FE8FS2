@@ -1,13 +1,21 @@
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
-import { LinkToEditProfile } from "src/components/User/LinkToEditProfile";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ButtonSubscribe } from "src/components/User/ButtonSubscribe";
 import { User } from "src/components/User/User";
+import { getUserBiId } from "src/redux/thunk/getUserBiId";
 
-export const UserPage = () => {
-  const user = useSelector((state) => state.user.user) || "";
-  const lincToFollowings = "/followings";
-  const lincToFollowers = "/followers";
-  const editProfile = <LinkToEditProfile />;
+export const UserBiIdPage = () => {
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.userBiId.userId) || "";
+  const subscribe = <ButtonSubscribe userId={user.id} />;
+  // useEffect(() => {
+  //   if (user === "") {
+  //     dispatch(getUserBiId("2"));
+  //     return;
+  //   }
+  // }, [user, dispatch]);
   return (
     <Box
       sx={{
@@ -17,9 +25,7 @@ export const UserPage = () => {
       }}
     >
       <User
-        userButton={editProfile}
-        lincToFollowers={lincToFollowers}
-        lincToFollowings={lincToFollowings}
+        userButton={subscribe}
         fullName={user.fullName}
         tweetsCounter={user.countUserTweets}
         hederImg={user.headerImgUrl}

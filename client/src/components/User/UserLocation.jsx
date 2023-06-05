@@ -1,9 +1,7 @@
 import { Typography } from "@mui/material";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { useSelector } from "react-redux";
 
-export function UserLocation() {
-  const userLocation = useSelector((state) => state.user.user);
+export function UserLocation({ userLocation }) {
   return (
     userLocation && (
       <Typography sx={{ color: "rgb(139, 152, 165)" }}>
@@ -14,7 +12,7 @@ export function UserLocation() {
             width: "16px",
           }}
         />
-        {userLocation.location}
+        {userLocation}
       </Typography>
     )
   );

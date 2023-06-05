@@ -1,8 +1,6 @@
 import { Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 
-export function UserTweetsNumber() {
-  const tweetsCounter = useSelector((state) => state.user.user);
+export function UserTweetsNumber({ tweetsCounter }) {
   return (
     tweetsCounter && (
       <Typography
@@ -10,7 +8,7 @@ export function UserTweetsNumber() {
           color: "rgb(139, 152, 165)",
         }}
       >
-        {tweetsCounter.countUserTweets} tweets
+        {tweetsCounter} tweets
       </Typography>
     )
   );
