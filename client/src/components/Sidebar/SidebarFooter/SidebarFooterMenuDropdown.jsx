@@ -39,6 +39,7 @@ export const SidebarFooterMenuDropdown = ({ popupState, username }) => {
         >
 
             <Box sx={{ borderTop: '1px solid rgb(56, 68, 77)'}}>
+            
                 <MenuItemStyled onClick={popupState.close}>
                     Add an existing account
                 </MenuItemStyled>

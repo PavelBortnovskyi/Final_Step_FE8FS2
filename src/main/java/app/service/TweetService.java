@@ -11,6 +11,7 @@ import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -116,8 +117,8 @@ public class TweetService extends GeneralService<Tweet> {
         Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public ResponseEntity<List<Tweet>> getUserTweets(Long userId, int page, int pageSize) {
-    return ResponseEntity.ok(tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page)).toList());
+  public Page<Tweet> getUserTweets(Long userId, int page, int pageSize) {
+    return tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page));
   }
 
   public ResponseEntity<List<Tweet>> listTweets(int page, int pageSize) {

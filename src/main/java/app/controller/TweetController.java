@@ -11,13 +11,26 @@ import app.service.TweetService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +49,8 @@ public class TweetController {
 
   //get tweet by id (don`t need token)
   @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.getTweetById(id, request));
+  public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id) {
+    return ResponseEntity.ok(tweetFacade.getTweetById(id));
   }
 
   //delete tweet by id
@@ -52,7 +65,8 @@ public class TweetController {
   //update tweet
   @PutMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @Validated({Marker.Update.class})
-  public ResponseEntity<TweetResponse> updateTweet(@Valid @JsonView({Marker.Update.class}) @PathVariable Long id, @RequestBody TweetRequest tweetRequest) {
+  public ResponseEntity<TweetResponse> updateTweet(@Valid @JsonView({Marker.Update.class}) @PathVariable Long id,
+                                                   @RequestBody TweetRequest tweetRequest) {
     return ResponseEntity.ok(tweetFacade.updateTweet(id, tweetRequest));
   }
 
@@ -69,7 +83,8 @@ public class TweetController {
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createRetweet(@RequestParam(value = "tweetBody", required = false) String tweetBody,
                                                      @RequestParam(value = "parentTweetId") String parentweetId,
-                                                     @RequestParam(value = "file", required = false) MultipartFile[] file, HttpServletRequest request) {
+                                                     @RequestParam(value = "file", required = false) MultipartFile[] file,
+                                                     HttpServletRequest request) {
     return ResponseEntity.ok(tweetService.createRetweet(request, tweetBody, parentweetId, file));
   }
 
@@ -84,15 +99,18 @@ public class TweetController {
 
   //get List tweets following users
   @GetMapping("/following_tweets")
-  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize,
+  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") @NotNull int page,
+                                                        @RequestParam("pageSize") @NotNull @Positive int pageSize,
                                                         HttpServletRequest request) {
     return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
   }
 
   // get user tweets
-  @GetMapping("/tweets/{tweetId}")
-  public List<TweetResponse> getUserTweets(@PathVariable(name = "tweetId") Long userId, @RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
-    return ResponseEntity.ok(tweetFacade.getUserTweets(userId, page, pageSize)).getBody();
+  @GetMapping("/tweets/{id}")
+  public Page<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId,
+                                           @RequestParam("page") @NotNull Integer page,
+                                           @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+    return tweetFacade.getUserTweets(userId, page, pageSize);
   }
 
   @PostMapping("/like/{tweetId}")
@@ -106,7 +124,9 @@ public class TweetController {
   }
 
   @GetMapping("/bookmarks")
-  public List<TweetResponse> getAllBookmarks(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize, HttpServletRequest request) {
+  public List<TweetResponse> getAllBookmarks(@RequestParam("page") @NotNull int page,
+                                             @RequestParam("pageSize") @NotNull @Positive int pageSize,
+                                             HttpServletRequest request) {
     return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request, page, pageSize)).getBody();
   }
 
@@ -130,13 +150,14 @@ public class TweetController {
     return ResponseEntity.ok(tweetActionService.statusBookmark(tweetId, request));
   }
 
-  @GetMapping("/get_likes/{tweetId}")
+  @GetMapping("/get_likes/{id}")
   public ResponseEntity getCount(@PathVariable(name = "id") Long tweetId) {
     return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
   }
 
   @GetMapping("/all_tweets")
-  public List<TweetResponse> listTweets(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
+  public List<TweetResponse> listTweets(@RequestParam("page") @NotNull int page,
+                                        @RequestParam("pageSize") @NotNull @Positive int pageSize) {
     return ResponseEntity.ok(tweetFacade.listTweets(page, pageSize)).getBody();
   }
 

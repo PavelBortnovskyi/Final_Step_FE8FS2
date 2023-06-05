@@ -4,7 +4,7 @@ import TweetBox from 'src/components/TweetBox/TweetBox'
 
 export const ModalTweetPage = () => {
   return (
-    <Modal title="X">
+    <Modal title="Enter your tweet:">
         <TweetBox/>
     </Modal>
   )

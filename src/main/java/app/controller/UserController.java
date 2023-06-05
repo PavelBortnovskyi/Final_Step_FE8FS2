@@ -73,18 +73,32 @@ public class UserController {
     return ResponseEntity.ok(userModelFacade.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing));
   }
 
-  @GetMapping("followers")
+  @GetMapping("profile/followers")
   public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                               HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
-  @GetMapping("followings")
+  @GetMapping("profile/followings")
   public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                HttpServletRequest httpServletRequest) {
     return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
+  }
+
+  @GetMapping("{userId}/followers")
+  public Page<UserModelResponse> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
+                                              @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return userModelFacade.getFollowers(userId, page, size);
+  }
+
+  @GetMapping("{userId}/followings")
+  public Page<UserModelResponse> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
+                                                       @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                       @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return userModelFacade.getFollowings(userId, page, size);
   }
 
   @GetMapping("offer_followings")

@@ -1,4 +1,5 @@
 import {
+  Link,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -7,10 +8,10 @@ import {
   useTheme,
 } from '@mui/material';
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const ListItemButtonStyled = styled(ListItemButton)((props) => ({
-  height: '50px',
+const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
+  height: '48px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -35,15 +36,15 @@ export const MainMenuSidebar = ({ navElement }) => {
       key={navElement.id}
       component={NavLink}
     >
-      <ListItem key={navElement.id} disablePadding sx={{ width: '100%' }}>
-        <ListItemButtonStyled
-          sx={{
-            '&:hover': {
-              backgroundColor: `${theme.palette.background.hover}`,
-              borderRadius: { xs: '50%', lg: '30px' },
-            },
-          }}
-        >
+      <ListItem key={navElement.id} disablePadding sx={{
+        width: '100%',
+        borderRadius: '100px',
+        '&:hover': {
+          backgroundColor: `${theme.palette.background.hover}`,
+          borderRadius: { xs: '50%', lg: '30px' },
+        }
+      }}>
+        <ListItemButtonStyled>
           <ListItemIconStyled>
             <navElement.icon sx={{ fontSize: 30 }} />
           </ListItemIconStyled>

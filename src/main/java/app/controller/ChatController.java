@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.dto.rq.ChatRequest;
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
 import app.facade.ChatFacade;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -43,47 +41,46 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to delete chat (can be deleted only by chat initiator!)
    */
   @Validated({Marker.ChatDetails.class})
-  @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.ChatDetails.class)
-                                                 @Valid ChatRequest chatDTO,
+                                                 @PathVariable(name = "id") Long chatId,
                                                  HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (this.chatFacade.deleteChat(chatDTO.getChatId(), currUserId))
-      return ResponseEntity.ok("Chat id: " + chatDTO.getChatId() + " deleted");
-    else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatDTO.getChatId());
+    if (this.chatFacade.deleteChat(chatId, currUserId))
+      return ResponseEntity.ok("Chat id: " + chatId + " deleted");
+    else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatId);
   }
 
   /**
    * This endpoint waiting for valid url params and DTO to add user to chat and return updated chat response
    */
-  //TODO: discuss about who can perform that operation
+  //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
-  @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(path = "/{id}/user_add", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleAddUserToChat(@RequestParam("userId")
                                                                                               @NotNull(groups = Marker.ChatDetails.class)
                                                                                               @Positive(groups = Marker.ChatDetails.class)
                                                                                               Long userIdToAdd,
-                                                                                              @RequestBody @JsonView(Marker.ChatDetails.class)
-                                                                                              @Valid ChatRequest chatDTO) {
-    return ResponseEntity.ok(this.chatFacade.addUserToChat(userIdToAdd, chatDTO.getChatId()));
+                                                                                              @PathVariable(name = "id") Long chatId) {
+    return ResponseEntity.ok(this.chatFacade.addUserToChat(userIdToAdd, chatId));
   }
 
   /**
    * This endpoint waiting for valid url params, DTO and token to remove user from chat (can be performed only by chat initiator)
    */
-  //TODO: discuss about who can perform that operation
+  //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
-  @DeleteMapping(path = "/remove", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> handleRemoveUserFromChat(@PathVariable("userId") Long userIdToRemove,
-                                                         @RequestBody @JsonView(Marker.ChatDetails.class)
-                                                         @Valid ChatRequest chatDTO, HttpServletRequest request) {
+  @DeleteMapping(path = "/{id}/user_remove", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> handleRemoveUserFromChat(@RequestParam("userId") Long userIdToRemove,
+                                                         @PathVariable(name = "id") Long chatId,
+                                                         HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatDTO.getChatId()))
+    if (this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId))
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by chat initiator id: %d",
-        userIdToRemove, chatDTO.getChatId(), currUserId));
+        userIdToRemove, chatId, currUserId));
     else
       return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-        userIdToRemove, chatDTO.getChatId(), currUserId));
+        userIdToRemove, chatId, currUserId));
   }
 
   /**
@@ -91,7 +88,7 @@ public class ChatController {
    */
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
-                                                     @RequestParam("page") @NotNull @Positive Integer page,
+                                                     @RequestParam("page") @NotNull Integer page,
                                                      @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatsForPreview(currUserId, pageSize, page);
@@ -102,39 +99,35 @@ public class ChatController {
    * (only user that participates the chat can get messages)
    */
   @Validated({Marker.ChatDetails.class})
-  @GetMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponse> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
-                                             @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class)
-                                             @Positive(groups = Marker.ChatDetails.class) Integer page,
+  @GetMapping(path = "/{id}/messages/", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponse> handleGetChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
+                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                              @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.getChatMessages(currUserId, chatDTO.getChatId(), pageSize, page);
+    return this.chatFacade.getChatMessages(currUserId, chatId, pageSize, page);
   }
 
   /**
    * This endpoint waiting for valid url params and token to return page with search result in chat
    */
   @Validated({Marker.ChatDetails.class})
-  @PostMapping(path = "/messages/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponse> handleGetSearchResultFromChat(@RequestBody @JsonView(Marker.ChatDetails.class)
-                                                             @Valid ChatRequest chatDTO, HttpServletRequest request,
-                                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class)
-                                                             @Positive(groups = Marker.ChatDetails.class) Integer page,
+  @PostMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponse> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
+                                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                                              @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                              @RequestParam("keyword") String keyword) {
     Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.searchMessagesInChat(chatDTO.getChatId(), currUserId, pageSize, page, keyword);
+    return this.chatFacade.searchMessagesInChat(chatId, currUserId, pageSize, page, keyword);
   }
 
   /**
    * This endpoint waiting for valid url params and token to return page with search result in all user chats
    */
-  @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChats(HttpServletRequest request,
-                                                              @RequestParam("page") @NotNull @Positive Integer page,
+                                                              @RequestParam("page") @NotNull Integer page,
                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
                                                               @RequestParam("keyword") String keyword) {
     Long currUserId = (Long) request.getAttribute("userId");

@@ -2,10 +2,14 @@ import { EditFormShema } from "./EditFormShema";
 import { Box, Dialog } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import { useTheme } from "@mui/material";
+
 export function EditProfileModal() {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
   const handleClose = async () => {
     // for transition close modal
     setIsOpen(false);
@@ -28,7 +32,7 @@ export function EditProfileModal() {
         <Box
           sx={{
             color: "white",
-            backgroundColor: "rgba(21, 32, 43, 1)",
+            backgroundColor: `${theme.palette.background.default}`,
           }}
         >
           <EditFormShema />
