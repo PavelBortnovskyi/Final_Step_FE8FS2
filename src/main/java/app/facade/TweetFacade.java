@@ -7,7 +7,9 @@ import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.service.TweetActionService;
 import app.service.TweetService;
+import app.utils.ratingAlgo.ScheduleAlgo;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.modelmapper.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,12 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
   @Autowired
   TweetActionService tweetActionService;
+
+  @Autowired
+  ScheduleAlgo scheduleAlgo;
+
+/*  @Autowired
+  ViewedInfoService viewedInfoService;*/
 
 
   @PostConstruct
@@ -67,12 +75,14 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
         .map(AttachmentImage::getImgUrl).collect(Collectors.toSet())).orElse(new HashSet<>());
   }
 
-  public TweetResponse getTweetById(Long tweetId) {
+  public TweetResponse getTweetById(Long tweetId, HttpServletRequest request) {
     TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
     tweetResponse.setCountReply(tweetService.getCountReply(tweetResponse.getTweetId()));
+
+    //viewedInfoService.addView(tweetService.getTweet(tweetId).get(), request);
     return tweetResponse;
   }
 
@@ -87,6 +97,16 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
   public List<TweetResponse> listTweets(int page, int pageSize) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page, pageSize);
+
+    List<Tweet> tweets = responseEntity.getBody();
+    List<TweetResponse> tweetResponses = tweets.stream()
+      .map(this::convertToDto)
+      .toList();
+    return tweetResponses;
+  }
+
+  public List<TweetResponse> listTopTweets(int page, int pageSize) {
+    ResponseEntity<List<Tweet>> responseEntity = scheduleAlgo.listTopTweets(page, pageSize);
 
     List<Tweet> tweets = responseEntity.getBody();
     List<TweetResponse> tweetResponses = tweets.stream()

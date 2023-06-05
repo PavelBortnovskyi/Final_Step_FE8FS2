@@ -49,8 +49,8 @@ public class TweetController {
 
   //get tweet by id (don`t need token)
   @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id) {
-    return ResponseEntity.ok(tweetFacade.getTweetById(id));
+  public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+    return ResponseEntity.ok(tweetFacade.getTweetById(id, request));
   }
 
   //delete tweet by id
@@ -159,6 +159,12 @@ public class TweetController {
   public List<TweetResponse> listTweets(@RequestParam("page") @NotNull int page,
                                         @RequestParam("pageSize") @NotNull @Positive int pageSize) {
     return ResponseEntity.ok(tweetFacade.listTweets(page, pageSize)).getBody();
+  }
+
+  @GetMapping("/top_tweets")
+  public List<TweetResponse> listTopTweets(@RequestParam("page") @NotNull int page,
+                                        @RequestParam("pageSize") @NotNull @Positive int pageSize) {
+    return ResponseEntity.ok(tweetFacade.listTopTweets(page, pageSize)).getBody();
   }
 
 
