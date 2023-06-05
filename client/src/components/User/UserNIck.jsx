@@ -1,13 +1,9 @@
 import { Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 
-export function UserNick() {
-  const userTag = useSelector((state) => state.user.user) || ".";
+export function UserNick({ userTag }) {
   return (
     userTag && (
-      <Typography sx={{ color: "rgb(139, 152, 165)" }}>
-        {userTag.userTag}
-      </Typography>
+      <Typography sx={{ color: "rgb(139, 152, 165)" }}>{userTag}</Typography>
     )
   );
 }

@@ -7,7 +7,22 @@ import { UserNick } from "./UserNIck";
 import { Box } from "@mui/material";
 import { UserBio } from "./UserBio";
 import { UserLocation } from "./UserLocation";
-export function UserInformationBlock({ w, h, mt }) {
+export function UserInformationBlock({
+  userButton,
+  lincToFollowers,
+  lincToFollowings,
+  w,
+  h,
+  mt,
+  userAvatar,
+  fullName,
+  userTag,
+  userBio,
+  userLocation,
+  createdAt,
+  countUserFollowings,
+  countUserFollowers,
+}) {
   return (
     <>
       <Box
@@ -16,20 +31,25 @@ export function UserInformationBlock({ w, h, mt }) {
           justifyContent: "space-between",
         }}
       >
-        <UserPageAvatar w={w} h={h} mt={mt} />
-        <ButtonEditProfile />
+        <UserPageAvatar w={w} h={h} mt={mt} userAvatar={userAvatar} />
+        <ButtonEditProfile userButton={userButton} />
       </Box>
       <Box sx={{ margin: "12px 0" }}>
-        <UserName />
-        <UserNick />
-        <UserBio />
+        <UserName fullName={fullName} />
+        <UserNick userTag={userTag} />
+        <UserBio userBio={userBio} />
       </Box>
       <Box sx={{ display: "flex", gap: "8px" }}>
-        <UserLocation />
-        <UserDateRegistration />
+        <UserLocation userLocation={userLocation} />
+        <UserDateRegistration createdAt={createdAt} />
       </Box>
 
-      <UserFolower />
+      <UserFolower
+        lincToFollowers={lincToFollowers}
+        lincToFollowings={lincToFollowings}
+        countUserFollowings={countUserFollowings}
+        countUserFollowers={countUserFollowers}
+      />
     </>
   );
 }
