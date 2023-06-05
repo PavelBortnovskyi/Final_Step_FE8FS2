@@ -107,9 +107,10 @@ public class AuthFacade {
   /**
    * Method send link with password reset token to user email
    */
-  public ResponseEntity<String> getPasswordResetToken(UserModelRequest passwordResetDto) {
+  public ResponseEntity<String> sendPasswordResetTokenToEmail(UserModelRequest passwordResetDto) {
     if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
       String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
+      //TODO: change link according to front end mapping
       String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset/apply?token=" + passwordResetToken;
       emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
       return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
@@ -132,6 +133,22 @@ public class AuthFacade {
     } else return ResponseEntity.badRequest().body(new HashMap<>() {{
       put("ERROR", "Token is not valid to reset password");
     }});
+  }
+
+  /**
+   * Method send link with token pair to user email to verify email exist
+   */
+  public ResponseEntity<String> sendRegisterTokenToEmail(UserModelRequest signUpDTO) {
+    if (this.userService.isEmailPresentInDB(signUpDTO.getEmail())) {
+      return ResponseEntity.badRequest().body("ERROR: " + signUpDTO.getEmail() + " is already registered");
+    } else {
+      String registerToken = this.jwtTokenService.createToken(null, TokenType.REGISTER, "", signUpDTO.getEmail());
+      //TODO: change link according to front end mapping
+      String registerUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/register/apply?token=" + registerToken;
+      emailService.sendEmail(signUpDTO.getEmail(), "Verify your email for FinalStepTW account",
+        "We need to verify your email for FinalStepTW account please proceed to " + registerUrl);
+      return ResponseEntity.ok("Was sent email to " + signUpDTO.getEmail() + " with register token");
+    }
   }
 
   /**

@@ -54,13 +54,11 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
       //.antMatchers("/user/**").permitAll()
-      .antMatchers("/test/**").permitAll()
       //.antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
       .and()
       //.oauth2Login();
       .exceptionHandling().authenticationEntryPoint(authEntryPoint);
-
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();

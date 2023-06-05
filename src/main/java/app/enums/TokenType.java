@@ -7,7 +7,9 @@ public enum TokenType {
   ACCESS("secretKey"),
   REFRESH("secretRefreshKey"),
   PASSWORD_RESET("secretPasswordReset"),
-  PASSWORD_UPDATE("secretPasswordUpdate");
+  PASSWORD_UPDATE("secretPasswordUpdate"),
+
+  REGISTER("WelcomeOnBoard!");
 
   public final String label;
 

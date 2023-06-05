@@ -52,8 +52,7 @@ public class WebSocketController {
                                                                                   MessageRequest messageDTO,
                                                                                   HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO));
-    return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
+    return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
   @Validated({Marker.Existed.class})

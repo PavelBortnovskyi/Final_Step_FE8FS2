@@ -31,7 +31,9 @@ export function EditForm() {
             bottom: "calc(50% - 32px)",
             left: "calc(50% - 50px)",
           }}
-        ></Box>
+        >
+          <UserPageFotoInput />
+        </Box>
       </Box>
 
       <Box
@@ -77,6 +79,7 @@ export function EditForm() {
             </Typography>
             <EditBirthDate />
           </Box>
+
           <Typography>Birth date</Typography>
         </Box>
       </Box>

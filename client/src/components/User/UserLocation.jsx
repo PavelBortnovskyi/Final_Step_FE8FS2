@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export function UserLocation() {
   const userLocation = useSelector((state) => state.user.user);
   return (
-    userLocation && 
+    userLocation && (
       <Typography sx={{ color: "rgb(139, 152, 165)" }}>
         <LocationOnOutlinedIcon
           sx={{
@@ -16,5 +16,6 @@ export function UserLocation() {
         />
         {userLocation.location}
       </Typography>
-    );
+    )
+  );
 }

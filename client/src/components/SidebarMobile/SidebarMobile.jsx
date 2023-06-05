@@ -30,6 +30,19 @@ export const SidebarMobile = ({ isOpen, setIsOpen }) => {
       >
         <Box sx={{ m: '16px' }}>
           <UserInformationBlock w="40" h="40" mt="0" />
+          {/* <UserInformationBlock
+          w={"140"}
+          h={"140"}
+          mt={"-70"}
+          userAvatar={userAvatar}
+          fullName={fullName}
+          userTag={userTag}
+          userBio={userBio}
+          userLocation={userLocation}
+          createdAt={createdAt}
+          countUserFollowings={countUserFollowings}
+          countUserFollowers={countUserFollowers}
+        /> */}
         </Box>
 
         <List>
