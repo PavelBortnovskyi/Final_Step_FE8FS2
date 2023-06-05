@@ -10,7 +10,6 @@ import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
-import app.utils.ratingAlgo.ScheduleAlgo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
