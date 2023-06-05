@@ -29,7 +29,6 @@ export const Bookmarks = () => {
         userBookmarks.map(tweet => (
           <PostList tweet={tweet} key={tweet.tweetId}/>
         ))
-          
           :
           <Box sx={{
             height: '100vh',
