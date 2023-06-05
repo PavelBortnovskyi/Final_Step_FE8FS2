@@ -11,16 +11,16 @@ import {
   getTweetByID,
 } from "src/redux/selectors/selectors";
 
-function PostList() {
+function PostList({tweet}) {
   // const tweet = useSelector(getTweetByID);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user) || "";
-  console.log(user);
+  // console.log(user);
 
   const userTweets = useSelector(getUserTweets);
   const userTweetsArray = userTweets.userTweets.content || [];
 
-  console.log(userTweetsArray !== false ? userTweetsArray : "");
+  // console.log(userTweetsArray !== false ? userTweetsArray : "");
 
   //GET FOLLOWING TWEETS
 

@@ -7,7 +7,7 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
@@ -16,6 +16,9 @@ const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   padding: '0 4px',
+  '& > span': {
+    display: 'none',
+  }
 }));
 
 const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
@@ -28,6 +31,27 @@ const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
 
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
+  const [isSwappedIcon, setIsSwappedIcon] = useState(false);
+
+  const handleMouseDown = () => {
+    setIsSwappedIcon(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsSwappedIcon(false);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      setIsSwappedIcon(!isSwappedIcon);
+    }
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      setIsSwappedIcon(!isSwappedIcon);
+    }
+  };
 
   return (
     <Link
@@ -35,6 +59,10 @@ export const MainMenuSidebar = ({ navElement }) => {
       underline="none"
       key={navElement.id}
       component={NavLink}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
     >
       <ListItem key={navElement.id} disablePadding sx={{
         width: '100%',
@@ -46,7 +74,13 @@ export const MainMenuSidebar = ({ navElement }) => {
       }}>
         <ListItemButtonStyled>
           <ListItemIconStyled>
-            <navElement.icon sx={{ fontSize: 30 }} />
+            {
+              isSwappedIcon ?
+                <navElement.iconActive sx={{ fontSize: 30 }} />
+                :
+                <navElement.icon sx={{ fontSize: 30 }} />
+            }
+
           </ListItemIconStyled>
 
           <ListItemText

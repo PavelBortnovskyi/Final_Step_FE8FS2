@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getBookmarks } from '../thunk/getBookmarks.js';
 
 const initialState = {
-  userTweets: [],
+  userBookmarks: [],
   isLoading: false,
   error: '',
 };
 
-export const getBookmarksSlise = () => createSlice({
+export const getBookmarksSlise = createSlice({
   name: 'userBookmarks',
   initialState,
 
@@ -29,3 +29,4 @@ export const getBookmarksSlise = () => createSlice({
   },
 });
 
+export default getBookmarksSlise.reducer;

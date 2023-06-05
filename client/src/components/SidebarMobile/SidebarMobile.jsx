@@ -1,15 +1,23 @@
-import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, SwipeableDrawer, useTheme } from '@mui/material'
+import { Box, Divider, List, SwipeableDrawer, useTheme } from '@mui/material'
 import React from 'react'
 import { UserInformationBlock } from '../User/UserInformationBlock'
 import { LogoutButton } from 'src/UI/LogoutButton/LogoutButton'
 import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher'
 import { DropdownFooterSelect } from '../Sidebar/SidebarDropdown/DropdownFooterSelect'
-import { Link, NavLink } from 'react-router-dom'
 import { selectElements } from '../Sidebar/SidebarDropdown/DropdownElements'
 import { SidebarMobileElements } from './SidebarMobileElements'
+import { useSelector } from 'react-redux'
+import { LinkToEditProfile } from '../User/LinkToEditProfile'
+import { SidebarMobileBtn } from './SidebarMobileBtn'
 
 export const SidebarMobile = ({ isOpen, setIsOpen }) => {
+  const user = useSelector((state) => state.user.user) || "";
+  const editProfile = <LinkToEditProfile />;
+  const lincToFollowings = "/followings";
+  const lincToFollowers = "/followers";
   const theme = useTheme();
+
+
   return (
     <SwipeableDrawer
       anchor='left'
@@ -29,44 +37,27 @@ export const SidebarMobile = ({ isOpen, setIsOpen }) => {
         sx={{ width: '75vw' }}
       >
         <Box sx={{ m: '16px' }}>
-          <UserInformationBlock w="40" h="40" mt="0" />
-          {/* <UserInformationBlock
-          w={"140"}
-          h={"140"}
-          mt={"-70"}
-          userAvatar={userAvatar}
-          fullName={fullName}
-          userTag={userTag}
-          userBio={userBio}
-          userLocation={userLocation}
-          createdAt={createdAt}
-          countUserFollowings={countUserFollowings}
-          countUserFollowers={countUserFollowers}
-        /> */}
+          <UserInformationBlock
+            w={"40"}
+            h={"40"}
+            mt={"0"}
+            userButton={editProfile}
+            userAvatar={user.avatarImgUrl}
+            fullName={user.fullName}
+            userTag={user.userTag}
+            userBio={user.userBio}
+            userLocation={user.userLocation}
+            lincToFollowers={lincToFollowers}
+            lincToFollowings={lincToFollowings}
+            // createdAt={createdAt}
+            countUserFollowings={user.countUserFollowings}
+            countUserFollowers={user.countUserFollowers}
+          />
         </Box>
 
         <List>
           {SidebarMobileElements.map((navElement) => (
-            <Link
-              to={navElement.route}
-              underline="none"
-              key={navElement.id}
-              component={NavLink}
-            >
-              <ListItem key={navElement.id} disablePadding>
-                <ListItemButton sx={{
-                  '&:hover': {
-                    backgroundColor: `${theme.palette.background.hover}`,
-                    borderRadius: '30px',
-                  },
-                }}>
-                  <ListItemIcon>
-                    <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
-                  </ListItemIcon>
-                  <ListItemText primary={navElement.label} sx={{ color: `${theme.palette.text.primary}`, }} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
+            <SidebarMobileBtn navElement={navElement} key={navElement.id}/>
           ))}
         </List>
 
