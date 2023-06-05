@@ -9,6 +9,7 @@ import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
 import { Chat } from 'src/components/Chat/Chat';
 import { RightSection } from 'src/components/RightSection/RightSection';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
+import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 
 export const mainRoutes = () => {
   return [
@@ -40,7 +41,7 @@ export const mainRoutes = () => {
     },
     {
       path: '/bookmarks',
-      element: <PageDeveloping/>
+      element: <Bookmarks/>
     },
     {
       path: '/twitter_blue',

@@ -12,6 +12,7 @@ import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
 import { Chat } from 'src/components/Chat/Chat';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
+import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 
 export const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/bookmarks',
-        element: <PageDeveloping/>
+        element: <Bookmarks/>
       },
       {
         path: '/twitter_blue',
