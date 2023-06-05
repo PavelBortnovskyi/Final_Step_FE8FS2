@@ -46,9 +46,6 @@ public class Tweet extends BaseEntityModel {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
-  @Column(name = "tweet_raiting", nullable = false)
-  private double tweetRating;
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
