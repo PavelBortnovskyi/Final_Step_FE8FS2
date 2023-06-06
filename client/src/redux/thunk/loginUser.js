@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 import { getUser } from 'src/redux/thunk/getUser';
+import {setAuthToken} from "src/utils/tokens";
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -9,15 +10,14 @@ export const loginUser = createAsyncThunk(
       const { email, password } = user;
 
       // request for server
-      const { data } = await myAxios.post('/auth/login', {
+      const {data} = await myAxios.post('/auth/login', {
         email,
         password,
       });
 
       // if a token is received, store it in localStorage
       if (data.ACCESS_TOKEN) {
-        window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
-
+        setAuthToken(data.ACCESS_TOKEN)
         // get user data
         dispatch(getUser());
       }
