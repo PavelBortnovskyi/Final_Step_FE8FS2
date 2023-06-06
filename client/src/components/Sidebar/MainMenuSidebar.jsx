@@ -7,7 +7,7 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
@@ -16,6 +16,9 @@ const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   padding: '0 4px',
+  '&:hover': {
+backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
   '& > span': {
     display: 'none',
   }
@@ -31,10 +34,12 @@ const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
 
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
+  const linkRef = useRef(null);
   const [isSwappedIcon, setIsSwappedIcon] = useState(false);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (ev) => {
     setIsSwappedIcon(true);
+    linkRef.current.click();
   };
 
   const handleMouseUp = () => {
@@ -63,6 +68,7 @@ export const MainMenuSidebar = ({ navElement }) => {
       onMouseUp={handleMouseUp}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
+      ref={linkRef}
     >
       <ListItem key={navElement.id} disablePadding sx={{
         width: '100%',

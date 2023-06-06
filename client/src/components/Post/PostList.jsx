@@ -11,7 +11,7 @@ import {
   getTweetByID,
 } from "src/redux/selectors/selectors";
 
-function PostList({tweet}) {
+function PostList({ tweet }) {
   // const tweet = useSelector(getTweetByID);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user) || "";
@@ -50,24 +50,22 @@ function PostList({tweet}) {
 
   return (
     <Box>
-      {userTweetsArray !== false &&
-        userTweetsArray.map((tweet) => {
-          return (
-            <Post
-              key={tweet.tweetId}
-              id={tweet.tweetId}
-              displayName={user.fullName}
-              text={tweet.body}
-              username={tweet.userTag}
-              logoUrl={tweet.userAvatarImage}
-              verified={true}
-              image={tweet.attachmentsImages[0]}
-              likes={tweet.countLikes}
-              reply={tweet.countReply}
-              retweet={tweet.countRetweets}
-            />
-          );
-        })}
+      {
+        tweet &&
+        <Post
+          key={tweet.tweetId}
+          id={tweet.tweetId}
+          displayName={user.fullName}
+          text={tweet.body}
+          username={tweet.userTag}
+          logoUrl={tweet.userAvatarImage}
+          verified={true}
+        image={tweet.attachmentsImages[0]}
+        likes={tweet.countLikes}
+        reply={tweet.countReply}
+        retweet={tweet.countRetweets}
+        />
+      }
       <Post
         displayName="Artem Shevchuk"
         username="Jocellyn Flores"
