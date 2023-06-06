@@ -31,7 +31,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   public ChatResponse createChat(Long userId, Long interlocutorId) {
     if (userId.equals(interlocutorId))
       throw new BadRequestException("Please find somebody else to chat except yourself!");
-    return this.convertToDto(this.chatService.createChat(userId, interlocutorId));
+    return this.convertToDto(this.chatService.getChatByUsersIdPair(userId, interlocutorId).orElseGet(() -> this.chatService.createChat(userId, interlocutorId)));
   }
 
   /**
