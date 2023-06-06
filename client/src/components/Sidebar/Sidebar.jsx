@@ -13,6 +13,7 @@ import { LogoTwitter } from './LogoTwitter';
 
 const DrawerStyled = styled(Drawer)(({ theme }) => ({
   position: 'fixed',
+  overflow: 'hidden',
   zIndex: 10,
   flexShrink: 0,
   paddingRight: '10px',

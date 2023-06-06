@@ -9,6 +9,9 @@ function Post({
   text,
   image,
   logoUrl,
+  likes,
+  reply,
+  retweet,
   showIconList,
 }) {
   return (
@@ -21,6 +24,9 @@ function Post({
         image={image}
         logoUrl={logoUrl}
         showIconList={true}
+        likes={likes}
+        reply={reply}
+        retweet={retweet}
       />
     </Box>
   );

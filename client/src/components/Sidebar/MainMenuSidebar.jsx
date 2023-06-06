@@ -7,7 +7,7 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
@@ -16,6 +16,12 @@ const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   padding: '0 4px',
+  '&:hover': {
+backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+  '& > span': {
+    display: 'none',
+  }
 }));
 
 const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
@@ -28,6 +34,29 @@ const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
 
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
+  const linkRef = useRef(null);
+  const [isSwappedIcon, setIsSwappedIcon] = useState(false);
+
+  const handleMouseDown = (ev) => {
+    setIsSwappedIcon(true);
+    linkRef.current.click();
+  };
+
+  const handleMouseUp = () => {
+    setIsSwappedIcon(false);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      setIsSwappedIcon(!isSwappedIcon);
+    }
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      setIsSwappedIcon(!isSwappedIcon);
+    }
+  };
 
   return (
     <Link
@@ -35,6 +64,11 @@ export const MainMenuSidebar = ({ navElement }) => {
       underline="none"
       key={navElement.id}
       component={NavLink}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+      ref={linkRef}
     >
       <ListItem key={navElement.id} disablePadding sx={{
         width: '100%',
@@ -46,7 +80,13 @@ export const MainMenuSidebar = ({ navElement }) => {
       }}>
         <ListItemButtonStyled>
           <ListItemIconStyled>
-            <navElement.icon sx={{ fontSize: 30 }} />
+            {
+              isSwappedIcon ?
+                <navElement.iconActive sx={{ fontSize: 30 }} />
+                :
+                <navElement.icon sx={{ fontSize: 30 }} />
+            }
+
           </ListItemIconStyled>
 
           <ListItemText
