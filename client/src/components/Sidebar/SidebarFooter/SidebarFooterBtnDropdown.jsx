@@ -1,8 +1,10 @@
 import React from 'react';
 import { bindTrigger } from 'material-ui-popup-state';
 import { Avatar, Box, Button, Hidden, Typography, useTheme } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) => {
+    const user = useSelector((state) => state.user.user) || "";
     const theme = useTheme();
 
     return (
@@ -19,7 +21,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
 
             }}
         >
-            <Avatar src="./img/avatar2.JPG" />
+            <Avatar src={user.avatarImgUrl} />
 
             <Hidden lgDown>
                 <Box ml={1} sx={{textAlign: 'start'}}>
