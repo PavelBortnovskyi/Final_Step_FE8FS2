@@ -5,13 +5,16 @@ import { getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
 
+// ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.text.primary, 0.1),
     cursor: 'pointer',
   },
 }));
+// ************ STYLE ************
 
+// ************ TabMessages ************
 export const TabMessages = () => {
   // TODO: added findMessages of user instead of findUser
   const { isLoading, findUser } = useSelector(getUserData);

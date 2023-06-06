@@ -5,6 +5,7 @@ import { TabAll } from './TabAll';
 import { TabPeople } from './TabPeople';
 import { TabMessages } from './TabMessages';
 
+// ************ STYLE ************
 const TabSearch = styled(Tab)(({ theme }) => ({
   color: theme.palette.text.primary,
   transition: 'all 0.3s linear',
@@ -19,7 +20,9 @@ const TabSearch = styled(Tab)(({ theme }) => ({
 const TabHeader = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.border.main}`,
 }));
+// ************ STYLE ************
 
+// ************ TabPanel ************
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

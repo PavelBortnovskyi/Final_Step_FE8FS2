@@ -1,9 +1,11 @@
 import { Box, Typography, styled } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
+
 import { TabPeople } from './TabPeople';
 import { TabMessages } from './TabMessages';
 
+// ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'start',
@@ -11,15 +13,17 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.border.main}`,
   padding: '6px 0',
 }));
+// ************ STYLE ************
 
+// ************ TabAll ************
 export const TabAll = () => {
   return (
     <Box>
       <Box sx={{ margin: '20px 0 0 0' }}>
         {/* Title people */}
         <BoxSearchPerson>
-          <PersonIcon sx={{ fontSize: 24, marginRight: '10px' }} />
-          <Typography sx={{ fontSize: 20, fontWeight: 'bold' }}>
+          <PersonIcon sx={{ fontSize: 20, marginRight: '10px' }} />
+          <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
             People
           </Typography>
         </BoxSearchPerson>
@@ -33,8 +37,8 @@ export const TabAll = () => {
       <Box sx={{ margin: '20px 0 0 0' }}>
         {/* Title messages */}
         <BoxSearchPerson>
-          <EmailIcon sx={{ fontSize: 24, marginRight: '10px' }} />
-          <Typography sx={{ fontSize: 20, fontWeight: 'bold' }}>
+          <EmailIcon sx={{ fontSize: 20, marginRight: '10px' }} />
+          <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
             Messages
           </Typography>
         </BoxSearchPerson>
