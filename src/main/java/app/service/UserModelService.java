@@ -133,11 +133,6 @@ public class UserModelService extends GeneralService<UserModel> {
     if (!encoder.matches(oldPassword, userModel.getPassword())) return false;
     userModel.setPassword(freshPassword);
     return true;
-//    return userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
-//      .map(user -> {
-//        userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
-//        return true;
-//      }).orElse(false);
   }
 
   /**
@@ -146,11 +141,6 @@ public class UserModelService extends GeneralService<UserModel> {
   @Transactional
   public void updatePassword(Long userId, String freshPassword) {
     getUser(userId).setPassword(freshPassword);
-//    return this.userModelRepository.findById(userId)
-//      .map(user -> {
-//        userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
-//        return true;
-//      }).orElse(false);
   }
 
   /**

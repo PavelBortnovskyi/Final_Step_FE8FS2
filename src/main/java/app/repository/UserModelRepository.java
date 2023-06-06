@@ -31,36 +31,7 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
   // Search users by Email
   Optional<UserModel> findByEmail(String email);
 
-//  @Query(value = "SELECT u FROM UserModel u WHERE u.email = :email")
-//  Optional<UserModel> findByEmail(@Param("email") String email);
-
   // Search user by refreshToken
   Optional<UserModel> findByRefreshToken(String refreshToken);
 
-//  @Query(value = "SELECT u FROM UserModel u WHERE u.refreshToken = :refreshToken")
-//  Optional<UserModel> findByRefreshToken(@Param("refreshToken") String refreshToken);
-
-//
-//  @Query(value = "SELECT u.refreshed FROM UserModel u WHERE u.refreshToken = :refreshToken")
-//  boolean checkRefreshTokenStatus(@Param("refreshToken") String refreshToken);
-
-//  @Modifying
-//  @Transactional
-//  @Query(value = "UPDATE UserModel u SET u.refreshed = :used WHERE u.id = :id")
-//  void changeRefreshTokenStatusById(@Param("id") Long id, @Param("used") boolean used);
-
-//  @Modifying
-//  @Transactional
-//  @Query(value = "UPDATE UserModel u SET u.refreshed = :used WHERE u.refreshToken = :refreshToken")
-//  void changeTokenStatusByValue(@Param("refreshToken") String refreshToken, @Param("used") boolean used);
-
-//  @Modifying
-//  @Transactional
-//  @Query(value = "UPDATE UserModel u SET u.refreshToken = :refreshToken WHERE u.id = :id")
-//  void updateRefreshToken(@Param("id") Long userId, @Param("refreshToken") String refreshToken);
-
-//  @Modifying
-//  @Transactional
-//  @Query(value = "UPDATE UserModel u SET u.password = :password WHERE u.id = :id")
-//  void updatePassword(@Param("id") Long userId, @Param("password") String freshPassword);
 }
