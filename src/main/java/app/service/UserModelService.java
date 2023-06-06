@@ -147,7 +147,7 @@ public class UserModelService extends GeneralService<UserModel> {
    * Method returns boolean result of checking presence in DB user with login&password combination
    */
   public boolean checkLoginPassword(String email, String password) {
-    return userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
+    return encoder.matches(password, getUser(email).getPassword());
   }
 
   /**
