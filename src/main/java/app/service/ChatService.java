@@ -42,7 +42,7 @@ public class ChatService extends GeneralService<Chat> {
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
     return this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
       add(interlocutor);
-      add(initiator);
+      //add(initiator);
     }}));
   }
 
