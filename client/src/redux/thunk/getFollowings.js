@@ -3,9 +3,9 @@ import { myAxios } from "src/utils/axiosSetup";
 
 export const getFollowings = createAsyncThunk(
   "user/followings",
-  async (_, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const { data } = await myAxios.get(`/user/profile/followings
+      const { data } = await myAxios.get(`/user/${id}/followings
       `);
       return data;
     } catch (error) {

@@ -22,7 +22,7 @@ export const mainRoutes = () => {
       index: true,
     },
     {
-      path: "/user",
+      path: "/user/:id",
       element: <UserBiIdPage />,
     },
 
