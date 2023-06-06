@@ -6,4 +6,4 @@
 4. @reduxjs/toolkit
 5. formik+yup
 6. axios
-7. dotenv
+7. @react-oauth/google
