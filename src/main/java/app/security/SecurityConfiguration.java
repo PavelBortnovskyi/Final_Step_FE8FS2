@@ -69,12 +69,10 @@ public class SecurityConfiguration {
     //Filter for interception of JwtAuthenticationException from jwtAuthFilter
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
 
-    //Disable CORS
+    //CORS config
     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-    configuration.addAllowedMethod(HttpMethod.GET);
-    configuration.addAllowedMethod(HttpMethod.DELETE);
-    configuration.addAllowedMethod(HttpMethod.PUT);
-    configuration.addAllowedMethod(HttpMethod.POST);
+    configuration.addAllowedOrigin("http://localhost:3000/**");
+    configuration.addAllowedOrigin("https://final-step-fe-8-fs-2.vercel.app/**");
     httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
     //httpSec.cors().disable();
 
