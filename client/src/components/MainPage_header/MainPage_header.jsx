@@ -5,6 +5,7 @@ import { Avatar, Tab, Tabs, styled } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { LogoTwitter } from '../Sidebar/LogoTwitter';
 import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
+import { useSelector } from 'react-redux';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -17,6 +18,7 @@ const CustomTab = styled(Tab)((props) => ({
 }));
 
 function MainPage_header() {
+  const user = useSelector((state) => state.user.user) || "";
   const [tabIndex, setTabIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useMode();
@@ -60,7 +62,7 @@ function MainPage_header() {
         }}
       >
         <Avatar
-          src="./img/avatar2.JPG"
+          src={user.avatarImgUrl}
           sx={{ marginRight: '35%', marginLeft: '10px', cursor: 'pointer' }}
           onClick={() => setIsOpen(true)}
         />

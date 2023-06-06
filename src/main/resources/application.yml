@@ -3,9 +3,13 @@ server:
     8080
 spring:
     profiles:
-      active: remote
+      active: local
     mvc:
       path match:
         matching-strategy: ant_path_matcher
     resources:
       add-mappings: true
+    servlet:
+      multipart:
+        max-file-size: 5MB
+        max-request-size: 5MB

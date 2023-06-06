@@ -12,6 +12,9 @@ function TweetPost({
   image,
   logoUrl,
   showIconList,
+  likes,
+  reply,
+  retweet,
 }) {
   return (
     <Box
@@ -57,7 +60,11 @@ function TweetPost({
         ) : (
           false
         )}
-        {showIconList ? <PostIconList /> : false}
+        {showIconList ? (
+          <PostIconList likes={likes} reply={reply} retweet={retweet} />
+        ) : (
+          false
+        )}
       </Box>
     </Box>
   );

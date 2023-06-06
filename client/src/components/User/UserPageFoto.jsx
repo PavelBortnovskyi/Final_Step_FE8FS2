@@ -1,23 +1,18 @@
-import { useSelector } from "react-redux";
-
-export function UserPageFoto() {
-  const headerImgUrl = useSelector((state) => state.user.user);
+export function UserPageFoto({ hederImg }) {
+  const defaultFoto =
+    "https://pibig.info/uploads/posts/2022-07/1657189991_21-pibig-info-p-temno-sinii-fon-odnotonnii-23.jpg";
+  const fotoPage = hederImg || defaultFoto;
 
   return (
-    headerImgUrl && (
-      <>
-        <img
-          style={{
-            width: "100%",
-            maxHeight: "200px",
-          }}
-          src={
-            headerImgUrl.headerImgUrl ||
-            "https://pibig.info/uploads/posts/2022-07/1657189991_21-pibig-info-p-temno-sinii-fon-odnotonnii-23.jpg"
-          }
-          alt="hederImg"
-        />
-      </>
-    )
+    <>
+      <img
+        style={{
+          width: "100%",
+          maxHeight: "200px",
+        }}
+        src={fotoPage}
+        alt="hederImg"
+      />
+    </>
   );
 }

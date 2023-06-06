@@ -18,3 +18,12 @@ export const getUserTweets = (state) => state.userTweets;
 
 // get guest for chat
 export const getGuestChat = (state) => state.chat;
+
+// get followers
+export const getFollowers = (state) => state.followers;
+
+// get followings
+export const getFollowings = (state) => state.followings;
+
+// get user bi id
+export const getUserBiId = (state) => state.userBiId;

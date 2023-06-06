@@ -1,26 +1,26 @@
-import { Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import Post from './Post';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTweets } from 'src/redux/thunk/getTweets';
-import { getUserTweetsThunk } from 'src/redux/thunk/getUserTweets';
-import { getTweetById } from 'src/redux/thunk/getTweetById';
+import { Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import Post from "./Post";
+import { useDispatch, useSelector } from "react-redux";
+import { getTweets } from "src/redux/thunk/getTweets";
+import { getUserTweetsThunk } from "src/redux/thunk/getUserTweets";
+import { getTweetById } from "src/redux/thunk/getTweetById";
 import {
   getFollowingTweets,
   getUserTweets,
   getTweetByID,
-} from 'src/redux/selectors/selectors';
+} from "src/redux/selectors/selectors";
 
-function PostList() {
+function PostList({tweet}) {
   // const tweet = useSelector(getTweetByID);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user) || '';
-  console.log(user);
+  const user = useSelector((state) => state.user.user) || "";
+  // console.log(user);
 
   const userTweets = useSelector(getUserTweets);
-  const userTweetsArray = userTweets ? userTweets.userTweets : false;
+  const userTweetsArray = userTweets.userTweets.content || [];
 
-  console.log(userTweetsArray !== false ? userTweetsArray : '');
+  // console.log(userTweetsArray !== false ? userTweetsArray : "");
 
   //GET FOLLOWING TWEETS
 
@@ -40,7 +40,7 @@ function PostList() {
   //GET TWEETS BY ID
 
   useEffect(() => {
-    if (user.id !== undefined && user.id !== '') {
+    if (user.id !== undefined && user.id !== "") {
       const userId = user.id;
       dispatch(getUserTweetsThunk({ userId, page: 0, pageSize: 100 }));
     }
@@ -61,7 +61,10 @@ function PostList() {
               username={tweet.userTag}
               logoUrl={tweet.userAvatarImage}
               verified={true}
-              // image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
+              image={tweet.attachmentsImages[0]}
+              likes={tweet.countLikes}
+              reply={tweet.countReply}
+              retweet={tweet.countRetweets}
             />
           );
         })}

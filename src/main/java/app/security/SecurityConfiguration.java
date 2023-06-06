@@ -54,7 +54,6 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
       //.antMatchers("/user/**").permitAll()
-      .antMatchers("/test/**").permitAll()
       //.antMatchers("/tweet/**").permitAll()
       .anyRequest().authenticated()
       .and()

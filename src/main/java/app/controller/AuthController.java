@@ -70,7 +70,7 @@ public class AuthController {
   @PostMapping(path = "/password/reset", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleGetPasswordResetToken(@RequestBody @JsonView({Marker.PasswordReset.class})
                                                             @Valid UserModelRequest passResetDto) {
-    return this.authFacade.getPasswordResetToken(passResetDto);
+    return this.authFacade.sendPasswordResetTokenToEmail(passResetDto);
   }
 
   /**

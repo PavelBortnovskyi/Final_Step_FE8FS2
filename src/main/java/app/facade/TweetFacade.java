@@ -30,6 +30,12 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   @Autowired
   TweetActionService tweetActionService;
 
+//  @Autowired
+//  ScheduleAlgo scheduleAlgo;
+
+/*  @Autowired
+  ViewedInfoService viewedInfoService;*/
+
 
   @PostConstruct
   public void init() {
@@ -62,17 +68,19 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
 
   private Set<String> getImagesUrl(Tweet tweet) {
     return tweetService.getTweet(tweet.getId())
-      .map(t -> t.getAttachmentImages())
+      .map(Tweet::getAttachmentImages)
       .map(imageSet -> imageSet.stream()
-        .map(image -> image.getImgUrl()).collect(Collectors.toSet())).orElse(new HashSet<>());
+        .map(AttachmentImage::getImgUrl).collect(Collectors.toSet())).orElse(new HashSet<>());
   }
 
-  public TweetResponse getTweetById(Long tweetId) {
+  public TweetResponse getTweetById(Long tweetId, HttpServletRequest request) {
     TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
       .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
     tweetResponse.setCountReply(tweetService.getCountReply(tweetResponse.getTweetId()));
+
+    //viewedInfoService.addView(tweetService.getTweet(tweetId).get(), request);
     return tweetResponse;
   }
 
@@ -94,6 +102,16 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .toList();
     return tweetResponses;
   }
+
+//  public List<TweetResponse> listTopTweets(int page, int pageSize) {
+//    ResponseEntity<List<Tweet>> responseEntity = scheduleAlgo.listTopTweets(page, pageSize);
+//
+//    List<Tweet> tweets = responseEntity.getBody();
+//    List<TweetResponse> tweetResponses = tweets.stream()
+//      .map(this::convertToDto)
+//      .toList();
+//    return tweetResponses;
+//  }
 
   public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, page, pageSize);
