@@ -70,12 +70,12 @@ public class SecurityConfiguration {
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
 
     //Disable CORS
-    CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-    configuration.addAllowedMethod(HttpMethod.GET);
-    configuration.addAllowedMethod(HttpMethod.DELETE);
-    configuration.addAllowedMethod(HttpMethod.PUT);
-    configuration.addAllowedMethod(HttpMethod.POST);
-    httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
+//    CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+//    configuration.addAllowedMethod(HttpMethod.GET);
+//    configuration.addAllowedMethod(HttpMethod.DELETE);
+//    configuration.addAllowedMethod(HttpMethod.PUT);
+//    configuration.addAllowedMethod(HttpMethod.POST);
+//    httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
     //httpSec.cors().disable();
 
     return httpSec.build();
