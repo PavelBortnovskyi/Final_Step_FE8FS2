@@ -9,7 +9,6 @@ import { getBookmarks } from 'src/redux/thunk/getBookmarks'
 export const Bookmarks = () => {
   const user = useSelector((state) => state.user.user) || "";
   const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
-  console.log(userBookmarks);
   const dispatch = useDispatch();
 
   useEffect(() => {

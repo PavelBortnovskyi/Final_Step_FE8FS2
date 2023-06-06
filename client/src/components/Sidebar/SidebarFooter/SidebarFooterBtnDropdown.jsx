@@ -40,7 +40,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                         display="block"
                         sx={{
                             textTransform: 'lowercase',
-                            color: `${theme.palette.text.primary}`,
+                            color: `${theme.palette.text.secondary}`,
                             fontSize: '15px',
                             fontWeight: 400,
                         }}
@@ -64,6 +64,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                             transform: 'translateY(5%)',
                             fontSize: '22px',
                         }}
+                        fontWeight="bold"
                     >
                         ...
                     </Box>
