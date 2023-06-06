@@ -1,74 +1,52 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
+
 import { TabPeople } from './TabPeople';
 import { TabMessages } from './TabMessages';
 
+// ************ STYLE ************
+const BoxSearchPerson = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'start',
+  alignItems: 'center',
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+  padding: '6px 0',
+}));
+// ************ STYLE ************
+
+// ************ TabAll ************
 export const TabAll = () => {
   return (
     <Box>
       <Box sx={{ margin: '20px 0 0 0' }}>
         {/* Title people */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-            borderBottom: '1px solid #273340',
-            paddingBottom: '4px',
-            // color: '#1d9bf0',
-          }}
-        >
-          <PersonIcon sx={{ fontSize: 24, marginRight: '10px' }} />
-          <Typography sx={{ fontSize: 20, fontWeight: 'bold' }}>
+        <BoxSearchPerson>
+          <PersonIcon sx={{ fontSize: 20, marginRight: '10px' }} />
+          <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
             People
           </Typography>
-        </Box>
+        </BoxSearchPerson>
 
         {/* Body people */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-            borderBottom: '1px solid #273340',
-            padding: '10px 0',
-          }}
-        >
+        <BoxSearchPerson>
           <TabPeople />
-        </Box>
+        </BoxSearchPerson>
       </Box>
 
       <Box sx={{ margin: '20px 0 0 0' }}>
         {/* Title messages */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-            borderBottom: '1px solid #273340',
-            paddingBottom: '4px',
-            // color: '#1d9bf0',
-          }}
-        >
-          <EmailIcon sx={{ fontSize: 24, marginRight: '10px' }} />
-          <Typography sx={{ fontSize: 20, fontWeight: 'bold' }}>
+        <BoxSearchPerson>
+          <EmailIcon sx={{ fontSize: 20, marginRight: '10px' }} />
+          <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
             Messages
           </Typography>
-        </Box>
+        </BoxSearchPerson>
 
         {/* Body messages */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-            borderBottom: '1px solid #273340',
-            padding: '10px 0',
-          }}
-        >
+        <BoxSearchPerson>
           <TabMessages />
-        </Box>
+        </BoxSearchPerson>
       </Box>
     </Box>
   );

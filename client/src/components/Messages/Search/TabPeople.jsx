@@ -7,13 +7,16 @@ import UserNames from 'src/UI/UserNames';
 import { getGuest } from 'src/redux/thunk/getGuest';
 import { useDispatch } from 'react-redux';
 
+// ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.text.primary, 0.1),
     cursor: 'pointer',
   },
 }));
+// ************ STYLE ************
 
+// ************ TabPeople ************
 export const TabPeople = () => {
   const dispatch = useDispatch();
   const { isLoading, findUser } = useSelector(getUserData);
@@ -25,9 +28,9 @@ export const TabPeople = () => {
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
 
-  // TODO: function for set guest for chat
   // set Guest for chat
   const handleClick = (id) => {
+    // get guest data
     dispatch(getGuest(id));
   };
 

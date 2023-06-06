@@ -1,10 +1,28 @@
 // import PropTypes from 'prop-types';
-import { Typography, Box, Tab, Tabs } from '@mui/material';
+import { Typography, Box, Tab, Tabs, styled, alpha } from '@mui/material';
 import { useState } from 'react';
 import { TabAll } from './TabAll';
 import { TabPeople } from './TabPeople';
 import { TabMessages } from './TabMessages';
 
+// ************ STYLE ************
+const TabSearch = styled(Tab)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  transition: 'all 0.3s linear',
+
+  '&:hover': {
+    transition: 'all 0.3s linear',
+    backgroundColor: alpha(theme.palette.text.primary, 0.1),
+    cursor: 'pointer',
+  },
+}));
+
+const TabHeader = styled(Box)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+}));
+// ************ STYLE ************
+
+// ************ TabPanel ************
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -25,12 +43,6 @@ function TabPanel(props) {
   );
 }
 
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.number.isRequired,
-//   value: PropTypes.number.isRequired,
-// };
-
 function tabsProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -47,17 +59,17 @@ export const SearchTabs = () => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <TabHeader>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="All" {...tabsProps(0)} />
-          <Tab label="People" {...tabsProps(1)} />
-          <Tab label="Messages" {...tabsProps(2)} />
+          <TabSearch label="All" {...tabsProps(0)} />
+          <TabSearch label="People" {...tabsProps(1)} />
+          <TabSearch label="Messages" {...tabsProps(2)} />
         </Tabs>
-      </Box>
+      </TabHeader>
       <TabPanel value={value} index={0}>
         <TabAll />
       </TabPanel>

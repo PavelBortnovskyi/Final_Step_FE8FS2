@@ -5,7 +5,7 @@ import {getTokens, setAuthToken, setRefreshToken} from "src/utils/tokens";
 // Server default URL
 export const myAxios = axios.create({
   // baseURL: process.env.REACT_APP_SERVER_URL_AXIOS,
-  baseURL: 'https://final-step-fe2fs8tw.herokuapp.com/api/v1',
+  baseURL: 'https://final-step-fe2fs8tw.herokuapp.com/api/v1/',
 });
 
 myAxios.interceptors.response.use((r) => r,
