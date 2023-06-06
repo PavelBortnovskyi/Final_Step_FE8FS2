@@ -4,7 +4,6 @@ import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
-import app.repository.UserModelRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class JwtTokenService {
   private final UserDetailsService userDetailsService;
 
   @Autowired
-  private UserModelRepository userModelRepository;
+  private UserModelService userModelService;
 
   @Value("${jwt.secret}")
   private String secretAccessKey;
@@ -98,10 +97,11 @@ public class JwtTokenService {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
     Date expiry = this.getExpirationDate(tokenType);
-    Claims claims = (userId == null) ? Jwts.claims().setSubject(userMail):Jwts.claims().setSubject(userId.toString());
+    Claims claims = (userId == null) ? Jwts.claims().setSubject(userMail) : Jwts.claims().setSubject(userId.toString());
 
-    if (tokenType.equals(TokenType.REGISTER)){
-      claims.put("email", userMail);}
+    if (tokenType.equals(TokenType.REGISTER)) {
+      claims.put("email", userMail);
+    }
 
     if (tokenType.equals(TokenType.ACCESS)) {
       claims.put("username", userTag);
@@ -238,32 +238,29 @@ public class JwtTokenService {
   /**
    * Method returns true if provided User Model is exist in DB and refreshToken updated
    */
-  public boolean updateRefreshToken(UserModel userModel, String refreshToken) {
-    if (this.userModelRepository.existsById(userModel.getId())) {
-      this.userModelRepository.updateRefreshToken(userModel.getId(), refreshToken);
-      return true;
-    } else return false;
+  public void updateRefreshToken(UserModel userModel, String refreshToken) {
+    userModelService.updateRefreshTokenById(userModel.getId(), refreshToken);
   }
 
   /**
    * Method returns true if provided refresh Token is not used
    */
   public boolean checkRefreshTokenStatus(String refreshToken) {
-    return this.userModelRepository.checkRefreshTokenStatus(refreshToken);
+    return this.userModelService.checkRefreshTokenStatus(refreshToken);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(Long userId, boolean usedStatus) {
-    this.userModelRepository.changeRefreshTokenStatusById(userId, usedStatus);
+    this.userModelService.changeRefreshTokenStatusById(userId, usedStatus);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(String token, boolean usedStatus) {
-    this.userModelRepository.changeTokenStatusByValue(token, usedStatus);
+    this.userModelService.changeTokenStatusByValue(token, usedStatus);
   }
 
   /**
