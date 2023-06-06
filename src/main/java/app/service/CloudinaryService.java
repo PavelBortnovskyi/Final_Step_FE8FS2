@@ -27,9 +27,9 @@ public class CloudinaryService {
     try {
       byte[] headerBytes = Arrays.copyOfRange(file.getBytes(), 0, 8);
       if (signatures.values().stream()
-        .anyMatch(s -> IntStream.range(0, s.size())
-          .allMatch(i -> s.get(i).equals(headerBytes[i]))
-        )
+          .anyMatch(s -> IntStream.range(0, s.size())
+              .allMatch(i -> s.get(i).equals(headerBytes[i]))
+          )
       ) return;
     } catch (IOException ignored) {
     }
@@ -40,8 +40,8 @@ public class CloudinaryService {
     checkImageType(file);
     try {
       return cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-        "public_id", imgId,
-        "overwrite", true
+          "public_id", imgId,
+          "overwrite", true
       )).get("url").toString();
     } catch (IOException e) {
       throw new UploadImageException(imgId + ". " + e);

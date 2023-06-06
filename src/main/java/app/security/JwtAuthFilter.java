@@ -85,20 +85,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     String requestMethod = request.getMethod();
 
     AntPathRequestMatcher[] matchers = {
-      new AntPathRequestMatcher("/", requestMethod),
-      new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
-      new AntPathRequestMatcher("/swagger-resources", requestMethod),
-      new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
-      new AntPathRequestMatcher("/webjars/**", requestMethod),
-      new AntPathRequestMatcher("/v2/api-docs", requestMethod),
-      new AntPathRequestMatcher("/h2-console/**", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
-      new AntPathRequestMatcher("/test/**", requestMethod),
-      //new AntPathRequestMatcher("/tweet/**", requestMethod),
-      //new AntPathRequestMatcher("/api/v1/chat/create", requestMethod)
+        new AntPathRequestMatcher("/", requestMethod),
+        new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
+        new AntPathRequestMatcher("/swagger-resources", requestMethod),
+        new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
+        new AntPathRequestMatcher("/webjars/**", requestMethod),
+        new AntPathRequestMatcher("/v2/api-docs", requestMethod),
+        new AntPathRequestMatcher("/h2-console/**", requestMethod),
+        new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
+        new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
+        new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
+        new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
+        new AntPathRequestMatcher("/test/**", requestMethod),
+        //new AntPathRequestMatcher("/tweet/**", requestMethod),
+        //new AntPathRequestMatcher("/api/v1/chat/create", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
@@ -113,13 +113,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                        FilterChain filterChain, String token) throws ServletException, IOException {
     try {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-        .flatMap(this.tokenService::extractIdFromClaims)
-        .map(JwtUserDetails::new)
-        .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
-        .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
-          auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-          SecurityContextHolder.getContext().setAuthentication(auth);
-        });
+          .flatMap(this.tokenService::extractIdFromClaims)
+          .map(JwtUserDetails::new)
+          .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
+          .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
+            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+          });
     } catch (Exception e) {
       throw new JwtAuthenticationException("Login failed with: " + e.getMessage());
     }

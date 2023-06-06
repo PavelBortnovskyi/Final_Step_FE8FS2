@@ -20,10 +20,10 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
 
   public UserDetails mapper(UserModel userModel) {
     return User
-      .withUsername(userModel.getEmail())
-      .password(userModel.getPassword())
-      .roles("USER")
-      .build();
+        .withUsername(userModel.getEmail())
+        .password(userModel.getPassword())
+        .roles("USER")
+        .build();
   }
 
   /**
@@ -34,8 +34,8 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String userMail) throws UsernameNotFoundException {
     return this.userModelService.getUserO(userMail)
-      .map(this::mapper)
-      .orElseThrow(() -> new EmailNotFoundException(String.format("User with email: `%s` not found", userMail)
-      ));
+        .map(this::mapper)
+        .orElseThrow(() -> new EmailNotFoundException(String.format("User with email: `%s` not found", userMail)
+        ));
   }
 }

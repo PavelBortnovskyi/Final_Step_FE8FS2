@@ -59,13 +59,13 @@ public class UserModel extends BaseEntityModel {
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "follower_id"),
-    inverseJoinColumns = @JoinColumn(name = "followed_id"))
+      inverseJoinColumns = @JoinColumn(name = "followed_id"))
   private Set<UserModel> followings = new HashSet<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "followers", joinColumns = @JoinColumn(name = "followed_id"),
-    inverseJoinColumns = @JoinColumn(name = "follower_id"))
+      inverseJoinColumns = @JoinColumn(name = "follower_id"))
   private Set<UserModel> followers = new HashSet<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)

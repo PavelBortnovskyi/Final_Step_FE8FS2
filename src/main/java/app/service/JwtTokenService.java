@@ -4,7 +4,6 @@ import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
-import app.repository.UserModelRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class JwtTokenService {
   private final UserDetailsService userDetailsService;
 
   @Autowired
-  private UserModelRepository userModelRepository;
+  private UserModelService userModelService;
 
   @Value("${jwt.secret}")
   private String secretAccessKey;
@@ -87,21 +86,22 @@ public class JwtTokenService {
     Claims claims = Jwts.claims().setSubject(userId.toString());
 
     return Jwts.builder()
-      .setClaims(claims)
-      .setIssuedAt(now)
-      .setExpiration(expiry)
-      .signWith(SignatureAlgorithm.HS512, signKey)
-      .compact();
+        .setClaims(claims)
+        .setIssuedAt(now)
+        .setExpiration(expiry)
+        .signWith(SignatureAlgorithm.HS512, signKey)
+        .compact();
   }
 
   public String createToken(Long userId, TokenType tokenType, String userTag, String userMail) {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
     Date expiry = this.getExpirationDate(tokenType);
-    Claims claims = (userId == null) ? Jwts.claims().setSubject(userMail):Jwts.claims().setSubject(userId.toString());
+    Claims claims = (userId == null) ? Jwts.claims().setSubject(userMail) : Jwts.claims().setSubject(userId.toString());
 
-    if (tokenType.equals(TokenType.REGISTER)){
-      claims.put("email", userMail);}
+    if (tokenType.equals(TokenType.REGISTER)) {
+      claims.put("email", userMail);
+    }
 
     if (tokenType.equals(TokenType.ACCESS)) {
       claims.put("username", userTag);
@@ -109,11 +109,11 @@ public class JwtTokenService {
     }
 
     return Jwts.builder()
-      .setClaims(claims)
-      .setIssuedAt(now)
-      .setExpiration(expiry)
-      .signWith(SignatureAlgorithm.HS512, signKey)
-      .compact();
+        .setClaims(claims)
+        .setIssuedAt(now)
+        .setExpiration(expiry)
+        .signWith(SignatureAlgorithm.HS512, signKey)
+        .compact();
   }
 
   /**
@@ -123,8 +123,8 @@ public class JwtTokenService {
     String signKey = this.getSignKey(tokenType);
     try {
       return Optional.ofNullable(Jwts.parser()
-        .setSigningKey(signKey)
-        .parseClaimsJws(token));
+          .setSigningKey(signKey)
+          .parseClaimsJws(token));
     } catch (SignatureException e) {
       log.error("Wrong signature key: " + signKey);
       throw new JwtAuthenticationException("Wrong signature key: " + signKey);
@@ -154,8 +154,8 @@ public class JwtTokenService {
    */
   public Optional<String> extractTokenFromRequest(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-      .filter(h -> h.startsWith(BEARER))
-      .map(h -> h.substring(BEARER.length()));
+        .filter(h -> h.startsWith(BEARER))
+        .map(h -> h.substring(BEARER.length()));
   }
 
   /**
@@ -199,8 +199,8 @@ public class JwtTokenService {
    */
   public Optional<Long> getIdFromRequest(HttpServletRequest request) {
     return this.extractTokenFromRequest(request)
-      .flatMap(t -> this.extractClaimsFromToken(t, TokenType.ACCESS))
-      .flatMap(this::extractIdFromClaims);
+        .flatMap(t -> this.extractClaimsFromToken(t, TokenType.ACCESS))
+        .flatMap(this::extractIdFromClaims);
   }
 
   /**
@@ -229,41 +229,44 @@ public class JwtTokenService {
    */
   public Authentication getAuthentication(String accessToken) {
     UserDetails userDetails = this.userDetailsService
-      .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
-          .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
-        .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
+        .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
+                .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
+            .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }
 
   /**
    * Method returns true if provided User Model is exist in DB and refreshToken updated
    */
-  public boolean updateRefreshToken(UserModel userModel, String refreshToken) {
-    if (this.userModelRepository.existsById(userModel.getId())) {
-      this.userModelRepository.updateRefreshToken(userModel.getId(), refreshToken);
-      return true;
-    } else return false;
+//  public boolean updateRefreshToken(UserModel userModel, String refreshToken) {
+//    if (this.userModelService.existsById(userModel.getId())) {
+//      this.userModelService.updateRefreshToken(userModel.getId(), refreshToken);
+//      return true;
+//    } else return false;
+//  }
+  public void updateRefreshToken(UserModel userModel, String refreshToken) {
+    userModelService.updateRefreshTokenById(userModel.getId(), refreshToken);
   }
 
   /**
    * Method returns true if provided refresh Token is not used
    */
   public boolean checkRefreshTokenStatus(String refreshToken) {
-    return this.userModelRepository.checkRefreshTokenStatus(refreshToken);
+    return this.userModelService.checkRefreshTokenStatus(refreshToken);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(Long userId, boolean usedStatus) {
-    this.userModelRepository.changeRefreshTokenStatusById(userId, usedStatus);
+    this.userModelService.changeRefreshTokenStatusById(userId, usedStatus);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(String token, boolean usedStatus) {
-    this.userModelRepository.changeTokenStatusByValue(token, usedStatus);
+    this.userModelService.changeTokenStatusByValue(token, usedStatus);
   }
 
   /**

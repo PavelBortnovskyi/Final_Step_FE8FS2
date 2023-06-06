@@ -80,12 +80,12 @@ public class WebSocketController {
   public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
                                          NotificationRequest notificationRequestDTO) {
     this.userService.getUserO(notificationRequestDTO.getReceiverUserId())
-      .map(user -> {
-        this.template.convertAndSendToUser(user.getEmail(), "/specific",
-          this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationRequestDTO)));
-        return user;
-      })
-      .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationRequestDTO.getReceiverUserId()));
+        .map(user -> {
+          this.template.convertAndSendToUser(user.getEmail(), "/specific",
+              this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationRequestDTO)));
+          return user;
+        })
+        .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationRequestDTO.getReceiverUserId()));
   }
 
   @MessageMapping("/v1/notifications/mark")
@@ -95,12 +95,12 @@ public class WebSocketController {
                                    HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     this.notificationService.findById(notificationRequestDTO.getId())
-      .filter(n -> n.getReceiverUser().getId().equals(currUserId))
-      .map(n -> {
-        this.notificationService.setNotificationStatus(n.getId(), true);
-        this.template.convertAndSendToUser(this.userService.getOne(currUserId).getEmail(), "/specific", this.notificationFacade.convertToDto(n));
-        return n;
-      })
-      .orElseThrow(() -> new BadRequestException(String.format("No have such notification(id: %d) for user with id: %d", notificationRequestDTO.getId(), currUserId)));
+        .filter(n -> n.getReceiverUser().getId().equals(currUserId))
+        .map(n -> {
+          this.notificationService.setNotificationStatus(n.getId(), true);
+          this.template.convertAndSendToUser(this.userService.getOne(currUserId).getEmail(), "/specific", this.notificationFacade.convertToDto(n));
+          return n;
+        })
+        .orElseThrow(() -> new BadRequestException(String.format("No have such notification(id: %d) for user with id: %d", notificationRequestDTO.getId(), currUserId)));
   }
 }

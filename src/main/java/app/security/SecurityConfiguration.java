@@ -37,28 +37,28 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
     httpSec
-      .csrf().disable()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      .authorizeRequests()
-      .antMatchers("/").permitAll()
-      .antMatchers("/swagger-ui/**").permitAll()
-      .antMatchers("/swagger-resources").permitAll()
-      .antMatchers("/swagger-resources/**").permitAll()
-      .antMatchers("/webjars/**").permitAll()
-      .antMatchers("/v2/api-docs").permitAll()
-      .antMatchers("/h2-console/**").permitAll()
-      .antMatchers("/api/v1/auth/register").permitAll()
-      .antMatchers("/api/v1/auth/login").permitAll()
-      .antMatchers("/api/v1/auth/password/reset").permitAll()
-      .antMatchers("/api/v1/auth/password/reset/**").permitAll()
-      .antMatchers("/test/**").permitAll()
-      //.antMatchers("/user/**").permitAll()
-      //.antMatchers("/tweet/**").permitAll()
-      .anyRequest().authenticated()
-      .and()
-      //.oauth2Login();
-      .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
+        .antMatchers("/").permitAll()
+        .antMatchers("/swagger-ui/**").permitAll()
+        .antMatchers("/swagger-resources").permitAll()
+        .antMatchers("/swagger-resources/**").permitAll()
+        .antMatchers("/webjars/**").permitAll()
+        .antMatchers("/v2/api-docs").permitAll()
+        .antMatchers("/h2-console/**").permitAll()
+        .antMatchers("/api/v1/auth/register").permitAll()
+        .antMatchers("/api/v1/auth/login").permitAll()
+        .antMatchers("/api/v1/auth/password/reset").permitAll()
+        .antMatchers("/api/v1/auth/password/reset/**").permitAll()
+        .antMatchers("/test/**").permitAll()
+        //.antMatchers("/user/**").permitAll()
+        //.antMatchers("/tweet/**").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        //.oauth2Login();
+        .exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
