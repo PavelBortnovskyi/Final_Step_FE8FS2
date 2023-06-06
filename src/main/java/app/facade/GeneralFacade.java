@@ -28,12 +28,12 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
 
   private Class<E> getClassE() {
     return (Class<E>) ((ParameterizedType) getClass()
-        .getGenericSuperclass()).getActualTypeArguments()[0];
+      .getGenericSuperclass()).getActualTypeArguments()[0];
   }
 
   private Class<O> getClassO() {
     return (Class<O>) ((ParameterizedType) getClass()
-        .getGenericSuperclass()).getActualTypeArguments()[2];
+      .getGenericSuperclass()).getActualTypeArguments()[2];
   }
 
   public O convertToDto(E entity) {
@@ -60,8 +60,8 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
   public List<O> findAll() {
     List<E> entities = service.findAll();
     List<O> entitiesRs = entities.stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
+      .map(this::convertToDto)
+      .collect(Collectors.toList());
     return entitiesRs;
   }
 

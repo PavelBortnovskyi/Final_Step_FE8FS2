@@ -38,12 +38,12 @@ public class UserModelService extends GeneralService<UserModel> {
 
   public UserModel getUser(String email) {
     return userModelRepository.findByEmail(email)
-        .orElseThrow(() -> new UserNotFoundException(email));
+      .orElseThrow(() -> new UserNotFoundException(email));
   }
 
   public UserModel getUser(Long userId) {
     return userModelRepository.findById(userId)
-        .orElseThrow(() -> new UserNotFoundException(userId));
+      .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
   public Optional<UserModel> getUserByToken(String refreshToken) {
@@ -98,7 +98,7 @@ public class UserModelService extends GeneralService<UserModel> {
 
   public Page<UserModel> searchUsers(Long userId, String searchString, int page, int size) {
     return userModelRepository.findByIdNotAndFullNameContainsIgnoreCaseOrUserTagContainsIgnoreCase(
-        userId, searchString, searchString, PageRequest.of(page, size));
+      userId, searchString, searchString, PageRequest.of(page, size));
   }
 
   public UserModel getUserByRefreshToken(String refreshToken) {

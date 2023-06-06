@@ -81,10 +81,10 @@ public class ApplicationBeans {
   @Bean
   public Cloudinary cloudinaryConfig() {
     Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-        "cloud_name", cloudName,
-        "api_key", apiKey,
-        "api_secret", apiSecret,
-        "secure", true));
+      "cloud_name", cloudName,
+      "api_key", apiKey,
+      "api_secret", apiSecret,
+      "secure", true));
 
     //Sync upload from byte array and get url
     //byte[] imageByteArray = new byte[1024]; // there will be parsing request body to get byte array

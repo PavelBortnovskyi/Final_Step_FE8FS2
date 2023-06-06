@@ -35,7 +35,7 @@ public class TweetActionService extends GeneralService<TweetAction> {
       return true;
     } else {
       delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-          userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.LIKE));
+        userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.LIKE));
     }
     return false;
 
@@ -51,7 +51,7 @@ public class TweetActionService extends GeneralService<TweetAction> {
       return true;
     } else {
       delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-          userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.BOOKMARK));
+        userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.BOOKMARK));
     }
     return false;
   }
@@ -74,34 +74,34 @@ public class TweetActionService extends GeneralService<TweetAction> {
 
   public void deleteLike(Long tweetId, HttpServletRequest request) {
     delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-        userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-        TweetActionType.LIKE));
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      TweetActionType.LIKE));
   }
 
   public void deleteRetweet(Long tweetId, HttpServletRequest request) {
     delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-        userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-        TweetActionType.RETWEET));
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      TweetActionType.RETWEET));
   }
 
   public void deleteBookmark(Long tweetId, HttpServletRequest request) {
     delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-        userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-        TweetActionType.BOOKMARK));
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      TweetActionType.BOOKMARK));
   }
 
   public boolean statusLike(Long tweetId, HttpServletRequest request) {
     if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.LIKE,
-        userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-        tweetId) == 0) return false;
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      tweetId) == 0) return false;
     else return true;
 
   }
 
   public boolean statusBookmark(Long tweetId, HttpServletRequest request) {
     if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.BOOKMARK,
-        userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-        tweetId) == 0) return false;
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      tweetId) == 0) return false;
     else return true;
 
   }

@@ -49,7 +49,7 @@ public class AuthFacade {
   public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
     //Auth procedure handling
     Authentication authentication = authenticationManager
-        .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+      .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     Object principal = authentication.getPrincipal();
 
@@ -146,7 +146,7 @@ public class AuthFacade {
       //TODO: change link according to front end mapping
       String registerUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/register/apply?token=" + registerToken;
       emailService.sendEmail(signUpDTO.getEmail(), "Verify your email for FinalStepTW account",
-          "We need to verify your email for FinalStepTW account please proceed to " + registerUrl);
+        "We need to verify your email for FinalStepTW account please proceed to " + registerUrl);
       return ResponseEntity.ok("Was sent email to " + signUpDTO.getEmail() + " with register token");
     }
   }

@@ -35,8 +35,8 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setCharacterEncoding("UTF-8");
       response.getWriter()
-          .write(this.objectMapper
-              .writeValueAsString(new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "JWT token empty or invalid!")));
+        .write(this.objectMapper
+          .writeValueAsString(new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "JWT token empty or invalid!")));
       log.error("JWT token empty or invalid!");
     } catch (RuntimeException e) {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -48,16 +48,16 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
     String requestMethod = request.getMethod();
 
     AntPathRequestMatcher[] matchers = {
-        new AntPathRequestMatcher("/", requestMethod),
-        new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
-        new AntPathRequestMatcher("/swagger-resources", requestMethod),
-        new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
-        new AntPathRequestMatcher("/webjars/**", requestMethod),
-        new AntPathRequestMatcher("/v2/api-docs", requestMethod),
-        new AntPathRequestMatcher("/h2-console/**", requestMethod),
-        new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
-        new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
-        new AntPathRequestMatcher("/test/**", requestMethod)
+      new AntPathRequestMatcher("/", requestMethod),
+      new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
+      new AntPathRequestMatcher("/swagger-resources", requestMethod),
+      new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
+      new AntPathRequestMatcher("/webjars/**", requestMethod),
+      new AntPathRequestMatcher("/v2/api-docs", requestMethod),
+      new AntPathRequestMatcher("/h2-console/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
+      new AntPathRequestMatcher("/test/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {

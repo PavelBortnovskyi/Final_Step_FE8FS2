@@ -78,10 +78,10 @@ public class ChatController {
     Long currUserId = (Long) request.getAttribute("userId");
     if (this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId))
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by chat initiator id: %d",
-          userIdToRemove, chatId, currUserId));
+        userIdToRemove, chatId, currUserId));
     else
       return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-          userIdToRemove, chatId, currUserId));
+        userIdToRemove, chatId, currUserId));
   }
 
   /**
