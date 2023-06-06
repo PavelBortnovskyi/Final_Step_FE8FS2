@@ -15,17 +15,17 @@ export const FollowersList = ({ follow }) => {
     const follwId = follower.id;
     console.log(follwId);
     return (
-      <Box
-        key={follower.id}
-        sx={{
-          display: "flex",
-          gap: "24px",
+      <Link
+        to={`/user/${follwId}`}
+        onClick={() => {
+          dispatch(getUserBiId(follwId));
         }}
       >
-        <Link
-          to={`/user/${follwId}`}
-          onClick={() => {
-            dispatch(getUserBiId(follwId));
+        <Box
+          key={follower.id}
+          sx={{
+            display: "flex",
+            gap: "24px",
           }}
         >
           <UserPageAvatar
@@ -34,14 +34,14 @@ export const FollowersList = ({ follow }) => {
             mt={"20"}
             userAvatar={follower.avatarImgUrl}
           />
-        </Link>
 
-        <Box>
-          <UserName fullName={follower.fullName} />
-          <UserNick userTag={follower.userTag} />
-          <UserBio userBio={follower.bio} />
+          <Box>
+            <UserName fullName={follower.fullName} />
+            <UserNick userTag={follower.userTag} />
+            <UserBio userBio={follower.bio} />
+          </Box>
         </Box>
-      </Box>
+      </Link>
     );
   });
 };

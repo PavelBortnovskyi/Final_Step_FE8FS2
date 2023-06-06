@@ -23,8 +23,8 @@ export const UserBiIdPage = () => {
   useEffect(() => {
     // if (following.length === 0) {
     dispatch(getUserBiId(id));
-    dispatch(getFollowings(id));
-    dispatch(getFollowers(id));
+    dispatch(getFollowings("profile"));
+    // dispatch(getFollowers(id));
     //   return;
     // }
   }, [userId]);
