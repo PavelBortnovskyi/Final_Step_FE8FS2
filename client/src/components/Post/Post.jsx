@@ -13,10 +13,12 @@ function Post({
   reply,
   retweet,
   showIconList,
+  id,
 }) {
   return (
     <Box>
       <TweetPost
+        id={id}
         displayName={displayName}
         username={username}
         verified={verified}

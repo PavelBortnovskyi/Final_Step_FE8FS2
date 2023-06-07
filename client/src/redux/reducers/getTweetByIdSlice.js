@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getTweetById } from '../thunk/getTweetById.js';
 
 const initialState = {
-  tweet: {},
+  singleTweet: {},
   isLoading: false,
   error: '',
 };
 
 export const tweetByIdSlice = createSlice({
-  name: 'tweet',
+  name: 'singleTweet',
   initialState,
 
   extraReducers: (builder) => {
@@ -19,7 +19,7 @@ export const tweetByIdSlice = createSlice({
         state.error = null;
       })
       .addCase(getTweetById.fulfilled, (state, action) => {
-        state.tweet = action.payload.tweet;
+        state.tweet = action.payload;
         state.isLoading = false;
         state.error = null;
       })
