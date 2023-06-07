@@ -119,7 +119,7 @@ public class ChatController {
                                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                                              @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                              @RequestParam("keyword") String keyword) {
-    if (keyword.isEmpty()||keyword.isBlank()) {
+    if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
     }
     Long currUserId = (Long) request.getAttribute("userId");
@@ -134,7 +134,7 @@ public class ChatController {
                                                               @RequestParam("page") @NotNull Integer page,
                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
                                                               @RequestParam("keyword") String keyword) {
-    if (keyword.isEmpty()||keyword.isBlank()) {
+    if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
     }
     Long currUserId = (Long) request.getAttribute("userId");

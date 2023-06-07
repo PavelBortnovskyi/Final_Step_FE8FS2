@@ -47,7 +47,7 @@ public class UserModelService extends GeneralService<UserModel> {
   }
 
   public Optional<UserModel> getUserByToken(String refreshToken) {
-    return userModelRepository.findByToken(refreshToken);
+    return userModelRepository.findByRefreshToken(refreshToken);
   }
 
   public Optional<UserModel> getUserByTagO(String userTag) {
@@ -101,36 +101,54 @@ public class UserModelService extends GeneralService<UserModel> {
       userId, searchString, searchString, PageRequest.of(page, size));
   }
 
+  public UserModel getUserByRefreshToken(String refreshToken) {
+    return userModelRepository.findByRefreshToken(refreshToken).orElseThrow(RuntimeException::new);
+  }
+
+  public boolean checkRefreshTokenStatus(String refreshToken) {
+    return getUserByRefreshToken(refreshToken).isRefreshed();
+  }
+
+  @Transactional
+  public void updateRefreshTokenById(Long userId, String refreshToken) {
+    getUser(userId).setRefreshToken(refreshToken);
+  }
+
+  @Transactional
+  public void changeRefreshTokenStatusById(Long userId, boolean usedStatus) {
+    getUser(userId).setRefreshed(usedStatus);
+  }
+
+  @Transactional
+  public void changeTokenStatusByValue(String token, boolean usedStatus) {
+    getUserByRefreshToken(token).setRefreshed(usedStatus);
+  }
+
   /**
    * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
    */
+  @Transactional
   public boolean updatePassword(String email, String oldPassword, String freshPassword) {
-    return userModelRepository.findByEmail(email).filter(user -> encoder.matches(oldPassword, user.getPassword()))
-      .map(user -> {
-        userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
-        return true;
-      }).orElse(false);
+    UserModel userModel = getUser(email);
+    if (!encoder.matches(oldPassword, userModel.getPassword())) return false;
+    userModel.setPassword(freshPassword);
+    return true;
   }
 
   /**
    * Method returns boolean result of updating user password operation (only for reset password case)
    */
-  public boolean updatePassword(Long userId, String freshPassword) {
-    return this.userModelRepository.findById(userId)
-      .map(user -> {
-        userModelRepository.updatePassword(user.getId(), encoder.encode(freshPassword));
-        return true;
-      }).orElse(false);
+  @Transactional
+  public void updatePassword(Long userId, String freshPassword) {
+    getUser(userId).setPassword(freshPassword);
   }
-
 
   /**
    * Method returns boolean result of checking presence in DB user with login&password combination
    */
   public boolean checkLoginPassword(String email, String password) {
-    return userModelRepository.findByEmail(email).filter(user -> encoder.matches(password, user.getPassword())).isPresent();
+    return encoder.matches(password, getUser(email).getPassword());
   }
-
 
   /**
    * Method returns true if provided email address is present in DB

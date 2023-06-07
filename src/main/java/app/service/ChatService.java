@@ -46,7 +46,7 @@ public class ChatService extends GeneralService<Chat> {
     }}));
   }
 
-  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId){
+  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId) {
     return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 

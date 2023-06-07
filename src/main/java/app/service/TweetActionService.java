@@ -8,6 +8,7 @@ import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -29,12 +30,12 @@ public class TweetActionService extends GeneralService<TweetAction> {
   }
 
   public Boolean addLike(Long tweetId, HttpServletRequest request) {
-    if (!statusLike(tweetId, request)){
+    if (!statusLike(tweetId, request)) {
       add(tweetId, request, TweetActionType.LIKE);
       return true;
-    }else{
+    } else {
       delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-          userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.LIKE));
+        userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.LIKE));
     }
     return false;
 
@@ -45,12 +46,12 @@ public class TweetActionService extends GeneralService<TweetAction> {
   }
 
   public Boolean addBookmark(Long tweetId, HttpServletRequest request) {
-    if (!statusBookmark(tweetId, request)){
+    if (!statusBookmark(tweetId, request)) {
       add(tweetId, request, TweetActionType.BOOKMARK);
       return true;
-    }else{
+    } else {
       delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-          userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.BOOKMARK));
+        userModelService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.BOOKMARK));
     }
     return false;
   }
@@ -89,18 +90,18 @@ public class TweetActionService extends GeneralService<TweetAction> {
       TweetActionType.BOOKMARK));
   }
 
-  public boolean statusLike(Long tweetId, HttpServletRequest request){
+  public boolean statusLike(Long tweetId, HttpServletRequest request) {
     if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.LIKE,
-            userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-            tweetId) == 0) return false;
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      tweetId) == 0) return false;
     else return true;
 
   }
 
-  public boolean statusBookmark(Long tweetId, HttpServletRequest request){
+  public boolean statusBookmark(Long tweetId, HttpServletRequest request) {
     if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.BOOKMARK,
-            userModelService.getUser((Long) request.getAttribute("userId")).getId(),
-            tweetId) == 0) return false;
+      userModelService.getUser((Long) request.getAttribute("userId")).getId(),
+      tweetId) == 0) return false;
     else return true;
 
   }
