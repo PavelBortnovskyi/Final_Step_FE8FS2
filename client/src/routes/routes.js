@@ -35,7 +35,7 @@ export const mainRoutes = () => {
       element: <PageDeveloping />,
     },
     {
-      path: '/tweet',
+      path: '/tweet/:id',
       element: <TweetPage />,
     },
     {
