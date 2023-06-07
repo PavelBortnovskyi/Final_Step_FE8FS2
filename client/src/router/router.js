@@ -10,7 +10,7 @@ import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
-import { Chat } from 'src/components/Chat/Chat';
+import { Chat } from 'src/components/Messages/Chat/Chat';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
         index: true,
       },
       {
-        path: '/user',
+        path: '/user/:id',
         element: <UserBiIdPage />,
       },
       {

@@ -4,9 +4,16 @@ import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined
 
 import { useTheme } from '@emotion/react';
 import { SearchMessages } from './Search/SearchMessages';
+import { ConversationList } from './ConversationList/ConversationList';
+import { useSelector } from 'react-redux';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
+// ************ Messages ************
 export const Messages = () => {
   const theme = useTheme();
+
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+  if (!isAuthenticated) return;
 
   return (
     <Box>
@@ -40,6 +47,8 @@ export const Messages = () => {
             </Tooltip>
           </Box>
         </Box>
+        {/* chat list */}
+        <ConversationList />
 
         {/* Search */}
         <SearchMessages />

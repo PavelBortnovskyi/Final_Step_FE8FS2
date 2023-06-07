@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -41,8 +42,12 @@ public class ChatService extends GeneralService<Chat> {
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
     return this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
       add(interlocutor);
-      add(initiator);
+      //add(initiator);
     }}));
+  }
+
+  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId) {
+    return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 
   /**

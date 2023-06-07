@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce';
 
 import { findUser } from 'src/redux/thunk/findUser';
 
+// ************ STYLE ************
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   backgroundColor: alpha(theme.palette.text.primary, 0.05),
@@ -34,6 +35,17 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
+const CancelRoundedIconStyled = styled(CancelRoundedIcon)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  margin: '0 10px',
+  '&:hover': {
+    cursor: 'pointer',
+  },
+});
+
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   width: '90%',
@@ -46,8 +58,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // [theme.breakpoints.up('sm')]: {},
   },
 }));
+// ************ STYLE ************
 
-export const SearchField = () => {
+// ************ SearchFieldMessages ************
+export const SearchFieldMessages = () => {
   const dispatch = useDispatch();
 
   // set link on search input
@@ -105,18 +119,7 @@ export const SearchField = () => {
           }}
           onClick={handleClear}
         >
-          <CancelRoundedIcon
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-              margin: '0 10px',
-              '&:hover': {
-                cursor: 'pointer',
-              },
-            }}
-          />
+          <CancelRoundedIconStyled />
         </Box>
       </Search>
     </Box>

@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserNick } from '../User/UserNIck'
 import PostList from '../Post/PostList'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,7 +11,6 @@ export const Bookmarks = () => {
   const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
   console.log(userBookmarks);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch(getBookmarks({ page: 0, pageSize: 10 }));

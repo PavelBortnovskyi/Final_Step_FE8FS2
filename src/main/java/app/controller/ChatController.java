@@ -3,6 +3,7 @@ package app.controller;
 import app.annotations.Marker;
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
+import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -118,6 +119,9 @@ public class ChatController {
                                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                                              @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                              @RequestParam("keyword") String keyword) {
+    if (keyword.isEmpty() || keyword.isBlank()) {
+      throw new BadRequestException("Keyword cannot be empty");
+    }
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.searchMessagesInChat(chatId, currUserId, pageSize, page, keyword);
   }
@@ -130,6 +134,9 @@ public class ChatController {
                                                               @RequestParam("page") @NotNull Integer page,
                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
                                                               @RequestParam("keyword") String keyword) {
+    if (keyword.isEmpty() || keyword.isBlank()) {
+      throw new BadRequestException("Keyword cannot be empty");
+    }
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.searchMessagesInChats(currUserId, pageSize, page, keyword);
   }

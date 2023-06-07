@@ -6,7 +6,7 @@ import TweetPage from 'src/pages/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
-import { Chat } from 'src/components/Chat/Chat';
+import { Chat } from 'src/components/Messages/Chat/Chat';
 import { RightSection } from 'src/components/RightSection/RightSection';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 import { FollowersPage } from 'src/pages/FollowersPage';
@@ -22,7 +22,7 @@ export const mainRoutes = () => {
       index: true,
     },
     {
-      path: '/user',
+      path: '/user/:id',
       element: <UserBiIdPage />,
     },
 
