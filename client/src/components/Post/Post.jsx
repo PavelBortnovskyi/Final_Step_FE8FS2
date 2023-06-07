@@ -1,34 +1,23 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import TweetPost from 'src/UI/TweetPost';
+import { useSelector } from 'react-redux';
 
-function Post({
-  displayName,
-  username,
-  verified,
-  text,
-  image,
-  logoUrl,
-  likes,
-  reply,
-  retweet,
-  showIconList,
-  id,
-}) {
+function Post({ tweet }) {
+  const user = useSelector((state) => state.user.user) || '';
   return (
     <Box>
       <TweetPost
-        id={id}
-        displayName={displayName}
-        username={username}
-        verified={verified}
-        text={text}
-        image={image}
-        logoUrl={logoUrl}
-        showIconList={true}
-        likes={likes}
-        reply={reply}
-        retweet={retweet}
+        id={tweet.tweetId}
+        displayName={user.fullName}
+        text={tweet.body}
+        username={tweet.userTag}
+        logoUrl={tweet.userAvatarImage}
+        verified={user.isVerified}
+        image={tweet.attachmentsImages[0]}
+        likes={tweet.countLikes}
+        reply={tweet.countReply}
+        retweet={tweet.countRetweets}
       />
     </Box>
   );

@@ -10,7 +10,7 @@ import {
 } from 'src/redux/selectors/selectors';
 import { Link } from 'react-router-dom';
 
-function PostList({ tweet }) {
+function PostList() {
   // const tweet = useSelector(getTweetByID);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user) || '';
@@ -44,18 +44,7 @@ function PostList({ tweet }) {
       {userTweetsArray !== false &&
         userTweetsArray.map((tweet) => (
           <Link to={`/tweet/${tweet.tweetId}`} key={tweet.tweetId}>
-            <Post
-              id={tweet.tweetId}
-              displayName={user.fullName}
-              text={tweet.body}
-              username={tweet.userTag}
-              logoUrl={tweet.userAvatarImage}
-              verified={user.isVerified}
-              image={tweet.attachmentsImages[0]}
-              likes={tweet.countLikes}
-              reply={tweet.countReply}
-              retweet={tweet.countRetweets}
-            />
+            <Post tweet={tweet} />
           </Link>
         ))}
     </Box>
@@ -63,11 +52,3 @@ function PostList({ tweet }) {
 }
 
 export default PostList;
-
-// <Post
-// displayName="Artem Shevchuk"
-// username="Jocellyn Flores"
-// logoUrl="./img/avatar.JPG"
-// verified={true}
-// image="https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1"
-// />
