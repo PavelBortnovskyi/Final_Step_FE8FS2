@@ -28,7 +28,7 @@ public class JwtTokenService {
   private final UserDetailsService userDetailsService;
 
   @Autowired
-  private UserModelService userModelService;
+  private UserService userService;
 
   @Value("${jwt.secret}")
   private String secretAccessKey;
@@ -239,28 +239,28 @@ public class JwtTokenService {
    * Method returns true if provided User Model is exist in DB and refreshToken updated
    */
   public void updateRefreshToken(UserModel userModel, String refreshToken) {
-    userModelService.updateRefreshTokenById(userModel.getId(), refreshToken);
+    userService.updateRefreshTokenById(userModel.getId(), refreshToken);
   }
 
   /**
    * Method returns true if provided refresh Token is not used
    */
   public boolean checkRefreshTokenStatus(String refreshToken) {
-    return this.userModelService.checkRefreshTokenStatus(refreshToken);
+    return this.userService.checkRefreshTokenStatus(refreshToken);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(Long userId, boolean usedStatus) {
-    this.userModelService.changeRefreshTokenStatusById(userId, usedStatus);
+    this.userService.changeRefreshTokenStatusById(userId, usedStatus);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(String token, boolean usedStatus) {
-    this.userModelService.changeTokenStatusByValue(token, usedStatus);
+    this.userService.changeTokenStatusByValue(token, usedStatus);
   }
 
   /**

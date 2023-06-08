@@ -11,7 +11,7 @@ import javax.validation.constraints.Null;
  * UserDTO for responses
  */
 @Data
-public class UserModelResponse {
+public class UserResponseDTO {
 
   @JsonView({Marker.Details.class, Marker.ChatDetails.class})
   private Long id;
