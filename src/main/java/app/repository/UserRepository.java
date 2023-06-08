@@ -33,5 +33,4 @@ public interface UserRepository extends RepositoryInterface<UserModel> {
 
   // Search user by refreshToken
   Optional<UserModel> findByRefreshToken(String refreshToken);
-
 }

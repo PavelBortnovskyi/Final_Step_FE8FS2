@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +76,7 @@ public class UserService extends GeneralService<UserModel> {
   public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
     userModel.setAvatarImgUrl(cloudinaryService.uploadFile(file, userId + "_avatar_img"));
+    userRepository.save(userModel);
     return userModel;
   }
 
@@ -82,6 +84,7 @@ public class UserService extends GeneralService<UserModel> {
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
     userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
+    userRepository.save(userModel);
     return userModel;
   }
 

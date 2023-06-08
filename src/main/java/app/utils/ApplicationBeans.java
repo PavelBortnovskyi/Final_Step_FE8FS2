@@ -9,6 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -26,6 +32,9 @@ public class ApplicationBeans {
 
   @Value("${cloudinary.apiSecret}")
   private String apiSecret;
+
+  @Value("${gmail.password}")
+  private String mailPass;
 
   @Bean
   public ModelMapper modelMapper() {
@@ -49,7 +58,7 @@ public class ApplicationBeans {
     mailSender.setPort(587);
 
     mailSender.setUsername("fe8fs2finalstep@gmail.com");
-    mailSender.setPassword("vgrralowhzszavbs");
+    mailSender.setPassword(mailPass);
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
@@ -59,6 +68,19 @@ public class ApplicationBeans {
 
     return mailSender;
   }
+
+//  @Bean
+//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest>
+//  authorizationRequestRepository() {
+//    return new HttpSessionOAuth2AuthorizationRequestRepository();
+//  }
+
+//  @Bean
+//  public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest>
+//  accessTokenResponseClient() {
+//
+//    return new NimbusAuthorizationCodeTokenResponseClient();
+//  }
 
   @Bean
   public ObjectMapper getObjectMapper() {
