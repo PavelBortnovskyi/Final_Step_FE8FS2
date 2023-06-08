@@ -4,7 +4,7 @@ import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
 import app.service.JwtTokenService;
-import app.service.UserModelService;
+import app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
   private final JwtTokenService tokenService;
 
-  private final UserModelService userModelService;
+  private final UserService userService;
 
   private final ObjectMapper objectMapper;
 
@@ -58,7 +58,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       }
     }
   }
-
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) {

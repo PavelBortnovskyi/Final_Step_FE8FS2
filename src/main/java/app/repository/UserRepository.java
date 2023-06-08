@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserModelRepository extends RepositoryInterface<UserModel> {
+public interface UserRepository extends RepositoryInterface<UserModel> {
 
   Optional<UserModel> findByUserTag(String userTag);
 

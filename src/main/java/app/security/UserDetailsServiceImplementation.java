@@ -2,7 +2,7 @@ package app.security;
 
 import app.exceptions.authError.EmailNotFoundException;
 import app.model.UserModel;
-import app.service.UserModelService;
+import app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @RequiredArgsConstructor
 public class UserDetailsServiceImplementation implements UserDetailsService {
 
-  private final UserModelService userModelService;
+  private final UserService userService;
 
   public UserDetails mapper(UserModel userModel) {
     return User
@@ -33,7 +33,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
    */
   @Override
   public UserDetails loadUserByUsername(String userMail) throws UsernameNotFoundException {
-    return this.userModelService.getUserO(userMail)
+    return this.userService.getUserO(userMail)
       .map(this::mapper)
       .orElseThrow(() -> new EmailNotFoundException(String.format("User with email: `%s` not found", userMail)
       ));
