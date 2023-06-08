@@ -73,19 +73,19 @@ public class TweetController {
   @PutMapping("/retweet")
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createRetweet(@RequestParam(value = "tweetBody", required = false) String tweetBody,
-                                                     @RequestParam(value = "parentTweetId") String parentweetId,
+                                                     @RequestParam(value = "parentTweetId") Long parenTweetId,
                                                      @RequestParam(value = "file", required = false) MultipartFile[] file,
                                                      HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createRetweet(request, tweetBody, parentweetId, file));
+    return ResponseEntity.ok(tweetService.createRetweet(request, tweetBody, parenTweetId, file));
   }
 
   @PutMapping("/reply")
   @Validated({Marker.Retweet.class})
   public ResponseEntity<TweetResponse> createReply(@RequestParam(value = "tweetBody", required = false) String tweetBody,
-                                                   @RequestParam(value = "parentTweetId") String parentweetId,
+                                                   @RequestParam(value = "parentTweetId") Long parenTweetId,
                                                    @RequestParam(value = "file", required = false) MultipartFile[] file,
                                                    HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createReply(request, tweetBody, parentweetId, file));
+    return ResponseEntity.ok(tweetService.createReply(request, tweetBody, parenTweetId, file));
   }
 
   //get List tweets following users
@@ -159,7 +159,7 @@ public class TweetController {
 //  }
 
   @GetMapping("/tweet_reply/{tweetId}")
-  public List<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId, @RequestParam("page") @NotNull int page,
+  public Page<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId, @RequestParam("page") @NotNull int page,
                                          @RequestParam("pageSize") @NotNull @Positive int pageSize){
     return ResponseEntity.ok(tweetFacade.tweetsReply(tweetId, page, pageSize)).getBody();
   }

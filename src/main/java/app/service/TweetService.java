@@ -50,13 +50,13 @@ public class TweetService extends GeneralService<Tweet> {
     this.tweetModelRepository.deleteById(tweetId);
   }
 
-  public TweetResponse create(HttpServletRequest request, String tweetBody, TweetType tweetType, MultipartFile[] files, String parentTweetId) {
+  public TweetResponse create(HttpServletRequest request, String tweetBody, TweetType tweetType, MultipartFile[] files, Long parentTweetId) {
     UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
     tweet.setBody(tweetBody);
     tweet.setTweetType(tweetType);
     tweet.setUser(user);
-    if (parentTweetId != null) tweet.setParentTweetId(getTweetById(Long.valueOf(parentTweetId)));
+    if (parentTweetId != null) tweet.setParentTweetId(getTweetById(parentTweetId));
     tweetModelRepository.save(tweet);
 
     if (tweetType.equals(TweetType.QUOTE_TWEET)) tweetActionService.addRetweet(tweet.getId(), request);
@@ -79,7 +79,8 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setTweetType(tweet.getTweetType());
     tweetResponse.setUserAvatarImage(tweet.getUser().getAvatarImgUrl());
     tweetResponse.setUserTag(tweet.getUser().getUserTag());
-    tweetResponse.setParentTweetId(0L);
+    if (tweet.getParentTweetId() != null) tweetResponse.setParentTweetId(tweet.getParentTweetId().getId());
+    else tweetResponse.setParentTweetId(0L);
     tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweet.getId()));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
@@ -95,12 +96,12 @@ public class TweetService extends GeneralService<Tweet> {
     return create(request, tweetBody, TweetType.TWEET, files, null);
   }
 
-  public TweetResponse createRetweet(HttpServletRequest request, String tweetBody, String parentTweetId, MultipartFile[] files) {
+  public TweetResponse createRetweet(HttpServletRequest request, String tweetBody, Long parentTweetId, MultipartFile[] files) {
     return create(request, tweetBody, TweetType.QUOTE_TWEET, files, parentTweetId);
   }
 
-  public TweetResponse createReply(HttpServletRequest request, String tweetBody, String parrentTweetId, MultipartFile[] files) {
-    return create(request, tweetBody, TweetType.REPLY, files, parrentTweetId);
+  public TweetResponse createReply(HttpServletRequest request, String tweetBody, Long parentTweetId, MultipartFile[] files) {
+    return create(request, tweetBody, TweetType.REPLY, files, parentTweetId);
   }
 
   public Optional<Tweet> updateTweet(Long tweetId, TweetRequest tweetRequest) {
@@ -120,9 +121,8 @@ public class TweetService extends GeneralService<Tweet> {
       Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public ResponseEntity<List<Tweet>> tweetsReply(Long tweetId, int page, int pageSize){
-    return ResponseEntity.ok(tweetModelRepository.tweetsReply(tweetId,
-        Pageable.ofSize(pageSize).withPage(page)).toList());
+  public Page<Tweet> tweetsReply(Long tweetId, int page, int pageSize){
+    return tweetModelRepository.tweetsReply(getTweetById(tweetId), Pageable.ofSize(pageSize).withPage(page));
   }
 
   public Page<Tweet> getUserTweets(Long userId, int page, int pageSize) {
