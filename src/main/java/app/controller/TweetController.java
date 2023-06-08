@@ -160,7 +160,7 @@ public class TweetController {
 
   @GetMapping("/tweet_reply/{tweetId}")
   public Page<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId, @RequestParam("page") @NotNull int page,
-                                         @RequestParam("pageSize") @NotNull @Positive int pageSize){
+                                         @RequestParam("pageSize") @NotNull @Positive int pageSize) {
     return ResponseEntity.ok(tweetFacade.tweetsReply(tweetId, page, pageSize)).getBody();
   }
 }

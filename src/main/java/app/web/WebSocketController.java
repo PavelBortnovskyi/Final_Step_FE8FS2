@@ -10,7 +10,7 @@ import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.service.MessageService;
 import app.service.NotificationService;
-import app.service.UserModelService;
+import app.service.UserService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,7 +37,7 @@ public class WebSocketController {
 
   private final ChatFacade chatFacade;
 
-  private final UserModelService userService;
+  private final UserService userService;
 
   private final MessageService messageService;
 

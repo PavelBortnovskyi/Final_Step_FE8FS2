@@ -22,5 +22,5 @@ public class ChatResponse {
   private List<MessageResponse> messages;
 
   @JsonView(Marker.ChatDetails.class)
-  private Set<UserModelResponse> users;
+  private Set<UserResponseDTO> users;
 }

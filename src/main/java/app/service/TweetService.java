@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TweetService extends GeneralService<Tweet> {
   private final TweetModelRepository tweetModelRepository;
-  private final UserModelService userModelService;
+  private final UserService userService;
   private final TweetActionService tweetActionService;
   private final TweetActionRepository tweetActionRepository;
   private final AttachmentImagesService attachmentImagesService;
@@ -51,7 +51,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
   public TweetResponse create(HttpServletRequest request, String tweetBody, TweetType tweetType, MultipartFile[] files, Long parentTweetId) {
-    UserModel user = userModelService.getUser((Long) request.getAttribute("userId"));
+    UserModel user = userService.getUser((Long) request.getAttribute("userId"));
     Tweet tweet = new Tweet();
     tweet.setBody(tweetBody);
     tweet.setTweetType(tweetType);
@@ -115,13 +115,13 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
   public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
-    List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId"))
+    List<Long> userIds = userService.getUser((Long) request.getAttribute("userId"))
       .getFollowings().stream().map(u -> u.getId()).toList();
     return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
       Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
-  public Page<Tweet> tweetsReply(Long tweetId, int page, int pageSize){
+  public Page<Tweet> tweetsReply(Long tweetId, int page, int pageSize) {
     return tweetModelRepository.tweetsReply(getTweetById(tweetId), Pageable.ofSize(pageSize).withPage(page));
   }
 

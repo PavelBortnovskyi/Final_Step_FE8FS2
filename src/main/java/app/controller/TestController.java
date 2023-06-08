@@ -25,7 +25,7 @@ import java.util.Set;
 @RequestMapping("/test")
 public class TestController {
 
-  private final UserModelService userService;
+  private final UserService userService;
 
   private final PasswordEncoder encoder;
 

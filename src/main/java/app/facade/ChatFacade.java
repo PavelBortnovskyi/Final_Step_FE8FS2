@@ -9,7 +9,7 @@ import app.exceptions.userError.UserNotFoundException;
 import app.model.Chat;
 import app.model.Message;
 import app.service.ChatService;
-import app.service.UserModelService;
+import app.service.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   private ChatService chatService;
 
   @Autowired
-  private UserModelService userService;
+  private UserService userService;
 
   /**
    * Method creates new chat between 2 users
