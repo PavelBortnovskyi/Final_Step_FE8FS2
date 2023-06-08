@@ -39,16 +39,16 @@ spring:
           auth: true
           starttls:
             enable: true
-  #security:
-    #oauth2:
-      #client:
-        #registration:
-          #google:
-            #client-id: 833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com
-            #client-secret: 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
-        #facebook:
-        # client-id: <your client id>
-        # client-secret: <your client secret>
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+           client-id: 833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com
+           client-secret: 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
+          facebook:
+           client-id: 1414897055753643
+           client-secret: 92063b75a2f7a689f0b90d4b7ecfcecf
 jwt:
   secret: verySecretUniqueKey
   secretRefresh: wannaRefresh?
@@ -65,6 +65,8 @@ cloudinary:
   cloudName: dojrbfnaz
   apiKey: 516471726946834
   apiSecret: JokricYXIJmtjF29Ptgm2H7FusA
+gmail:
+  password: dfgkjfdgkdjfg
 
 
 

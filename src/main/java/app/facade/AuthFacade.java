@@ -151,6 +151,14 @@ public class AuthFacade {
     }
   }
 
+  public ResponseEntity<HashMap<String, String>> makeRefresh(HttpServletRequest request) {
+    String token = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+    if (this.jwtTokenService.validateToken(token, TokenType.REFRESH) && !this.jwtTokenService.checkRefreshTokenStatus(token)) {
+      UserModel currUser = this.userService.getUserByRefreshToken(token);
+      return ResponseEntity.ok(generateTokenPair(currUser));
+    } else return ResponseEntity.status(401).body(new HashMap<>());
+  }
+
   /**
    * Method returns generated access and refresh token pair based on provided user model
    */

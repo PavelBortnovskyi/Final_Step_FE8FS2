@@ -53,32 +53,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         request.setAttribute("userId", this.tokenService.getIdFromRequest(request).get());
         doFilter(request, response, filterChain);
       } else {
-        //Try to validate token as refresh token
-        if (this.tokenService.validateToken(token, TokenType.REFRESH) && !this.tokenService.checkRefreshTokenStatus(token)) {
-
-          //Get user from DB to create new token pair and update refresh token
-          UserModel currUser = this.userModelService.getUserByToken(token).orElseThrow(() -> new JwtAuthenticationException("Wrong refresh token!"));
-          String newAccessToken = this.tokenService.createToken(currUser.getId(), TokenType.ACCESS, currUser.getUserTag(), currUser.getEmail());
-          String newRefreshToken = this.tokenService.createToken(currUser.getId(), TokenType.REFRESH);
-          this.tokenService.updateRefreshToken(currUser, newRefreshToken);
-          log.info("Refresh token updated for user with id: " + currUser.getId());
-
-          Map<String, String> tokens = new HashMap<>();
-          tokens.put("access_token", newAccessToken);
-          tokens.put("refresh_token", token);
-
-          String tokensJson = this.objectMapper.writeValueAsString(tokens);
-
-          response.setContentType("application/json");
-          response.setCharacterEncoding("UTF-8");
-          response.getWriter().write(tokensJson);
-        } else {
-          log.info("Token invalid!");
-          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        }
+        log.info("Token invalid!");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       }
     }
   }
+
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -94,11 +74,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/h2-console/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/login", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/refresh", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      //new AntPathRequestMatcher("/tweet/**", requestMethod),
-      //new AntPathRequestMatcher("/api/v1/chat/create", requestMethod)
+      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {

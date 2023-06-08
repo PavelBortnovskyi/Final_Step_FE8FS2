@@ -1,5 +1,6 @@
 package app.service;
 
+import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.userError.IncorrectUserIdException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,10 +46,6 @@ public class UserModelService extends GeneralService<UserModel> {
   public UserModel getUser(Long userId) {
     return userModelRepository.findById(userId)
       .orElseThrow(() -> new UserNotFoundException(userId));
-  }
-
-  public Optional<UserModel> getUserByToken(String refreshToken) {
-    return userModelRepository.findByRefreshToken(refreshToken);
   }
 
   public Optional<UserModel> getUserByTagO(String userTag) {
@@ -102,7 +100,7 @@ public class UserModelService extends GeneralService<UserModel> {
   }
 
   public UserModel getUserByRefreshToken(String refreshToken) {
-    return userModelRepository.findByRefreshToken(refreshToken).orElseThrow(RuntimeException::new);
+    return userModelRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new JwtAuthenticationException("Wrong refresh token!"));
   }
 
   public boolean checkRefreshTokenStatus(String refreshToken) {
@@ -139,6 +137,7 @@ public class UserModelService extends GeneralService<UserModel> {
    * Method returns boolean result of updating user password operation (only for reset password case)
    */
   @Transactional
+  @Modifying
   public void updatePassword(Long userId, String freshPassword) {
     getUser(userId).setPassword(freshPassword);
   }
@@ -160,5 +159,4 @@ public class UserModelService extends GeneralService<UserModel> {
   public boolean isUserTagPresentInDB(String userTag) {
     return getUserByTagO(userTag).isPresent();
   }
-
 }

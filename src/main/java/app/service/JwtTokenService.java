@@ -239,7 +239,7 @@ public class JwtTokenService {
    * Method returns true if provided User Model is exist in DB and refreshToken updated
    */
   public void updateRefreshToken(UserModel userModel, String refreshToken) {
-    userModelService.updateRefreshTokenById(userModel.getId(), refreshToken);
+    this.userModelService.updateRefreshTokenById(userModel.getId(), refreshToken);
   }
 
   /**
