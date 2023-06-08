@@ -11,30 +11,20 @@ export const myAxios = axios.create({
 myAxios.interceptors.response.use(
   (r) => r,
   async function (error) {
-    // console.log('1', localStorage.getItem('accessToken'));
-
     const { refreshToken } = getTokens();
-
-    // console.log('2', localStorage.getItem('accessToken'));
 
     const originalRequest = error.config;
 
-    // console.log(originalRequest);
-
     if (originalRequest._retry) {
-      // console.log('3', localStorage.getItem('accessToken'));
-
       setAuthToken();
       setRefreshToken();
     } else if (error.response.status === 401) {
-      // console.log('4', localStorage.getItem('accessToken'));
-
       originalRequest._retry = true;
 
-      return await axios
-        .get('/api/v1/auth/refresh', {
+      return await myAxios
+        .get('/auth/refresh', {
           headers: {
-            'Refresh-token': refreshToken,
+            Refreshtoken: `Bearer ${refreshToken}`,
           },
         })
         .then(({ data }) => {

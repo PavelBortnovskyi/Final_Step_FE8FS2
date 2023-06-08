@@ -9,8 +9,6 @@ export const getTokens = () => {
 };
 
 export const setAuthToken = (token) => {
-  // console.log('auth', token);
-
   if (token) {
     myAxios.defaults.headers.common.Authorization = `Bearer ${token}`;
     localStorage.setItem('accessToken', token);
@@ -21,10 +19,11 @@ export const setAuthToken = (token) => {
 };
 
 export const setRefreshToken = (token) => {
-  // console.log('refresh', token);
   if (token) {
+    myAxios.defaults.headers.common.RefreshToken = `Bearer ${token}`;
     localStorage.setItem('refreshToken', token);
   } else {
+    delete myAxios.defaults.headers.common.RefreshToken;
     localStorage.removeItem('refreshToken');
   }
 };

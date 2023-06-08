@@ -7,13 +7,16 @@ import { SearchMessages } from './Search/SearchMessages';
 import { ConversationList } from './ConversationList/ConversationList';
 import { useSelector } from 'react-redux';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import { useNavigate } from 'react-router-dom';
 
 // ************ Messages ************
 export const Messages = () => {
-  const theme = useTheme();
-
+  // send user to home if not authorization
+  const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
-  if (!isAuthenticated) return;
+  if (!isAuthenticated) navigate('/');
+
+  const theme = useTheme();
 
   return (
     <Box>
