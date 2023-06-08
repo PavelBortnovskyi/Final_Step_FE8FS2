@@ -36,8 +36,8 @@ public class AuthController {
   @Autowired
   private AuthFacade authFacade;
 
-  @Autowired
-  private ClientRegistrationRepository clientRegistrationRepository;
+//  @Autowired
+//  private ClientRegistrationRepository clientRegistrationRepository;
 
   /**
    * This endpoint waiting for valid loginDTO to check credentials and return new token pair(Access and Refresh)
@@ -101,17 +101,17 @@ public class AuthController {
     return this.authFacade.makeRefresh(request);
   }
 
-  @GetMapping(path = "/login/oauth2/google")
-  public ResponseEntity<Void> loginWithGoogle() {
-    ClientRegistration googleClientRegistration = clientRegistrationRepository.findByRegistrationId("google");
-    String redirectUrl = UriComponentsBuilder.fromHttpUrl(googleClientRegistration.getProviderDetails().getAuthorizationUri())
-      .queryParam("client_id", googleClientRegistration.getClientId())
-      .queryParam("redirect_uri", googleClientRegistration.getRedirectUri())
-      .queryParam("response_type", "code")
-      .queryParam("scope", googleClientRegistration.getScopes())
-      .build().toUriString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create(redirectUrl));
-    return new ResponseEntity<>(headers, HttpStatus.FOUND);
-  }
+//  @GetMapping(path = "/login/oauth2/google")
+//  public ResponseEntity<Void> loginWithGoogle() {
+//    ClientRegistration googleClientRegistration = clientRegistrationRepository.findByRegistrationId("google");
+//    String redirectUrl = UriComponentsBuilder.fromHttpUrl(googleClientRegistration.getProviderDetails().getAuthorizationUri())
+//      .queryParam("client_id", googleClientRegistration.getClientId())
+//      .queryParam("redirect_uri", googleClientRegistration.getRedirectUri())
+//      .queryParam("response_type", "code")
+//      .queryParam("scope", googleClientRegistration.getScopes())
+//      .build().toUriString();
+//    HttpHeaders headers = new HttpHeaders();
+//    headers.setLocation(URI.create(redirectUrl));
+//    return new ResponseEntity<>(headers, HttpStatus.FOUND);
+//  }
 }
