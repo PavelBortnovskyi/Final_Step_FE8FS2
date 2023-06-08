@@ -30,6 +30,9 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   @Query("SELECT COUNT(*) FROM Tweet t WHERE t.tweetType = :tweetType AND t.id = :tweetId")
   Integer getCountByTweetTypeAndId(@Param("tweetType") TweetType tweetType, @Param("tweetId") Long tweetId);
 
+  @Query("SELECT t FROM Tweet t WHERE t.parentTweetId = :tweetId ")
+  Page<Tweet> tweetsReply(Long tweetId, Pageable pageable);
+
   @Query("SELECT t FROM Tweet t ORDER BY t.createdAt DESC")
   List<Tweet> listLast50Tweets(Pageable pageable);
 

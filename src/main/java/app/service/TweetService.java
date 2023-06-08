@@ -120,6 +120,11 @@ public class TweetService extends GeneralService<Tweet> {
       Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
+  public ResponseEntity<List<Tweet>> tweetsReply(Long tweetId, int page, int pageSize){
+    return ResponseEntity.ok(tweetModelRepository.tweetsReply(tweetId,
+        Pageable.ofSize(pageSize).withPage(page)).toList());
+  }
+
   public Page<Tweet> getUserTweets(Long userId, int page, int pageSize) {
     return tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page));
   }
