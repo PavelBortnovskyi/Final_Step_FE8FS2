@@ -1,121 +1,121 @@
-import { HomePage } from 'src/pages/HomePage';
-import { UserPage } from 'src/pages/UserPage';
-import { LoginPage } from 'src/pages/LoginPage';
-import { RegistrationPage } from 'src/pages/RegistrationPage';
-import TweetPage from 'src/pages/TweetPage';
-import { ModalTweetPage } from 'src/pages/ModalTweetPage';
-import { MessagesPage } from 'src/pages/MessagesPage';
-import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
-import { Chat } from 'src/components/Messages/Chat/Chat';
-import { RightSection } from 'src/components/RightSection/RightSection';
-import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
-import { FollowersPage } from 'src/pages/FollowersPage';
-import { FollowingsPage } from 'src/pages/FollowingsPage';
-import { UserBiIdPage } from 'src/pages/UserBiIdPage';
-import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
+import { HomePage } from "src/pages/HomePage";
+import { UserPage } from "src/pages/UserPage";
+import { LoginPage } from "src/pages/LoginPage";
+import { RegistrationPage } from "src/pages/RegistrationPage";
+import TweetPage from "src/pages/TweetPage";
+import { ModalTweetPage } from "src/pages/ModalTweetPage";
+import { MessagesPage } from "src/pages/MessagesPage";
+import { EditProfileModal } from "src/components/EditProfile/EditProfileModal";
+import { Chat } from "src/components/Messages/Chat/Chat";
+import { RightSection } from "src/components/RightSection/RightSection";
+import { PageDeveloping } from "src/components/PageDeveloping/PageDeveloping";
+import { FollowersPage } from "src/pages/FollowersPage";
+import { FollowingsPage } from "src/pages/FollowingsPage";
+import { UserBiIdPage } from "src/pages/UserBiIdPage";
+import { Bookmarks } from "src/components/Bookmarks/Bookmarks";
 
 export const mainRoutes = () => {
   return [
     {
-      path: '/',
+      path: "/",
       element: <HomePage />,
       index: true,
     },
     {
-      path: '/user/:id',
+      path: "/user/:id",
       element: <UserBiIdPage />,
     },
 
     {
-      path: '/explore',
+      path: "/explore",
       element: <PageDeveloping />,
     },
     {
-      path: '/notifications',
+      path: "/notifications",
       element: <PageDeveloping />,
     },
     {
-      path: '/tweet/:id',
+      path: "/tweet/:id",
       element: <TweetPage />,
     },
     {
-      path: '/messages',
+      path: "/messages",
       element: <MessagesPage />,
     },
     {
-      path: '/bookmarks',
+      path: "/bookmarks",
       element: <Bookmarks />,
     },
     {
-      path: '/twitter_blue',
+      path: "/twitter_blue",
       element: <PageDeveloping />,
     },
     {
-      path: '/verified-orgs',
+      path: "/verified-orgs",
       element: <PageDeveloping />,
     },
     {
-      path: '/profile',
+      path: "/profile",
       element: <UserPage />,
     },
     {
-      path: '/topics',
+      path: "/topics",
       element: <PageDeveloping />,
     },
     {
-      path: '/lists',
+      path: "/lists",
       element: <PageDeveloping />,
     },
     {
-      path: '/members',
+      path: "/members",
       element: <PageDeveloping />,
     },
     {
-      path: '/analytics',
+      path: "/analytics",
       element: <PageDeveloping />,
     },
     {
-      path: '/professionals',
+      path: "/professionals",
       element: <PageDeveloping />,
     },
     {
-      path: '/ads',
+      path: "/ads",
       element: <PageDeveloping />,
     },
     {
-      path: '/monetization',
+      path: "/monetization",
       element: <PageDeveloping />,
     },
     {
-      path: '/privacy',
+      path: "/privacy",
       element: <PageDeveloping />,
     },
     {
-      path: '/help',
+      path: "/help",
       element: <PageDeveloping />,
     },
     {
-      path: '/display',
+      path: "/display",
       element: <PageDeveloping />,
     },
     {
-      path: '/keyboard',
+      path: "/keyboard",
       element: <PageDeveloping />,
     },
     {
-      path: '/search',
+      path: "/search",
       element: <PageDeveloping />,
     },
     {
-      path: '/page-developing',
+      path: "/page-developing",
       element: <PageDeveloping />,
     },
     {
-      path: '/followers',
+      path: "/:id/followers",
       element: <FollowersPage />,
     },
     {
-      path: '/followings',
+      path: "/:id/followings",
       element: <FollowingsPage />,
     },
   ];
@@ -124,19 +124,19 @@ export const mainRoutes = () => {
 export const modalRoutes = () => {
   return [
     {
-      path: '/modal/login',
+      path: "/modal/login",
       element: <LoginPage />,
     },
     {
-      path: '/modal/registration',
+      path: "/modal/registration",
       element: <RegistrationPage />,
     },
     {
-      path: '/modal/tweet',
+      path: "/modal/tweet",
       element: <ModalTweetPage />,
     },
     {
-      path: '/settings/profile',
+      path: "/settings/profile",
       element: <EditProfileModal />,
     },
   ];
@@ -145,11 +145,11 @@ export const modalRoutes = () => {
 export const rightRoutes = () => {
   return [
     {
-      path: '/messages',
+      path: "/messages",
       element: <Chat />,
     },
     {
-      path: '*',
+      path: "*",
       element: <RightSection />,
     },
   ];

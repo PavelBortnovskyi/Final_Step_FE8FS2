@@ -12,23 +12,23 @@ export const UserPage = () => {
   const profile = "profile";
   const user = useSelector((state) => state.user.user) || "";
   const dispatch = useDispatch();
-  const lincToFollowings = "/followings";
-  const lincToFollowers = "/followers";
+  const lincToFollowings = "/profile/followings";
+  const lincToFollowers = "/profile/followers";
   const editProfile = <LinkToEditProfile />;
 
-  useEffect(() => {
-    // if (following.length === 0) {
-    dispatch(getFollowings(profile));
-    //   return;
-    // }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // if (following.length === 0) {
+  //   dispatch(getFollowings(profile));
+  //   //   return;
+  //   // }
+  // }, [dispatch]);
 
-  useEffect(() => {
-    // if (follower.length === 0) {
-    dispatch(getFollowers(profile));
-    // return;
-    // }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // if (follower.length === 0) {
+  //   dispatch(getFollowers(profile));
+  //   // return;
+  //   // }
+  // }, [dispatch]);
   return (
     <Box
       sx={{

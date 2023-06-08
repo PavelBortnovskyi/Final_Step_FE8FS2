@@ -1,148 +1,148 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from "react-router-dom";
 
-import { App } from 'src/components/App';
-import { HomePage } from 'src/pages/HomePage';
-import { LoginPage } from 'src/pages/LoginPage';
-import { RegistrationPage } from 'src/pages/RegistrationPage';
-import { NotfoundPage } from 'src/pages/NotfoundPage';
-import { UserPage } from 'src/pages/UserPage';
-import TweetPage from 'src/pages/TweetPage';
-import { ModalTweetPage } from 'src/pages/ModalTweetPage';
-import { MessagesPage } from 'src/pages/MessagesPage';
-import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
-import { Chat } from 'src/components/Messages/Chat/Chat';
-import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
-import { FollowersPage } from 'src/pages/FollowersPage';
-import { FollowingsPage } from 'src/pages/FollowingsPage';
-import { UserBiIdPage } from 'src/pages/UserBiIdPage';
-import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
+import { App } from "src/components/App";
+import { HomePage } from "src/pages/HomePage";
+import { LoginPage } from "src/pages/LoginPage";
+import { RegistrationPage } from "src/pages/RegistrationPage";
+import { NotfoundPage } from "src/pages/NotfoundPage";
+import { UserPage } from "src/pages/UserPage";
+import TweetPage from "src/pages/TweetPage";
+import { ModalTweetPage } from "src/pages/ModalTweetPage";
+import { MessagesPage } from "src/pages/MessagesPage";
+import { EditProfileModal } from "src/components/EditProfile/EditProfileModal";
+import { Chat } from "src/components/Messages/Chat/Chat";
+import { PageDeveloping } from "src/components/PageDeveloping/PageDeveloping";
+import { FollowersPage } from "src/pages/FollowersPage";
+import { FollowingsPage } from "src/pages/FollowingsPage";
+import { UserBiIdPage } from "src/pages/UserBiIdPage";
+import { Bookmarks } from "src/components/Bookmarks/Bookmarks";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     errorElement: <NotfoundPage />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <HomePage />,
         index: true,
       },
       {
-        path: '/user/:id',
+        path: "/user/:id",
         element: <UserBiIdPage />,
       },
       {
-        path: '/tweet/:id',
+        path: "/tweet/:id",
         element: <TweetPage />,
       },
 
       {
-        path: '/explore',
+        path: "/explore",
         element: <PageDeveloping />,
       },
       {
-        path: '/notifications',
+        path: "/notifications",
         element: <PageDeveloping />,
       },
       {
-        path: '/messages',
+        path: "/messages",
         element: <MessagesPage />,
       },
       {
-        path: '/bookmarks',
+        path: "/bookmarks",
         element: <Bookmarks />,
       },
       {
-        path: '/twitter_blue',
+        path: "/twitter_blue",
         element: <PageDeveloping />,
       },
       {
-        path: '/verified-orgs',
+        path: "/verified-orgs",
         element: <PageDeveloping />,
       },
       {
-        path: '/profile',
+        path: "/profile",
         element: <UserPage />,
       },
       {
-        path: '/modal/login',
+        path: "/modal/login",
         element: <LoginPage />,
       },
       {
-        path: '/modal/registration',
+        path: "/modal/registration",
         element: <RegistrationPage />,
       },
       {
-        path: '/modal/tweet',
+        path: "/modal/tweet",
         element: <ModalTweetPage />,
       },
       {
-        path: '/settings/profile',
+        path: "/settings/profile",
         element: <EditProfileModal />,
       },
       {
-        path: '/messages',
+        path: "/messages",
         element: <Chat />,
       },
       {
-        path: '/topics',
+        path: "/topics",
         element: <PageDeveloping />,
       },
       {
-        path: '/lists',
+        path: "/lists",
         element: <PageDeveloping />,
       },
       {
-        path: '/members',
+        path: "/members",
         element: <PageDeveloping />,
       },
       {
-        path: '/analytics',
+        path: "/analytics",
         element: <PageDeveloping />,
       },
       {
-        path: '/professionals',
+        path: "/professionals",
         element: <PageDeveloping />,
       },
       {
-        path: '/ads',
+        path: "/ads",
         element: <PageDeveloping />,
       },
       {
-        path: '/monetization',
+        path: "/monetization",
         element: <PageDeveloping />,
       },
       {
-        path: '/privacy',
+        path: "/privacy",
         element: <PageDeveloping />,
       },
       {
-        path: '/help',
+        path: "/help",
         element: <PageDeveloping />,
       },
       {
-        path: '/display',
+        path: "/display",
         element: <PageDeveloping />,
       },
       {
-        path: '/keyboard',
+        path: "/keyboard",
         element: <PageDeveloping />,
       },
       {
-        path: '/search',
+        path: "/search",
         element: <PageDeveloping />,
       },
       {
-        path: '/page-developing',
+        path: "/page-developing",
         element: <PageDeveloping />,
       },
       {
-        path: '/followers',
+        path: "/:id/followers",
         element: <FollowersPage />,
       },
       {
-        path: '/followings',
+        path: "/:id/followings",
         element: <FollowingsPage />,
       },
     ],

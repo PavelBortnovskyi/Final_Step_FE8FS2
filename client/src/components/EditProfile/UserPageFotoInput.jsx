@@ -41,6 +41,7 @@ export function UserPageFotoInput() {
         hidden
         onChange={(e) => {
           setFile(e.target.files[0]);
+          console.log(e.target.files[0]);
         }}
         accept="image/png, image/gif, image/jpeg"
       />

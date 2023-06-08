@@ -16,13 +16,13 @@ export const FollowersList = ({ follow }) => {
     console.log(follwId);
     return (
       <Link
+        key={follower.id}
         to={`/user/${follwId}`}
         onClick={() => {
           dispatch(getUserBiId(follwId));
         }}
       >
         <Box
-          key={follower.id}
           sx={{
             display: "flex",
             gap: "24px",
