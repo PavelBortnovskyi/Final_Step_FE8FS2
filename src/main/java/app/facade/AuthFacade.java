@@ -168,6 +168,7 @@ public class AuthFacade {
 
     //Update refresh token for current user
     this.jwtTokenService.updateRefreshToken(user, refreshToken);
+    this.jwtTokenService.changeRefreshTokenStatus(user.getId(), false);
 
     //JWT tokens for response packing
     HashMap<String, String> response = new HashMap<>();
