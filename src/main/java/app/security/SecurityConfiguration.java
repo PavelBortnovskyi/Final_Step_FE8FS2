@@ -53,17 +53,17 @@ public class SecurityConfiguration {
 //  @Qualifier("delegatedAuthenticationEntryPoint")
 //  AuthenticationEntryPoint authEntryPoint;
 
-  @Value("${google.client-id}")
-  private String googleClientId;
-
-  @Value("${google.client-secret}")
-  private String googleClientSecret;
-
-  @Value("${facebook.client-id}")
-  private String facebookClientId;
-
-  @Value("${facebook.client-secret}")
-  private String facebookClientSecret;
+//  @Value("${google.client-id}")
+//  private String googleClientId;
+//
+//  @Value("${google.client-secret}")
+//  private String googleClientSecret;
+//
+//  @Value("${facebook.client-id}")
+//  private String facebookClientId;
+//
+//  @Value("${facebook.client-secret}")
+//  private String facebookClientSecret;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
@@ -88,14 +88,14 @@ public class SecurityConfiguration {
       .antMatchers("/test/**").permitAll()
       .anyRequest().authenticated()
       .and()
-      .oauth2Login()
+      //.oauth2Login()
       //.loginProcessingUrl("/api/v1/auth/login/oauth2/code/{registrationId}")
-      .defaultSuccessUrl("https://final-step-fe-8-fs-2.vercel.app")
-      .failureUrl("https://final-step-fe-8-fs-2.vercel.app/error")
-      .userInfoEndpoint()
-      .userService(oAuth2UserService)
-      .and()
-      .and()
+      //.defaultSuccessUrl("https://final-step-fe-8-fs-2.vercel.app")
+      //.failureUrl("https://final-step-fe-8-fs-2.vercel.app/error")
+      //.userInfoEndpoint()
+      //.userService(oAuth2UserService)
+      //.and()
+      //.and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     //.exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
@@ -123,45 +123,45 @@ public class SecurityConfiguration {
     return authConfig.getAuthenticationManager();
   }
 
-  @Bean
-  public ClientRegistrationRepository clientRegistrationRepository() {
-    return new InMemoryClientRegistrationRepository(Arrays.asList(
-      facebookClientRegistration(),
-      googleClientRegistration()
-    ));
-  }
-
-  private ClientRegistration googleClientRegistration() {
-    return ClientRegistration.withRegistrationId("google")
-      .clientId(googleClientId)
-      .clientSecret(googleClientSecret)
-      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/google")
-      .scope("email%20profile")
-      .authorizationUri("https://accounts.google.com/o/oauth2/auth")
-      .tokenUri("https://oauth2.googleapis.com/token")
-      .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-      .userNameAttributeName(IdTokenClaimNames.SUB)
-      .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-      .clientName("Google")
-      .build();
-  }
-
-  private ClientRegistration facebookClientRegistration() {
-    return ClientRegistration.withRegistrationId("facebook")
-      .clientId(facebookClientId)
-      .clientSecret(facebookClientSecret)
-      .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
-      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/fb")
-      .scope("email", "public_profile", "user_birthday")
-      .authorizationUri("http://localhost:8080/api/v1/auth/login/oauth2/fb")
-      .tokenUri("https://graph.facebook.com/v13.0/oauth/access_token")
-      .userInfoUri("https://graph.facebook.com/me?fields=id,email")
-      .userNameAttributeName(IdTokenClaimNames.SUB)
-      .clientName("Facebook")
-      .build();
-  }
+//  @Bean
+//  public ClientRegistrationRepository clientRegistrationRepository() {
+//    return new InMemoryClientRegistrationRepository(Arrays.asList(
+//      facebookClientRegistration(),
+//      googleClientRegistration()
+//    ));
+//  }
+//
+//  private ClientRegistration googleClientRegistration() {
+//    return ClientRegistration.withRegistrationId("google")
+//      .clientId(googleClientId)
+//      .clientSecret(googleClientSecret)
+//      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/google")
+//      .scope("email%20profile")
+//      .authorizationUri("https://accounts.google.com/o/oauth2/auth")
+//      .tokenUri("https://oauth2.googleapis.com/token")
+//      .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
+//      .userNameAttributeName(IdTokenClaimNames.SUB)
+//      .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
+//      .clientName("Google")
+//      .build();
+//  }
+//
+//  private ClientRegistration facebookClientRegistration() {
+//    return ClientRegistration.withRegistrationId("facebook")
+//      .clientId(facebookClientId)
+//      .clientSecret(facebookClientSecret)
+//      .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+//      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/fb")
+//      .scope("email", "public_profile", "user_birthday")
+//      .authorizationUri("http://localhost:8080/api/v1/auth/login/oauth2/fb")
+//      .tokenUri("https://graph.facebook.com/v13.0/oauth/access_token")
+//      .userInfoUri("https://graph.facebook.com/me?fields=id,email")
+//      .userNameAttributeName(IdTokenClaimNames.SUB)
+//      .clientName("Facebook")
+//      .build();
+//  }
 }
 
