@@ -20,7 +20,7 @@ import java.util.Objects;
 public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   @Autowired
-  private UserModelService userService;
+  private UserService userService;
 
   @Autowired
   private JwtTokenService jwtTokenService;

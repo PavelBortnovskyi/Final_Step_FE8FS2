@@ -76,7 +76,7 @@ public class UserService extends GeneralService<UserModel> {
   public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
     userModel.setAvatarImgUrl(cloudinaryService.uploadFile(file, userId + "_avatar_img"));
-    userModelRepository.save(userModel);
+    userRepository.save(userModel);
     return userModel;
   }
 
@@ -84,7 +84,7 @@ public class UserService extends GeneralService<UserModel> {
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
     userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
-    userModelRepository.save(userModel);
+    userRepository.save(userModel);
     return userModel;
   }
 
