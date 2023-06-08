@@ -161,11 +161,11 @@ public class TweetController {
     return ResponseEntity.ok(tweetFacade.listTweets(page, pageSize)).getBody();
   }
 
-//  @GetMapping("/top_tweets")
-//  public List<TweetResponse> listTopTweets(@RequestParam("page") @NotNull int page,
-//                                        @RequestParam("pageSize") @NotNull @Positive int pageSize) {
-//    return ResponseEntity.ok(tweetFacade.listTopTweets(page, pageSize)).getBody();
-//  }
+  @GetMapping("/top_tweets")
+  public Page<TweetResponse> listTopTweets(@RequestParam("page") @NotNull int page,
+                                        @RequestParam("pageSize") @NotNull @Positive int pageSize) {
+    return ResponseEntity.ok(tweetFacade.listTopTweets(page, pageSize)).getBody();
+}
 
   @GetMapping("/tweet_reply/{tweetId}")
   public Page<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId, @RequestParam("page") @NotNull int page,

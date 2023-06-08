@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/twitter
+    username: postgres
+    driver-classname: org.postgresql.Driver
+    schema: classpath:/schema.sql
+    continue-on-error: true
+    initialize: true
+    initialization-mode: always
+  output:
+    ansi:
+      enabled: always
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: false
+  sql:
+    init:
+      mode: always
+  config:
+    activate:
+      on-profile: remote
+  url:
+    server: http://localhost:8080
+    client: http://localhost:3000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: fe8fs2finalstep@gmail.com
+    password: vgrralowhzszavbs
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  #security:
+    #oauth2:
+      #client:
+        #registration:
+          #google:
+            #client-id: ${GOOGLE_API_ID}
+            #client-secret: ${GOOGLE_API_SECRET}
+          #facebook:
+            #client-id: ${FB_API_ID}
+            #client-secret: ${FB_API_SECRET}
+jwt:
+  secret: verySecretUniqueKey
+  secretRefresh: wannaRefresh?
+  secretPasswordReset: you_forgot_it_again!
+  secretPasswordUpdate: ok_try_again!
+  secretRegister: welcomeOnBoard!
+  expiration: 7200000 #2h
+  expirationRefresh: 604800000 #7d
+  expirationPasswordReset: 86400000 #24h
+  expirationPasswordUpdate: 3600000 #1h
+  expirationRegister: 86400000 #24h
+  header: Authorization
+cloudinary:
+  cloudName: dojrbfnaz
+  apiKey: 516471726946834
+  apiSecret: JokricYXIJmtjF29Ptgm2H7FusA
