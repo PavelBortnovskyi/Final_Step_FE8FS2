@@ -20,9 +20,9 @@ public class TweetActionFacade extends GeneralFacade<TweetAction, TweetActionReq
   @PostConstruct
   public void init() {
     super.getMm().typeMap(TweetAction.class, TweetActionResponse.class)
-        .addMapping(src -> src.getActionType(), TweetActionResponse::setActionType)
-        .addMapping(src -> src.getUser().getId(), TweetActionResponse::setUserId)
-        .addMapping(src -> src.getTweet().getId(), TweetActionResponse::setTweetId);
+      .addMapping(src -> src.getActionType(), TweetActionResponse::setActionType)
+      .addMapping(src -> src.getUser().getId(), TweetActionResponse::setUserId)
+      .addMapping(src -> src.getTweet().getId(), TweetActionResponse::setTweetId);
 
   }
 

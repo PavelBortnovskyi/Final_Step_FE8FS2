@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class ChatService extends GeneralService<Chat> {
 
-  private final UserModelService userService;
+  private final UserService userService;
 
   private final ChatModelRepository chatRepository;
 
@@ -46,7 +46,7 @@ public class ChatService extends GeneralService<Chat> {
     }}));
   }
 
-  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId){
+  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId) {
     return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 

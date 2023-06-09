@@ -6,11 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 /**
@@ -18,7 +14,7 @@ import java.time.LocalDate;
  */
 @Data
 @ApiModel(description = "User model request")
-public class UserModelRequest {
+public class UserRequestDTO {
 
   @JsonView({Marker.New.class, Marker.Update.class})
   @ApiModelProperty(value = "Full name", example = "John Doe", required = true, allowableValues = "range[2, 20]")

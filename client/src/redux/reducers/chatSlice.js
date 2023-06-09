@@ -6,6 +6,7 @@ import { getCurrentChat } from '../thunk/getCurrentChat.js';
 const initialState = {
   guest: null,
   currentChat: null,
+  socketChat: null,
   isLoading: false,
   error: '',
 };
@@ -18,6 +19,9 @@ export const chatSlice = createSlice({
     chatCloseConnection(state, actions) {
       state.guest = null;
       state.currentChat = null;
+    },
+    setSocketChat(state, action) {
+      state.socketChat = action.payload;
     },
   },
 
@@ -54,5 +58,5 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { chatCloseConnection } = chatSlice.actions;
+export const { chatCloseConnection, setSocketChat } = chatSlice.actions;
 export default chatSlice.reducer;

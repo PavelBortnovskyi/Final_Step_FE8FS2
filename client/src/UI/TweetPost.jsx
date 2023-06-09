@@ -3,6 +3,8 @@ import React from 'react';
 import UserNames from './UserNames';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import TranslatedText from './TranslatedText/TranslatedText';
+import { useMode } from 'src/styles/_materialTheme';
+import { Link } from 'react-router-dom';
 
 function TweetPost({
   displayName,
@@ -15,12 +17,21 @@ function TweetPost({
   likes,
   reply,
   retweet,
+  id,
 }) {
+  const theme = useMode();
+
   return (
     <Box
+      id={id}
       sx={{
         borderBottom: '1px solid rgb(56, 68, 77)',
         width: '100%',
+        color: `${theme.palette.text.primary}`,
+        '&:hover': {
+          backgroundColor: `${theme.palette.background.hover}`,
+          cursor: 'pointer',
+        },
       }}
       padding={2}
       display="flex"

@@ -30,6 +30,7 @@ import { ChatSender } from './ChatSender';
 // countUserFollowers:0
 // createdAt:"2023-05-29T09:36:03.870049"
 // verified:true
+
 // ************ STYLE ************
 const ChatContainer = styled(Box)`
   display: flex;

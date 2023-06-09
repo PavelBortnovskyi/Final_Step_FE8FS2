@@ -11,7 +11,7 @@ export const getUserData = (state) => state.user;
 export const getFollowingTweets = (state) => state.tweets;
 
 //Single tweet with ID
-export const getTweetByID = (state) => state.tweet;
+export const getTweetByID = (state) => state.singleTweet;
 
 //get user tweets
 export const getUserTweets = (state) => state.userTweets;
