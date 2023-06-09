@@ -138,11 +138,11 @@ export const router = createBrowserRouter([
         element: <PageDeveloping />,
       },
       {
-        path: '/followers',
+        path: '/:id/followers',
         element: <FollowersPage />,
       },
       {
-        path: '/followings',
+        path: '/:id/followings',
         element: <FollowingsPage />,
       },
     ],
