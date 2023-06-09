@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserModelRepository extends RepositoryInterface<UserModel> {
+public interface UserRepository extends RepositoryInterface<UserModel> {
 
   Optional<UserModel> findByUserTag(String userTag);
 
@@ -33,5 +33,4 @@ public interface UserModelRepository extends RepositoryInterface<UserModel> {
 
   // Search user by refreshToken
   Optional<UserModel> findByRefreshToken(String refreshToken);
-
 }

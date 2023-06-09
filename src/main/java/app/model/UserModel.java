@@ -6,7 +6,16 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,7 +35,7 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "user_tag", nullable = false, unique = true)
   private String userTag;
 
-  @Column(name = "password", nullable = false)
+  @Column(name = "password") //nullable true for OAuth registration
   private String password;
 
   @Column(name = "email", nullable = false, updatable = false, unique = true)
@@ -54,7 +63,7 @@ public class UserModel extends BaseEntityModel {
   private String refreshToken;
 
   @Column(name = "token_used")
-  private boolean refreshed;
+  private boolean refreshed = false;
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(fetch = FetchType.LAZY)

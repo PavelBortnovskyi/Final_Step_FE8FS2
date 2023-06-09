@@ -125,6 +125,10 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     return tweetResponses;
   }
 
+  public Page<TweetResponse> tweetsReply(Long tweetId, int page, int pageSize) {
+    return tweetService.tweetsReply(tweetId, page, pageSize).map(this::convertToDto);
+  }
+
   public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request, int page, int pageSize) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.getAllBookmarks(request, page, pageSize);
 

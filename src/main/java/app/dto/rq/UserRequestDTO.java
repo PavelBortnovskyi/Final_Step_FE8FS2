@@ -14,7 +14,7 @@ import java.time.LocalDate;
  */
 @Data
 @ApiModel(description = "User model request")
-public class UserModelRequest {
+public class UserRequestDTO {
 
   @JsonView({Marker.New.class, Marker.Update.class})
   @ApiModelProperty(value = "Full name", example = "John Doe", required = true, allowableValues = "range[2, 20]")
