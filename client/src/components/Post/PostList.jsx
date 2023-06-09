@@ -20,17 +20,6 @@ function PostList({ id }) {
   const userTweets = useSelector(getUserTweets);
   const userTweetsArray = userTweets.userTweets || [];
 
-  // console.log(userTweetsArray !== false ? userTweetsArray : "");
-
-  //GET FOLLOWING TWEETS
-
-  // useEffect(() => {
-  //   dispatch(getTweets({ page: 0, pageSize: 5 }));
-  // }, []);
-  // const tweets = useSelector(getFollowingTweets);
-
-  //GET TWEETS BY ID
-
   useEffect(() => {
     if (Number(user)) {
       dispatch(getUserTweetsThunk({ userId: user, page: 0, pageSize: 100 }));
