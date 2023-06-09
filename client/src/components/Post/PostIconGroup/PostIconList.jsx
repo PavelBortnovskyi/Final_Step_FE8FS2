@@ -7,7 +7,7 @@ import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 import PostIconElement from './PostIconElement';
 import { Box } from '@mui/material';
 
-function PostIconList({ likes, reply, retweet }) {
+function PostIconList({ likes, reply, retweet, id }) {
   return (
     <Box
       display="flex"
@@ -28,6 +28,7 @@ function PostIconList({ likes, reply, retweet }) {
         icon={<FavoriteBorderOutlinedIcon fontSize="small" />}
         quantity={likes}
         color="red"
+        id={id}
       />
       <PostIconElement
         icon={<PublishOutlinedIcon fontSize="small" />}

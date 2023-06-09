@@ -4,7 +4,6 @@ import UserNames from './UserNames';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import TranslatedText from './TranslatedText/TranslatedText';
 import { useMode } from 'src/styles/_materialTheme';
-import { Link } from 'react-router-dom';
 
 function TweetPost({
   displayName,
@@ -39,7 +38,6 @@ function TweetPost({
       <Box padding={2}>
         <Avatar src={logoUrl} />
       </Box>
-
       <Box
         padding={1}
         sx={{
@@ -71,8 +69,9 @@ function TweetPost({
         ) : (
           false
         )}
+
         {showIconList ? (
-          <PostIconList likes={likes} reply={reply} retweet={retweet} />
+          <PostIconList likes={likes} reply={reply} retweet={retweet} id={id} />
         ) : (
           false
         )}
