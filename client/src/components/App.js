@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from 'src/layout/Layout';
@@ -7,17 +7,43 @@ import { getUser } from 'src/redux/thunk/getUser';
 import { useSocket } from 'src/utils/socketSetup';
 import { getTokens } from 'src/utils/tokens';
 
+import { Stomp } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+
 export const App = () => {
   const dispatch = useDispatch();
-  // get message from server after authorization
   const { isAuthenticated } = useSelector(getAuthorizationData);
-  // get token
   const { accessToken } = getTokens();
 
-  // set connect socket server
-  const socket = useSocket(accessToken, isAuthenticated);
+  const stompClientRef = useRef(null);
 
-  // if the user has a token in localStorage, the user is authorized
+  useEffect(() => {
+    const socket = new SockJS(
+      'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
+    );
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    const stompClient = Stomp.over(() => socket);
+    stompClientRef.current = stompClient;
+
+    stompClientRef.current.connect(headers, () => {
+      console.log('Connected to WebSocket server');
+
+      stompClientRef.current.subscribe('/api/v1/message', (message) => {
+        const receivedMessage = JSON.parse(message.body);
+        console.log('Received message:', receivedMessage);
+      });
+    });
+
+    return () => {
+      if (stompClientRef.current && stompClientRef.current.connected) {
+        stompClientRef.current.disconnect();
+      }
+    };
+  }, [accessToken, isAuthenticated]);
+
   useEffect(() => {
     if (accessToken) {
       dispatch(getUser());
