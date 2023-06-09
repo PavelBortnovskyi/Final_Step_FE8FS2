@@ -114,6 +114,8 @@ public class TweetService extends GeneralService<Tweet> {
     return tweet;
   }
 
+
+
   public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
     List<Long> userIds = userService.getUser((Long) request.getAttribute("userId"))
       .getFollowings().stream().map(u -> u.getId()).toList();
@@ -124,6 +126,7 @@ public class TweetService extends GeneralService<Tweet> {
   public Page<Tweet> tweetsReply(Long tweetId, int page, int pageSize) {
     return tweetModelRepository.tweetsReply(getTweetById(tweetId), Pageable.ofSize(pageSize).withPage(page));
   }
+
 
   public Page<Tweet> getUserTweets(Long userId, int page, int pageSize) {
     return tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page));
