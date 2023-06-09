@@ -15,7 +15,7 @@ export const App = () => {
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const { accessToken } = getTokens();
 
-  const stompClientRef = useRef(null);
+  // const stompClientRef = useRef(null);
 
   useEffect(() => {
     const headers = {
@@ -23,26 +23,27 @@ export const App = () => {
     };
 
     console.log('1', headers);
+
     const socket = new SockJS(
       'https://final-step-fe2fs8tw.herokuapp.com/chat-ws',
       headers
     );
 
-    stompClientRef.current = Stomp.over(() => socket);
+    const stompClient = Stomp.over(() => socket);
     // stompClientRef.current = stompClient;
 
-    stompClientRef.current.connect(headers, () => {
+    stompClient.connect(headers, () => {
       console.log('Connected to WebSocket server');
 
-      stompClientRef.current.subscribe('/api/topic/chats', (message) => {
+      stompClient.subscribe('/api/topic/chats', (message) => {
         const receivedMessage = JSON.parse(message.body);
         console.log('Received message:', receivedMessage);
       });
     });
 
     return () => {
-      if (stompClientRef.current && stompClientRef.current.connected) {
-        stompClientRef.current.disconnect();
+      if (stompClient && stompClient.connected) {
+        stompClient.disconnect();
       }
     };
   }, [accessToken, isAuthenticated]);
