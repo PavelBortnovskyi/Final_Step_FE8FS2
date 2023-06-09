@@ -8,37 +8,45 @@ export const myAxios = axios.create({
   baseURL: 'https://final-step-fe2fs8tw.herokuapp.com/api/v1/',
 });
 
+const { accessToken } = getTokens();
+if (accessToken) setAuthToken(accessToken);
+
 myAxios.interceptors.response.use(
   (r) => r,
   async function (error) {
-    const { refreshToken } = getTokens();
+    // TODO: need delete
+    return;
 
+    const { refreshToken } = getTokens();
     const originalRequest = error.config;
 
     if (originalRequest._retry) {
       setAuthToken();
       setRefreshToken();
     } else if (error.response.status === 401) {
+      console.log('else');
       originalRequest._retry = true;
 
       return await myAxios
         .get('/auth/refresh', {
           headers: {
-            Refreshtoken: `Bearer ${refreshToken}`,
+            Authorization: `Bearer ${refreshToken}`,
           },
         })
         .then(({ data }) => {
-          setAuthToken(data.token);
-          setRefreshToken(data.refreshToken);
-          originalRequest.headers.Authorization = data.token;
+          console.log('data', data);
+          setAuthToken(data.ACCESS_TOKEN);
+          setRefreshToken(data.REFRESH_TOKEN);
+          originalRequest.headers.Authorization = data.ACCESS_TOKEN;
           return myAxios(originalRequest);
         })
         .catch((err) => {
+          console.log('error', err);
           setAuthToken();
           setRefreshToken();
         });
     }
-
+    console.log('last', error);
     return Promise.reject(error);
   }
 );
