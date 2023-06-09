@@ -18,20 +18,23 @@ export const App = () => {
   const stompClientRef = useRef(null);
 
   useEffect(() => {
-    const socket = new SockJS(
-      'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
-    );
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     };
 
-    const stompClient = Stomp.over(() => socket);
-    stompClientRef.current = stompClient;
+    console.log('1', headers);
+    const socket = new SockJS(
+      'https://final-step-fe2fs8tw.herokuapp.com/chat-ws',
+      headers
+    );
+
+    stompClientRef.current = Stomp.over(() => socket);
+    // stompClientRef.current = stompClient;
 
     stompClientRef.current.connect(headers, () => {
       console.log('Connected to WebSocket server');
 
-      stompClientRef.current.subscribe('/api/v1/message', (message) => {
+      stompClientRef.current.subscribe('/api/topic/chats', (message) => {
         const receivedMessage = JSON.parse(message.body);
         console.log('Received message:', receivedMessage);
       });
