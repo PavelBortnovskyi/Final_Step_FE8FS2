@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,9 +148,9 @@ public class TweetController {
   }
 
   @GetMapping("/all_tweets")
-  public List<TweetResponse> listTweets(@RequestParam("page") @NotNull int page,
-                                        @RequestParam("pageSize") @NotNull @Positive int pageSize) {
-    return ResponseEntity.ok(tweetFacade.listTweets(page, pageSize)).getBody();
+  public Page<TweetResponse> getAllTweets(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                          @RequestParam(name = "pageSize", defaultValue = "10") @Positive int pageSize) {
+    return tweetFacade.getAllTweets(page, pageSize);
   }
 
 //  @GetMapping("/top_tweets")
@@ -159,8 +160,9 @@ public class TweetController {
 //  }
 
   @GetMapping("/tweet_reply/{tweetId}")
-  public Page<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId, @RequestParam("page") @NotNull int page,
-                                         @RequestParam("pageSize") @NotNull @Positive int pageSize) {
-    return ResponseEntity.ok(tweetFacade.tweetsReply(tweetId, page, pageSize)).getBody();
+  public Page<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId,
+                                         @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                         @RequestParam(name = "pageSize", defaultValue = "10") @Positive int pageSize) {
+    return tweetFacade.tweetsReply(tweetId, page, pageSize);
   }
 }
