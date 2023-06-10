@@ -23,7 +23,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.HashMap;
 
 @CrossOrigin
@@ -101,18 +105,34 @@ public class AuthController {
     return this.authFacade.makeRefresh(request);
   }
 
-  @GetMapping(path = "/login/oauth2/google")
+
+  @GetMapping("/login/oauth2/google")
   public ResponseEntity<Void> loginWithGoogle() {
-    ClientRegistration googleClientRegistration = clientRegistrationRepository.findByRegistrationId("google");
-    String redirectUrl = UriComponentsBuilder.fromHttpUrl(googleClientRegistration.getProviderDetails().getAuthorizationUri())
-      .queryParam("client_id", googleClientRegistration.getClientId())
-      .queryParam("redirect_uri", googleClientRegistration.getRedirectUri())
-      .queryParam("response_type", "code")
-      .queryParam("scope", String.join(" ", googleClientRegistration.getScopes()))
-      .build().toUriString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create(redirectUrl));
-    return new ResponseEntity<>(headers, HttpStatus.FOUND);
+    // Генерируем случайное значение state
+    SecureRandom secureRandom = new SecureRandom();
+    byte[] stateBytes = new byte[16];
+    secureRandom.nextBytes(stateBytes);
+    String state = Base64.getUrlEncoder().withoutPadding().encodeToString(stateBytes);
+
+    // Сохраняем значение state для проверки после возврата
+    // например, в сеансе пользователя или временной базе данных
+
+    try {
+      // Формируем URL-адрес авторизации с параметром state
+      String authorizationUri = "https://accounts.google.com/o/oauth2/auth" +
+        "?client_id=" + URLEncoder.encode("833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com", "UTF-8") +
+        "&redirect_uri=" + URLEncoder.encode("http://localhost:8080/api/v1/auth/login/oauth2/code/google", "UTF-8") +
+        "&scope=" + URLEncoder.encode("email profile openid", "UTF-8") +
+        "&response_type=code" +
+        "&state=" + state;
+
+      HttpHeaders headers = new HttpHeaders();
+      headers.setLocation(URI.create(authorizationUri));
+      return new ResponseEntity<>(headers, HttpStatus.FOUND);
+    } catch (UnsupportedEncodingException e) {
+      // Обработка исключения
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
   @GetMapping(path = "/login/oauth2/facebook")

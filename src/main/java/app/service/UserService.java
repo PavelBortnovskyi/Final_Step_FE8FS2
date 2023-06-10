@@ -1,20 +1,29 @@
 package app.service;
 
+import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
+import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.exceptions.userError.IncorrectUserIdException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
 import app.repository.UserRepository;
+import app.security.OAuth2UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
@@ -25,6 +34,8 @@ public class UserService extends GeneralService<UserModel> {
   private final UserRepository userRepository;
   private final PasswordEncoder encoder;
   private final CloudinaryService cloudinaryService;
+
+  private final JwtTokenService jwtTokenService;
 
 
   /**
@@ -161,4 +172,41 @@ public class UserService extends GeneralService<UserModel> {
     return getUserByTagO(userTag).isPresent();
   }
 
+  public ResponseEntity<HashMap<String, String>> processOAuth2User(OAuth2UserDetailsImpl oAuth2User) {
+    //Extract email
+    String email = oAuth2User.getAttribute("email");
+    //Extract OAuth provider id
+    String registrationId = oAuth2User.getOauth2ClientName();
+    //Check presence in DB
+    if (this.isEmailPresentInDB(email))
+      throw new UserAlreadyRegisteredException("email: " + email);
+    else {
+      UserModel freshUser = new UserModel();
+      freshUser.setEmail(email);
+      freshUser.setFullName((String) oAuth2User.getAttribute("name"));
+      if ("google".equals(registrationId)) {
+        freshUser.setAvatarImgUrl((String) oAuth2User.getAttribute("picture"));
+        freshUser.setUserTag("@" + (String) oAuth2User.getAttribute("name"));
+      } else if ("facebook".equals(registrationId)) {
+        freshUser.setUserTag("@" + (String) oAuth2User.getAttribute("first_name"));
+        freshUser.setBirthDate(LocalDate.parse((String) Objects.requireNonNull(oAuth2User.getAttribute("birthday"))));
+      }
+      freshUser.setVerified(true);
+      freshUser = this.save(freshUser);
+      Long id = freshUser.getId();
+
+      String accessToken = this.jwtTokenService.createToken(id, TokenType.ACCESS, freshUser.getUserTag(), freshUser.getEmail());
+      String refreshToken = this.jwtTokenService.createToken(id, TokenType.REFRESH);
+
+      //Update refresh token for current user
+      this.jwtTokenService.updateRefreshToken(freshUser, refreshToken);
+
+      //JWT tokens for response packing
+      HashMap<String, String> response = new HashMap<>();
+      response.put("ACCESS_TOKEN", accessToken);
+      response.put("REFRESH_TOKEN", refreshToken);
+      response.put("USER_ID", id.toString());
+      return ResponseEntity.ok(response);
+    }
+  }
 }

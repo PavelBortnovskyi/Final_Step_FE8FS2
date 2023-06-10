@@ -1,10 +1,9 @@
 package app.security;
 
 import app.exceptions.FilterExceptionHandler;
-import app.service.OAuth2UserServiceImpl;
+import app.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,23 +18,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-
-import java.util.Arrays;
 
 @Log4j2
 @Configuration
@@ -51,6 +37,9 @@ public class SecurityConfiguration {
 
   @Autowired
   private OAuth2UserServiceImpl oAuth2UserService;
+
+  @Autowired
+  private UserService userService;
 
 
 //  @Autowired
@@ -95,15 +84,15 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginProcessingUrl("/api/v1/auth/login/oauth2/code/{registrationId}")
-      .tokenEndpoint()
-      .accessTokenResponseClient(accessTokenResponseClient())
+      // temporary hardcoded redirect url (we must change redirect url to "/" before deploy)
+      .loginPage("http://localhost:8080/")
+      .userInfoEndpoint().userService(oAuth2UserService)
       .and()
-      .defaultSuccessUrl("https://final-step-fe-8-fs-2.vercel.app")
-      .failureUrl("https://final-step-fe-8-fs-2.vercel.app/error")
-      .userInfoEndpoint()
-      .userService(oAuth2UserService)
-      .and()
+      .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
+        new OAuth2SuccessLoginHandler(userService).onAuthenticationSuccess(httpServletRequest,
+          httpServletResponse,
+          authentication);
+      })
       .and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     //.exceptionHandling().authenticationEntryPoint(authEntryPoint);
@@ -137,50 +126,45 @@ public class SecurityConfiguration {
     return authConfig.getAuthenticationManager();
   }
 
-  @Bean
-  public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
-    return new NimbusAuthorizationCodeTokenResponseClient();
-  }
-
-  @Bean
-  public ClientRegistrationRepository clientRegistrationRepository() {
-    return new InMemoryClientRegistrationRepository(Arrays.asList(
-      facebookClientRegistration(),
-      googleClientRegistration()
-    ));
-  }
-
-  private ClientRegistration googleClientRegistration() {
-    return ClientRegistration.withRegistrationId("google")
-      .clientId(googleClientId)
-      .clientSecret(googleClientSecret)
-      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/google")
-      .scope("email%20profile")
-      .authorizationUri("https://accounts.google.com/o/oauth2/auth")
-      .tokenUri("https://oauth2.googleapis.com/token")
-      .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-      .userNameAttributeName(IdTokenClaimNames.SUB)
-      .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-      .clientName("Google")
-      .build();
-  }
-
-  private ClientRegistration facebookClientRegistration() {
-    return ClientRegistration.withRegistrationId("facebook")
-      .clientId(facebookClientId)
-      .clientSecret(facebookClientSecret)
-      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/facebook")
-      .scope("email", "public_profile", "user_birthday")
-      .authorizationUri("https://www.facebook.com/v17.0/dialog/oauth")
-      .tokenUri("https://graph.facebook.com/v17.0/oauth/access_token")
-      .userInfoUri("https://graph.facebook.com/me?fields=id,email")
-      .userNameAttributeName(IdTokenClaimNames.SUB)
-      .clientName("Facebook")
-      .build();
-  }
+//  @Bean
+//  public ClientRegistrationRepository clientRegistrationRepository() {
+//    return new InMemoryClientRegistrationRepository(Arrays.asList(
+//      facebookClientRegistration(),
+//      googleClientRegistration()
+//    ));
+//  }
+//
+//  private ClientRegistration googleClientRegistration() {
+//    return ClientRegistration.withRegistrationId("google")
+//      .clientId(googleClientId)
+//      .clientSecret(googleClientSecret)
+//      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/google")
+//      .scope("email%20profile")
+//      .authorizationUri("https://accounts.google.com/o/oauth2/auth")
+//      .tokenUri("https://oauth2.googleapis.com/token")
+//      .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
+//      .userNameAttributeName(IdTokenClaimNames.SUB)
+//      .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
+//      .clientName("Google")
+//      .build();
+//  }
+//
+//  private ClientRegistration facebookClientRegistration() {
+//    return ClientRegistration.withRegistrationId("facebook")
+//      .clientId(facebookClientId)
+//      .clientSecret(facebookClientSecret)
+//      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/facebook")
+//      .scope("email", "public_profile", "user_birthday")
+//      .authorizationUri("https://www.facebook.com/v17.0/dialog/oauth")
+//      .tokenUri("https://graph.facebook.com/v17.0/oauth/access_token")
+//      .userInfoUri("https://graph.facebook.com/me?fields=id,email")
+//      .userNameAttributeName(IdTokenClaimNames.SUB)
+//      .clientName("Facebook")
+//      .build();
+//  }
 }
 
