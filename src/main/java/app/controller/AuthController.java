@@ -108,7 +108,7 @@ public class AuthController {
       .queryParam("client_id", googleClientRegistration.getClientId())
       .queryParam("redirect_uri", googleClientRegistration.getRedirectUri())
       .queryParam("response_type", "code")
-      .queryParam("scope", googleClientRegistration.getScopes())
+      .queryParam("scope", String.join(" ", googleClientRegistration.getScopes()))
       .build().toUriString();
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(URI.create(redirectUrl));

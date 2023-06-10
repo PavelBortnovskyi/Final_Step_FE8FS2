@@ -15,6 +15,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -65,6 +68,8 @@ public class SecurityConfiguration {
   @Value("${facebook.client-secret}")
   private String facebookClientSecret;
 
+  //http://localhost:8080/api/v1/auth/login/oauth2/google
+  //http://localhost:8080/api/v1/auth/login/oauth2/facebook
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
     httpSec
@@ -90,6 +95,9 @@ public class SecurityConfiguration {
       .and()
       .oauth2Login()
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/{registrationId}")
+      .tokenEndpoint()
+      .accessTokenResponseClient(accessTokenResponseClient())
+      .and()
       .defaultSuccessUrl("https://final-step-fe-8-fs-2.vercel.app")
       .failureUrl("https://final-step-fe-8-fs-2.vercel.app/error")
       .userInfoEndpoint()
@@ -98,6 +106,7 @@ public class SecurityConfiguration {
       .and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     //.exceptionHandling().authenticationEntryPoint(authEntryPoint);
+
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
@@ -121,6 +130,11 @@ public class SecurityConfiguration {
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
+  }
+
+  @Bean
+  public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
+    return new NimbusAuthorizationCodeTokenResponseClient();
   }
 
   @Bean
@@ -152,7 +166,7 @@ public class SecurityConfiguration {
     return ClientRegistration.withRegistrationId("facebook")
       .clientId(facebookClientId)
       .clientSecret(facebookClientSecret)
-      .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
       .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
       .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/facebook")
       .scope("email", "public_profile", "user_birthday")
