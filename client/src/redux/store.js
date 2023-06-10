@@ -10,6 +10,7 @@ import followers from 'src/redux/reducers/followersSlice';
 import followings from 'src/redux/reducers/followingsSlice';
 import userBiId from 'src/redux/reducers/userBiIdSlice';
 import userBookmarks from 'src/redux/reducers/getBookmarksSlise';
+import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
 // export const store = configureStore({
 //   reducer: {
 //     auth,
@@ -56,6 +57,7 @@ const rootReducer = {
   tweets,
   singleTweet,
   userTweets,
+  tweetReplies,
   chat,
   followers,
   followings,

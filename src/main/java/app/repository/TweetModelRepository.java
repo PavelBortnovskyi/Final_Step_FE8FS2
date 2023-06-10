@@ -22,7 +22,7 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   //Page<Tweet> getTweetsByUserId(Long userId, Pageable pageable);
 
   @Query(value = "SELECT t FROM Tweet t")
-  Page<Tweet> listTweets(Pageable pageable);
+  Page<Tweet> getAllTweets(Pageable pageable);
 
   @Query("SELECT t FROM Tweet t WHERE t.user.id IN (:userIds) ORDER BY t.createdAt DESC")
   Page<Tweet> findTweetsByUserIdsSortedByDate(List<Long> userIds, Pageable pageable);

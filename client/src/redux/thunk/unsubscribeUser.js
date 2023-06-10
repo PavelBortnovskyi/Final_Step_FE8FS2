@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { myAxios } from "src/utils/axiosSetup";
 import { getFollowings } from "./getFollowings.js";
+import { getUser } from "./getUser.js";
 
 export const unsubscribeUser = createAsyncThunk(
   "user/unsubscribe",
@@ -9,6 +10,7 @@ export const unsubscribeUser = createAsyncThunk(
       // request to server if we have token in localStorage it will inject src/utils/axiosSetup into request
       const { data } = await myAxios.post(`/user/unsubscribe/${id}`);
       dispatch(getFollowings("profile"));
+      dispatch(getUser());
       return data;
     } catch (error) {
       // set message error from server

@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from 'react-router-dom';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
@@ -13,10 +13,35 @@ import { getTweetByID } from 'src/redux/selectors/selectors';
 import { getTweetById } from 'src/redux/thunk/getTweetById';
 import { likePost } from 'src/redux/thunk/likeTweet';
 
+import { createTweetReply } from 'src/redux/thunk/replyTweet';
+
 function TweetPage() {
   const { id } = useParams();
   const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
+
+  const [postInputText, setPostInputText] = useState('');
+  const [postImages, setPostImages] = useState([]);
+
+  console.log(postInputText);
+  const handleInput = (ev) => {
+    setPostInputText(ev);
+  };
+
+  const handleFileSelect = (img) => {
+    setPostImages([...postImages, img]);
+  };
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...postImages];
+    updatedImages.splice(index, 1);
+    setPostImages(updatedImages);
+  };
+
+  const handleSubmit = () => {
+    dispatch(createTweetReply({ id, postInputText, postImages }));
+    setPostInputText('');
+    setPostImages([]);
+  };
 
   //getting single tweet
   useEffect(() => {
@@ -25,9 +50,7 @@ function TweetPage() {
   const tweet = useSelector(getTweetByID);
   const post = tweet.tweet;
   /////////////////
-
   //Like tweet
-
   // useEffect(() => {
   //   dispatch(likePost(id));
   // }, [post.countLikes]);
@@ -94,11 +117,13 @@ function TweetPage() {
         }}
       >
         <InputAvatar
-          avatarUrl="/img/avatar.JPG"
+          value={postInputText}
+          avatarUrl={user.avatarImgUrl}
           placeholder="Tweet your reply"
+          feature={handleInput}
         />
         <Box mr="10px">
-          <TweetButton text="Reply" />
+          <TweetButton text="Reply" fnc={handleSubmit} />
         </Box>
       </Box>
       <CommentsList />

@@ -27,7 +27,7 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
 
     OutputStream outputStream = response.getOutputStream();
     ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.writeValue(outputStream,userService.processOAuth2User(oauth2User).getBody());
+    //objectMapper.writeValue(outputStream,userService.processOAuth2User(oauth2User).getBody());
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     response.setStatus(200);
