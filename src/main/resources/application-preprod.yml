@@ -29,6 +29,7 @@ spring:
       on-profile: preprod
   url:
     server: http://localhost:8080
+    additional-websockets-port: 8081
     client: http://localhost:3000
   mail:
     host: smtp.gmail.com
