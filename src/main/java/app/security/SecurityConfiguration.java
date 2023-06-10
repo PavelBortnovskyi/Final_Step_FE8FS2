@@ -106,6 +106,7 @@ public class SecurityConfiguration {
     configuration.addAllowedMethod(HttpMethod.POST);
     configuration.addAllowedMethod(HttpMethod.PUT);
     configuration.addAllowedMethod(HttpMethod.DELETE);
+    configuration.addAllowedMethod(HttpMethod.OPTIONS);
     httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
     //httpSec.cors().disable();
 
