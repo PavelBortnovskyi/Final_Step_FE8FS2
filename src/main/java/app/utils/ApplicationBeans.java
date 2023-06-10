@@ -27,7 +27,7 @@ public class ApplicationBeans {
   @Value("${cloudinary.apiSecret}")
   private String apiSecret;
 
-  @Value("${gmail.password}")
+  @Value("${spring.mail.password}")
   private String mailPass;
 
   @Bean
