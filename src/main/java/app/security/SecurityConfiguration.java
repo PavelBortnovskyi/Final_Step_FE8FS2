@@ -101,7 +101,9 @@ public class SecurityConfiguration {
     //CORS config
     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
     configuration.addAllowedOriginPattern("http://localhost:3000/**");
+    configuration.addAllowedOriginPattern("http://localhost:3000");
     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
+    configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
     configuration.addAllowedOriginPattern("*");
     configuration.addAllowedMethod(HttpMethod.GET);
     configuration.addAllowedMethod(HttpMethod.POST);
