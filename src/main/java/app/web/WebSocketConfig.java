@@ -27,6 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.enableSimpleBroker("/topic/chats", "/specific");
     registry.setApplicationDestinationPrefixes("/api");
+    registry.enableStompBrokerRelay("/topic/chats").setRelayPort(8081);
   }
 
   @Override
