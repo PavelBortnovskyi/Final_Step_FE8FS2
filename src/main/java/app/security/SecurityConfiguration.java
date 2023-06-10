@@ -103,7 +103,6 @@ public class SecurityConfiguration {
     configuration.addAllowedOrigin("http://localhost:3000/**");
     configuration.addAllowedOrigin("https://final-step-fe-8-fs-2.vercel.app/**");
     configuration.addAllowedOrigin("*");
-    configuration.addAllowedOrigin("**");
     configuration.addAllowedMethod(HttpMethod.GET);
     configuration.addAllowedMethod(HttpMethod.POST);
     configuration.addAllowedMethod(HttpMethod.PUT);
