@@ -6,13 +6,24 @@ import { User } from 'src/components/User/User';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { useParams } from 'react-router-dom';
 import PostList from 'src/components/Post/PostList';
+import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
 
 export const UserBiIdPage = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
   const user = useSelector((state) => state.userBiId.userId) || '';
-  const subscribe = <ButtonSubscribe userId={user.id} />;
+
+  const profile = useSelector((state) => state.user.user) || '';
+
+  let subscribe;
+
+  if (user.id === profile.id) {
+    subscribe = <LinkToEditProfile />;
+  } else {
+    subscribe = <ButtonSubscribe userId={user.id} />;
+  }
+
   const lincToFollowings = `/${user.id}/followings`;
   const lincToFollowers = `/${user.id}/followers`;
 
