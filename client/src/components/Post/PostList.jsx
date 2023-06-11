@@ -16,14 +16,14 @@ function PostList({ id, tab }) {
   const user = id || profile;
   const userTweets = useSelector(getUserTweets);
   const userTweetsArray = userTweets.userTweets || [];
-  // console.log('in postList ', tab);
+
   useEffect(() => {
     if (Number(user)) {
       dispatch(getUserTweetsThunk({ userId: user, page: 0, pageSize: 100 }));
     }
     if (user.id !== undefined && user.id !== '') {
       const idUser = user.id;
-      dispatch(getUserTweetsThunk({ userId: idUser, page: 0, pageSize: 100 }));
+      dispatch(getUserTweetsThunk({ userId: 1, page: 0, pageSize: 100 }));
     }
   }, [user]);
 
