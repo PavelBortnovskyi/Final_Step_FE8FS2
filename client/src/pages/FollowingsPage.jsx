@@ -13,12 +13,9 @@ export const FollowingsPage = () => {
   const name = useSelector((state) => state.userBiId.userId.fullName) || '';
 
   useEffect(() => {
-    // if (following.length === 0) {
     dispatch(getUserBiId(id));
 
     dispatch(getFollowings(id));
-    //   return;
-    // }
   }, [dispatch]);
 
   return (

@@ -37,13 +37,6 @@ export const FollowersList = ({ follow }) => {
               cursor: 'pointer',
             },
           }}
-          // sx={{
-          //   display: 'flex',
-          //   gap: '24px',
-          //   '&:hover': {
-          //     backgroundColor: 'red',
-          //   },
-          // }}
         >
           <UserPageAvatar
             w={'50'}
