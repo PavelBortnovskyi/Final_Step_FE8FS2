@@ -11,7 +11,7 @@ import { RightSection } from 'src/components/RightSection/RightSection';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
-import { UserBiIdPage } from 'src/pages/UserBiIdPage';
+import { UserBiIdPage } from 'src/pages/UserByIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 
 export const mainRoutes = () => {

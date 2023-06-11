@@ -11,14 +11,10 @@ export const FollowersPage = () => {
   const dispatch = useDispatch();
   const follower = useSelector((state) => state.followers.followers) || [];
   const name = useSelector((state) => state.userBiId.userId.fullName) || '';
-  // console.log(id);
   useEffect(() => {
-    // if (follower.length === 0) {
     dispatch(getUserBiId(id));
     dispatch(getFollowers(id));
-    // return;
-    // }
-  }, [follower.length]);
+  }, [dispatch, id]);
 
   return (
     follower.content && (
