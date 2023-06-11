@@ -1,8 +1,10 @@
 package app.security;
 
+import app.facade.AuthFacade;
 import app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -18,7 +20,8 @@ import java.io.OutputStream;
 @RequiredArgsConstructor
 public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-  private final UserService userService;
+  @Autowired
+  private AuthFacade authFacade;
 
   public void onAuthenticationSuccess(HttpServletRequest request,
                                       HttpServletResponse response,
@@ -27,7 +30,7 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
 
     OutputStream outputStream = response.getOutputStream();
     ObjectMapper objectMapper = new ObjectMapper();
-    //objectMapper.writeValue(outputStream,userService.processOAuth2User(oauth2User).getBody());
+    objectMapper.writeValue(outputStream, authFacade.processOAuth2User(oauth2User).getBody());
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     response.setStatus(200);

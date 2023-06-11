@@ -27,12 +27,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.enableSimpleBroker("/topic/chats", "/specific");
     registry.setApplicationDestinationPrefixes("/api");
-    registry.enableStompBrokerRelay("/topic/chats").setRelayPort(8081);
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/*", "https://final-step-fe-8-fs-2.vercel.app").withSockJS();
+    registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("*").withSockJS();
     registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("*").withSockJS();
   }
 

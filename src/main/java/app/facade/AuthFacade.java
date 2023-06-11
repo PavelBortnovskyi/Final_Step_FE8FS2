@@ -7,6 +7,7 @@ import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
+import app.security.OAuth2UserDetailsImpl;
 import app.service.EmailService;
 import app.service.JwtTokenService;
 import app.service.UserService;
@@ -161,6 +162,30 @@ public class AuthFacade {
       UserModel currUser = this.userService.getUserByRefreshToken(token);
       return ResponseEntity.ok(jwtTokenService.generateTokenPair(currUser));
     } else return ResponseEntity.status(401).body(new HashMap<>());
+  }
+
+  public ResponseEntity<HashMap<String, String>> processOAuth2User(OAuth2UserDetailsImpl oAuth2User) {
+    //Extract email
+    String email = oAuth2User.getAttribute("email");
+    //Extract OAuth provider id
+    String registrationId = oAuth2User.getOauth2ClientName();
+    //Check presence in DB
+    if (this.userService.isEmailPresentInDB(email))
+      throw new UserAlreadyRegisteredException("email: " + email);
+    else {
+      UserModel freshUser = new UserModel();
+      freshUser.setEmail(email);
+      freshUser.setFullName((String) oAuth2User.getAttribute("name"));
+      if ("google".equals(registrationId)) {
+        freshUser.setAvatarImgUrl((String) oAuth2User.getAttribute("picture"));
+        freshUser.setUserTag("@" + (String) oAuth2User.getAttribute("name"));
+      } else if ("facebook".equals(registrationId)) {
+        freshUser.setUserTag("@" + (String) oAuth2User.getAttribute("first_name"));
+        freshUser.setBirthDate(LocalDate.parse((String) Objects.requireNonNull(oAuth2User.getAttribute("birthday"))));
+      }
+      freshUser.setVerified(true);
+      return ResponseEntity.ok(jwtTokenService.generateTokenPair(this.userService.save(freshUser)));
+    }
   }
 }
 

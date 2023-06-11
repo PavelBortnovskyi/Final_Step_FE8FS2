@@ -1,6 +1,7 @@
 package app.security;
 
 import app.exceptions.FilterExceptionHandler;
+import app.facade.AuthFacade;
 import app.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,6 @@ public class SecurityConfiguration {
 
   @Autowired
   private OAuth2UserServiceImpl oAuth2UserService;
-
-  @Autowired
-  private UserService userService;
-
 
 //  @Autowired
 //  @Qualifier("delegatedAuthenticationEntryPoint")
@@ -90,10 +87,11 @@ public class SecurityConfiguration {
       .oauth2Login()
       // temporary hardcoded redirect url (we must change redirect url to "/" before deploy)
       .loginPage("http://localhost:8080/")
+      .loginProcessingUrl("http://localhost:8080/api/v1/auth/login/oauth2/code/google")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
       .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-        new OAuth2SuccessLoginHandler(userService).onAuthenticationSuccess(httpServletRequest,
+        new OAuth2SuccessLoginHandler().onAuthenticationSuccess(httpServletRequest,
           httpServletResponse,
           authentication);
       })
