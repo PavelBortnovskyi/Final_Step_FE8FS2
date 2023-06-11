@@ -1,25 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { registerUser } from "../thunk/registerUser.js";
-import { loginUser } from "../thunk/loginUser.js";
-import { logoutUser } from "../thunk/logoutUser.js";
+import { registerUser } from '../thunk/registerUser.js';
+import { loginUser } from '../thunk/loginUser.js';
+import { logoutUser } from '../thunk/logoutUser.js';
 
 const initialState = {
-  isAuthenticated: Boolean(localStorage.getItem("accessToken")),
+  isAuthenticated: Boolean(localStorage.getItem('accessToken')),
   isLoading: false,
-  error: "",
+  error: '',
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
+
+  reducers: {
+    notAuthenticated(state, actions) {
+      state.isAuthenticated = false;
+    },
+  },
 
   extraReducers: (builder) => {
     // register
     builder.addCase(registerUser.pending, (state, action) => {
       state.isLoading = true;
 
-      state.error = "";
+      state.error = '';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.isAuthenticated = true;
@@ -33,7 +39,7 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.pending, (state, action) => {
       state.isLoading = true;
 
-      state.error = "";
+      state.error = '';
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isAuthenticated = true;
@@ -47,7 +53,7 @@ export const authSlice = createSlice({
     builder.addCase(logoutUser.pending, (state, action) => {
       state.isLoading = true;
 
-      state.error = "";
+      state.error = '';
     });
     builder.addCase(logoutUser.fulfilled, (state, action) => {
       state.isAuthenticated = false;
@@ -62,4 +68,5 @@ export const authSlice = createSlice({
   },
 });
 
+export const { notAuthenticated } = authSlice.actions;
 export default authSlice.reducer;

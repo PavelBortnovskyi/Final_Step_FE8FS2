@@ -7,3 +7,5 @@
 5. formik+yup
 6. axios
 7. @react-oauth/google
+
+"proxy": "https://final-step-fe2fs8tw.herokuapp.com"

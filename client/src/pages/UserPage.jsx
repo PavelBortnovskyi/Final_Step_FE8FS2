@@ -1,15 +1,29 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
+
 import { User } from 'src/components/User/User';
+import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 import PostList from 'src/components/Post/PostList';
 
 export const UserPage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+
   const user = useSelector((state) => state.user.user) || '';
   const lincToFollowings = '/profile/followings';
   const lincToFollowers = '/profile/followers';
   const editProfile = <LinkToEditProfile />;
+
+  // send user to home if not authorization
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <>

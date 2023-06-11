@@ -68,7 +68,7 @@ export const FormLogin = () => {
 
   // default value for form
   const initialValues = {
-    email: 'user1@gmail.com',
+    email: 'user7@gmail.com',
     password: '11111111',
   };
   // const initialValues = {

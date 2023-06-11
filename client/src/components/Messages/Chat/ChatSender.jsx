@@ -2,6 +2,8 @@ import { Box, InputBase, alpha, styled } from '@mui/material';
 import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import AttachFile from '@mui/icons-material/AttachFile';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getGuestChat } from 'src/redux/selectors/selectors';
 
 // ************ STYLE ************
 const Sender = styled('div')(({ theme }) => ({
@@ -43,28 +45,27 @@ const SenderInputBase = styled(InputBase)(({ theme }) => ({
 export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
 
-  // const { person, account, conversation, socket } = useContext(AccountContext);
+  const { guest, currentChat, socketChat } = useSelector(getGuestChat);
 
   // set send text
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
       // TODO: need create send message
-      // let message = {
-      //   senderId: account.sub,
-      //   receiverId: person.sub,
-      //   conversationId: conversation._id,
-      //   type: 'text',
-      //   text: messageText,
-      // };
+      const message = {
+        userId: guest.id,
+        chatId: currentChat.chatId,
+        body: messageText,
+      };
 
-      // console.log(message);
+      console.log(message);
+      console.log(socketChat);
 
       // send message to DB
       // await newMessage(message);
 
       // send event about new message to Socket server
-      // socket.current.emit('sendMessage', message);
+      socketChat.emit('/api/v1/message', message);
 
       // clear sender input
       setMessageText('');
