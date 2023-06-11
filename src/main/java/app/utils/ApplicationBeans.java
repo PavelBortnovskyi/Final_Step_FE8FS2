@@ -63,36 +63,10 @@ public class ApplicationBeans {
     return mailSender;
   }
 
-//  @Bean
-//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest>
-//  authorizationRequestRepository() {
-//    return new HttpSessionOAuth2AuthorizationRequestRepository();
-//  }
-
-//  @Bean
-//  public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest>
-//  accessTokenResponseClient() {
-//
-//    return new NimbusAuthorizationCodeTokenResponseClient();
-//  }
-
   @Bean
   public ObjectMapper getObjectMapper() {
     return new ObjectMapper();
   }
-//
-//  @Profile("local")
-//  @Bean
-//  Server h2Server() {
-//    Server server = new Server();
-//    try {
-//      server.runTool("-tcp");
-//      server.runTool("-tcpAllowOthers");
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//    return server;
-//  }
 
   @Bean
   public Cloudinary cloudinaryConfig() {

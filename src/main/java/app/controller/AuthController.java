@@ -6,11 +6,8 @@ import app.facade.AuthFacade;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,15 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.HashMap;
 
 @CrossOrigin
@@ -103,48 +94,5 @@ public class AuthController {
   @GetMapping(path = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handleRefresh(HttpServletRequest request) {
     return this.authFacade.makeRefresh(request);
-  }
-
-  @GetMapping("/login/oauth2/google")
-  public ResponseEntity<Void> loginWithGoogle() {
-    // Генерируем случайное значение state
-    SecureRandom secureRandom = new SecureRandom();
-    byte[] stateBytes = new byte[16];
-    secureRandom.nextBytes(stateBytes);
-    String state = Base64.getUrlEncoder().withoutPadding().encodeToString(stateBytes);
-
-    // Сохраняем значение state для проверки после возврата
-    // например, в сеансе пользователя или временной базе данных
-
-    try {
-      // Формируем URL-адрес авторизации с параметром state
-      String authorizationUri = "https://accounts.google.com/o/oauth2/auth" +
-        "?client_id=" + URLEncoder.encode("833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com", "UTF-8") +
-        "&redirect_uri=" + URLEncoder.encode("http://localhost:8080/api/v1/auth/login/oauth2/code/google", "UTF-8") +
-        "&scope=" + URLEncoder.encode("email profile openid", "UTF-8") +
-        "&response_type=code" +
-        "&state=" + state;
-
-      HttpHeaders headers = new HttpHeaders();
-      headers.setLocation(URI.create(authorizationUri));
-      return new ResponseEntity<>(headers, HttpStatus.FOUND);
-    } catch (UnsupportedEncodingException e) {
-      // Обработка исключения
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-  }
-
-  @GetMapping(path = "/login/oauth2/facebook")
-  public ResponseEntity<Void> loginWithFacebook() {
-    ClientRegistration facebookClientRegistration = clientRegistrationRepository.findByRegistrationId("facebook");
-    String redirectUrl = UriComponentsBuilder.fromHttpUrl(facebookClientRegistration.getProviderDetails().getAuthorizationUri())
-      .queryParam("client_id", facebookClientRegistration.getClientId())
-      .queryParam("redirect_uri", facebookClientRegistration.getRedirectUri())
-      .queryParam("response_type", "code")
-      .queryParam("scope", facebookClientRegistration.getScopes())
-      .build().toUriString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create(redirectUrl));
-    return new ResponseEntity<>(headers, HttpStatus.FOUND);
   }
 }

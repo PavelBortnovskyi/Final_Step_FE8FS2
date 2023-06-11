@@ -3,7 +3,6 @@ package app.security;
 import app.exceptions.FilterExceptionHandler;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -41,20 +40,6 @@ public class SecurityConfiguration {
 //  @Qualifier("delegatedAuthenticationEntryPoint")
 //  AuthenticationEntryPoint authEntryPoint;
 
-//  @Value("${google.client-id}")
-//  private String googleClientId;
-//
-//  @Value("${google.client-secret}")
-//  private String googleClientSecret;
-//
-//  @Value("${facebook.client-id}")
-//  private String facebookClientId;
-//
-//  @Value("${facebook.client-secret}")
-//  private String facebookClientSecret;
-
-  //http://localhost:8080/api/v1/auth/login/oauth2/google
-  //http://localhost:8080/api/v1/auth/login/oauth2/facebook
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
     httpSec
@@ -124,46 +109,5 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
   }
-
-//  @Bean
-//  public ClientRegistrationRepository clientRegistrationRepository() {
-//    return new InMemoryClientRegistrationRepository(Arrays.asList(
-//      facebookClientRegistration(),
-//      googleClientRegistration()
-//    ));
-//  }
-//
-//  private ClientRegistration googleClientRegistration() {
-//    return ClientRegistration.withRegistrationId("google")
-//      .clientId(googleClientId)
-//      .clientSecret(googleClientSecret)
-//      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/google")
-//      .scope("email%20profile")
-//      .authorizationUri("https://accounts.google.com/o/oauth2/auth")
-//      .tokenUri("https://oauth2.googleapis.com/token")
-//      .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-//      .userNameAttributeName(IdTokenClaimNames.SUB)
-//      .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-//      .clientName("Google")
-//      .build();
-//  }
-//
-//  private ClientRegistration facebookClientRegistration() {
-//    return ClientRegistration.withRegistrationId("facebook")
-//      .clientId(facebookClientId)
-//      .clientSecret(facebookClientSecret)
-//      .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//      .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//      .redirectUri("http://localhost:8080/api/v1/auth/login/oauth2/code/facebook")
-//      .scope("email", "public_profile", "user_birthday")
-//      .authorizationUri("https://www.facebook.com/v17.0/dialog/oauth")
-//      .tokenUri("https://graph.facebook.com/v17.0/oauth/access_token")
-//      .userInfoUri("https://graph.facebook.com/me?fields=id,email")
-//      .userNameAttributeName(IdTokenClaimNames.SUB)
-//      .clientName("Facebook")
-//      .build();
-//  }
 }
 
