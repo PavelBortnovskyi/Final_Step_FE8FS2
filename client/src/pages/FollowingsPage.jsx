@@ -16,7 +16,7 @@ export const FollowingsPage = () => {
     dispatch(getUserBiId(id));
 
     dispatch(getFollowings(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     following.content && (

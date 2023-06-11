@@ -15,7 +15,7 @@ export function UserPageFotoInput() {
 
       dispatch(sendUserHederFoto(sendFoto));
     }
-  }, [file]);
+  }, [file, dispatch]);
   return (
     <Button
       variant="conteined"

@@ -14,7 +14,7 @@ export const FollowersPage = () => {
   useEffect(() => {
     dispatch(getUserBiId(id));
     dispatch(getFollowers(id));
-  }, [follower.length]);
+  }, [dispatch, id]);
 
   return (
     follower.content && (
