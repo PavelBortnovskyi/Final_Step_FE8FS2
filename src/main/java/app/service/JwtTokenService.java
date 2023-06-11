@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Log4j2
@@ -307,6 +308,25 @@ public class JwtTokenService {
       default -> {
         return now;
       }
+    }}
+
+    /**
+     * Method returns generated access and refresh token pair based on provided user model
+     */
+    public HashMap<String, String> generateTokenPair(UserModel user) {
+      String accessToken = this.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
+      String refreshToken = this.createToken(user.getId(), TokenType.REFRESH);
+
+      //Update refresh token for current user
+      this.updateRefreshToken(user, refreshToken);
+      this.changeRefreshTokenStatus(user.getId(), false);
+
+      //JWT tokens for response packing
+      HashMap<String, String> response = new HashMap<>();
+      response.put("ACCESS_TOKEN", accessToken);
+      response.put("REFRESH_TOKEN", refreshToken);
+      response.put("USER_ID", user.getId().toString());
+      return response;
     }
   }
 

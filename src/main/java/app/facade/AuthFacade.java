@@ -60,7 +60,7 @@ public class AuthFacade {
     Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
-    return ResponseEntity.ok(this.generateTokenPair(currentUser));
+    return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(currentUser));
   }
 
   /**
@@ -79,7 +79,7 @@ public class AuthFacade {
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
     UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
 
-    return ResponseEntity.ok(this.generateTokenPair(freshUser));
+    return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(freshUser));
   }
 
   /**
@@ -129,7 +129,7 @@ public class AuthFacade {
       this.userService.updatePassword(userId, passwordResetDto.getFreshPassword());
       UserModel currUser = this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
-      return ResponseEntity.ok(this.generateTokenPair(currUser));
+      return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(currUser));
     } else return ResponseEntity.badRequest().body(new HashMap<>() {{
       put("ERROR", "Token is not valid to reset password");
     }});
@@ -155,27 +155,8 @@ public class AuthFacade {
     String token = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
     if (this.jwtTokenService.validateToken(token, TokenType.REFRESH) && !this.jwtTokenService.checkRefreshTokenStatus(token)) {
       UserModel currUser = this.userService.getUserByRefreshToken(token);
-      return ResponseEntity.ok(generateTokenPair(currUser));
+      return ResponseEntity.ok(jwtTokenService.generateTokenPair(currUser));
     } else return ResponseEntity.status(401).body(new HashMap<>());
-  }
-
-  /**
-   * Method returns generated access and refresh token pair based on provided user model
-   */
-  public HashMap<String, String> generateTokenPair(UserModel user) {
-    String accessToken = this.jwtTokenService.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
-    String refreshToken = this.jwtTokenService.createToken(user.getId(), TokenType.REFRESH);
-
-    //Update refresh token for current user
-    this.jwtTokenService.updateRefreshToken(user, refreshToken);
-    this.jwtTokenService.changeRefreshTokenStatus(user.getId(), false);
-
-    //JWT tokens for response packing
-    HashMap<String, String> response = new HashMap<>();
-    response.put("ACCESS_TOKEN", accessToken);
-    response.put("REFRESH_TOKEN", refreshToken);
-    response.put("USER_ID", user.getId().toString());
-    return response;
   }
 }
 
