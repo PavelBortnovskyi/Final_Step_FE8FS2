@@ -1,4 +1,7 @@
+import { useDispatch } from 'react-redux';
+
 import { myAxios } from './axiosSetup.js';
+import { notAuthenticated } from 'src/redux/reducers/authSlice.js';
 
 export const getTokens = () => {
   return {

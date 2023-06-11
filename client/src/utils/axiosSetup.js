@@ -14,18 +14,20 @@ if (accessToken) setAuthToken(accessToken);
 myAxios.interceptors.response.use(
   (r) => r,
   async function (error) {
-    // TODO: need delete
-    return;
-
     const { refreshToken } = getTokens();
     const originalRequest = error.config;
+
+    // if refresh token is empty
+    if (!refreshToken) return;
 
     if (originalRequest._retry) {
       setAuthToken();
       setRefreshToken();
     } else if (error.response.status === 401) {
-      console.log('else');
       originalRequest._retry = true;
+
+      // if 401 error from /auth/refresh
+      if (originalRequest.url === '/auth/refresh') return;
 
       return await myAxios
         .get('/auth/refresh', {
@@ -34,19 +36,16 @@ myAxios.interceptors.response.use(
           },
         })
         .then(({ data }) => {
-          console.log('data', data);
           setAuthToken(data.ACCESS_TOKEN);
           setRefreshToken(data.REFRESH_TOKEN);
-          originalRequest.headers.Authorization = data.ACCESS_TOKEN;
+          originalRequest.headers.Authorization = `Bearer ${data.ACCESS_TOKEN}`;
           return myAxios(originalRequest);
         })
         .catch((err) => {
-          console.log('error', err);
           setAuthToken();
           setRefreshToken();
         });
     }
-    console.log('last', error);
     return Promise.reject(error);
   }
 );

@@ -8,15 +8,21 @@ import { ConversationList } from './ConversationList/ConversationList';
 import { useSelector } from 'react-redux';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // ************ Messages ************
 export const Messages = () => {
-  // send user to home if not authorization
+  const theme = useTheme();
+
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
-  if (!isAuthenticated) navigate('/');
 
-  const theme = useTheme();
+  // send user to home if not authorization
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <Box>
