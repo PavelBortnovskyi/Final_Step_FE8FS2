@@ -1,16 +1,60 @@
 import { Box, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Post from 'src/components/Post/Post';
 import { Link } from 'react-router-dom';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
-import TweetBox from 'src/components/TweetBox/TweetBox';
 import InputAvatar from 'src/UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
 import TweetPost from 'src/UI/TweetPost';
 import CommentsList from 'src/components/Comments/CommentsList';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTweetByID } from 'src/redux/selectors/selectors';
+import { getTweetById } from 'src/redux/thunk/getTweetById';
+import { likePost } from 'src/redux/thunk/likeTweet';
+
+import { createTweetReply } from 'src/redux/thunk/replyTweet';
 
 function TweetPage() {
+  const { id } = useParams();
+  const user = useSelector((state) => state.user.user) || '';
+  const dispatch = useDispatch();
+
+  const [postInputText, setPostInputText] = useState('');
+  const [postImages, setPostImages] = useState([]);
+
+  console.log(postInputText);
+  const handleInput = (ev) => {
+    setPostInputText(ev);
+  };
+
+  const handleFileSelect = (img) => {
+    setPostImages([...postImages, img]);
+  };
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...postImages];
+    updatedImages.splice(index, 1);
+    setPostImages(updatedImages);
+  };
+
+  const handleSubmit = () => {
+    dispatch(createTweetReply({ id, postInputText, postImages }));
+    setPostInputText('');
+    setPostImages([]);
+  };
+
+  //getting single tweet
+  useEffect(() => {
+    dispatch(getTweetById(id));
+  }, [id]);
+  const tweet = useSelector(getTweetByID);
+  const post = tweet.tweet;
+  /////////////////
+  //Like tweet
+  // useEffect(() => {
+  //   dispatch(likePost(id));
+  // }, [post.countLikes]);
+
   return (
     <Box
       sx={{
@@ -36,42 +80,33 @@ function TweetPage() {
         </Box>
       </Link>
 
-      <TweetPost
-        displayName="Artem Shevchuk"
-        username="Jocellyn Flores"
-        verified={false}
-        text="This glorious backpack has been on many adventures now. It is comfortable, holds a ton which the/a packing cube to increase this. Honestly it is surprising how much it holds. I’m also not the gentlest with my backpacks and this one has help up.."
-        image="https://31.media.tumblr.com/b00badbaad9a499a16f36c6ecd1ddccb/tumblr_mkygq9DYRb1ryx1p2o1_400.gif"
-        logoUrl="./img/avatar.JPG"
-        showIconList={false}
-      />
-
-      {/* likes */}
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '5px',
-          py: '20px',
-          pl: '10px',
-          borderBottom: '1px solid rgb(56, 68, 77)',
-        }}
-      >
-        <Typography fontWeight={800} variant="subtitle1">
-          18
-        </Typography>
-        <Typography fontWeight={400} color="grey" variant="subtitle1">
-          Likes
-        </Typography>
-      </Box>
-
-      {/* Tweet actions like comment or retweet */}
+      {post && (
+        <TweetPost
+          id={post.tweetId}
+          displayName={user.fullName}
+          text={post.body}
+          username={post.userTag}
+          logoUrl={post.userAvatarImage}
+          verified={user.isVerified}
+          image={post.attachmentsImages[0]}
+          likes={post.countLikes}
+          reply={post.countReply}
+          retweet={post.countRetweets}
+        />
+      )}
       <Grid
         container
         alignItems="center"
         justifyContent="center"
         sx={{ borderBottom: '1px solid rgb(56, 68, 77)', pb: '20px' }}
       >
-        <PostIconList />
+        {post && (
+          <PostIconList
+            likes={post.countLikes}
+            reply={post.countReply}
+            retweet={post.countRetweets}
+          />
+        )}
       </Grid>
 
       <Box
@@ -82,11 +117,13 @@ function TweetPage() {
         }}
       >
         <InputAvatar
-          avatarUrl="/img/avatar.JPG"
+          value={postInputText}
+          avatarUrl={user.avatarImgUrl}
           placeholder="Tweet your reply"
+          feature={handleInput}
         />
         <Box mr="10px">
-          <TweetButton text="Reply" />
+          <TweetButton text="Reply" fnc={handleSubmit} />
         </Box>
       </Box>
       <CommentsList />

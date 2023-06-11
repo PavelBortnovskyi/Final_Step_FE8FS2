@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 
-export const getTweetById = createAsyncThunk(
-  'tweet/getTweet',
-  async (id, thunkAPI) => {
+export const likePost = createAsyncThunk(
+  'tweet/likeToTweet',
+  async ({ id }, thunkAPI) => {
     try {
-      const { data } = await myAxios.get(`/tweet/${id}`);
-      return data;
+      const { data } = await myAxios.post(`/tweet/like/${id}`);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

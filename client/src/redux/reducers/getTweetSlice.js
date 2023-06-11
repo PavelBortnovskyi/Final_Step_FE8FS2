@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweets } from '../thunk/getTweets.js';
+import { getTweetsFollowing } from '../thunk/getTweets.js';
 
 const initialState = {
   tweets: [],
@@ -14,16 +14,16 @@ export const tweetSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(getTweets.pending, (state) => {
+      .addCase(getTweetsFollowing.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getTweets.fulfilled, (state, action) => {
+      .addCase(getTweetsFollowing.fulfilled, (state, action) => {
         state.tweets = action.payload;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getTweets.rejected, (state, action) => {
+      .addCase(getTweetsFollowing.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

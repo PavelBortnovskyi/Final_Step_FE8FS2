@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
         element: <UserBiIdPage />,
       },
       {
-        path: '/tweet',
+        path: '/tweet/:id',
         element: <TweetPage />,
       },
 
@@ -138,11 +138,11 @@ export const router = createBrowserRouter([
         element: <PageDeveloping />,
       },
       {
-        path: '/followers',
+        path: '/:id/followers',
         element: <FollowersPage />,
       },
       {
-        path: '/followings',
+        path: '/:id/followings',
         element: <FollowingsPage />,
       },
     ],

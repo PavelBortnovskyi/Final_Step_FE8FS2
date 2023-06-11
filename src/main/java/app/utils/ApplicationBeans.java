@@ -27,6 +27,9 @@ public class ApplicationBeans {
   @Value("${cloudinary.apiSecret}")
   private String apiSecret;
 
+  @Value("${gmail.password}")
+  private String mailPass;
+
   @Bean
   public ModelMapper modelMapper() {
     ModelMapper mm = new ModelMapper();
@@ -49,7 +52,7 @@ public class ApplicationBeans {
     mailSender.setPort(587);
 
     mailSender.setUsername("fe8fs2finalstep@gmail.com");
-    mailSender.setPassword("vgrralowhzszavbs");
+    mailSender.setPassword(mailPass);
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
@@ -59,6 +62,19 @@ public class ApplicationBeans {
 
     return mailSender;
   }
+
+//  @Bean
+//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest>
+//  authorizationRequestRepository() {
+//    return new HttpSessionOAuth2AuthorizationRequestRepository();
+//  }
+
+//  @Bean
+//  public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest>
+//  accessTokenResponseClient() {
+//
+//    return new NimbusAuthorizationCodeTokenResponseClient();
+//  }
 
   @Bean
   public ObjectMapper getObjectMapper() {

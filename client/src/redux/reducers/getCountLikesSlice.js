@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweetById } from '../thunk/getTweetById.js';
+import { getCountLikes } from '../thunk/getCountLikes.js';
 
 const initialState = {
-  singleTweet: {},
+  quantityLikes: null,
   isLoading: false,
   error: '',
 };
 
-export const tweetByIdSlice = createSlice({
-  name: 'singleTweet',
+export const quantityLikes = createSlice({
+  name: 'quantityLike',
   initialState,
 
   extraReducers: (builder) => {
@@ -19,7 +19,7 @@ export const tweetByIdSlice = createSlice({
         state.error = null;
       })
       .addCase(getTweetById.fulfilled, (state, action) => {
-        state.tweet = action.payload;
+        state.quantityLikes = action.payload;
         state.isLoading = false;
         state.error = null;
       })
@@ -29,4 +29,4 @@ export const tweetByIdSlice = createSlice({
       });
   },
 });
-export default tweetByIdSlice.reducer;
+export default quantityLikes.reducer;
