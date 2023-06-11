@@ -10,6 +10,7 @@ import { getTokens } from 'src/utils/tokens';
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
+// 1
 export const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
