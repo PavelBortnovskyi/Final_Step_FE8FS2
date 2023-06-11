@@ -1,12 +1,16 @@
 package app.security;
 
 import app.facade.AuthFacade;
+import app.model.UserModel;
+import app.service.JwtTokenService;
 import app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -15,22 +19,56 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Objects;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
   @Autowired
-  private AuthFacade authFacade;
+  private final JwtTokenService jwtTokenService;
+
+  @Autowired
+  private final UserService userService;
+
+  @Autowired
+  private final PasswordEncoder encoder;
 
   public void onAuthenticationSuccess(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Authentication authentication) throws IOException, ServletException {
+    log.info("Processing OAuth2 user");
     OAuth2UserDetailsImpl oauth2User = (OAuth2UserDetailsImpl) authentication.getPrincipal();
 
     OutputStream outputStream = response.getOutputStream();
     ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.writeValue(outputStream, authFacade.processOAuth2User(oauth2User).getBody());
+    HashMap<String, String> tokenResponse = new HashMap<>();
+    //Extract email
+    String email = oauth2User.getAttribute("email");
+    //Extract OAuth provider id
+    String registrationId = oauth2User.getOauth2ClientName();
+    //Check presence in DB
+    if (this.userService.isEmailPresentInDB(email))
+      tokenResponse = this.jwtTokenService.generateTokenPair(this.userService.getUser(email));
+    else {
+      UserModel freshUser = new UserModel();
+      freshUser.setEmail(email);
+      freshUser.setFullName((String) oauth2User.getAttribute("name"));
+      freshUser.setPassword(encoder.encode("dfgdfnbghrebv"));
+      if ("Google".equals(registrationId)) {
+        freshUser.setAvatarImgUrl((String) oauth2User.getAttribute("picture"));
+        freshUser.setUserTag("@" + freshUser.getFullName());
+      } else if ("facebook".equals(registrationId)) {
+        freshUser.setUserTag("@" + (String) oauth2User.getAttribute("first_name"));
+        freshUser.setBirthDate(LocalDate.parse((String) Objects.requireNonNull(oauth2User.getAttribute("birthday"))));
+      }
+      freshUser.setVerified(true);
+      tokenResponse = this.jwtTokenService.generateTokenPair(this.userService.save(freshUser));
+    }
+    objectMapper.writeValue(outputStream, tokenResponse);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     response.setStatus(200);

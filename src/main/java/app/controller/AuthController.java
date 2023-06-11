@@ -105,7 +105,6 @@ public class AuthController {
     return this.authFacade.makeRefresh(request);
   }
 
-
   @GetMapping("/login/oauth2/google")
   public ResponseEntity<Void> loginWithGoogle() {
     // Генерируем случайное значение state

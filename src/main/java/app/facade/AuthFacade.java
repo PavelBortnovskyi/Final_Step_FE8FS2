@@ -20,8 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -161,31 +159,7 @@ public class AuthFacade {
     if (this.jwtTokenService.validateToken(token, TokenType.REFRESH) && !this.jwtTokenService.checkRefreshTokenStatus(token)) {
       UserModel currUser = this.userService.getUserByRefreshToken(token);
       return ResponseEntity.ok(jwtTokenService.generateTokenPair(currUser));
-    } else return ResponseEntity.status(401).body(new HashMap<>());
-  }
-
-  public ResponseEntity<HashMap<String, String>> processOAuth2User(OAuth2UserDetailsImpl oAuth2User) {
-    //Extract email
-    String email = oAuth2User.getAttribute("email");
-    //Extract OAuth provider id
-    String registrationId = oAuth2User.getOauth2ClientName();
-    //Check presence in DB
-    if (this.userService.isEmailPresentInDB(email))
-      throw new UserAlreadyRegisteredException("email: " + email);
-    else {
-      UserModel freshUser = new UserModel();
-      freshUser.setEmail(email);
-      freshUser.setFullName((String) oAuth2User.getAttribute("name"));
-      if ("google".equals(registrationId)) {
-        freshUser.setAvatarImgUrl((String) oAuth2User.getAttribute("picture"));
-        freshUser.setUserTag("@" + (String) oAuth2User.getAttribute("name"));
-      } else if ("facebook".equals(registrationId)) {
-        freshUser.setUserTag("@" + (String) oAuth2User.getAttribute("first_name"));
-        freshUser.setBirthDate(LocalDate.parse((String) Objects.requireNonNull(oAuth2User.getAttribute("birthday"))));
-      }
-      freshUser.setVerified(true);
-      return ResponseEntity.ok(jwtTokenService.generateTokenPair(this.userService.save(freshUser)));
-    }
+    } else return ResponseEntity.status(400).body(new HashMap<>());
   }
 }
 
