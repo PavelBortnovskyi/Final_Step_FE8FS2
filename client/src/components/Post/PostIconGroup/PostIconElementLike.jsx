@@ -9,7 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 function PostIconElementLike({ icon, quantity, color, id }) {
   const dispatch = useDispatch();
   const [like, setLike] = useState(false);
-  console.log('is like ', like);
+
   // get like quantity
   useEffect(() => {
     if (id !== undefined && id !== '') {

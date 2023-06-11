@@ -16,12 +16,9 @@ const InputStyled = styled(FilledInput)((props) => ({
   '&:before': {
     content: 'none',
   },
-  
-}))
+}));
 
-
-function InputAvatar({ avatarUrl, placeholder, feature }) {
-
+function InputAvatar({ avatarUrl, placeholder, feature, value }) {
   return (
     <Box display="flex" p="20px">
       <Avatar sx={{ width: 56, height: 56 }} alt="Remy Sharp" src={avatarUrl} />
@@ -31,7 +28,7 @@ function InputAvatar({ avatarUrl, placeholder, feature }) {
         disableUnderline={false}
         name="PostText"
         type="text"
-        
+        value={value}
         onChange={(event) => feature(event.target.value)}
       />
     </Box>
