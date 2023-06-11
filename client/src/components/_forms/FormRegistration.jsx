@@ -31,9 +31,14 @@ const TextFieldWhite = styled(TextField)(({ theme }) => ({
   },
 }));
 
+// for check email
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
 // structure data for form
 const SignupSchema = Yup.object().shape({
-  email: Yup.string().email('invalid email address').required('required field'),
+  email: Yup.string()
+    .matches(emailRegex, 'invalid email address')
+    .required('required field'),
   fullName: Yup.string()
     .min(2, 'must be more than 2 characters')
     .max(20, 'must be no more than 20 characters')
@@ -46,6 +51,9 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, 'must be more than 8 characters')
     .required('required field'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('required field'),
   // birthDate: Yup.date()
   //   .max(new Date(), 'Date cannot be greater than current')
   //   .required('required field'),
@@ -53,7 +61,6 @@ const SignupSchema = Yup.object().shape({
 
 // Formik form
 export const FormRegistration = () => {
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   // get message from server after authorization
@@ -84,16 +91,18 @@ export const FormRegistration = () => {
 
   // default value for form
   const initialValues = {
-    email: 'test@test.com',
-    fullName: 'Семен Семенович',
-    userTag: 'semen',
-    password: '12345678',
+    email: 'user7@gmail.com',
+    fullName: 'Giltam Furios',
+    userTag: 'giltam',
+    password: '11111111',
+    confirmPassword: '11111111',
   };
   // const initialValues = {
   //   email: '',
   //   fullName: '',
   //   userTag: '',
   //   password: '',
+  // confirmPassword: '',
   //   // birthDate: '',
   // };
 
@@ -134,7 +143,7 @@ export const FormRegistration = () => {
               fullWidth
               id="fullName"
               name="fullName"
-              label="fullName"
+              label="Name"
               type="text"
               value={values.fullName}
               onChange={handleChange}
@@ -150,7 +159,7 @@ export const FormRegistration = () => {
               fullWidth
               id="userTag"
               name="userTag"
-              label="userTag"
+              label="Tag"
               type="text"
               value={values.userTag}
               onChange={handleChange}
@@ -171,6 +180,20 @@ export const FormRegistration = () => {
               onBlur={handleBlur}
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
+            />
+
+            {/* confirm password */}
+            <TextFieldWhite
+              fullWidth
+              id="confirmPassword"
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              value={values.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+              helperText={touched.confirmPassword && errors.confirmPassword}
             />
 
             {/*  birthDate */}
