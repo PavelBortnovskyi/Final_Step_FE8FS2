@@ -81,6 +81,10 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset").permitAll()
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
+      .antMatchers("/chat-ws").permitAll()
+      .antMatchers("/chat-ws/**").permitAll()
+      .antMatchers("/api/v1/message").permitAll()
+      .antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
@@ -97,7 +101,6 @@ public class SecurityConfiguration {
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     //.exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
-
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
 
@@ -109,8 +112,11 @@ public class SecurityConfiguration {
 
     //CORS config
     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-    configuration.addAllowedOrigin("http://localhost:3000/**");
-    configuration.addAllowedOrigin("https://final-step-fe-8-fs-2.vercel.app/**");
+    configuration.addAllowedOriginPattern("http://localhost:3000");
+    configuration.addAllowedOriginPattern("http://localhost:3000/**");
+    configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
+    configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
+    configuration.addAllowedOriginPattern("*");
     configuration.addAllowedMethod(HttpMethod.GET);
     configuration.addAllowedMethod(HttpMethod.POST);
     configuration.addAllowedMethod(HttpMethod.PUT);
