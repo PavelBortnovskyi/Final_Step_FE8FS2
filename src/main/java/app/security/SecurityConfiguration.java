@@ -4,10 +4,9 @@ import app.exceptions.FilterExceptionHandler;
 import app.service.OAuth2UserServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,23 +14,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-
-import java.util.Arrays;
 
 @Log4j2
 @Configuration
@@ -86,8 +72,9 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset").permitAll()
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
-      //.antMatchers("/user/**").permitAll()
-      //.antMatchers("/tweet/**").permitAll()
+      .antMatchers("/chat-ws/**").permitAll()
+      .antMatchers("/api/v1/message").permitAll()
+      .antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
       .and()
       //.oauth2Login()
@@ -114,6 +101,10 @@ public class SecurityConfiguration {
     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
     configuration.addAllowedOrigin("http://localhost:3000/**");
     configuration.addAllowedOrigin("https://final-step-fe-8-fs-2.vercel.app/**");
+    configuration.addAllowedMethod(HttpMethod.GET);
+    configuration.addAllowedMethod(HttpMethod.POST);
+    configuration.addAllowedMethod(HttpMethod.PUT);
+    configuration.addAllowedMethod(HttpMethod.DELETE);
     httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
     //httpSec.cors().disable();
 

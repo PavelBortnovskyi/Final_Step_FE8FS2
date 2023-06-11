@@ -1,7 +1,9 @@
+import { useDispatch } from 'react-redux';
+
 import { myAxios } from './axiosSetup.js';
+import { notAuthenticated } from 'src/redux/reducers/authSlice.js';
 
 export const getTokens = () => {
-  // console.log('getTokens');
   return {
     accessToken: localStorage.getItem('accessToken'),
     refreshToken: localStorage.getItem('refreshToken'),
@@ -9,8 +11,6 @@ export const getTokens = () => {
 };
 
 export const setAuthToken = (token) => {
-  // console.log('auth', token);
-
   if (token) {
     myAxios.defaults.headers.common.Authorization = `Bearer ${token}`;
     localStorage.setItem('accessToken', token);
@@ -21,7 +21,6 @@ export const setAuthToken = (token) => {
 };
 
 export const setRefreshToken = (token) => {
-  // console.log('refresh', token);
   if (token) {
     localStorage.setItem('refreshToken', token);
   } else {

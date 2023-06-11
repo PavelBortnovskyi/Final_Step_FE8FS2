@@ -1,35 +1,30 @@
-import { Box } from '@mui/material';
-// import { useSelector } from "react-redux";
-import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
-import { User } from 'src/components/User/User';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
+import { useSelector } from 'react-redux';
 
-import { getFollowers } from 'src/redux/thunk/getFollowers';
-import { getFollowings } from 'src/redux/thunk/getFollowings';
+import { User } from 'src/components/User/User';
+import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
+
 import PostList from 'src/components/Post/PostList';
 
 export const UserPage = () => {
-  const profile = 'profile';
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+
   const user = useSelector((state) => state.user.user) || '';
-  const dispatch = useDispatch();
   const lincToFollowings = '/profile/followings';
   const lincToFollowers = '/profile/followers';
   const editProfile = <LinkToEditProfile />;
 
-  // useEffect(() => {
-  //   // if (following.length === 0) {
-  //   dispatch(getFollowings(profile));
-  //   //   return;
-  //   // }
-  // }, [dispatch]);
+  // send user to home if not authorization
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
-  // useEffect(() => {
-  //   // if (follower.length === 0) {
-  //   dispatch(getFollowers(profile));
-  //   // return;
-  //   // }
-  // }, [dispatch]);
   return (
     <>
       <Box

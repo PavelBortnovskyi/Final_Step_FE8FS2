@@ -2,7 +2,6 @@ package app.security;
 
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
-import app.model.UserModel;
 import app.service.JwtTokenService;
 import app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,8 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Log4j2
 @Component
@@ -77,7 +74,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod)
+      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod),
+      new AntPathRequestMatcher("/chat-ws/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/message", requestMethod),
+      new AntPathRequestMatcher("/api/v1/message/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {

@@ -12,6 +12,7 @@ import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -122,15 +123,15 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
   public Page<Tweet> tweetsReply(Long tweetId, int page, int pageSize) {
-    return tweetModelRepository.tweetsReply(getTweetById(tweetId), Pageable.ofSize(pageSize).withPage(page));
+    return tweetModelRepository.tweetsReply(getTweetById(tweetId), PageRequest.of(page, pageSize));
   }
 
   public Page<Tweet> getUserTweets(Long userId, int page, int pageSize) {
     return tweetModelRepository.getUserTweets(userId, Pageable.ofSize(pageSize).withPage(page));
   }
 
-  public ResponseEntity<List<Tweet>> listTweets(int page, int pageSize) {
-    return ResponseEntity.ok(tweetModelRepository.listTweets(Pageable.ofSize(pageSize).withPage(page)).toList());
+  public Page<Tweet> getAllTweets(int page, int pageSize) {
+    return tweetModelRepository.getAllTweets(PageRequest.of(page, pageSize));
   }
 
   public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
