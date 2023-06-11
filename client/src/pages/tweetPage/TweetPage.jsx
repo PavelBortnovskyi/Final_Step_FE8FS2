@@ -3,45 +3,19 @@ import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from 'react-router-dom';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
-import InputAvatar from 'src/UI/InputAvatar';
-import TweetButton from 'src/UI/TweetButton';
 import TweetPost from 'src/UI/TweetPost';
 import CommentsList from 'src/components/Comments/CommentsList';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTweetByID } from 'src/redux/selectors/selectors';
 import { getTweetById } from 'src/redux/thunk/getTweetById';
-import { likePost } from 'src/redux/thunk/likeTweet';
 
-import { createTweetReply } from 'src/redux/thunk/replyTweet';
+import Retweet from './Retweet';
 
 function TweetPage() {
   const { id } = useParams();
   const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
-
-  const [postInputText, setPostInputText] = useState('');
-  const [postImages, setPostImages] = useState([]);
-
-  console.log(postInputText);
-  const handleInput = (ev) => {
-    setPostInputText(ev);
-  };
-
-  const handleFileSelect = (img) => {
-    setPostImages([...postImages, img]);
-  };
-  const handleDeleteImage = (index) => {
-    const updatedImages = [...postImages];
-    updatedImages.splice(index, 1);
-    setPostImages(updatedImages);
-  };
-
-  const handleSubmit = () => {
-    dispatch(createTweetReply({ id, postInputText, postImages }));
-    setPostInputText('');
-    setPostImages([]);
-  };
 
   //getting single tweet
   useEffect(() => {
@@ -108,24 +82,7 @@ function TweetPage() {
           />
         )}
       </Grid>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <InputAvatar
-          value={postInputText}
-          avatarUrl={user.avatarImgUrl}
-          placeholder="Tweet your reply"
-          feature={handleInput}
-        />
-        <Box mr="10px">
-          <TweetButton text="Reply" fnc={handleSubmit} />
-        </Box>
-      </Box>
+      <Retweet />
       <CommentsList />
     </Box>
   );

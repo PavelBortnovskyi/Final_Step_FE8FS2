@@ -2,7 +2,7 @@ import { HomePage } from 'src/pages/HomePage';
 import { UserPage } from 'src/pages/UserPage';
 import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
-import TweetPage from 'src/pages/TweetPage';
+import TweetPage from 'src/pages/tweetPage/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';

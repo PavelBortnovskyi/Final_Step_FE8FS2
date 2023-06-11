@@ -17,24 +17,24 @@ const CustomTab = styled(Tab)((props) => ({
   },
 }));
 
-function MainPage_header() {
-  const user = useSelector((state) => state.user.user) || "";
+function MainPage_header({ handleTab }) {
+  const user = useSelector((state) => state.user.user) || '';
   const [tabIndex, setTabIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useMode();
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
+    handleTab(tabIndex);
+    console.log('in Heder ', tabIndex);
   };
 
   return (
     <Box
       sx={{
-        backgroundColor: `${theme.palette.background.default}`,
-        backdropFilter: 'blur(6px)',
+        backdropFilter: 'blur(15px)',
         width: '100%',
         pb: '2px',
-        borderBottom: '1px solid rgb(56, 68, 77)',
         position: 'sticky',
         top: '0',
         zIndex: 13,
@@ -49,6 +49,7 @@ function MainPage_header() {
             fontSize: '20px',
             textDecoration: 'none',
             color: `${theme.palette.text.primary}`,
+            fontWeight: '700',
           }}
         >
           Home
@@ -73,8 +74,14 @@ function MainPage_header() {
       </Box>
 
       <Tabs value={tabIndex} onChange={handleTabChange}>
-        <CustomTab label="For you" />
-        <CustomTab label="Following" />
+        <CustomTab
+          label="For you"
+          sx={{ color: `${theme.palette.text.primary}` }}
+        />
+        <CustomTab
+          label="Following"
+          sx={{ color: `${theme.palette.text.primary}` }}
+        />
       </Tabs>
     </Box>
   );
