@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from 'src/layout/Layout';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
-import { getTokens } from 'src/utils/tokens';
-import { notAuthenticated } from 'src/redux/reducers/authSlice';
-
 import { useSocket } from 'src/utils/socketSetup';
+import { getTokens } from 'src/utils/tokens';
+
 import { Stomp, Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
@@ -19,9 +18,9 @@ export const App = () => {
 
   // const stompClientRef = useRef(null);
 
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
+  // const headers = {
+  //   Authorization: `Bearer ${accessToken}`,
+  // };
 
   // useEffect(() => {
   //   const socket = new SockJS(
@@ -72,7 +71,7 @@ export const App = () => {
     if (accessToken) {
       dispatch(getUser());
     }
-  }, [accessToken, dispatch, isAuthenticated]);
+  }, [accessToken, dispatch]);
 
   return <Layout />;
 };
