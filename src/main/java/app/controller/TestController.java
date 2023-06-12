@@ -117,21 +117,21 @@ public class TestController {
     Thread.sleep(2000);
 
     //Group sample
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(5L).get(), "Hello everyone!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(5L).get(), "Hello everyone!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(4L).get(), "Hi!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(4L).get(), "Hi!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(3L).get(), "Hello!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(3L).get(), "Hello!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(2L).get(), "Howdy!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(2L).get(), "Howdy!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(1L).get(), "Hail!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(1L).get(), "Hail!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(1L).get(), "How is project?", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(1L).get(), "How is project?", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(2L).get(), "OMG", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(2L).get(), "OMG", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(4L).get(), "#sdf%5658**@@@^", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(groupChatId).get(), this.userService.getUserO(4L).get(), "#sdf%5658**@@@^", LocalDateTime.now()));
     Thread.sleep(2000);
   }
 
