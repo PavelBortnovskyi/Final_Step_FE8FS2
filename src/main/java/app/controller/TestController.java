@@ -45,15 +45,94 @@ public class TestController {
 
   @PostMapping(value = "/addMessages", produces = MediaType.APPLICATION_JSON_VALUE)
   public void handleAddMessages() throws InterruptedException {
-    this.chatService.createChat(3L, 1L);
-    this.chatService.createChat(3L, 2L);
-    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(3L).get(), "Hi my friends!", LocalDateTime.now()));
+    Long chatSample1 = this.chatService.createChat(1L, 2L).getId();
+    Long chatSample2 = this.chatService.createChat(1L, 3L).getId();
+    Long chatSample3 = this.chatService.createChat(1L, 4L).getId();
+    Long chatSample4 = this.chatService.createChat(2L, 3L).getId();
+    Long chatSample5 = this.chatService.createChat(2L, 5L).getId();
+    Long chatSample6 = this.chatService.createChat(3L, 4L).getId();
+    Long chatSample7 = this.chatService.createChat(4L, 2L).getId();
+    Long groupChatId = this.chatService.createChat(5L, 1L).getId();
+    this.chatService.addUserToChat(2L, groupChatId);
+    this.chatService.addUserToChat(3L, groupChatId);
+    this.chatService.addUserToChat(4L, groupChatId);
+
+    //Sample 1
+    this.messageService.save(new Message(this.chatService.findById(chatSample1).get(), this.userService.getUserO(1L).get(), "Hi my friend!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(3L).get(), "Hi all!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(chatSample1).get(), this.userService.getUserO(2L).get(), "Aloha!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(1L).get(), this.userService.getUserO(1L).get(), "Hello!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(chatSample1).get(), this.userService.getUserO(2L).get(), "How are you today?!", LocalDateTime.now()));
     Thread.sleep(2000);
-    this.messageService.save(new Message(this.chatService.findById(2L).get(), this.userService.getUserO(2L).get(), "Hello there!", LocalDateTime.now()));
+    this.messageService.save(new Message(this.chatService.findById(chatSample1).get(), this.userService.getUserO(1L).get(), "I am fine, thanks!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample1).get(), this.userService.getUserO(1L).get(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ", LocalDateTime.now()));
+
+    //Sample 2
+    this.messageService.save(new Message(this.chatService.findById(chatSample2).get(), this.userService.getUserO(1L).get(), "Wake up, Neo!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample2).get(), this.userService.getUserO(1L).get(), "Wake up , Matrix has you!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample2).get(), this.userService.getUserO(1L).get(), "Follow the white rabbit, Neo", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample2).get(), this.userService.getUserO(3L).get(), "Again? My Kung-Fu is still more powerfully than yours, go away!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample2).get(), this.userService.getUserO(1L).get(), "Booooring...", LocalDateTime.now()));
+
+    //Sample 3
+    this.messageService.save(new Message(this.chatService.findById(chatSample3).get(), this.userService.getUserO(1L).get(), "Доброго вечора, ми з України!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample3).get(), this.userService.getUserO(1L).get(), "https://www.youtube.com/watch?v=BvgNgTPTkSo", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample3).get(), this.userService.getUserO(4L).get(), "Слава Україні!", LocalDateTime.now()));
+    Thread.sleep(2000);
+
+    //Sample 4
+    this.messageService.save(new Message(this.chatService.findById(chatSample4).get(), this.userService.getUserO(3L).get(), "Дратуті!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample4).get(), this.userService.getUserO(2L).get(), "І тобі привіт.", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample4).get(), this.userService.getUserO(2L).get(), "Комарів бойових погодував?", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample4).get(), this.userService.getUserO(2L).get(), "Качок-перехоплювачів відправив?", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample4).get(), this.userService.getUserO(3L).get(), "Авжеж!", LocalDateTime.now()));
+
+    //Sample 5
+    this.messageService.save(new Message(this.chatService.findById(chatSample5).get(), this.userService.getUserO(5L).get(), "こんにちは兄弟！", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample5).get(), this.userService.getUserO(5L).get(), "散歩に行く？", LocalDateTime.now()));
+    Thread.sleep(2000);
+
+    //Sample 6
+    this.messageService.save(new Message(this.chatService.findById(chatSample6).get(), this.userService.getUserO(3L).get(), "Haluatko lisää näitä pehmeitä tuoreita pullia?)))", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample6).get(), this.userService.getUserO(4L).get(), "Kuoren kanssa!", LocalDateTime.now()));
+    Thread.sleep(2000);
+
+    //Sample 7
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(2L).get(), "आज मैंने नोब्स के लिए एक और गाइड लिखी!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(4L).get(), "तो आप एक नोब हैं", LocalDateTime.now()));
+    Thread.sleep(2000);
+
+    //Group sample
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(5L).get(), "Hello everyone!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(4L).get(), "Hi!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(3L).get(), "Hello!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(2L).get(), "Howdy!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(1L).get(), "Hail!", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(1L).get(), "How is project?", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(2L).get(), "OMG", LocalDateTime.now()));
+    Thread.sleep(2000);
+    this.messageService.save(new Message(this.chatService.findById(chatSample7).get(), this.userService.getUserO(4L).get(), "#sdf%5658**@@@^", LocalDateTime.now()));
+    Thread.sleep(2000);
   }
 
   @PostMapping(value = "/initUsers", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -64,6 +64,8 @@ public class SecurityConfiguration {
       .antMatchers("/test/**").permitAll()
       .antMatchers("/chat-ws").permitAll()
       .antMatchers("/chat-ws/**").permitAll()
+      .antMatchers("/notifications-ws").permitAll()
+      .antMatchers("/notifications-ws/**").permitAll()
       .antMatchers("/api/v1/message").permitAll()
       .antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
