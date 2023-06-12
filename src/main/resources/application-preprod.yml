@@ -29,6 +29,7 @@ spring:
       on-profile: preprod
   url:
     server: http://localhost:8080
+    additional-websockets-port: 8081
     client: http://localhost:3000
   mail:
     host: smtp.gmail.com
@@ -41,16 +42,28 @@ spring:
           auth: true
           starttls:
             enable: true
-  #security:
-    #oauth2:
-      #client:
-        #registration:
-          #google:
-            #client-id: ${GOOGLE_API_ID}
-            #client-secret: ${GOOGLE_API_SECRET}
-          #facebook:
-            #client-id: ${FB_API_ID}
-            #client-secret: ${FB_API_SECRET}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            redirectUri: "{baseUrl}/api/v1/auth/login/oauth2/code/google"
+            scope:
+              - email
+              - profile
+          facebook:
+            clientId: ${FACEBOOK_CLIENT_ID}
+            clientSecret: ${FACEBOOK_CLIENT_SECRET}
+            redirectUri: "{baseUrl}/api/v1/auth/login/oauth2/code/facebook"
+            scope:
+              - email
+              - public_profile
+              - user_birthday
+        provider:
+          facebook:
+            user-info-uri: "https://graph.facebook.com/me?fields=name,email,picture,first_name,birthday"
 jwt:
   secret: ${JWT_SECRET}
   secretRefresh: ${JWT_REFRESH_SECRET}
@@ -69,7 +82,12 @@ cloudinary:
   apiSecret: ${CLOUDINARY_API_SECRET}
 gmail:
   password: ${GMAIL_PASSWORD}
-
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+facebook:
+  client-id: ${FACEBOOK_CLIENT_ID}
+  client-secret: ${FACEBOOK_CLIENT_SECRET}
 
 
 
