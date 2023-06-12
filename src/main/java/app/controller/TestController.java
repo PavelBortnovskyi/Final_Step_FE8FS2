@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.enums.NotificationType;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.facade.AuthFacade;
@@ -42,6 +43,139 @@ public class TestController {
   private final TweetActionService tweetActionService;
 
   private final ChatService chatService;
+
+  private final NotificationService notificationService;
+
+  @PostMapping(value = "/addNotifications", produces = MediaType.APPLICATION_JSON_VALUE)
+  public void handleAddNotifications() throws InterruptedException {
+    Notification sample1 = new Notification();
+    sample1.setTweet(tweetService.getTweetById(1L));
+    sample1.setRead(true);
+    sample1.setNotificationType(NotificationType.LIKE);
+    sample1.setInitiatorUser(userService.getUser(2L));
+    sample1.setReceiverUser(sample1.getTweet().getUser());
+    this.notificationService.save(sample1);
+
+    Notification sample2 = new Notification();
+    sample2.setTweet(tweetService.getTweetById(1L));
+    sample2.setRead(false);
+    sample2.setNotificationType(NotificationType.LIKE);
+    sample2.setInitiatorUser(userService.getUser(3L));
+    sample2.setReceiverUser(sample2.getTweet().getUser());
+    this.notificationService.save(sample2);
+
+    Notification sample3 = new Notification();
+    sample3.setTweet(tweetService.getTweetById(1L));
+    sample3.setRead(false);
+    sample3.setNotificationType(NotificationType.LIKE);
+    sample3.setInitiatorUser(userService.getUser(4L));
+    sample3.setReceiverUser(sample3.getTweet().getUser());
+    this.notificationService.save(sample3);
+
+    Notification sample4 = new Notification();
+    sample4.setTweet(tweetService.getTweetById(1L));
+    sample4.setRead(false);
+    sample4.setNotificationType(NotificationType.LIKE);
+    sample4.setInitiatorUser(userService.getUser(5L));
+    sample4.setReceiverUser(sample4.getTweet().getUser());
+    this.notificationService.save(sample4);
+
+    Notification sample5 = new Notification();
+    sample5.setTweet(tweetService.getTweetById(1L));
+    sample5.setRead(true);
+    sample5.setNotificationType(NotificationType.QUOTE_TWEET);
+    sample5.setInitiatorUser(userService.getUser(1L));
+    sample5.setReceiverUser(sample5.getTweet().getUser());
+    this.notificationService.save(sample5);
+
+    Notification sample6 = new Notification();
+    sample6.setTweet(tweetService.getTweetById(1L));
+    sample6.setRead(false);
+    sample6.setNotificationType(NotificationType.QUOTE_TWEET);
+    sample6.setInitiatorUser(userService.getUser(2L));
+    sample6.setReceiverUser(sample6.getTweet().getUser());
+    this.notificationService.save(sample6);
+
+    Notification sample7 = new Notification();
+    sample7.setTweet(tweetService.getTweetById(1L));
+    sample7.setRead(true);
+    sample7.setNotificationType(NotificationType.REPLY);
+    sample7.setInitiatorUser(userService.getUser(3L));
+    sample7.setReceiverUser(sample7.getTweet().getUser());
+    this.notificationService.save(sample7);
+
+    Notification sample8 = new Notification();
+    sample8.setTweet(tweetService.getTweetById(1L));
+    sample8.setRead(false);
+    sample8.setNotificationType(NotificationType.REPLY);
+    sample8.setInitiatorUser(userService.getUser(4L));
+    sample8.setReceiverUser(sample8.getTweet().getUser());
+    this.notificationService.save(sample8);
+
+    Notification sample9 = new Notification();
+    sample9.setTweet(tweetService.getTweetById(1L));
+    sample9.setRead(true);
+    sample9.setNotificationType(NotificationType.RETWEET);
+    sample9.setInitiatorUser(userService.getUser(5L));
+    sample9.setReceiverUser(sample9.getTweet().getUser());
+    this.notificationService.save(sample9);
+
+    Notification sample10 = new Notification();
+    sample10.setTweet(tweetService.getTweetById(1L));
+    sample10.setRead(false);
+    sample10.setNotificationType(NotificationType.RETWEET);
+    sample10.setInitiatorUser(userService.getUser(2L));
+    sample10.setReceiverUser(sample10.getTweet().getUser());
+    this.notificationService.save(sample10);
+
+    Notification sample11 = new Notification();
+    sample11.setTweet(tweetService.getTweetById(27L));
+    sample11.setRead(false);
+    sample11.setNotificationType(NotificationType.LIKE);
+    sample11.setInitiatorUser(userService.getUser(5L));
+    sample11.setReceiverUser(sample11.getTweet().getUser());
+    this.notificationService.save(sample11);
+
+    Notification sample12 = new Notification();
+    sample12.setTweet(tweetService.getTweetById(27L));
+    sample12.setRead(true);
+    sample12.setNotificationType(NotificationType.LIKE);
+    sample12.setInitiatorUser(userService.getUser(2L));
+    sample12.setReceiverUser(sample12.getTweet().getUser());
+    this.notificationService.save(sample12);
+
+    Notification sample13 = new Notification();
+    sample13.setTweet(tweetService.getTweetById(27L));
+    sample13.setRead(true);
+    sample13.setNotificationType(NotificationType.RETWEET);
+    sample13.setInitiatorUser(userService.getUser(3L));
+    sample13.setReceiverUser(sample13.getTweet().getUser());
+    this.notificationService.save(sample13);
+
+    Notification sample14 = new Notification();
+    sample14.setTweet(tweetService.getTweetById(27L));
+    sample14.setRead(false);
+    sample14.setNotificationType(NotificationType.RETWEET);
+    sample14.setInitiatorUser(userService.getUser(4L));
+    sample14.setReceiverUser(sample14.getTweet().getUser());
+    this.notificationService.save(sample14);
+
+    Notification sample15 = new Notification();
+    sample15.setTweet(tweetService.getTweetById(27L));
+    sample15.setRead(true);
+    sample15.setNotificationType(NotificationType.QUOTE_TWEET);
+    sample15.setInitiatorUser(userService.getUser(3L));
+    sample15.setReceiverUser(sample15.getTweet().getUser());
+    this.notificationService.save(sample15);
+
+    Notification sample16 = new Notification();
+    sample16.setTweet(tweetService.getTweetById(27L));
+    sample16.setRead(true);
+    sample16.setNotificationType(NotificationType.QUOTE_TWEET);
+    sample16.setInitiatorUser(userService.getUser(2L));
+    sample16.setReceiverUser(sample16.getTweet().getUser());
+    this.notificationService.save(sample16);
+  }
 
   @PostMapping(value = "/addMessages", produces = MediaType.APPLICATION_JSON_VALUE)
   public void handleAddMessages() throws InterruptedException {

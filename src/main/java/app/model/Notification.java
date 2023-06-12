@@ -27,7 +27,7 @@ public class Notification extends BaseEntityModel {
   private UserModel initiatorUser;
 
   @ManyToOne
-  @JoinColumn(name = "tweet_id", insertable = false, updatable = false)
+  @JoinColumn(name = "tweet_id", updatable = false)
   private Tweet tweet;
 
   @Column(name = "is_read", nullable = false, updatable = true)
