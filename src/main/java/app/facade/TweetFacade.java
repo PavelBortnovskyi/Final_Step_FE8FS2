@@ -68,10 +68,7 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   }
 
   private Set<String> getImagesUrl(Tweet tweet) {
-    return tweetService.getTweet(tweet.getId())
-      .map(Tweet::getAttachmentImages)
-      .map(imageSet -> imageSet.stream()
-        .map(AttachmentImage::getImgUrl).collect(Collectors.toSet())).orElse(new HashSet<>());
+    return tweet.getAttachmentImages().stream().map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
   }
 
   public TweetResponse getTweetById(Long tweetId, HttpServletRequest request) {
@@ -94,14 +91,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     return tweetService.getUserTweets(userId, page, pageSize).map(this::convertToDto);
   }
 
-  public List<TweetResponse> listTweets(int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page, pageSize);
-
-    List<Tweet> tweets = responseEntity.getBody();
-    List<TweetResponse> tweetResponses = tweets.stream()
-      .map(this::convertToDto)
-      .toList();
-    return tweetResponses;
+  public Page<TweetResponse> getAllTweets(int page, int pageSize) {
+    return tweetService.getAllTweets(page, pageSize).map(this::convertToDto);
   }
 
   public Page<TweetResponse> listTopTweets(int page, int pageSize) {

@@ -8,39 +8,37 @@ export const myAxios = axios.create({
   baseURL: 'https://final-step-fe2fs8tw.herokuapp.com/api/v1/',
 });
 
+const { accessToken } = getTokens();
+if (accessToken) setAuthToken(accessToken);
+
 myAxios.interceptors.response.use(
   (r) => r,
   async function (error) {
-    // console.log('1', localStorage.getItem('accessToken'));
-
     const { refreshToken } = getTokens();
-
-    // console.log('2', localStorage.getItem('accessToken'));
-
     const originalRequest = error.config;
 
-    // console.log(originalRequest);
+    // if refresh token is empty
+    if (!refreshToken) return;
 
     if (originalRequest._retry) {
-      // console.log('3', localStorage.getItem('accessToken'));
-
       setAuthToken();
       setRefreshToken();
     } else if (error.response.status === 401) {
-      // console.log('4', localStorage.getItem('accessToken'));
-
       originalRequest._retry = true;
 
-      return await axios
-        .get('/api/v1/auth/refresh', {
+      // if 401 error from /auth/refresh
+      if (originalRequest.url === '/auth/refresh') return;
+
+      return await myAxios
+        .get('/auth/refresh', {
           headers: {
-            'Refresh-token': refreshToken,
+            Authorization: `Bearer ${refreshToken}`,
           },
         })
         .then(({ data }) => {
-          setAuthToken(data.token);
-          setRefreshToken(data.refreshToken);
-          originalRequest.headers.Authorization = data.token;
+          setAuthToken(data.ACCESS_TOKEN);
+          setRefreshToken(data.REFRESH_TOKEN);
+          originalRequest.headers.Authorization = `Bearer ${data.ACCESS_TOKEN}`;
           return myAxios(originalRequest);
         })
         .catch((err) => {
@@ -48,7 +46,6 @@ myAxios.interceptors.response.use(
           setRefreshToken();
         });
     }
-
     return Promise.reject(error);
   }
 );

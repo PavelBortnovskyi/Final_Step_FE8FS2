@@ -5,13 +5,18 @@ import AddingFile from '../../UI/CreatePostBar/AddingFile';
 import InputAvatar from '../../UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTweet } from 'src/redux/thunk/createTweet.js';
+import { useMode } from 'src/styles/_materialTheme';
 
-function TweetBox() {
+function TweetBox({ placeholder, fnc, userAvatar }) {
+  const theme = useMode();
+
   const [postInputText, setPostInputText] = useState('');
   const [postImages, setPostImages] = useState([]);
+
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user) || '';
 
   const handleEmojiSelect = (emoji) => {
     setPostInputText(postInputText + emoji);
@@ -31,9 +36,7 @@ function TweetBox() {
   };
 
   const handleSubmit = () => {
-    // Dispatch the createTweet action with the collected data
-    dispatch(createTweet({postInputText, postImages}));
-    // Reset the form fields
+    dispatch(createTweet({ postInputText, postImages }));
     setPostInputText('');
     setPostImages([]);
   };
@@ -42,9 +45,9 @@ function TweetBox() {
     <Box>
       <form autoComplete="off">
         <InputAvatar
-        value={postInputText}
-          avatarUrl="/img/avatar.JPG"
-          placeholder="What's happening?"
+          value={postInputText}
+          avatarUrl={userAvatar || user.avatarImgUrl}
+          placeholder={placeholder || "What's happening?"}
           feature={handleInput}
         />
         {postImages.length > 0 && (
@@ -55,8 +58,9 @@ function TweetBox() {
         )}
         <Box
           sx={{
-            borderBottom: '1px solid rgb(56, 68, 77)',
+            borderBottom: `1px solid ${theme.palette.border.main}`,
             paddingBottom: '11px',
+            justifyContent: 'space-between',
           }}
           display="flex"
           alignItems="center"
@@ -74,15 +78,24 @@ function TweetBox() {
             }}
           >
             <TweetButton
+              h="36"
               isDisabled={
                 postInputText.length === 0 && postImages.length === 0
                   ? true
                   : false
               }
               text="Tweet"
-              w="80px"
-              h="34px"
-              fnc={handleSubmit}
+              height="36"
+              w="80"
+              fnc={
+                fnc
+                  ? () => {
+                      fnc(postInputText, postImages);
+                      setPostInputText('');
+                      setPostImages([]);
+                    }
+                  : handleSubmit
+              }
             />
           </Box>
         </Box>

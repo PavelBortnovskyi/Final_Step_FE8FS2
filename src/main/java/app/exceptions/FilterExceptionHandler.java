@@ -49,6 +49,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
 
     AntPathRequestMatcher[] matchers = {
       new AntPathRequestMatcher("/", requestMethod),
+      new AntPathRequestMatcher("/login", requestMethod),
       new AntPathRequestMatcher("/swagger-ui/**", requestMethod),
       new AntPathRequestMatcher("/swagger-resources", requestMethod),
       new AntPathRequestMatcher("/swagger-resources/**", requestMethod),
@@ -59,7 +60,10 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/auth/register", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/refresh", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod)
+      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod),
+      new AntPathRequestMatcher("/chat-ws/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/message", requestMethod),
+      new AntPathRequestMatcher("/api/v1/message/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {

@@ -5,11 +5,12 @@ import app.exceptions.userError.IncorrectUserIdException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
 import app.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,6 @@ public class UserService extends GeneralService<UserModel> {
   private final UserRepository userRepository;
   private final PasswordEncoder encoder;
   private final CloudinaryService cloudinaryService;
-
 
   /**
    * Methods returns Optional of UserModel by different parameters
@@ -160,5 +160,4 @@ public class UserService extends GeneralService<UserModel> {
   public boolean isUserTagPresentInDB(String userTag) {
     return getUserByTagO(userTag).isPresent();
   }
-
 }

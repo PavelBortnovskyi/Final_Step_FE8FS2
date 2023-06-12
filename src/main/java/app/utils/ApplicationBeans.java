@@ -9,12 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -33,7 +27,7 @@ public class ApplicationBeans {
   @Value("${cloudinary.apiSecret}")
   private String apiSecret;
 
-  @Value("${gmail.password}")
+  @Value("${spring.mail.password}")
   private String mailPass;
 
   @Bean
@@ -69,36 +63,10 @@ public class ApplicationBeans {
     return mailSender;
   }
 
-//  @Bean
-//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest>
-//  authorizationRequestRepository() {
-//    return new HttpSessionOAuth2AuthorizationRequestRepository();
-//  }
-
-//  @Bean
-//  public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest>
-//  accessTokenResponseClient() {
-//
-//    return new NimbusAuthorizationCodeTokenResponseClient();
-//  }
-
   @Bean
   public ObjectMapper getObjectMapper() {
     return new ObjectMapper();
   }
-//
-//  @Profile("local")
-//  @Bean
-//  Server h2Server() {
-//    Server server = new Server();
-//    try {
-//      server.runTool("-tcp");
-//      server.runTool("-tcpAllowOthers");
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//    return server;
-//  }
 
   @Bean
   public Cloudinary cloudinaryConfig() {

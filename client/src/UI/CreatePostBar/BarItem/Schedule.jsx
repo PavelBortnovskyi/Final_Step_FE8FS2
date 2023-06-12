@@ -1,7 +1,7 @@
 import React from 'react';
 import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 
-function Schedule() {
+function Schedule({ hover }) {
   return (
     <div>
       <PendingActionsOutlinedIcon
@@ -9,7 +9,7 @@ function Schedule() {
           fill: 'rgb(29, 155, 240)',
           '&:hover': {
             cursor: 'pointer',
-            backgroundColor: 'rgb(24, 44, 63)',
+            backgroundColor: { hover },
             borderRadius: '50%',
           },
         }}
