@@ -77,8 +77,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/auth/refresh", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod)
+      new AntPathRequestMatcher("/chat-ws", requestMethod),
+      new AntPathRequestMatcher("/chat-ws/**", requestMethod),
+      new AntPathRequestMatcher("/notifications-ws", requestMethod),
+      new AntPathRequestMatcher("/notifications-ws/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
