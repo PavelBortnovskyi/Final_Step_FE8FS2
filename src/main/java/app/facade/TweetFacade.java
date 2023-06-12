@@ -67,10 +67,7 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   }
 
   private Set<String> getImagesUrl(Tweet tweet) {
-    return tweetService.getTweet(tweet.getId())
-      .map(Tweet::getAttachmentImages)
-      .map(imageSet -> imageSet.stream()
-        .map(AttachmentImage::getImgUrl).collect(Collectors.toSet())).orElse(new HashSet<>());
+    return tweet.getAttachmentImages().stream().map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
   }
 
   public TweetResponse getTweetById(Long tweetId, HttpServletRequest request) {

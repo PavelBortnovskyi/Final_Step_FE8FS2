@@ -7,6 +7,10 @@ import app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.passay.CharacterData;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static org.passay.AllowedCharacterRule.ERROR_CODE;
 
 @Log4j2
 @Component
@@ -64,7 +70,8 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
 
       freshUser.setEmail(email);
       freshUser.setFullName((String) oauth2User.getAttribute("name"));
-      freshUser.setPassword(encoder.encode("dfgdfnbghrebv"));
+      String tempPassword = this.generateRandomPassayPassword();
+      freshUser.setPassword(encoder.encode(tempPassword));
 
       if ("Google".equals(registrationId)) {
 
@@ -80,7 +87,7 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         freshUser.setBirthDate(LocalDate.parse(birthday, formatter));
       }
-      this.emailService.sendEmail(email, "FE8FS2TW app", "Your temporary password: " + freshUser.getPassword() + " please change it on your profile page");
+      this.emailService.sendEmail(email, "FE8FS2TW app", "Your temporary password: " + tempPassword + " please change it on your profile page");
       freshUser.setVerified(true);
       tokenResponse = this.jwtTokenService.generateTokenPair(this.userService.save(freshUser));
     }
@@ -94,5 +101,36 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
 
     //response.sendRedirect("/signup_g");
     super.onAuthenticationSuccess(request, response, authentication);
+  }
+
+  public String generateRandomPassayPassword() {
+    PasswordGenerator gen = new PasswordGenerator();
+    CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
+    CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
+    lowerCaseRule.setNumberOfCharacters(2);
+
+    CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
+    CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
+    upperCaseRule.setNumberOfCharacters(2);
+
+    CharacterData digitChars = EnglishCharacterData.Digit;
+    CharacterRule digitRule = new CharacterRule(digitChars);
+    digitRule.setNumberOfCharacters(2);
+
+    CharacterData specialChars = new CharacterData() {
+      public String getErrorCode() {
+        return ERROR_CODE;
+      }
+
+      public String getCharacters() {
+        return "!@#$%^&*()_+";
+      }
+    };
+    CharacterRule splCharRule = new CharacterRule(specialChars);
+    splCharRule.setNumberOfCharacters(2);
+
+    String password = gen.generatePassword(10, splCharRule, lowerCaseRule,
+      upperCaseRule, digitRule);
+    return password;
   }
 }
