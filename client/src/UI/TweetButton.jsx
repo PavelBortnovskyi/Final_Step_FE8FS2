@@ -1,7 +1,7 @@
 import { Button, useTheme } from '@mui/material';
 import React from 'react';
 
-function TweetButton({ isDisabled, fnc, text, w, h, fw=400 }) {
+function TweetButton({ isDisabled, fnc, text, w, height, fw = 400 }) {
   const theme = useTheme();
   return (
     <Button
@@ -10,7 +10,7 @@ function TweetButton({ isDisabled, fnc, text, w, h, fw=400 }) {
       variant="contained"
       sx={{
         width: `${w}px`,
-        height: `${h}px`,
+        height: `${height}px`,
         fontSize: '20px',
         fontWeight: `${fw}px`,
         borderRadius: '30px',
@@ -18,12 +18,11 @@ function TweetButton({ isDisabled, fnc, text, w, h, fw=400 }) {
           color: '#fff',
           '&:hover': {
             backgroundColor: `${theme.palette.primary.hover}`,
-          }
+          },
         },
-        ":disabled": {
-      backgroundColor: `${theme.palette.primary.disabled}` 
-    }
-
+        ':disabled': {
+          backgroundColor: `${theme.palette.primary.disabled}`,
+        },
       }}
     >
       {text}

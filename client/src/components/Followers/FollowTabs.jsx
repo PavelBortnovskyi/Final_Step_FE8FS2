@@ -3,9 +3,7 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import { useLocation, useParams } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useLocation, useParams, NavLink } from 'react-router-dom';
 import { useMode } from 'src/styles/_materialTheme';
 
 export const FollowTabs = () => {
@@ -22,7 +20,6 @@ export const FollowTabs = () => {
 
   const linkToFollowers = `/${user.id}/followers`;
   const linkTofollowings = `/${user.id}/followings`;
-  console.log(user);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -48,8 +45,6 @@ export const FollowTabs = () => {
             />
           </TabList>
         </Box>
-        {/* <TabPanel value="2">  </TabPanel>
-        <TabPanel value="1">Followers</TabPanel> */}
       </TabContext>
     </Box>
   );

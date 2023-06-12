@@ -114,11 +114,11 @@ public class TestController {
     sample5.setVerified(true);
     sample5.setRefreshToken("11111111111");
 
-    this.authFacade.generateTokenPair(this.userService.save(sample1));
-    this.authFacade.generateTokenPair(this.userService.save(sample2));
-    this.authFacade.generateTokenPair(this.userService.save(sample3));
-    this.authFacade.generateTokenPair(this.userService.save(sample4));
-    this.authFacade.generateTokenPair(this.userService.save(sample5));
+    this.jwtTokenService.generateTokenPair(this.userService.save(sample1));
+    this.jwtTokenService.generateTokenPair(this.userService.save(sample2));
+    this.jwtTokenService.generateTokenPair(this.userService.save(sample3));
+    this.jwtTokenService.generateTokenPair(this.userService.save(sample4));
+    this.jwtTokenService.generateTokenPair(this.userService.save(sample5));
   }
 
   @PostMapping(value = "/initSubscribers")
