@@ -1,8 +1,8 @@
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { UserName } from "./UserName";
-import { UserTweetsNumber } from "./UserTweensNumber";
-import { Box, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import { UserName } from './UserName';
+import { UserTweetsNumber } from './UserTweensNumber';
+import { Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export function UserHeder({ fullName, tweetsCounter }) {
   const navigate = useNavigate();
@@ -12,30 +12,37 @@ export function UserHeder({ fullName, tweetsCounter }) {
   return (
     <Box
       sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: "14px",
-        padding: "8px",
+        backdropFilter: 'blur(6px)',
+        width: '100%',
+
+        position: 'sticky',
+        top: '0',
+        zIndex: 13,
+
+        display: 'flex',
+        alignItems: 'center',
+        gap: '14px',
+        padding: '8px',
       }}
     >
       <Button
         onClick={handleBack}
         sx={{
-          color: "transparent !important",
-          "&:hover": {
-            backgroundColor: "transparent !important",
+          color: 'transparent !important',
+          '&:hover': {
+            backgroundColor: 'transparent !important',
           },
         }}
       >
         <ArrowBackOutlinedIcon
           sx={{
-            fill: "rgb(139, 152, 165)",
-            padding: "12px",
-            borderRadius: "50%",
-            boxSizing: "content-box",
+            fill: 'rgb(139, 152, 165)',
+            padding: '12px',
+            borderRadius: '50%',
+            boxSizing: 'content-box',
 
-            "&:hover": {
-              backgroundColor: "#b3b3b32b",
+            '&:hover': {
+              backgroundColor: '#b3b3b32b',
             },
           }}
         />

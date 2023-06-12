@@ -24,7 +24,7 @@ function TweetPost({
     <Box
       id={id}
       sx={{
-        borderBottom: '1px solid rgb(56, 68, 77)',
+        borderBottom: `1px solid ${theme.palette.border.main}`,
         width: '100%',
         color: `${theme.palette.text.primary}`,
         '&:hover': {

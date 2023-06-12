@@ -2,7 +2,7 @@ import React from 'react';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import { IconButton } from '@mui/material';
 
-function AddImage({ handleFileSelect }) {
+function AddImage({ handleFileSelect, hover }) {
   return (
     <IconButton
       color="primary"
@@ -22,7 +22,8 @@ function AddImage({ handleFileSelect }) {
           fill: 'rgb(29, 155, 240)',
           '&:hover': {
             cursor: 'pointer',
-            backgroundColor: 'rgb(24, 44, 63)',
+            backgroundColor: { hover },
+
             borderRadius: '50%',
           },
         }}

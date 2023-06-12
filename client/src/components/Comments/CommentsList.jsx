@@ -15,7 +15,6 @@ function CommentsList() {
     dispatch(getTweetReply({ id, page: 0, pageSize: 5 }));
   }, [user.id]);
   const tweets = useSelector(getTweetReplies);
-  console.log(tweets);
   // const tweetArray = tweets.tweets;
 
   return (
