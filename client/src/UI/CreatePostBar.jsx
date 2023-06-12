@@ -5,8 +5,13 @@ import Gif from './CreatePostBar/BarItem/Gif';
 import Schedule from './CreatePostBar/BarItem/Schedule';
 import Location from './CreatePostBar/BarItem/Location';
 import { Box } from '@mui/material';
+import { useMode } from 'src/styles/_materialTheme';
 
 function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
+  const theme = useMode();
+
+  const hoverColor = `${theme.palette.background.hover}`;
+
   return (
     <Box
       sx={{
@@ -16,15 +21,15 @@ function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
         gap: '15px',
       }}
     >
-      <AddImage handleFileSelect={handleFileSelect} />
+      <AddImage handleFileSelect={handleFileSelect} hover={hoverColor} />
 
-      <Gif />
+      <Gif hover={hoverColor} />
 
-      <Emoji handleEmojiSelect={handleEmojiSelect} />
+      <Emoji handleEmojiSelect={handleEmojiSelect} hover={hoverColor} />
 
-      <Schedule />
+      <Schedule hover={hoverColor} />
 
-      <Location />
+      <Location hover={hoverColor} />
     </Box>
   );
 }

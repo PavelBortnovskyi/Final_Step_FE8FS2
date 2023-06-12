@@ -4,7 +4,7 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { Box } from '@mui/material';
 
-function Emoji({ handleEmojiSelect }) {
+function Emoji({ handleEmojiSelect, hover }) {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const node = useRef();
 
@@ -34,7 +34,7 @@ function Emoji({ handleEmojiSelect }) {
           fill: 'rgb(29, 155, 240)',
           '&:hover': {
             cursor: 'pointer',
-            backgroundColor: 'rgb(24, 44, 63)',
+            backgroundColor: { hover },
             borderRadius: '50%',
           },
         }}

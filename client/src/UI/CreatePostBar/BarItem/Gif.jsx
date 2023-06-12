@@ -1,7 +1,7 @@
 import React from 'react';
 import GifBoxOutlinedIcon from '@mui/icons-material/GifBoxOutlined';
 
-function Gif() {
+function Gif({ hover }) {
   return (
     <div>
       <GifBoxOutlinedIcon
@@ -9,7 +9,7 @@ function Gif() {
           fill: 'rgb(29, 155, 240)',
           '&:hover': {
             cursor: 'pointer',
-            backgroundColor: 'rgb(24, 44, 63)',
+            backgroundColor: { hover },
             borderRadius: '50%',
           },
         }}

@@ -31,7 +31,7 @@ export const UserBiIdPage = () => {
 
   useEffect(() => {
     dispatch(getUserBiId(id));
-  }, [userId]);
+  }, [id, dispatch]);
 
   return (
     <>
@@ -58,7 +58,7 @@ export const UserBiIdPage = () => {
           countUserFollowers={user.countUserFollowers}
         />
       </Box>
-      <PostList id={user.id} />
+      <PostList id={userId} />
     </>
   );
 };

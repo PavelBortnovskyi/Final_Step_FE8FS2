@@ -6,7 +6,7 @@ import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
 import { NotfoundPage } from 'src/pages/NotfoundPage';
 import { UserPage } from 'src/pages/UserPage';
-import TweetPage from 'src/pages/TweetPage';
+import TweetPage from 'src/pages/tweetPage/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
@@ -14,7 +14,7 @@ import { Chat } from 'src/components/Messages/Chat/Chat';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
-import { UserBiIdPage } from 'src/pages/UserBiIdPage';
+import { UserBiIdPage } from 'src/pages/UserByIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 
 export const router = createBrowserRouter([

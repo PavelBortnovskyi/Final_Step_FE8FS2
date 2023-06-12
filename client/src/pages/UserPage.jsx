@@ -7,8 +7,6 @@ import { User } from 'src/components/User/User';
 import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
-import PostList from 'src/components/Post/PostList';
-
 export const UserPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -50,7 +48,6 @@ export const UserPage = () => {
           countUserFollowers={user.countUserFollowers}
         />
       </Box>
-      <PostList />
     </>
   );
 };
