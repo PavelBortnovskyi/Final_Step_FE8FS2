@@ -74,7 +74,6 @@ VALUES
     (chat_id_8, 3),
     (chat_id_8, 4);
 
-
 INSERT INTO public.messages (id, created_at, created_by, updated_at, updated_by, body, sent_at, chat_id, user_id)
 VALUES
     (DEFAULT, TIMESTAMP '2023-06-12 14:34:57.582253', null, TIMESTAMP '2023-06-12 14:34:57.582253', null, 'Hi my friend!', TIMESTAMP '2023-06-12 14:34:57.578355', chat_id_1, 1),
