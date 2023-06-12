@@ -1,3 +1,4 @@
+/*
 package app.model;
 
 import lombok.Data;
@@ -28,3 +29,4 @@ public class ViewedInfo extends BaseEntityModel{
     private String user_ip;
 
 }
+*/

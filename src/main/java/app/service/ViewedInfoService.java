@@ -1,3 +1,4 @@
+/*
 package app.service;
 
 import app.model.ViewedInfo;
@@ -15,3 +16,4 @@ public class ViewedInfoService extends GeneralService<ViewedInfo>{
         return count;
     }
 }
+*/
