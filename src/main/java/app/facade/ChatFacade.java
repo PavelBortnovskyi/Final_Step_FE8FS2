@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,10 +32,10 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   /**
    * Method creates new chat between 2 users
    */
-  public List<ChatResponse> createChat(Long userId, Long interlocutorId) {
+  public Set<ChatResponse> createChat(Long userId, Long interlocutorId) {
     if (userId.equals(interlocutorId))
       throw new BadRequestException("Please find somebody else to chat except yourself!");
-    return this.chatService.createChat(userId, interlocutorId).stream().map(chat -> this.convertToDto(chat)).collect(Collectors.toList());
+    return this.chatService.createChat(userId, interlocutorId).stream().map(this::convertToDto).collect(Collectors.toSet());
   }
 
   /**

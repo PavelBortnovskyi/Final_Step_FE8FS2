@@ -16,10 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -37,14 +34,14 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns created chat between 2 users
    */
-  public List<Chat> createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
+  public Set<Chat> createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
     UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
 
     return this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
       .orElseGet(() ->
       {
-        ArrayList<Chat> c = new ArrayList<Chat>();
+        HashSet<Chat> c = new HashSet<>();
         c.add(this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
           add(interlocutor);
         }})));
@@ -52,7 +49,7 @@ public class ChatService extends GeneralService<Chat> {
       });
   }
 
-  public Optional<List<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {
+  public Optional<Set<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {
     return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 
