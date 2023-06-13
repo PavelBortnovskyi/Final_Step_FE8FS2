@@ -37,16 +37,22 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns created chat between 2 users
    */
-  public Chat createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
+  public List<Chat> createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
     UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
-    return this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
-      add(interlocutor);
-      //add(initiator);
-    }}));
+
+    return this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
+      .orElseGet(() ->
+      {
+        ArrayList<Chat> c = new ArrayList<Chat>();
+        c.add(this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
+          add(interlocutor);
+        }})));
+        return c;
+      });
   }
 
-  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId) {
+  public Optional<List<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {
     return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 

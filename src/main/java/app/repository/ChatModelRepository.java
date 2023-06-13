@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,17 +15,13 @@ public interface ChatModelRepository extends RepositoryInterface<Chat> {
   @Query("SELECT c FROM UserModel u JOIN u.chats c WHERE u.id = :id")
   Page<Chat> getChatList(@Param("id") Long userId, Pageable pageable);
 
-  @Query("SELECT c, m FROM UserModel u JOIN u.chats c LEFT JOIN c.messages m " +
-    "WHERE u.id = :id AND m.sent = (SELECT MAX(m2.sent) FROM c.messages m2)")
-  Page<Object[]> getChatListForPreview(@Param("id") Long userId, Pageable pageable);
-
   @Query("SELECT c FROM Chat c WHERE (c.initiatorUser.id = :userId OR c.initiatorUser.id = :interlocutorId) " +
     "AND (:userId MEMBER OF c.users OR :interlocutorId MEMBER OF c.users)")
-  Optional<Chat> getChatByUsersIds(@Param("userId") Long initiatorUserId, @Param("interlocutorId") Long interlocutorId);
+  Optional<List<Chat>> getChatByUsersIds(@Param("userId") Long initiatorUserId, @Param("interlocutorId") Long interlocutorId);
 
   @Query("SELECT c, m FROM Chat c JOIN c.messages m WHERE (c.initiatorUser.id = :userId OR :userId MEMBER OF c.users) " +
     "AND m.sent = (SELECT MAX(m2.sent) FROM c.messages m2)")
-  Page<Object[]> getChatListForPreview2(@Param("userId") Long initiatorUserId, Pageable pageable);
+  Page<Object[]> getChatListForPreview(@Param("userId") Long initiatorUserId, Pageable pageable);
 
 //  @Query("SELECT u FROM UserModel u " +
 //    "WHERE (LOWER(u.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
