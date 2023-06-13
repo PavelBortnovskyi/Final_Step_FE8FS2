@@ -13,9 +13,9 @@ import app.service.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,10 +57,10 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   }
 
   /**
-   * Method removes user from chat (can be performed only by chat initiator!)
+   * Method removes user from chat
    */
-  public boolean removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) {
-    return this.chatService.removeUser(userToRemoveId, removeInitUserId, chatId);
+  public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) {
+    return this.chatService.removeUserFromChat(userToRemoveId, removeInitUserId, chatId);
   }
 
   /**

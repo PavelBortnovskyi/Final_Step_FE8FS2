@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -85,14 +86,16 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns boolean result of user deleting from chat operation
    */
-  public boolean removeUser(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
+  public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
     UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
-    if (chat.getInitiatorUser().getId().equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
+    if (!userToRemove.equals(chat.getInitiatorUser()) && chat.getUsers().contains(userToRemove)) {
       chat.getUsers().remove(userToRemove);
       this.chatRepository.save(chat);
-      return true;
-    } else return false;
+      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
+    } else return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+      userToRemoveId, chatId, removeInitUserId));
   }
 
   /**

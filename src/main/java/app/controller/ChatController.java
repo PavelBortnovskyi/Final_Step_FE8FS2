@@ -54,7 +54,7 @@ public class ChatController {
   }
 
   /**
-   * This endpoint waiting for valid url params and DTO to add user to chat and return updated chat response
+   * This endpoint waiting for valid url params to add user to chat and return updated chat response
    */
   //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
@@ -77,12 +77,7 @@ public class ChatController {
                                                          @PathVariable(name = "id") Long chatId,
                                                          HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId))
-      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by chat initiator id: %d",
-        userIdToRemove, chatId, currUserId));
-    else
-      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-        userIdToRemove, chatId, currUserId));
+    return this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId);
   }
 
   /**
