@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { getGuest } from '../thunk/getGuest.js';
 import { getCurrentChat } from '../thunk/getCurrentChat.js';
+import { getAllChats } from '../thunk/getAllChats.js';
 
 const initialState = {
   guest: null,
   currentChat: null,
+  allChats: null,
   socketChat: null,
   isLoading: false,
   error: '',
@@ -52,6 +54,21 @@ export const chatSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getCurrentChat.rejected, (state, action) => {
+      state.error = action.payload?.info;
+      state.isLoading = false;
+    });
+
+    // getAllChats
+    builder.addCase(getAllChats.pending, (state, action) => {
+      // state.guest = null;
+      state.isLoading = true;
+      state.error = '';
+    });
+    builder.addCase(getAllChats.fulfilled, (state, action) => {
+      state.allChats = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getAllChats.rejected, (state, action) => {
       state.error = action.payload?.info;
       state.isLoading = false;
     });

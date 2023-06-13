@@ -3,7 +3,7 @@ import { Box, Typography, styled } from '@mui/material';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 
 import { Conversation } from './Conversation';
-import { getChatAll } from 'src/utils/messages/chatConnectionsDB';
+import { getUsersFromAllChats } from 'src/utils/messages/chatConnectionsDB';
 
 // ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
@@ -18,20 +18,20 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 // ************ ConversationList ************
 export const ConversationList = () => {
   // set chats where user be
-  const [chats, setChats] = useState([]);
+  const [guestConversation, setGuestConversation] = useState([]);
 
   // get all chats
   useEffect(() => {
     const getAllChats = async () => {
       try {
-        // request user chats from server
-        // /chat/all&page=${page}&pageSize=${pageSize}   page = 0, pageSize = 10
-        const response = await getChatAll();
+        // TODO:
+        // request guests from all chats from server | prams: page = 0, pageSize = 10
+        const guests = await getUsersFromAllChats();
 
-        // console.log('getAllChats:', response);
+        console.log('guests:', guests);
 
-        // set chats to redux
-        response.content.length && setChats(response);
+        // set guests
+        setGuestConversation(guests);
         //
       } catch (error) {
         console.log(error);
@@ -41,24 +41,34 @@ export const ConversationList = () => {
     getAllChats();
   }, []);
 
+  console.log(guestConversation);
+
   return (
-    <Box sx={{ marginBottom: '20px' }}>
+    <Box sx={{ marginTop: '20px' }}>
       <BoxSearchPerson>
         <SpeakerNotesIcon sx={{ fontSize: 20, marginRight: '10px' }} />
         <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
           Chat list
         </Typography>
       </BoxSearchPerson>
-      {chats.map((chat, index) => (
-        <Box
-          className="xxx"
-          key={index}
-          // onClick={() => handleCurrentChat(chat)}
-        >
-          {/* // TODO: need did chat list */}
-          <Conversation />
-        </Box>
-      ))}
+      <Box>users list</Box>
     </Box>
   );
 };
+
+//  {
+//    !chats ? (
+//      <Box>No chats available.</Box>
+//    ) : (
+//      chats.content.map((chat, index) => (
+//        <Box
+//          className="xxx"
+//          key={index}
+//          // onClick={() => handleCurrentChat(chat)}
+//        >
+//          {/* TODO: Implement chat item rendering */}
+//          <Conversation />
+//        </Box>
+//      ))
+//    );
+//  }

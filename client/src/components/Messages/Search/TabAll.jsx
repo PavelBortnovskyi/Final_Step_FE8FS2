@@ -19,7 +19,7 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 export const TabAll = () => {
   return (
     <Box>
-      <Box sx={{ margin: '20px 0 0 0' }}>
+      <Box sx={{ margin: '0px 0 0 0' }}>
         {/* Title people */}
         <BoxSearchPerson>
           <PersonIcon sx={{ fontSize: 20, marginRight: '10px' }} />

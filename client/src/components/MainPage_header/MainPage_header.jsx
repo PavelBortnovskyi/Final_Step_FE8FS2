@@ -34,7 +34,7 @@ function MainPage_header({ handleTab }) {
       sx={{
         backdropFilter: 'blur(15px)',
         width: '100%',
-        pb: '2px',
+        // pb: '2px',
         position: 'sticky',
         top: '0',
         zIndex: 13,

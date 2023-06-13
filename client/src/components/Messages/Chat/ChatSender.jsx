@@ -3,7 +3,7 @@ import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined'
 import AttachFile from '@mui/icons-material/AttachFile';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getGuestChat } from 'src/redux/selectors/selectors';
+import { getChats } from 'src/redux/selectors/selectors';
 
 // ************ STYLE ************
 const Sender = styled('div')(({ theme }) => ({
@@ -45,7 +45,7 @@ const SenderInputBase = styled(InputBase)(({ theme }) => ({
 export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
 
-  const { guest, currentChat, socketChat } = useSelector(getGuestChat);
+  const { guest, currentChat, socketChat } = useSelector(getChats);
 
   // set send text
   const sendText = async (e) => {

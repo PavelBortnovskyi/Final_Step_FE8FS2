@@ -58,7 +58,7 @@ export const SearchTabs = () => {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', marginTop: '20px' }}>
       <TabHeader>
         <Tabs
           value={value}

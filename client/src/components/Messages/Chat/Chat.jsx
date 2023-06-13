@@ -17,7 +17,7 @@ import { socketUrl } from 'src/utils/socketSetup';
 import { io } from 'socket.io-client';
 
 import { Loading } from 'src/UI/Loading';
-import { getGuestChat } from 'src/redux/selectors/selectors';
+import { getChats } from 'src/redux/selectors/selectors';
 import { chatCloseConnection } from 'src/redux/reducers/chatSlice';
 import { ChatBody } from './ChatBody';
 import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
@@ -73,7 +73,7 @@ export const Chat = () => {
   const dispatch = useDispatch();
 
   // get guest data from redux
-  const { isLoading, guest, currentChat } = useSelector(getGuestChat);
+  const { isLoading, guest, currentChat } = useSelector(getChats);
 
   // console.log('guest', guest);
   // console.log('currentChat', currentChat);
