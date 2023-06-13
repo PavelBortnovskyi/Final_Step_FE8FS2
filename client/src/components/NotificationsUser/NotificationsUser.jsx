@@ -1,5 +1,11 @@
 import { Box, Tab, Tabs, Typography, styled, useTheme } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { NotificationsFollowed } from './NotificationsFollowed';
+import { NotificationsRetweet } from './NotificationsRetweet';
+import { NotificationsLike } from './NotificationsLike';
+import { useNavigate } from 'react-router-dom';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -12,15 +18,28 @@ const CustomTab = styled(Tab)((props) => ({
 }));
 
 
+
+
 export const NotificationsUser = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+  // send user to home if not authorization
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
   const [tabIndex, setTabIndex] = useState(0);
   const theme = useTheme();
-
+  const user = useSelector((state) => state.user.user) || ""; //удалить, когда будет готов запрос
+  const arr = [ './img/06.jpg', './img/06.jpg', './img/06.jpg','./img/06.jpg']; //удалить, когда будет готов запрос
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
   };
 
   return (
+
     <Box sx={{ height: '100vh', padding: '8px 0 0 0' }}>
       <Typography variant="h5" sx={{ padding: '0 0 8px 16px', }}>
         Notifications
@@ -29,19 +48,19 @@ export const NotificationsUser = () => {
         sx={{
           borderBottom: `1px solid ${theme.palette.border.main}`,
         }}>
-        <CustomTab label="All" />
-        <CustomTab label="Verified" />
-        <CustomTab label="Mentions" />
+        <CustomTab label="All" key='all' />
+        <CustomTab label="Verified" key='Verified' />
+        <CustomTab label="Mentions" key='Mentions' />
       </Tabs>
 
-      <Box sx={{
+      {/* <Box sx={{
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: '80px'
-      }}>
-        {tabIndex == 0 && (
+      }}> */}
+      {/* {tabIndex == 0 && (
           <Box sx={{ width: '340px', display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
 
             <Typography variant='h4' fontWeight="bold">
@@ -74,9 +93,23 @@ export const NotificationsUser = () => {
               When someone mentions you, you’ll find it here.
             </Typography>
           </Box>
-        )}
+        )} */}
 
-      </Box>
+      {/* </Box> */}
+
+      <NotificationsFollowed user={user} />
+      <NotificationsRetweet user={user} notifications={arr} />
+      <NotificationsLike user={user} notifications={arr} />
+      {/* <Box>
+        <Avatar src={user.avatarImgUrl} />
+        <Typography variant='body1' >
+        <strong style={{textTransform: 'capitalize'}}> {user.fullName} </strong>{user.userTag}
+        </Typography>
+
+      </Box> */}
+
+
+
     </Box>
   )
 }

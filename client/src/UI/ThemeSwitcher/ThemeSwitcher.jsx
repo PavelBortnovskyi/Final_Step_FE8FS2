@@ -29,17 +29,16 @@ export const ThemeSwitcher = () => {
   };
 
   return (
-    <FormControlLabel
+    <FormControlLabel 
       control={
         <Switch
-          color="warning"
           checked={isChecked}
           onChange={handleChange}
           inputProps={{ 'aria-label': 'controlled' }}
         />
       }
       labelPlacement="start"
-      label="Theme"
+      label="Сhange Theme"
     />
   );
 };

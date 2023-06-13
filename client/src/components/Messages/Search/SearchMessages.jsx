@@ -1,11 +1,15 @@
 import { Box } from '@mui/material';
 import { SearchTabs } from './SearchTabs';
-import { SearchField } from 'src/UI/SearchField';
+import { SearchFieldMessages } from './SearchFieldMessages';
 
+// ************ STYLE ************
+// ************ STYLE ************
+
+// ************ SearchMessages ************
 export const SearchMessages = () => {
   return (
     <>
-      <SearchField />
+      <SearchFieldMessages />
       <Box sx={{ marginTop: '16px' }}>
         <SearchTabs />
       </Box>

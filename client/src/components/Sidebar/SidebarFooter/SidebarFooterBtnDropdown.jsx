@@ -3,28 +3,30 @@ import { bindTrigger } from 'material-ui-popup-state';
 import { Avatar, Box, Button, Hidden, Typography, useTheme } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) => {
+export const SidebarFooterBtnDropdown = ({ popupState }) => {
     const user = useSelector((state) => state.user.user) || "";
-    const theme = useTheme();
+    const fullName = user.fullName || '';
+    const FirstName = fullName.split(" ")[0] || '';
 
+    const theme = useTheme();
     return (
         <Button variant="text"
             {...bindTrigger(popupState)}
             sx={{
                 px: 1,
                 minWidth: '64px',
+                maxWidth: '235px',
                 height: '64px',
                 '&:hover': {
                     backgroundColor: `${theme.palette.background.hover}`,
                     borderRadius: '30px',
                 }
-
             }}
         >
             <Avatar src={user.avatarImgUrl} />
 
             <Hidden lgDown>
-                <Box ml={1} sx={{textAlign: 'start'}}>
+                <Box ml={1} sx={{ textAlign: 'start' }}>
                     <Typography variant="subtitle1"
                         sx={{
                             textTransform: 'capitalize',
@@ -33,7 +35,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                             fontWeight: 700,
                         }}
                     >
-                        {displayName}
+                        {FirstName} {user.userTag}
                     </Typography>
                     <Typography
                         variant="subtitle2"
@@ -45,7 +47,7 @@ export const SidebarFooterBtnDropdown = ({ popupState, displayName, username }) 
                             fontWeight: 400,
                         }}
                     >
-                        @{username}
+                        {user.userTag}
                     </Typography>
                 </Box>
 

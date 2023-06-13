@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 import { getUser } from 'src/redux/thunk/getUser';
+import { setAuthToken, setRefreshToken } from 'src/utils/tokens';
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -16,8 +17,8 @@ export const loginUser = createAsyncThunk(
 
       // if a token is received, store it in localStorage
       if (data.ACCESS_TOKEN) {
-        window.localStorage.setItem('accessToken', data.ACCESS_TOKEN);
-
+        setAuthToken(data.ACCESS_TOKEN);
+        setRefreshToken(data.REFRESH_TOKEN);
         // get user data
         dispatch(getUser());
       }

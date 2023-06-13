@@ -10,7 +10,6 @@ import app.model.Tweet;
 import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
-import app.utils.ratingAlgo.ScheduleAlgo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,7 +85,7 @@ public class TweetService extends GeneralService<Tweet> {
     tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweet.getId()));
     tweetResponse.setCountReply(getCountReply(tweet.getId()));
     tweetResponse.setAttachmentsImages(tweet.getAttachmentImages()
-        .stream().map(image -> image.getImgUrl()).collect(Collectors.toSet()));
+      .stream().map(image -> image.getImgUrl()).collect(Collectors.toSet()));
 
     return tweetResponse;
   }
@@ -113,9 +115,9 @@ public class TweetService extends GeneralService<Tweet> {
 
   public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
     List<Long> userIds = userModelService.getUser((Long) request.getAttribute("userId"))
-        .getFollowings().stream().map(u -> u.getId()).toList();
+      .getFollowings().stream().map(u -> u.getId()).toList();
     return ResponseEntity.ok(tweetModelRepository.findTweetsByUserIdsSortedByDate(userIds,
-        Pageable.ofSize(pageSize).withPage(page)).toList());
+      Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
   public Page<Tweet> getUserTweets(Long userId, int page, int pageSize) {
@@ -128,7 +130,7 @@ public class TweetService extends GeneralService<Tweet> {
 
   public ResponseEntity<List<Tweet>> getAllBookmarks(HttpServletRequest request, int page, int pageSize) {
     return ResponseEntity.ok(tweetActionRepository.findTweetsByActionTypeAndUserId((Long) request.getAttribute("userId"),
-        TweetActionType.BOOKMARK, Pageable.ofSize(pageSize).withPage(page)).toList());
+      TweetActionType.BOOKMARK, Pageable.ofSize(pageSize).withPage(page)).toList());
   }
 
   public Integer getCountReply(Long tweetId) {

@@ -9,7 +9,10 @@ import { Box } from '@mui/material';
 
 function PostIconList({ likes, reply, retweet }) {
   return (
-    <Box display="flex" sx={{ justifyContent: 'space-between', mt: '20px' }}>
+    <Box
+      display="flex"
+      sx={{ justifyContent: 'space-between', mt: '20px', width: '90%' }}
+    >
       <PostIconElement
         icon={<ChatBubbleOutlineOutlinedIcon fontSize="small" />}
         quantity="19"

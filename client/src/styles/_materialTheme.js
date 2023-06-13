@@ -48,6 +48,9 @@ export const themeSettings = (colorTheme) => {
             logo: {
               main: '#FFF',
             },
+            border: {
+              main: '#4d4d4d',
+            },
           }
         : {
             primary: {
@@ -86,6 +89,9 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: 'rgb(30, 155, 240)',
+            },
+            border: {
+              main: '#dfdfdf',
             },
           }),
     },
