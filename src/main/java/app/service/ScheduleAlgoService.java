@@ -5,6 +5,7 @@ import app.model.Tweet;
 import app.repository.RatingModelRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @EnableScheduling
@@ -28,7 +30,7 @@ public class ScheduleAlgoService {
   private final TweetActionService tweetActionService;
   private final TweetService tweetService;
 
-  @Scheduled(fixedRate = 10000L) // Выполнять каждый час
+  @Scheduled(fixedRate = 3600000L) // Выполнять каждый час
   public void ratingAlgorithm() {
     ArrayList<RatingModel> tweetsRating = new ArrayList<>();
     //получаем последние 50 твитов
@@ -51,12 +53,10 @@ public class ScheduleAlgoService {
     savedRating.forEach(r -> ratingModelRepository.save(r));
   }
 
-  public List<Tweet> tweetsIdList(Pageable pageable){
-    return ratingModelRepository.findAll(pageable).stream().map(r -> tweetService.getTweetById(r.getTweetID())).toList();
-  }
-
   public Page<Tweet> listTopTweets(int page, int pageSize) {
-    return ratingModelRepository.findAll(Pageable.ofSize(pageSize).withPage(page)).map(t -> tweetService.getTweetById(t.getTweetID()));
+    return (Page<Tweet>) ratingModelRepository.findAll(Pageable.ofSize(pageSize).withPage(page))
+        .filter( t -> tweetService.getTweetById(t.getTweetID())!= null)
+        .map(t -> tweetService.getTweetById(t.getTweetID())).stream().collect(Collectors.toList());
   }
 
   private double getRating(Tweet tweet) {
