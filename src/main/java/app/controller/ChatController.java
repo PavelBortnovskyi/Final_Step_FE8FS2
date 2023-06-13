@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.List;
+import java.util.Set;
 
 @CrossOrigin
 @Log4j2
@@ -32,9 +32,9 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to return created chat response
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<List<ChatResponse>> handleCreateChat(@RequestParam("interlocutorId")
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponse>> handleCreateChat(@RequestParam("interlocutorId")
                                                                                            @NotNull @Positive Long interlocutorId,
-                                                                                                 HttpServletRequest request) {
+                                                                                                HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));
   }
