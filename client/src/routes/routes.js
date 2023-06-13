@@ -13,6 +13,7 @@ import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
 import { UserBiIdPage } from 'src/pages/UserBiIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
+import ModalCommentPage from 'src/pages/ModalCommentPage';
 
 export const mainRoutes = () => {
   return [
@@ -138,6 +139,10 @@ export const modalRoutes = () => {
     {
       path: '/settings/profile',
       element: <EditProfileModal />,
+    },
+    {
+      path: '/modal/comment',
+      element: <ModalCommentPage />,
     },
   ];
 };
