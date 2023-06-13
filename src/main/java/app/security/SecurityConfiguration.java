@@ -20,7 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 @Log4j2
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
