@@ -25,7 +25,7 @@ public class Chat extends BaseEntityModel {
   @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
   private List<Message> messages = new ArrayList<>();
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
   private Set<UserModel> users = new HashSet<>();

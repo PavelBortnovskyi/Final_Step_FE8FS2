@@ -62,7 +62,7 @@ public class ChatService extends GeneralService<Chat> {
       .map(chat -> {
         this.chatRepository.delete(chat);
         return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
+      }).orElseThrow(() -> new BadRequestException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
     return this.chatRepository.existsById(chatId);
   }
 

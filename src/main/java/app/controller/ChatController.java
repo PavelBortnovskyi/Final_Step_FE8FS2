@@ -48,7 +48,7 @@ public class ChatController {
                                                  @PathVariable(name = "id") Long chatId,
                                                  HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (this.chatFacade.deleteChat(chatId, currUserId))
+    if (!this.chatFacade.deleteChat(chatId, currUserId))
       return ResponseEntity.ok("Chat id: " + chatId + " deleted");
     else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatId);
   }

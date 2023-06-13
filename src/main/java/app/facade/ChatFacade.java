@@ -41,7 +41,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   /**
    * Method deletes chat (can be performed only by chat initiator!)
    */
-  public boolean deleteChat(Long userId, Long chatId) {
+  public boolean deleteChat(Long chatId, Long userId) {
     return this.chatService.deleteChat(chatId, userId);
   }
 
