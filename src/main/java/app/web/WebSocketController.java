@@ -8,6 +8,7 @@ import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
+import app.security.JwtUserDetails;
 import app.service.MessageService;
 import app.service.NotificationService;
 import app.service.UserService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Log4j2
 @RestController
@@ -50,9 +52,10 @@ public class WebSocketController {
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                   MessageRequest messageDTO,
-                                                                                  HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO)));
+                                                                                  Principal principal) {
+   JwtUserDetails userDetails = (JwtUserDetails) principal;
+   Long currUserId = userDetails.getId();
+   return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
   @Validated({Marker.Existed.class})

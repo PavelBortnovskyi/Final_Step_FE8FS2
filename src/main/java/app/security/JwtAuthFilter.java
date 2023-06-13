@@ -44,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
 
         log.info("Token is valid continue...");
-        this.processRequestWithToken(request, response, filterChain, token);
+        this.processRequestWithToken(request, token);
 
         //Add value of userId to request to more simple access to it in controllers
         request.setAttribute("userId", this.tokenService.getIdFromRequest(request).get());
@@ -90,8 +90,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     return false;
   }
 
-  private void processRequestWithToken(HttpServletRequest request, HttpServletResponse response,
-                                       FilterChain filterChain, String token) throws ServletException, IOException {
+  private void processRequestWithToken(HttpServletRequest request, String token) throws ServletException, IOException {
     try {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(this.tokenService::extractIdFromClaims)
