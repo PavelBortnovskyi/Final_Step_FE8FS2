@@ -14,12 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -37,16 +35,22 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns created chat between 2 users
    */
-  public Chat createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
+  public Set<Chat> createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
     UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
-    return this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
-      add(interlocutor);
-      //add(initiator);
-    }}));
+
+    return this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
+      .orElseGet(() ->
+      {
+        HashSet<Chat> c = new HashSet<>();
+        c.add(this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
+          add(interlocutor);
+        }})));
+        return c;
+      });
   }
 
-  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId) {
+  public Optional<Set<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {
     return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 
@@ -59,7 +63,7 @@ public class ChatService extends GeneralService<Chat> {
       .map(chat -> {
         this.chatRepository.delete(chat);
         return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
+      }).orElseThrow(() -> new BadRequestException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
     return this.chatRepository.existsById(chatId);
   }
 
@@ -82,14 +86,16 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns boolean result of user deleting from chat operation
    */
-  public boolean removeUser(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
+  public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
     UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
-    if (chat.getInitiatorUser().getId().equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
+    if (!userToRemove.equals(chat.getInitiatorUser()) && chat.getUsers().contains(userToRemove)) {
       chat.getUsers().remove(userToRemove);
       this.chatRepository.save(chat);
-      return true;
-    } else return false;
+      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
+    } else return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+      userToRemoveId, chatId, removeInitUserId));
   }
 
   /**

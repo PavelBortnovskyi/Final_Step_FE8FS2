@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Set;
 
 @CrossOrigin
 @Log4j2
@@ -31,9 +32,9 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to return created chat response
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleCreateChat(@RequestParam("interlocutorId")
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponse>> handleCreateChat(@RequestParam("interlocutorId")
                                                                                            @NotNull @Positive Long interlocutorId,
-                                                                                           HttpServletRequest request) {
+                                                                                                HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));
   }
@@ -47,13 +48,13 @@ public class ChatController {
                                                  @PathVariable(name = "id") Long chatId,
                                                  HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (this.chatFacade.deleteChat(chatId, currUserId))
+    if (!this.chatFacade.deleteChat(chatId, currUserId))
       return ResponseEntity.ok("Chat id: " + chatId + " deleted");
     else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatId);
   }
 
   /**
-   * This endpoint waiting for valid url params and DTO to add user to chat and return updated chat response
+   * This endpoint waiting for valid url params to add user to chat and return updated chat response
    */
   //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
@@ -76,12 +77,7 @@ public class ChatController {
                                                          @PathVariable(name = "id") Long chatId,
                                                          HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
-    if (this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId))
-      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by chat initiator id: %d",
-        userIdToRemove, chatId, currUserId));
-    else
-      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-        userIdToRemove, chatId, currUserId));
+    return this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId);
   }
 
   /**

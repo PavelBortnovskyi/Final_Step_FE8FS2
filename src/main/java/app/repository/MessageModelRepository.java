@@ -24,7 +24,7 @@ public interface MessageModelRepository extends RepositoryInterface<Message> {
   @Query(value = "SELECT m FROM Message m WHERE m.chat.id = :id AND LOWER(m.body) LIKE LOWER(CONCAT('%', :keyword, '%'))")
   Page<Message> getSearchMessageInChat(@Param("id") Long chatId, @Param("keyword") String keyword, Pageable pageable);
 
-  @Query("SELECT m FROM UserModel u JOIN u.chats c LEFT JOIN c.messages m " +
-    "WHERE u.id = :id AND LOWER(m.body) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-  Page<Message> getSearchMessages(@Param("id") Long userId, @Param("keyword") String keyword, Pageable pageable);
+  @Query("SELECT m FROM Chat c JOIN c.messages m WHERE (c.initiatorUser.id = :userId OR :userId MEMBER OF c.users)" +
+    " AND LOWER(m.body) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+  Page<Message> getSearchMessages(@Param("userId") Long userId, @Param("keyword") String keyword, Pageable pageable);
 }

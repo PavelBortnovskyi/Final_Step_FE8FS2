@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 @Log4j2
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
   @Autowired
@@ -62,12 +62,12 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset").permitAll()
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
-      .antMatchers("/chat-ws").permitAll()
-      .antMatchers("/chat-ws/**").permitAll()
-      .antMatchers("/notifications-ws").permitAll()
-      .antMatchers("/notifications-ws/**").permitAll()
-      .antMatchers("/api/v1/message").permitAll()
-      .antMatchers("/api/v1/message/**").permitAll()
+//      .antMatchers("/chat-ws").permitAll()
+//      .antMatchers("/chat-ws/**").permitAll()
+//      .antMatchers("/notifications-ws").permitAll()
+//      .antMatchers("/notifications-ws/**").permitAll()
+//      .antMatchers("/api/v1/message").permitAll()
+//      .antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
