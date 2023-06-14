@@ -114,13 +114,13 @@ export const Contacts = () => {
   console.log(guestConversation);
 
   return (
-    <Box sx={{ marginTop: '20px' }}>
-      <BoxHeader>
-        <PeopleAltIcon sx={{ fontSize: 20, marginRight: '10px' }} />
-        <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
+    <Box>
+      {/* <BoxHeader>
+        <PeopleAltIcon sx={{ fontSize: 18, marginRight: '10px' }} />
+        <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
           Contacts
         </Typography>
-      </BoxHeader>
+      </BoxHeader> */}
 
       {isLoading ? (
         <BoxLoading>

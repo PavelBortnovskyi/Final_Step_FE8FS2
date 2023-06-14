@@ -1,6 +1,6 @@
 import { Box, Typography, styled } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
-import EmailIcon from '@mui/icons-material/Email';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 
 import { TabPeople } from './TabPeople';
 import { TabMessages } from './TabMessages';
@@ -10,6 +10,7 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'start',
   alignItems: 'center',
+  color: '#bf1414',
   borderBottom: `1px solid ${theme.palette.border.main}`,
   padding: '6px 0',
 }));
@@ -22,31 +23,31 @@ export const TabAll = () => {
       <Box sx={{ margin: '0px 0 0 0' }}>
         {/* Title people */}
         <BoxSearchPerson>
-          <PersonIcon sx={{ fontSize: 20, marginRight: '10px' }} />
-          <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
+          <PeopleAltIcon sx={{ fontSize: 18, marginRight: '10px' }} />
+          <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
             People
           </Typography>
         </BoxSearchPerson>
 
         {/* Body people */}
-        <BoxSearchPerson>
+        <Box>
           <TabPeople />
-        </BoxSearchPerson>
+        </Box>
       </Box>
 
-      <Box sx={{ margin: '20px 0 0 0' }}>
+      <Box sx={{ margin: '30px 0 0 0' }}>
         {/* Title messages */}
         <BoxSearchPerson>
-          <EmailIcon sx={{ fontSize: 20, marginRight: '10px' }} />
-          <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>
+          <ForumOutlinedIcon sx={{ fontSize: 18, marginRight: '10px' }} />
+          <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
             Messages
           </Typography>
         </BoxSearchPerson>
 
         {/* Body messages */}
-        <BoxSearchPerson>
+        <Box>
           <TabMessages />
-        </BoxSearchPerson>
+        </Box>
       </Box>
     </Box>
   );

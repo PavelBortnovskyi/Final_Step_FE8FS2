@@ -9,6 +9,11 @@ import { useDispatch } from 'react-redux';
 
 // ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: '12px',
+  padding: '8px',
+  borderBottom: ` 1px solid ${theme.palette.border.main}`,
+
   '&:hover': {
     backgroundColor: alpha(theme.palette.text.primary, 0.1),
     cursor: 'pointer',
@@ -46,21 +51,10 @@ export const TabPeople = () => {
           The term you entered did not bring up any results
         </Box>
       ) : (
-        <Box
-          sx={{
-            display: 'flex',
-            gap: '8px',
-            flexDirection: 'column',
-            width: '100%',
-          }}
-        >
+        <Box>
           {findUser.content.map(
             ({ id, fullName, avatarImgUrl, verified, userTag }) => (
-              <BoxSearchPerson
-                key={id}
-                sx={{ display: 'flex', gap: '12px', padding: '8px' }}
-                onClick={() => handleClick(id)}
-              >
+              <BoxSearchPerson key={id} onClick={() => handleClick(id)}>
                 <Avatar
                   sx={{ width: 56, height: 56 }}
                   alt={fullName}
@@ -70,9 +64,7 @@ export const TabPeople = () => {
                   fullName={fullName}
                   verified={verified}
                   userTag={userTag}
-                  text={
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit ...'
-                  }
+                  text={'Lorem ipsum dolor color red sit amet ...'}
                 />
               </BoxSearchPerson>
             )

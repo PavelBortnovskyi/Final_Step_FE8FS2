@@ -28,47 +28,50 @@ export const App = () => {
   // );
   // const client = Stomp.over(() => socket);
 
-  useEffect(() => {
-    const client = new Client({
-      brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
-      connectHeaders: headers,
-      debug: function (str) {
-        console.log(str);
-      },
-    });
+  // useEffect(() => {
+  //   const client = new Client({
+  //     brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
+  //     connectHeaders: headers,
+  //     debug: function (str) {
+  //       console.log(str);
+  //     },
+  //   });
 
-    // chatId - chat message recipient
-    // userId - message author
-    const connectCallback = () => {
-      console.log('Connected to STOMP server');
-      client.subscribe('/topic/chats', onMessageReceived);
-      client.publish({
-        destination: '/api/v1/message',
-        body: JSON.stringify({
-          chatId: 24,
-          userId: 2,
-          body: 'Hello, server!',
-        }),
-      });
-    };
+  //   // chatId - chat message recipient
+  //   // userId - message author
+  //   const connectCallback = () => {
+  //     console.log('Connected to STOMP server');
+  //     client.subscribe('/topic/chats', onMessageReceived);
+  //     client.publish({
+  //       destination: '/api/v1/message',
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         chatId: 24,
+  //         userId: 2,
+  //         body: 'Hello, server!',
+  //       }),
+  //     });
+  //   };
 
-    const errorCallback = (error) => {
-      console.error('Error:', error);
-    };
+  //   const errorCallback = (error) => {
+  //     console.error('Error:', error);
+  //   };
 
-    const onMessageReceived = (message) => {
-      console.log('Received message:', message.body);
-    };
+  //   const onMessageReceived = (message) => {
+  //     console.log('Received message:', message.body);
+  //   };
 
-    client.onConnect = connectCallback;
-    client.onStompError = errorCallback;
+  //   client.onConnect = connectCallback;
+  //   client.onStompError = errorCallback;
 
-    client.activate();
+  //   client.activate();
 
-    return () => {
-      client.deactivate();
-    };
-  }, [accessToken]);
+  //   return () => {
+  //     client.deactivate();
+  //   };
+  // }, [accessToken]);
 
   //*********************************************************/
 

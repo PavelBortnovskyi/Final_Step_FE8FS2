@@ -6,8 +6,7 @@ import { Box, Container, IconButton, Tooltip, Typography } from '@mui/material';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 
-import { SearchMessages } from './Search/SearchMessages';
-import { Contacts } from './ConversationList/Contacts';
+import { ChatSidebar } from './ChatSidebar';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getAllChats } from 'src/redux/thunk/getAllChats';
 
@@ -66,10 +65,7 @@ export const Messages = () => {
         </Box>
 
         {/* Search */}
-        <SearchMessages />
-
-        {/* Contacts list */}
-        <Contacts />
+        <ChatSidebar />
       </Container>
     </Box>
   );
