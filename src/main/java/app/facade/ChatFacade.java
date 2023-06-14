@@ -1,5 +1,6 @@
 package app.facade;
 
+import app.annotations.Marker;
 import app.dto.rq.ChatRequest;
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
@@ -10,6 +11,7 @@ import app.model.Chat;
 import app.model.Message;
 import app.service.ChatService;
 import app.service.UserService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -63,16 +63,17 @@ public class WebSocketController {
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
                                                                                       MessageRequest messageDTO,
-                                                                                      HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
+                                                                                      @AuthenticationPrincipal JwtUserDetails userDetails) {
+    Long currUserId = userDetails.getId();
     this.messageService.changeMessage(currUserId, this.messageFacade.convertToEntity(messageDTO));
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
   @MessageMapping("/v1/message/delete")
   public void deleteMessage(@Payload @Valid @JsonView({Marker.Delete.class})
-                            MessageRequest messageDTO, HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
+                            MessageRequest messageDTO,
+                            @AuthenticationPrincipal JwtUserDetails userDetails) {
+    Long currUserId = userDetails.getId();
     if (this.messageService.deleteMessage(currUserId, messageDTO.getId()))
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }

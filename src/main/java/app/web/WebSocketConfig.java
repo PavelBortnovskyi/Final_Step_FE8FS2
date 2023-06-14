@@ -4,16 +4,12 @@ import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.converter.DefaultContentTypeResolver;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -22,17 +18,11 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 
 @Configuration
@@ -65,16 +55,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**"); //TODO: need to change on deploy
   }
 
-  @Override
-  public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
-    DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
-    resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
-    MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-    converter.setObjectMapper(new ObjectMapper());
-    converter.setContentTypeResolver(resolver);
-    messageConverters.add(converter);
-    return false;
-  }
+//  @Override
+//  public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
+//    DefaultContentTypeResolver resolver = new DefaultContentTypeResolver();
+//    resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
+//    MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+//    converter.setObjectMapper(new ObjectMapper());
+//    converter.setContentTypeResolver(resolver);
+//    messageConverters.add(converter);
+//    return false;
+//  }
 
   @Override
   public void configureClientInboundChannel(ChannelRegistration registration) {

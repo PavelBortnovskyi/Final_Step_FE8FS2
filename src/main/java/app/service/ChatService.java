@@ -1,5 +1,6 @@
 package app.service;
 
+import app.annotations.Marker;
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
 import app.exceptions.chatError.ChatNotFoundException;
@@ -10,6 +11,7 @@ import app.model.Message;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
