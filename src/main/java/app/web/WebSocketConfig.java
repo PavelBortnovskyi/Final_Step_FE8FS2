@@ -86,7 +86,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
                 .flatMap(jwtTokenService::extractIdFromClaims)
                 .map(JwtUserDetails::new)
-                .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, null, jwtUserDetails.getAuthorities()))
+                .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, "", jwtUserDetails.getAuthorities()))
                 .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
               accessor.setUser(user);
             } else {
