@@ -1,7 +1,9 @@
 package app.controller;
 
+import app.annotations.Marker;
 import app.dto.rs.NotificationResponse;
 import app.facade.NotificationFacade;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -31,7 +33,7 @@ public class NotificationController {
   public Page<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
                                                                   @RequestParam("page") @NotNull Integer page,
                                                                   @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("useId");
+    Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getAllUserNotifications(currUserId, pageSize, page);
   }
 
@@ -42,7 +44,7 @@ public class NotificationController {
   public Page<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
                                                                    @RequestParam("page") @NotNull Integer page,
                                                                    @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("useId");
+    Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getSeenUserNotifications(currUserId, pageSize, page);
   }
 
@@ -53,7 +55,7 @@ public class NotificationController {
   public Page<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
                                                                      @RequestParam("page") @NotNull Integer page,
                                                                      @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("useId");
+    Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getUnseenUserNotifications(currUserId, pageSize, page);
   }
 }
