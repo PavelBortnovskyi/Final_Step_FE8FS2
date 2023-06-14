@@ -3,7 +3,7 @@ server:
     8080
 spring:
     profiles:
-      active: remote
+      active: local
     mvc:
       path match:
         matching-strategy: ant_path_matcher
