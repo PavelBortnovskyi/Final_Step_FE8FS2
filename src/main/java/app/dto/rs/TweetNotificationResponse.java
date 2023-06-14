@@ -18,7 +18,7 @@ public class TweetNotificationResponse {
 
   private String body;
 
-  private Set<AttachmentImageResponse> attachmentsImages;
+  private Set<AttachmentImageResponse> attachmentImages;
 
   private String userAvatarImage;
 
