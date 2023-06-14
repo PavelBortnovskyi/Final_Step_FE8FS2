@@ -55,7 +55,7 @@ public class WebSocketController {
                                                                                   MessageRequest messageDTO,
                                                                                   @AuthenticationPrincipal JwtUserDetails userDetails) {
    Long currUserId = userDetails.getId();
-   return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO)));
+   return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
   @Validated({Marker.Existed.class})

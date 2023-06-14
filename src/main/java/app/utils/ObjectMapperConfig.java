@@ -2,8 +2,8 @@
 //
 //import app.annotations.Marker;
 //import com.fasterxml.jackson.annotation.JsonInclude;
+//import com.fasterxml.jackson.databind.MapperFeature;
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -12,7 +12,6 @@
 //public class ObjectMapperConfig {
 //
 //  @Bean
-//  @Qualifier("ObjectMapperConfig")
 //  public ObjectMapper objectMapper() {
 //    ObjectMapper objectMapper = new ObjectMapper();
 //
@@ -42,6 +41,8 @@
 //        .withView(Marker.PasswordUpdateAfterReset.class))
 //      .setConfig(objectMapper.getSerializationConfig()
 //        .withView(Marker.PasswordReset.class));
+//
+//    objectMapper.disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 //
 //    return objectMapper;
 //  }

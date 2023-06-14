@@ -65,11 +65,6 @@ public class ApplicationBeans {
   }
 
   @Bean
-  public ObjectMapper getObjectMapper() {
-    return new ObjectMapper();
-  }
-
-  @Bean
   public Cloudinary cloudinaryConfig() {
     Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
       "cloud_name", cloudName,

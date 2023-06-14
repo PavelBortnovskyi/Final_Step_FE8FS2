@@ -23,8 +23,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
@@ -76,20 +74,27 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         StompHeaderAccessor accessor =
           MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+        if (accessor != null && accessor.getCommand() != null) {
+          if (StompCommand.CONNECT.equals(accessor.getCommand()) ||
+            StompCommand.SEND.equals(accessor.getCommand()) ||
+            StompCommand.SUBSCRIBE.equals(accessor.getCommand())) {
 
-          String token = jwtTokenService.extractTokenFromHeader(accessor.getFirstNativeHeader("Authorization"))
-            .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+            String token = jwtTokenService.extractTokenFromHeader(accessor.getFirstNativeHeader("Authorization"))
+              .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
-          if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-            Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-              .flatMap(jwtTokenService::extractIdFromClaims)
-              .map(JwtUserDetails::new)
-              .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, null, jwtUserDetails.getAuthorities()))
-              .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-            accessor.setUser(user);
-          } else throw new JwtAuthenticationException("Token is not valid");
+            if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
+              Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
+                .flatMap(jwtTokenService::extractIdFromClaims)
+                .map(JwtUserDetails::new)
+                .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, null, jwtUserDetails.getAuthorities()))
+                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
+              accessor.setUser(user);
+            } else {
+              throw new JwtAuthenticationException("Token is not valid");
+            }
+          }
         }
+
         return message;
       }
     });

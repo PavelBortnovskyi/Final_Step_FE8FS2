@@ -47,8 +47,8 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
     return this.chatService.deleteChat(chatId, userId);
   }
 
-  public Message addMessageToChat(Long chatId, Long userId, Message message) {
-    return this.chatService.addMessage(chatId, userId, message);
+  public Message addMessageToChat(Long userId, Message message) {
+    return this.chatService.addMessage(userId, message);
   }
 
   /**
