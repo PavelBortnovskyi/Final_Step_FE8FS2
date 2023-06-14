@@ -1,5 +1,3 @@
-import { myAxios } from 'src/utils/axiosSetup';
+// import { useDispatch } from 'react-redux';
 
-export const getUsersFromAllChats = async (page = 0, pageSize = 10) => {
-  // const response = await getChatAll();
-};
+export const GetUsersFromAllChats = async (page = 0, pageSize = 10) => {};

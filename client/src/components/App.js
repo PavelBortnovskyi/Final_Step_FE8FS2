@@ -10,7 +10,7 @@ import { getTokens } from 'src/utils/tokens';
 import { Stomp, Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-// 2
+// 3
 export const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -18,54 +18,59 @@ export const App = () => {
 
   // const stompClientRef = useRef(null);
 
-  // const headers = {
-  //   Authorization: `Bearer ${accessToken}`,
-  // };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
 
   // useEffect(() => {
-  //   const socket = new SockJS(
-  //     'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
-  //   );
-  //   const client = Stomp.over(() => socket);
+  // const socket = new SockJS(
+  //   'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
+  // );
+  // const client = Stomp.over(() => socket);
 
-  //   client.onConnect = (frame) => {
-  //     console.log('STOMP connection established:', frame);
-  //     // Подписка на канал с сообщениями
-  //     client.subscribe('/topic/chats', (message) => {
-  //       // Обработка полученных сообщений
-  //       const receivedMessage = JSON.parse(message.body);
-  //       console.log('Received message:', receivedMessage);
-  //     });
-  //   };
+  useEffect(() => {
+    const client = new Client({
+      brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
+      connectHeaders: headers,
+      debug: function (str) {
+        console.log(str);
+      },
+    });
 
-  //   client.connect(
-  //     { Authorization: `Bearer ${accessToken}` },
-  //     () => {
-  //       client.onConnect();
-  //     },
-  //     (error) => {
-  //       console.error('STOMP connection error:', error);
-  //     }
-  //   );
+    // chatId - chat message recipient
+    // userId - message author
+    const connectCallback = () => {
+      console.log('Connected to STOMP server');
+      client.subscribe('/topic/chats', onMessageReceived);
+      client.publish({
+        destination: '/api/v1/message',
+        body: JSON.stringify({
+          chatId: 24,
+          userId: 2,
+          body: 'Hello, server!',
+        }),
+      });
+    };
 
-  //   // Отправка сообщения
-  //   const sendMessage = (message) => {
-  //     client.send('/api/v1/message', {}, JSON.stringify(message));
-  //   };
+    const errorCallback = (error) => {
+      console.error('Error:', error);
+    };
 
-  //   // Пример отправки сообщения
-  //   const message = {
-  //     chatId: 16,
-  //     userId: 4,
-  //     body: 'Hello, server!',
-  //   };
-  //   // sendMessage(message);
+    const onMessageReceived = (message) => {
+      console.log('Received message:', message.body);
+    };
 
-  //   // Отключение от сервера сокетов
-  //   return () => {
-  //     client.onDisconnect();
-  //   };
-  // }, [accessToken]);
+    client.onConnect = connectCallback;
+    client.onStompError = errorCallback;
+
+    client.activate();
+
+    return () => {
+      client.deactivate();
+    };
+  }, [accessToken]);
+
+  //*********************************************************/
 
   useEffect(() => {
     if (accessToken) {

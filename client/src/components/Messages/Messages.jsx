@@ -7,7 +7,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 
 import { SearchMessages } from './Search/SearchMessages';
-import { ConversationList } from './ConversationList/ConversationList';
+import { Contacts } from './ConversationList/Contacts';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getAllChats } from 'src/redux/thunk/getAllChats';
 
@@ -28,11 +28,12 @@ export const Messages = () => {
 
   // set all chats to redux
   useEffect(() => {
-    dispatch(getAllChats());
+    // dispatch(getAllChats({}));
+    dispatch(getAllChats({ page: 0, pageSize: 5 }));
   }, [dispatch]);
 
   return (
-    <Box>
+    <Box sx={{ paddingBottom: '40px' }}>
       <Container>
         {/* Title & action btn */}
         <Box
@@ -67,8 +68,8 @@ export const Messages = () => {
         {/* Search */}
         <SearchMessages />
 
-        {/* chat list */}
-        <ConversationList />
+        {/* Contacts list */}
+        <Contacts />
       </Container>
     </Box>
   );
