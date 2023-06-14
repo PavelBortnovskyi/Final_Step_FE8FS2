@@ -4,7 +4,8 @@ import app.model.AttachmentImage;
 import app.model.Tweet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -13,13 +14,14 @@ public class AttachmentImagesService extends GeneralService<AttachmentImage> {
 
   //add
   //delete
-  public AttachmentImage createAttachmentImage(MultipartFile file, Tweet tweet) {
-    AttachmentImage attachmentImage = new AttachmentImage(tweet, cloudinaryService.uploadFile(file, tweet.getId() + "_" + file.hashCode()));
+  public AttachmentImage createAttachmentImage(String url, Tweet tweet) {
+    AttachmentImage attachmentImage = new AttachmentImage(tweet, url);
     save(attachmentImage);
     return attachmentImage;
   }
 
-  public void deleteAttachmentImage(AttachmentImage attachmentImage) {
-    delete(attachmentImage);
+  public void saveAttachmentImages(HashSet<String> urls, Tweet tweet){
+    urls.forEach(url -> save(new AttachmentImage(tweet, url)));
   }
+ 
 }

@@ -75,16 +75,16 @@ public class UserService extends GeneralService<UserModel> {
   @Transactional
   public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
-    userModel.setAvatarImgUrl(cloudinaryService.uploadFile(file, userId + "_avatar_img"));
-    userRepository.save(userModel);
+    userModel.setAvatarImgUrl(cloudinaryService.uploadUserAvatarImage(file, userId));
+    //userRepository.save(userModel);
     return userModel;
   }
 
   @Transactional
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
-    userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
-    userRepository.save(userModel);
+    userModel.setHeaderImgUrl(cloudinaryService.uploadUserHeaderImage(file, userId));
+    //userRepository.save(userModel);
     return userModel;
   }
 
