@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -36,5 +37,10 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   @Query("SELECT t FROM Tweet t ORDER BY t.createdAt DESC")
   List<Tweet> listLast50Tweets(Pageable pageable);
 
+  // ------------------------------------------------------------------------------------------------------------------
+
+  Optional<Tweet> findTweetById(Long tweetId);
+
+  Integer countByParentTweetIdAndTweetType(Long parentTweetId, TweetType tweetType);
 
 }

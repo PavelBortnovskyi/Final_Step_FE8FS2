@@ -25,6 +25,10 @@ public interface TweetActionRepository extends RepositoryInterface<TweetAction> 
   @Query("SELECT COUNT(t) FROM TweetAction t WHERE t.actionType = :actionType AND t.user.id = :userId AND t.tweet.id = :tweetId")
   int countByActionTypeAndUserIdAndTweetId(@Param("actionType") TweetActionType actionType, @Param("userId") Long userId, @Param("tweetId") Long tweetId);
 
+  // ----------------------------------------------------------------------------------------------------------------
+
+  Integer countByTweetIdAndActionType(Long tweetId, TweetActionType actionType);
+
 }
 
 

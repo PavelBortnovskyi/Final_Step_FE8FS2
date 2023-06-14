@@ -64,18 +64,22 @@ public class CloudinaryService {
     return uploadFile(file, "header", getUserFolder(userId) + "/profile");
   }
 
-  public HashSet<String> uploadTweetImages(MultipartFile[] files, Long userId, Long tweetId) {
+  public HashSet<String> uploadTweetImages(ArrayList<MultipartFile> files, Long userId, Long tweetId) {
     // This is NOT FOR PRODUCTION. To avoid problems when testing and creating multiple tweets with the same ID.
     deleteTweetImages(userId, tweetId);
-    return IntStream.range(0, files.length)
+    return IntStream.range(0, files.size())
       .mapToObj(i ->
-        uploadFile(files[i], "img_" + i + 1, getTweetFolder(userId, tweetId)))
+        uploadFile(files.get(i), "img_" + (i + 1), getTweetFolder(userId, tweetId)))
       .collect(Collectors.toCollection(HashSet::new));
   }
 
   private void deleteTweetImages(Long userId, Long tweetId){
+    String folderPath = getTweetFolder(userId, tweetId);
     try {
-      cloudinary.api().deleteFolder(getTweetFolder(userId, tweetId), ObjectUtils.emptyMap());
+      // Delete files in folder
+      cloudinary.api().deleteResourcesByPrefix(folderPath, ObjectUtils.emptyMap());
+      // Delete folder
+      cloudinary.api().deleteFolder(folderPath, ObjectUtils.emptyMap());
       System.out.println("Папка успешно удалена.");
     } catch (Exception e) {
       System.out.println("Ошибка при удалении папки: " + e.getMessage());
