@@ -27,7 +27,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO>{
   @Autowired
   private TweetService tweetService;
   @Autowired
-  TweetActionService tweetActionService;
+  private TweetActionService tweetActionService;
   @Autowired
   private UserFacade userFacade;
 
@@ -57,5 +57,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO>{
   public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO){
     return convertToDto(tweetService.create(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), TweetType.TWEET, null));
   }
-  
+
+  public TweetResponseDTO getTweetById(Long tweetId){
+    return convertToDto(tweetService.getTweet(tweetId));
+  }
+
 }
