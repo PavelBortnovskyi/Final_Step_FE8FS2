@@ -3,6 +3,7 @@ package app.service;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
+import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,23 +28,26 @@ public class TweetService extends GeneralService<Tweet>{
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
 
-  Tweet getTweet(Long tweetId){
+  public Tweet getTweet(Long tweetId){
     return tweetRepository.findTweetById(tweetId).orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
-  @Transactional
+  //@Transactional
   public Tweet create(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId){
     Tweet tweet = new Tweet();
     if (parentTweetId != null) tweet.setParentTweet(getTweet(parentTweetId));
     tweet.setUser(userService.getUser(userId));
     tweet.setBody(tweetBody);
     tweet.setTweetType(tweetType);
-    Tweet savedTweet = save(tweet);
+    //Tweet savedTweet =
+    save(tweet);
     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   ------------------  " + tweet.getId());
+    attachmentImagesService.saveAttachmentImages(cloudinaryService.uploadTweetImages(files, userId, tweet.getId()), tweet);
 
-    attachmentImagesService.saveAttachmentImages(cloudinaryService.uploadTweetImages(files, userId, savedTweet.getId()), savedTweet);
+    System.out.println(getTweet(tweet.getId()).getAttachmentImages().size());
+    System.out.println(getTweet(tweet.getId()).getId());
 
-    return getTweet(savedTweet.getId());
+    return getTweet(tweet.getId());
   }
 
   public Integer getCountReplays(Tweet tweet){

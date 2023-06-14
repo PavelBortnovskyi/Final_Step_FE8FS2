@@ -57,4 +57,5 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO>{
   public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO){
     return convertToDto(tweetService.create(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), TweetType.TWEET, null));
   }
+  
 }
