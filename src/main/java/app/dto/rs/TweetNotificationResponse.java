@@ -2,34 +2,29 @@ package app.dto.rs;
 
 import app.annotations.Marker;
 import app.enums.TweetType;
+import app.model.AttachmentImage;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class TweetResponse {
+@ApiModel("Tweet DTO for Notifications")
+public class TweetNotificationResponse {
 
-  //@JsonView(Marker.Preview.class)
   private Long tweetId;
 
-  //@JsonView(Marker.Preview.class)
   private String body;
 
-  //@JsonView(Marker.Preview.class)
-  private Set<String> attachmentsImages;
+  private Set<AttachmentImageResponse> attachmentsImages;
 
-  //@JsonView(Marker.Preview.class)
   private String userAvatarImage;
 
-  //@JsonView(Marker.Preview.class)
   private String userTag;
-  private Integer countLikes;
-  private Integer countRetweets;
-  private Integer countReply;
 
-  //@JsonView(Marker.Preview.class)
   private TweetType tweetType;
+
   private Long parentTweetId;
 }

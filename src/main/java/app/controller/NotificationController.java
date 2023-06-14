@@ -29,6 +29,8 @@ public class NotificationController {
   /**
    * This endpoint waiting for valid url params to return all user notifications in page format
    */
+
+  //@JsonView({Marker.Preview.class})
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
                                                                   @RequestParam("page") @NotNull Integer page,
