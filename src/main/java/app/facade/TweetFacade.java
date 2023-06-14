@@ -35,17 +35,17 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO>{
   public void init() {
     ModelMapper mm = super.getMm();
 
-    Converter<Set<AttachmentImage>, Set<String>> attachmentImagesToURLs = sa -> sa.getSource().stream()
+    Converter<Set<AttachmentImage>, Set<String>> imagesToURLs = sa -> sa.getSource().stream()
       .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
-    mm.addConverter(attachmentImagesToURLs);
 
-    Converter<UserModel, UserResponseDTO> userModelToUserResponseDTO = um -> userFacade.convertToDto((UserModel) um);
-    mm.addConverter(userModelToUserResponseDTO);
-
-    Converter<Tweet, TweetResponseDTO> tweetToTweetResponseDTO = t -> convertToDto((Tweet) t);
-    mm.addConverter(tweetToTweetResponseDTO);
+//    Converter<UserModel, UserResponseDTO> userModelToUserResponseDTO = um -> userFacade.convertToDto((UserModel) um);
+//    mm.addConverter(userModelToUserResponseDTO);
+//
+//    Converter<Tweet, TweetResponseDTO> tweetToTweetResponseDTO = t -> convertToDto((Tweet) t);
+//    mm.addConverter(tweetToTweetResponseDTO);
 
     mm.typeMap(Tweet.class, TweetResponseDTO.class)
+      .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages))
       .addMapping(tweetService::getCountReplays, TweetResponseDTO::setCountReplays)
       .addMapping(tweetService::getCountQuoteTweets, TweetResponseDTO::setCountQuoteTweets)
       .addMapping(tweetActionService::getCountLikes, TweetResponseDTO::setCountLikes)

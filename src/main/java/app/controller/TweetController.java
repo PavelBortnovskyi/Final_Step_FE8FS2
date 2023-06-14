@@ -1,10 +1,12 @@
 package app.controller;
 
+import app.annotations.Marker;
 import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.facade.TweetFacade;
 import app.model.AttachmentImage;
 import app.model.Tweet;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;

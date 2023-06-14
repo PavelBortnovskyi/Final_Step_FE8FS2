@@ -1,11 +1,13 @@
 package app.dto.rs;
 
 import app.enums.TweetType;
+import app.model.AttachmentImage;
 import app.model.UserModel;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @ApiModel(description = "Tweet response")
@@ -23,7 +25,7 @@ public class TweetResponseDTO {
 
   private TweetResponseDTO parentTweet;
 
-  private HashSet<String> attachmentImages;
+  private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
   private Integer countReplays;
 
