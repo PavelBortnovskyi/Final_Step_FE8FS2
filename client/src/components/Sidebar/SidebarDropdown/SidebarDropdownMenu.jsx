@@ -44,10 +44,10 @@ export const SidebarDropdownMenu = ({ popupState }) => {
                 }
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '4px 0' }}>
+            {/* <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '4px 0' }}>
                 <LogoutButton />
                 <ThemeSwitcher />
-            </Box>
+            </Box> */}
 
             {/* {
                 selectElements.map(selectEl => (

@@ -1,13 +1,15 @@
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom';
 
-export const SidebarMobileBtn = ({navElement}) => {
+export const SidebarMobileBtn = ({ navElement }) => {
   const [isSwappedIcon, setIsSwappedIcon] = useState(false);
+  const linkRef = useRef(null);
   const theme = useTheme();
 
   const handleMouseDown = () => {
     setIsSwappedIcon(true);
+    linkRef.current.click();
   };
 
   const handleMouseUp = () => {
@@ -28,37 +30,38 @@ export const SidebarMobileBtn = ({navElement}) => {
 
   return (
     <Link
-              to={navElement.route}
-              underline="none"
-              key={navElement.id}
-              component={NavLink}
-              onMouseDown={handleMouseDown}
-              onMouseUp={handleMouseUp}
-              onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}
-            >
-              <ListItem key={navElement.id} disablePadding>
-                <ListItemButton sx={{
-                  '&:hover': {
-                    backgroundColor: `${theme.palette.background.hover}`,
-                    borderRadius: '30px',
-                  },
-                  '& > span': {
-                    display: 'none',
-                  }
-                }}>
-                  <ListItemIcon>
-                    {
-                      isSwappedIcon ?
-                        <navElement.iconActive sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
-                        :
-                        <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
-                    }
+      to={navElement.route}
+      underline="none"
+      key={navElement.id}
+      component={NavLink}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+      ref={linkRef}
+    >
+      <ListItem key={navElement.id} disablePadding>
+        <ListItemButton sx={{
+          '&:hover': {
+            backgroundColor: `${theme.palette.background.hover}`,
+            borderRadius: '30px',
+          },
+          '& > span': {
+            display: 'none',
+          }
+        }}>
+          <ListItemIcon>
+            {
+              isSwappedIcon ?
+                <navElement.iconActive sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
+                :
+                <navElement.icon sx={{ fontSize: 30, color: `${theme.palette.text.primary}`, }} />
+            }
 
-                  </ListItemIcon>
-                  <ListItemText primary={navElement.label} sx={{ color: `${theme.palette.text.primary}`, }} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
+          </ListItemIcon>
+          <ListItemText primary={navElement.label} sx={{ color: `${theme.palette.text.primary}`, }} />
+        </ListItemButton>
+      </ListItem>
+    </Link>
   )
 }

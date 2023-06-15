@@ -29,7 +29,7 @@ export const ThemeSwitcher = () => {
   };
 
   return (
-    <FormControlLabel
+    <FormControlLabel 
       control={
         <Switch
           checked={isChecked}
@@ -38,7 +38,7 @@ export const ThemeSwitcher = () => {
         />
       }
       labelPlacement="start"
-      label="Theme"
+      label="Сhange Theme"
     />
   );
 };
