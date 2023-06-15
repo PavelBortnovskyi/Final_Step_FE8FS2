@@ -1,6 +1,7 @@
 package app.model;
 
 import app.enums.TweetActionType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tweet_actions")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @SequenceGenerator(name = "custom_gen", sequenceName = "tweet_actions_id_seq", allocationSize = 1)
 public class TweetAction extends BaseEntityModel {

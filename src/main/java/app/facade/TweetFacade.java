@@ -2,6 +2,7 @@ package app.facade;
 
 import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
+import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.model.AttachmentImage;
 import app.model.Tweet;
@@ -51,10 +52,21 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO) {
+  public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO, TweetType tweetType, Long parentTweetId) {
     return convertToDto(tweetService
-      .create(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), TweetType.TWEET, null));
+      .createTweet(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), tweetType, parentTweetId));
   }
+
+
+  public TweetResponseDTO actionTweet(Long userId, Long tweetId, TweetActionType tweetActionType){
+    return convertToDto(tweetService
+      .createTweetAction(userId, tweetId, tweetActionType));
+  }
+
+  public void deleteTweet(Long userId, Long tweetId){
+    tweetService.deleteTweet(userId, tweetId);
+  }
+
 
 
   public TweetResponseDTO getTweetById(Long tweetId) {

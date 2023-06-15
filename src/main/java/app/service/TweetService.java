@@ -1,6 +1,8 @@
 package app.service;
 
+import app.enums.TweetActionType;
 import app.enums.TweetType;
+import app.exceptions.tweetError.TweetDeleteError;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.Tweet;
 import app.repository.TweetModelRepository;
@@ -23,6 +25,7 @@ public class TweetService extends GeneralService<Tweet> {
   private final UserService userService;
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
+  private final TweetActionService tweetActionService;
 
 
   public Tweet getTweet(Long tweetId) {
@@ -31,7 +34,7 @@ public class TweetService extends GeneralService<Tweet> {
 
 
   @Transactional
-  public Tweet create(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId) {
+  public Tweet createTweet(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId) {
     Tweet tweet = new Tweet();
 
     if (parentTweetId != null) tweet.setParentTweet(getTweet(parentTweetId));
@@ -47,6 +50,22 @@ public class TweetService extends GeneralService<Tweet> {
           .uploadTweetImages(files, userId, tweet.getId()), tweet));
 
     return tweet;
+  }
+
+
+  @Transactional
+  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
+    return tweetActionService.actionTweet(userService.getUser(userId), getTweet(tweetId), tweetActionType)
+      .getTweet();
+  }
+
+
+  @Transactional
+  public void deleteTweet(Long userId, Long tweetId){
+    Tweet tweet = getTweet(tweetId);
+    if (!tweet.getUser().getId().equals(userId)) throw new TweetDeleteError(tweetId);
+    delete(tweet);
+    cloudinaryService.deleteTweetImages(userId, tweetId);
   }
 
 

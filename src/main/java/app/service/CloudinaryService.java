@@ -81,7 +81,7 @@ public class CloudinaryService {
   }
 
 
-  private void deleteTweetImages(Long userId, Long tweetId) {
+  public void deleteTweetImages(Long userId, Long tweetId) {
     String folderPath = getTweetFolder(userId, tweetId);
     try {
       // Delete files in folder
