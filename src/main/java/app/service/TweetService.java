@@ -28,11 +28,6 @@ public class TweetService extends GeneralService<Tweet> {
   private final TweetActionService tweetActionService;
 
 
-  public Tweet getTweet(Long tweetId) {
-    return tweetRepository.findTweetById(tweetId).orElseThrow(() -> new TweetIsNotFoundException(tweetId));
-  }
-
-
   @Transactional
   public Tweet createTweet(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId) {
     Tweet tweet = new Tweet();
@@ -53,6 +48,20 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
+  public Tweet getTweet(Long tweetId) {
+    return tweetRepository.findTweetById(tweetId).orElseThrow(() -> new TweetIsNotFoundException(tweetId));
+  }
+
+
+  @Transactional
+  public void deleteTweet(Long userId, Long tweetId){
+    Tweet tweet = getTweet(tweetId);
+    if (!tweet.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
+    delete(tweet);
+    cloudinaryService.deleteTweetImages(userId, tweetId);
+  }
+
+
   @Transactional
   public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
     return tweetActionService.createTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
@@ -64,15 +73,6 @@ public class TweetService extends GeneralService<Tweet> {
   public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
     return tweetActionService.removeTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
       .getTweet();
-  }
-
-
-  @Transactional
-  public void deleteTweet(Long userId, Long tweetId){
-    Tweet tweet = getTweet(tweetId);
-    if (!tweet.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
-    delete(tweet);
-    cloudinaryService.deleteTweetImages(userId, tweetId);
   }
 
 

@@ -57,6 +57,13 @@ public class TweetController {
   }
 
 
+  // Get Tweet by id
+  @GetMapping("/{id}")
+  public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
+  }
+
+
   // Delete tweet
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -93,6 +100,15 @@ public class TweetController {
   }
 
 
+  // UnBookmark tweet action
+  @PostMapping("/{id}/unbookmark")
+  public ResponseEntity<TweetResponseDTO> unBookmarkTweet(@PathVariable(name ="id") @Positive Long tweetId,
+                                                      HttpServletRequest httpRequest){
+    return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.BOOKMARK));
+  }
+
+
   // Create retweet
   @PostMapping("/{id}/retweet")
   public ResponseEntity<TweetResponseDTO> retweetTweet(@PathVariable(name ="id") @Positive Long tweetId,
@@ -102,11 +118,16 @@ public class TweetController {
   }
 
 
-  // Get Tweet by Id
-  @GetMapping("/{id}")
-  public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
-    return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
+  // Remove retweet
+  @PostMapping("/{id}/unretweet")
+  public ResponseEntity<TweetResponseDTO> unRetweetTweet(@PathVariable(name ="id") @Positive Long tweetId,
+                                                       HttpServletRequest httpRequest){
+    return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.RETWEET));
   }
+
+
+
 
 
 }
