@@ -17,9 +17,9 @@ import java.util.stream.IntStream;
 public class CloudinaryService {
 
   private final Cloudinary cloudinary;
-  private final String PROJECT_FOLDER = "tweeter_v1";
+  private final String PROJECT_FOLDER = "TWEETER_v1";
 
-  
+
   private void checkImageType(MultipartFile file) {
     Map<String, ArrayList<Byte>> signatures = new HashMap<>();
     signatures.put("*.jpeg, *.jpg", new ArrayList<>(Arrays.asList((byte) 0xFF, (byte) 0xD8)));
@@ -52,12 +52,12 @@ public class CloudinaryService {
 
 
   private String getUserFolder(Long userId) {
-    return PROJECT_FOLDER + "/userId_" + userId;
+    return PROJECT_FOLDER + "/user_id_" + userId;
   }
 
 
   private String getTweetFolder(Long userId, Long tweetId) {
-    return getUserFolder(userId) + "/tweets/tweetId_" + tweetId;
+    return getUserFolder(userId) + "/tweets/tweet_id_" + tweetId;
   }
 
 
@@ -74,9 +74,9 @@ public class CloudinaryService {
   public HashSet<String> uploadTweetImages(ArrayList<MultipartFile> files, Long userId, Long tweetId) {
     // This is NOT FOR PRODUCTION. To avoid problems when testing and creating multiple tweets with the same ID.
     deleteTweetImages(userId, tweetId);
+
     return IntStream.range(0, files.size())
-      .mapToObj(i ->
-        uploadFile(files.get(i), "img_" + (i + 1), getTweetFolder(userId, tweetId)))
+      .mapToObj(i -> uploadFile(files.get(i), "img_" + (i + 1), getTweetFolder(userId, tweetId)))
       .collect(Collectors.toCollection(HashSet::new));
   }
 
