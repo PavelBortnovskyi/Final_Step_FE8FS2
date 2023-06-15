@@ -16,6 +16,7 @@ import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
 import { UserBiIdPage } from 'src/pages/UserByIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
+import ModalCommentPage from 'src/pages/ModalCommentPage';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 
 export const router = createBrowserRouter([
@@ -43,8 +44,8 @@ export const router = createBrowserRouter([
         element: <PageDeveloping />,
       },
       {
-        path: "/notifications",
-        element: <NotificationsUser />
+        path: '/notifications',
+        element: <NotificationsUser />,
       },
       {
         path: '/messages',
@@ -145,6 +146,10 @@ export const router = createBrowserRouter([
       {
         path: '/:id/followings',
         element: <FollowingsPage />,
+      },
+      {
+        path: '/modal/comment',
+        element: <ModalCommentPage />,
       },
     ],
   },
