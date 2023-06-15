@@ -90,10 +90,11 @@ export const MainMenuSidebar = ({ navElement }) => {
           </ListItemIconStyled>
 
           <ListItemText
-            primaryTypographyProps={{ fontSize: '18px' }}
+            primaryTypographyProps={{ fontSize: '18px', fontWeight: "bold" }}
+            
             sx={{
               color: `${theme.palette.text.primary}`,
-              minWidth: '200px',
+              minWidth: '130px',
               display: { lg: 'block', xs: 'none' },
             }}
             primary={navElement.label}

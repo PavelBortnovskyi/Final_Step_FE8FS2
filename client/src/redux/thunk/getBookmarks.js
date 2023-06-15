@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import React from 'react'
 import { myAxios } from 'src/utils/axiosSetup';
 
 export const getBookmarks = createAsyncThunk(

@@ -13,6 +13,7 @@ import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
 import { UserBiIdPage } from 'src/pages/UserByIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
+import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 
 export const mainRoutes = () => {
   return [
@@ -31,8 +32,8 @@ export const mainRoutes = () => {
       element: <PageDeveloping />,
     },
     {
-      path: '/notifications',
-      element: <PageDeveloping />,
+      path: "/notifications",
+      element: <NotificationsUser />
     },
     {
       path: '/tweet/:id',
