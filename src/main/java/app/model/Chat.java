@@ -22,7 +22,7 @@ public class Chat extends BaseEntityModel {
   @ManyToOne
   private UserModel initiatorUser;
 
-  @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
   private List<Message> messages = new ArrayList<>();
 
   @ManyToMany(fetch = FetchType.EAGER)

@@ -7,13 +7,17 @@ import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.Chat;
-import app.model.Message;
 import app.service.ChatService;
 import app.service.UserService;
+import app.utils.CustomPageImpl;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @NoArgsConstructor
@@ -28,21 +32,17 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   /**
    * Method creates new chat between 2 users
    */
-  public ChatResponse createChat(Long userId, Long interlocutorId) {
+  public Set<ChatResponse> createChat(Long userId, Long interlocutorId) {
     if (userId.equals(interlocutorId))
       throw new BadRequestException("Please find somebody else to chat except yourself!");
-    return this.convertToDto(this.chatService.getChatByUsersIdPair(userId, interlocutorId).orElseGet(() -> this.chatService.createChat(userId, interlocutorId)));
+    return this.chatService.createChat(userId, interlocutorId).stream().map(this::convertToDto).collect(Collectors.toSet());
   }
 
   /**
    * Method deletes chat (can be performed only by chat initiator!)
    */
-  public boolean deleteChat(Long userId, Long chatId) {
+  public boolean deleteChat(Long chatId, Long userId) {
     return this.chatService.deleteChat(chatId, userId);
-  }
-
-  public Message addMessageToChat(Long chatId, Long userId, Message message) {
-    return this.chatService.addMessage(chatId, userId, message);
   }
 
   /**
@@ -53,16 +53,16 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   }
 
   /**
-   * Method removes user from chat (can be performed only by chat initiator!)
+   * Method removes user from chat
    */
-  public boolean removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) {
-    return this.chatService.removeUser(userToRemoveId, removeInitUserId, chatId);
+  public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) {
+    return this.chatService.removeUserFromChat(userToRemoveId, removeInitUserId, chatId);
   }
 
   /**
    * Method returns page of user chat responses with last message to preview
    */
-  public Page<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
+  public CustomPageImpl<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
     return this.chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber);
   }
 

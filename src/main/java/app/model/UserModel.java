@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Data
@@ -74,7 +74,7 @@ public class UserModel extends BaseEntityModel {
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private Set<Message> messages = new HashSet<>();
+  private List<Message> messages = new ArrayList<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
@@ -87,6 +87,16 @@ public class UserModel extends BaseEntityModel {
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<TweetAction> tweetAction;
+
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
+  @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Set<Notification> notifications_sent;
+
+  @LazyCollection(value = LazyCollectionOption.EXTRA)
+  @OneToMany(mappedBy = "receiverUser", fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Set<Notification> notifications_received;
 
   public Integer getCountFollowers() {
     return followers.size();
