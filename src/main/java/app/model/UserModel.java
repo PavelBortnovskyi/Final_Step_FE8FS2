@@ -10,9 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Data
@@ -76,7 +74,7 @@ public class UserModel extends BaseEntityModel {
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private Set<Message> messages = new HashSet<>();
+  private List<Message> messages = new ArrayList<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)

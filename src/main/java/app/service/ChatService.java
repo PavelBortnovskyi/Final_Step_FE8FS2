@@ -12,6 +12,7 @@ import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -97,22 +98,6 @@ public class ChatService extends GeneralService<Chat> {
         userToRemoveId, chatId, removeInitUserId));
     } else return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
       userToRemoveId, chatId, removeInitUserId));
-  }
-
-  /**
-   * Method returns chat with added message
-   */
-  public Message addMessage(Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
-    AtomicInteger last = new AtomicInteger();
-    return this.chatRepository.save(this.chatRepository.findById(message.getChat().getId())
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId)))
-        || chat.getInitiatorUser().getId().equals(message.getUser().getId()))
-      .map(chat -> {
-        chat.getMessages().add(message);
-        last.set(chat.getMessages().size() - 1);
-        return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", message.getChat().getId(), userId))))
-      .getMessages().get(last.get());
   }
 
   /**

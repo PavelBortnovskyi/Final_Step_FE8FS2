@@ -43,8 +43,9 @@ public class NotificationController {
   /**
    * This endpoint waiting for valid url params to return all user seen notifications in page format
    */
+  @JsonView({Marker.Preview.class})
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
+  public CustomPageImpl<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
                                                                    @RequestParam("page") @NotNull Integer page,
                                                                    @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
@@ -54,8 +55,9 @@ public class NotificationController {
   /**
    * This endpoint waiting for valid url params to return all user not seen notifications in page format
    */
+  @JsonView({Marker.Preview.class})
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
+  public CustomPageImpl<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
                                                                      @RequestParam("page") @NotNull Integer page,
                                                                      @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
