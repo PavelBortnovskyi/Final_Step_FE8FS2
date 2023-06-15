@@ -5,6 +5,7 @@ import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
+import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,11 +86,11 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to return all user chats with last messages in page format to preview
    */
 
-  //@JsonView(value = Marker.ChatDetails.class)
+  @JsonView(value = Marker.ChatDetails.class)
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
-                                                     @RequestParam("page") @NotNull Integer page,
-                                                     @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
+                                                               @RequestParam("page") @NotNull Integer page,
+                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatsForPreview(currUserId, pageSize, page);
   }

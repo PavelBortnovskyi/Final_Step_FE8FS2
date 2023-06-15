@@ -12,15 +12,15 @@ import java.util.Set;
 @ApiModel(description = "Chat response")
 public class ChatResponse {
 
-  //@JsonView(Marker.ChatDetails.class)
+  @JsonView(Marker.ChatDetails.class)
   private Long chatId;
 
-  //@JsonView(Marker.ChatDetails.class)
-  private UserChatResponseDTO initiatorUser;
+  @JsonView(Marker.ChatDetails.class)
+  private UserResponseDTO initiatorUser;
 
-  //@JsonView(Marker.ChatDetails.class)
+  @JsonView(Marker.ChatDetails.class)
   private List<MessageResponse> messages;
 
-  //@JsonView(Marker.ChatDetails.class)
-  private Set<UserChatResponseDTO> users;
+  @JsonView(Marker.ChatDetails.class)
+  private Set<UserResponseDTO> users;
 }

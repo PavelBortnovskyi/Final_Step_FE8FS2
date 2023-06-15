@@ -1,6 +1,5 @@
 package app.facade;
 
-import app.annotations.Marker;
 import app.dto.rq.ChatRequest;
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
@@ -11,7 +10,7 @@ import app.model.Chat;
 import app.model.Message;
 import app.service.ChatService;
 import app.service.UserService;
-import com.fasterxml.jackson.annotation.JsonView;
+import app.utils.CustomPageImpl;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,7 +67,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   /**
    * Method returns page of user chat responses with last message to preview
    */
-  public Page<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
+  public CustomPageImpl<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
     return this.chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber);
   }
 

@@ -1,6 +1,5 @@
 package app.service;
 
-import app.annotations.Marker;
 import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
 import app.exceptions.chatError.ChatNotFoundException;
@@ -11,7 +10,7 @@ import app.model.Message;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
-import com.fasterxml.jackson.annotation.JsonView;
+import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -134,15 +133,15 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns collection of user chats for only last message in each
    */
-  public Page<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
-    return chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
+  public CustomPageImpl<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
+    return new CustomPageImpl<>(chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
       Chat chat = (Chat) array[0];
       Message lastMessage = (Message) array[1];
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
       return this.modelMapper.map(chat, ChatResponse.class);
-    });
+    }));
   }
 
   /**

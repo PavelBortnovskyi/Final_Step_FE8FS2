@@ -3,6 +3,7 @@ package app.controller;
 import app.annotations.Marker;
 import app.dto.rs.NotificationResponse;
 import app.facade.NotificationFacade;
+import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,11 +31,11 @@ public class NotificationController {
    * This endpoint waiting for valid url params to return all user notifications in page format
    */
 
-  //@JsonView({Marker.Preview.class})
+  @JsonView({Marker.Preview.class})
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
-                                                                  @RequestParam("page") @NotNull Integer page,
-                                                                  @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
+                                                                            @RequestParam("page") @NotNull Integer page,
+                                                                            @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getAllUserNotifications(currUserId, pageSize, page);
   }

@@ -2,6 +2,7 @@ package app.service;
 
 import app.model.Notification;
 import app.repository.NotificationModelRepository;
+import app.utils.CustomPageImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
