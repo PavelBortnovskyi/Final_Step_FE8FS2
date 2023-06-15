@@ -5,9 +5,10 @@ import app.dto.rs.ChatResponse;
 import app.dto.rs.MessageResponse;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
+import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +23,18 @@ import java.util.Set;
 @CrossOrigin
 @Log4j2
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/chat")
 @Validated
 public class ChatController {
-  private final ChatFacade chatFacade;
+  @Autowired
+  private ChatFacade chatFacade;
 
   /**
    * This endpoint waiting for valid url params and token to return created chat response
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponse>> handleCreateChat(@RequestParam("interlocutorId")
-                                                                                           @NotNull @Positive Long interlocutorId,
+                                                                                                @NotNull @Positive Long interlocutorId,
                                                                                                 HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));
@@ -59,11 +60,12 @@ public class ChatController {
   //TODO: discuss who can perform that operation
   @Validated({Marker.ChatDetails.class})
   @PutMapping(path = "/{id}/user_add", produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<ChatResponse> handleAddUserToChat(@RequestParam("userId")
-                                                                                              @NotNull(groups = Marker.ChatDetails.class)
-                                                                                              @Positive(groups = Marker.ChatDetails.class)
-                                                                                              Long userIdToAdd,
-                                                                                              @PathVariable(name = "id") Long chatId) {
+  @JsonView(Marker.ChatDetails.class)
+  public ResponseEntity<ChatResponse> handleAddUserToChat(@RequestParam("userId")
+                                                          @NotNull(groups = Marker.ChatDetails.class)
+                                                          @Positive(groups = Marker.ChatDetails.class)
+                                                          Long userIdToAdd,
+                                                          @PathVariable(name = "id") Long chatId) {
     return ResponseEntity.ok(this.chatFacade.addUserToChat(userIdToAdd, chatId));
   }
 
@@ -83,10 +85,12 @@ public class ChatController {
   /**
    * This endpoint waiting for valid url params and token to return all user chats with last messages in page format to preview
    */
+
+  @JsonView(value = Marker.ChatDetails.class)
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
-                                                     @RequestParam("page") @NotNull Integer page,
-                                                     @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
+                                                               @RequestParam("page") @NotNull Integer page,
+                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatsForPreview(currUserId, pageSize, page);
   }

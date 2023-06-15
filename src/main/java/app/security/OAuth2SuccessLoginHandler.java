@@ -35,17 +35,15 @@ import static org.passay.AllowedCharacterRule.ERROR_CODE;
 @RequiredArgsConstructor
 public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-  @Autowired
   private final JwtTokenService jwtTokenService;
 
-  @Autowired
   private final UserService userService;
 
-  @Autowired
   private final PasswordEncoder encoder;
 
-  @Autowired
-  private EmailService emailService;
+  private final EmailService emailService;
+
+  private final ObjectMapper objectMapper;
 
   public void onAuthenticationSuccess(HttpServletRequest request,
                                       HttpServletResponse response,
@@ -54,7 +52,6 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
     OAuth2UserDetailsImpl oauth2User = (OAuth2UserDetailsImpl) authentication.getPrincipal();
 
     OutputStream outputStream = response.getOutputStream();
-    ObjectMapper objectMapper = new ObjectMapper();
     HashMap<String, String> tokenResponse = new HashMap<>();
 
     //Extract email
