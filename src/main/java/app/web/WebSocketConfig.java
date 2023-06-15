@@ -31,6 +31,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -89,7 +90,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         if (accessor != null && accessor.getCommand() != null) {
           if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
-            String token = jwtTokenService.extractTokenFromHeader(accessor.getFirstNativeHeader("Authorization"))
+            String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
               .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
             if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
@@ -101,7 +102,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               accessor.setUser(user);
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
               //accessor.getSessionAttributes().put("userId", jwtUser.getId());
-              accessor.getSessionAttributes().put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+              accessor.getSessionAttributes()
+                .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
             } else {
               throw new JwtAuthenticationException("Token is not valid");
             }
