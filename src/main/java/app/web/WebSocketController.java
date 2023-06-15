@@ -64,8 +64,8 @@ public class WebSocketController {
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
                                                                                       MessageRequest messageDTO,
-                                                                                      @AuthenticationPrincipal JwtUserDetails userDetails) {
-    Long currUserId = userDetails.getId();
+                                                                                      SimpMessageHeaderAccessor accessor) {
+    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     this.messageService.changeMessage(currUserId, this.messageFacade.convertToEntity(messageDTO));
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
@@ -73,8 +73,8 @@ public class WebSocketController {
   @MessageMapping("/v1/message/delete")
   public void deleteMessage(@Payload @Valid @JsonView({Marker.Delete.class})
                             MessageRequest messageDTO,
-                            @AuthenticationPrincipal JwtUserDetails userDetails) {
-    Long currUserId = userDetails.getId();
+                            SimpMessageHeaderAccessor accessor) {
+    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     if (this.messageService.deleteMessage(currUserId, messageDTO.getId()))
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }
@@ -97,8 +97,8 @@ public class WebSocketController {
   @SendTo("/specific")
   public void markReadNotification(@Payload @Valid @JsonView({Marker.Existed.class})
                                    NotificationRequest notificationRequestDTO,
-                                   HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
+                                   SimpMessageHeaderAccessor accessor) {
+    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     this.notificationService.findById(notificationRequestDTO.getId())
       .filter(n -> n.getReceiverUser().getId().equals(currUserId))
       .map(n -> {
