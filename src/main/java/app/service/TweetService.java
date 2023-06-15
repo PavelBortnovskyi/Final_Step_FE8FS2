@@ -29,21 +29,31 @@ public class TweetService extends GeneralService<Tweet> {
     return tweetRepository.findTweetById(tweetId).orElseThrow(() -> new TweetIsNotFoundException(tweetId));
   }
 
+
   @Transactional
   public Tweet create(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId) {
     Tweet tweet = new Tweet();
+
     if (parentTweetId != null) tweet.setParentTweet(getTweet(parentTweetId));
-    tweet.setUser(userService.getUser(userId));
-    tweet.setBody(tweetBody);
-    tweet.setTweetType(tweetType);
-    save(tweet);
-    tweet.getAttachmentImages().addAll(attachmentImagesService.saveAttachmentImages(cloudinaryService.uploadTweetImages(files, userId, tweet.getId()), tweet));
+    tweet
+      .setUser(userService.getUser(userId))
+      .setBody(tweetBody)
+      .setTweetType(tweetType);
+
+    save(tweet)
+      .getAttachmentImages()
+      .addAll(attachmentImagesService
+        .saveAttachmentImages(cloudinaryService
+          .uploadTweetImages(files, userId, tweet.getId()), tweet));
+
     return tweet;
   }
+
 
   public Integer getCountReplays(Tweet tweet) {
     return tweetRepository.countByParentTweetAndTweetType(tweet, TweetType.REPLY);
   }
+
 
   public Integer getCountQuoteTweets(Tweet tweet) {
     return tweetRepository.countByParentTweetAndTweetType(tweet, TweetType.QUOTE_TWEET);

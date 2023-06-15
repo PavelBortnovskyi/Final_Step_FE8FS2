@@ -2,8 +2,8 @@ package app.model;
 
 import app.enums.TweetType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,11 +12,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-//@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @Table(name = "tweets")
 @NoArgsConstructor
 @Data
+@Accessors(chain = true)
 @SequenceGenerator(name = "custom_gen", sequenceName = "tweets_id_seq", allocationSize = 1)
 public class Tweet extends BaseEntityModel {
   @Column(name = "body", nullable = false)

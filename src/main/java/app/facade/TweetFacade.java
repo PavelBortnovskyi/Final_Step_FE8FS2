@@ -26,6 +26,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   @Autowired
   private TweetActionService tweetActionService;
 
+
   @PostConstruct
   public void init() {
     ModelMapper mm = super.getMm();
@@ -37,8 +38,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
       .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages));
   }
 
+
   @Override
-  public TweetResponseDTO convertToDto(Tweet tweet){
+  public TweetResponseDTO convertToDto(Tweet tweet) {
     return super.convertToDto(tweet)
       .setCountReplays(tweetService.getCountReplays(tweet))
       .setCountQuoteTweets(tweetService.getCountQuoteTweets(tweet))
@@ -47,9 +49,12 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
       .setCountRetweets(tweetActionService.getCountRetweets(tweet));
   }
 
+
   public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO) {
-    return convertToDto(tweetService.create(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), TweetType.TWEET, null));
+    return convertToDto(tweetService
+      .create(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), TweetType.TWEET, null));
   }
+
 
   public TweetResponseDTO getTweetById(Long tweetId) {
     return convertToDto(tweetService.getTweet(tweetId));

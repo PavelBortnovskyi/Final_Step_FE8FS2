@@ -2,7 +2,6 @@ package app.model;
 
 import app.enums.TweetActionType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

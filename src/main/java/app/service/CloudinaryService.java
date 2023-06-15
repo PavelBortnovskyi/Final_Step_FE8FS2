@@ -19,7 +19,8 @@ public class CloudinaryService {
   private final Cloudinary cloudinary;
   private final String PROJECT_FOLDER = "tweeter_v1";
 
-  public void checkImageType(MultipartFile file) {
+  
+  private void checkImageType(MultipartFile file) {
     Map<String, ArrayList<Byte>> signatures = new HashMap<>();
     signatures.put("*.jpeg, *.jpg", new ArrayList<>(Arrays.asList((byte) 0xFF, (byte) 0xD8)));
     signatures.put("*.png", new ArrayList<>(Arrays.asList((byte) 0x89, (byte) 0x50, (byte) 0x4E, (byte) 0x47, (byte) 0x0D, (byte) 0x0A, (byte) 0x1A, (byte) 0x0A)));
@@ -35,6 +36,7 @@ public class CloudinaryService {
     throw new UploadImageException("Supported type: " + signatures.keySet());
   }
 
+
   private String uploadFile(MultipartFile file, String imageName, String folder) {
     checkImageType(file);
     try {
@@ -48,21 +50,26 @@ public class CloudinaryService {
     }
   }
 
+
   private String getUserFolder(Long userId) {
     return PROJECT_FOLDER + "/userId_" + userId;
   }
+
 
   private String getTweetFolder(Long userId, Long tweetId) {
     return getUserFolder(userId) + "/tweets/tweetId_" + tweetId;
   }
 
+
   public String uploadUserAvatarImage(MultipartFile file, Long userId) {
     return uploadFile(file, "avatar", getUserFolder(userId) + "/profile");
   }
 
+
   public String uploadUserHeaderImage(MultipartFile file, Long userId) {
     return uploadFile(file, "header", getUserFolder(userId) + "/profile");
   }
+
 
   public HashSet<String> uploadTweetImages(ArrayList<MultipartFile> files, Long userId, Long tweetId) {
     // This is NOT FOR PRODUCTION. To avoid problems when testing and creating multiple tweets with the same ID.
@@ -72,6 +79,7 @@ public class CloudinaryService {
         uploadFile(files.get(i), "img_" + (i + 1), getTweetFolder(userId, tweetId)))
       .collect(Collectors.toCollection(HashSet::new));
   }
+
 
   private void deleteTweetImages(Long userId, Long tweetId) {
     String folderPath = getTweetFolder(userId, tweetId);
@@ -85,6 +93,7 @@ public class CloudinaryService {
       System.out.println("Ошибка при удалении папки: " + e.getMessage());
     }
   }
+
 
   public boolean deleteFile(String imgId) {
     try {
