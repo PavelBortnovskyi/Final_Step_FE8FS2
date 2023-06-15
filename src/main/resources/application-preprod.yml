@@ -70,7 +70,7 @@ jwt:
   secretPasswordReset: ${JWT_PASSWORD_RESET_SECRET}
   secretPasswordUpdate: ${JWT_PASSWORD_UPDATE_SECRET}
   secretRegister: ${JWT_REGISTER_SECRET}
-  expiration: 60000 #2h
+  expiration: 7200000 #2h
   expirationRefresh: 604800000 #7d
   expirationPasswordReset: 86400000 #24h
   expirationPasswordUpdate: 3600000 #1h
