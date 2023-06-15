@@ -25,8 +25,6 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   private TweetService tweetService;
   @Autowired
   private TweetActionService tweetActionService;
-  @Autowired
-  private UserFacade userFacade;
 
   @PostConstruct
   public void init() {
@@ -34,12 +32,6 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
     Converter<Set<AttachmentImage>, Set<String>> imagesToURLs = sa -> sa.getSource().stream()
       .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
-
-//    Converter<UserModel, UserResponseDTO> userModelToUserResponseDTO = um -> userFacade.convertToDto((UserModel) um);
-//    mm.addConverter(userModelToUserResponseDTO);
-//
-//    Converter<Tweet, TweetResponseDTO> tweetToTweetResponseDTO = t -> convertToDto((Tweet) t);
-//    mm.addConverter(tweetToTweetResponseDTO);
 
     mm.typeMap(Tweet.class, TweetResponseDTO.class)
       .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages));
