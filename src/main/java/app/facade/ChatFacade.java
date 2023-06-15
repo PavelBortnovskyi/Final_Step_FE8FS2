@@ -7,7 +7,6 @@ import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.Chat;
-import app.model.Message;
 import app.service.ChatService;
 import app.service.UserService;
 import app.utils.CustomPageImpl;
@@ -44,12 +43,6 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
    */
   public boolean deleteChat(Long chatId, Long userId) {
     return this.chatService.deleteChat(chatId, userId);
-  }
-
-  public Message addMessageToChat(Long userId, Message message) {
-    if (message.getUser().getId().equals(userId))
-      return chatService.addMessage(message);
-    else throw new BadRequestException(String.format("Current user with id: %d is not the author of message ", userId));
   }
 
   /**

@@ -101,18 +101,6 @@ public class ChatService extends GeneralService<Chat> {
   }
 
   /**
-   * Method returns chat with added message
-   */
-  public Message addMessage(Message message) throws UserNotFoundException, ChatNotFoundException {
-    return this.messageRepository.save(this.chatRepository.findById(message.getChat().getId())
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(message.getUser().getId()).orElseThrow(() -> new UserNotFoundException(message.getUser().getId())))
-        || chat.getInitiatorUser().getId().equals(message.getUser().getId()))
-      .map(chat -> {
-        return message;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", message.getChat().getId(), message.getUser().getId()))));
-  }
-
-  /**
    * Method returns pageable list of chat messages
    */
   public Page<MessageResponse> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {

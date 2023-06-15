@@ -1,7 +1,9 @@
 package app.service;
 
+import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.messageError.MessageException;
 import app.exceptions.messageError.MessageNotFoundException;
+import app.exceptions.userError.UserNotFoundException;
 import app.model.Message;
 import app.repository.MessageModelRepository;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,23 @@ import org.springframework.stereotype.Service;
 public class MessageService extends GeneralService<Message> {
 
   private final MessageModelRepository messageRepository;
+
+  private final ChatService chatService;
+
+  private final UserService userService;
+
+  /**
+   * Method returns message after it added to chat
+   */
+  public Message addMessage(Message message) throws UserNotFoundException, ChatNotFoundException {
+    if (this.chatService.findById(message.getChat().getId())
+      .filter(chat -> chat.getUsers().contains(this.userService.getUser(message.getUser().getId()))
+        || chat.getInitiatorUser().getId().equals(message.getUser().getId())
+      ).isPresent())
+      return this.messageRepository.save(message);
+    else
+      throw new ChatNotFoundException(String.format("Chat with id: %d for user with id: %d not found", message.getChat().getId(), message.getUser().getId()));
+  }
 
   /**
    * Method for change message body (checks userId as author of message)

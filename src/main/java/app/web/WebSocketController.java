@@ -56,7 +56,7 @@ public class WebSocketController {
                                                                                   MessageRequest messageDTO,
                                                                                   SimpMessageHeaderAccessor accessor) {
    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-   return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
+   return this.messageFacade.convertToDto(this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
   @Validated({Marker.Existed.class})
