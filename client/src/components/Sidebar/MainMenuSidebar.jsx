@@ -94,7 +94,7 @@ export const MainMenuSidebar = ({ navElement }) => {
             
             sx={{
               color: `${theme.palette.text.primary}`,
-              minWidth: '200px',
+              minWidth: '130px',
               display: { lg: 'block', xs: 'none' },
             }}
             primary={navElement.label}

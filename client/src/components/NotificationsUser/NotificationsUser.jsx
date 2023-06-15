@@ -1,11 +1,14 @@
 import { Box, Tab, Tabs, Typography, styled, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NotificationsFollowed } from './NotificationsFollowed';
 import { NotificationsRetweet } from './NotificationsRetweet';
 import { NotificationsLike } from './NotificationsLike';
 import { useNavigate } from 'react-router-dom';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import { getNotifications } from 'src/redux/thunk/getNotifications';
+import { NotificationsReplying } from './NotificationsReplying';
+import { NotificationsEmpty } from './NotificationsEmpty';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -21,8 +24,16 @@ const CustomTab = styled(Tab)((props) => ({
 
 
 export const NotificationsUser = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
+  const [tabIndex, setTabIndex] = useState(0);
+  const theme = useTheme();
+  const userNotifications = useSelector(state => state.userNotifications.userNotifications);
+  const Notifications = userNotifications.content;
+
+
+
   // send user to home if not authorization
   useEffect(() => {
     if (!isAuthenticated) {
@@ -30,16 +41,14 @@ export const NotificationsUser = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const [tabIndex, setTabIndex] = useState(0);
-  const theme = useTheme();
-  const user = useSelector((state) => state.user.user) || ""; //удалить, когда будет готов запрос
-  const arr = [ './img/06.jpg', './img/06.jpg', './img/06.jpg','./img/06.jpg']; //удалить, когда будет готов запрос
+  useEffect(() => {
+    dispatch(getNotifications({ page: 0, pageSize: 10 }));
+  }, [dispatch]);
+
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
   };
-
   return (
-
     <Box sx={{ height: '100vh', padding: '8px 0 0 0' }}>
       <Typography variant="h5" sx={{ padding: '0 0 8px 16px', }}>
         Notifications
@@ -53,63 +62,42 @@ export const NotificationsUser = () => {
         <CustomTab label="Mentions" key='Mentions' />
       </Tabs>
 
-      {/* <Box sx={{
+      <Box sx={{
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: '80px'
-      }}> */}
-      {/* {tabIndex == 0 && (
-          <Box sx={{ width: '340px', display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
 
-            <Typography variant='h4' fontWeight="bold">
-              Nothing to see here — yet
-            </Typography>
-            <Typography variant='body1' sx={{ color: `${theme.palette.text.secondary}` }}>
-              From likes to Retweets and a whole lot more, this is where all the action happens.
-            </Typography>
-          </Box>
-        )}
-        {tabIndex == 1 && (
-          <Box sx={{ width: '340px', display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-          <img src='./img/verification-check.png' styles={{ width: '340px', height: '200px' }} alt='bookmarks' />
-
-            <Typography variant='h4' fontWeight="bold">
-              Nothing to see here — yet
-            </Typography>
-            <Typography variant='body1' sx={{ color: `${theme.palette.text.secondary}` }}>
-              From likes to Retweets and a whole lot more, this is where all the action happens.
-            </Typography>
-          </Box>
-        )}
-        {tabIndex == 2 && (
-          <Box sx={{ width: '340px', display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-
-            <Typography variant='h4' fontWeight="bold">
-              Nothing to see here — yet
-            </Typography>
-            <Typography variant='body1' sx={{ color: `${theme.palette.text.secondary}` }}>
-              When someone mentions you, you’ll find it here.
-            </Typography>
-          </Box>
-        )} */}
-
-      {/* </Box> */}
-
-      <NotificationsFollowed user={user} />
-      <NotificationsRetweet user={user} notifications={arr} />
-      <NotificationsLike user={user} notifications={arr} />
-      {/* <Box>
-        <Avatar src={user.avatarImgUrl} />
-        <Typography variant='body1' >
-        <strong style={{textTransform: 'capitalize'}}> {user.fullName} </strong>{user.userTag}
-        </Typography>
-
-      </Box> */}
+      }}>
+        <NotificationsEmpty userNotifications={userNotifications} tabIndex={tabIndex} />
 
 
 
+
+
+        {
+          tabIndex === 0 && Notifications && Notifications.map(notification => (
+            (notification.notificationType === ''
+            && <NotificationsFollowed notification={notification} key={notification.id} />)
+            ||
+            (notification.notificationType === 'LIKE'
+            && <NotificationsLike notification={notification} key={notification.id} />)
+            ||
+            (notification.notificationType === 'REPLY'
+            && <NotificationsReplying notification={notification} key={notification.id} />)
+            ||
+            (notification.notificationType === 'RETWEET'
+            && <NotificationsRetweet notification={notification} key={notification.id} />)
+          ))
+        }
+
+        {
+          tabIndex === 2 && Notifications && Notifications.map(notification => (
+            notification.notificationType === 'REPLY'
+            && <NotificationsReplying notification={notification} key={notification.id} />
+          ))
+        }
+      </Box>
     </Box>
   )
 }

@@ -1,16 +1,24 @@
 import { Box, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { UserNick } from '../User/UserNIck';
-import PostList from '../Post/PostList';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBookmarks } from 'src/redux/thunk/getBookmarks';
 import Post from '../Post/Post';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 export const Bookmarks = () => {
   const user = useSelector((state) => state.user.user) || "";
   const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+  // send user to home if not authorization
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     dispatch(getBookmarks({ page: 0, pageSize: 10 }));
@@ -25,7 +33,7 @@ export const Bookmarks = () => {
           <Link to={`/tweet/${tweet.tweetId}`} key={tweet.tweetId}>
             <Post tweet={tweet} key={tweet.tweetId} />
           </Link>)
-        ) : (
+      ) : (
         <Box
           sx={{
             height: '100vh',

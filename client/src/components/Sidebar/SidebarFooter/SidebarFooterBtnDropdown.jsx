@@ -6,7 +6,10 @@ import { useSelector } from 'react-redux';
 export const SidebarFooterBtnDropdown = ({ popupState }) => {
     const user = useSelector((state) => state.user.user) || "";
     const fullName = user.fullName || '';
-    const FirstName = fullName.split(" ")[0] || '';
+    const FirstName = fullName.length > 12 ? fullName.slice(0, 12) + "..." : fullName;
+    
+    const userTag = user.userTag || '';
+    const userTagPrewiew = userTag.length > 10 ? userTag.slice(0, 10) + "..." : userTag;
 
     const theme = useTheme();
     return (
@@ -15,12 +18,15 @@ export const SidebarFooterBtnDropdown = ({ popupState }) => {
             sx={{
                 px: 1,
                 minWidth: '64px',
-                maxWidth: '235px',
+                maxWidth: '200px',
                 height: '64px',
                 '&:hover': {
                     backgroundColor: `${theme.palette.background.hover}`,
                     borderRadius: '30px',
-                }
+                },
+                '& > span': {
+    display: 'none',
+  }
             }}
         >
             <Avatar src={user.avatarImgUrl} />
@@ -35,7 +41,7 @@ export const SidebarFooterBtnDropdown = ({ popupState }) => {
                             fontWeight: 700,
                         }}
                     >
-                        {FirstName} {user.userTag}
+                        {FirstName} 
                     </Typography>
                     <Typography
                         variant="subtitle2"
@@ -47,11 +53,11 @@ export const SidebarFooterBtnDropdown = ({ popupState }) => {
                             fontWeight: 400,
                         }}
                     >
-                        {user.userTag}
+                        {userTagPrewiew}
                     </Typography>
                 </Box>
 
-                <Box
+                {/* <Box
                     ml={2.5}
                     display="flex"
                     alignItems="center"
@@ -59,8 +65,8 @@ export const SidebarFooterBtnDropdown = ({ popupState }) => {
                         color: (theme) => theme.palette.text.primary,
                         minHeight: '100%',
                     }}
-                >
-                    <Box
+                > */}
+                    {/* <Box
                         sx={{
                             alignSelf: 'flex-start',
                             transform: 'translateY(5%)',
@@ -69,8 +75,8 @@ export const SidebarFooterBtnDropdown = ({ popupState }) => {
                         fontWeight="bold"
                     >
                         ...
-                    </Box>
-                </Box>
+                    </Box> */}
+                {/* </Box> */}
             </Hidden>
         </Button>
     )

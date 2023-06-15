@@ -82,7 +82,7 @@ export const Sidebar = ({ isAuthenticated }) => {
               >
                 <TweetButton
                   text="Tweet"
-                  w="230"
+                  w="200"
                   h="50"
                   fw="800"
                   isDisabled={false}

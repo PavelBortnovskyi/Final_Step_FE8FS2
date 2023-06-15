@@ -19,6 +19,7 @@ export const themeSettings = (colorTheme) => {
               primary: '#fff',
               secondary: 'rgb(139, 152, 165)',
               active: '#fff',
+              link: 'rgb(29, 155, 240)',
             },
             //background colors
             background: {
@@ -62,6 +63,7 @@ export const themeSettings = (colorTheme) => {
               primary: 'rgb(15, 20, 26)',
               secondary: 'rgb(82, 99, 113)',
               active: 'rgb(15, 20, 25)',
+              link: 'rgb(29, 155, 240)',
             },
             background: {
               default: '#fff',
