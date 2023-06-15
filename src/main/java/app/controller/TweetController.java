@@ -65,29 +65,39 @@ public class TweetController {
     tweetFacade.deleteTweet((Long) httpRequest.getAttribute("userId"), tweetId);
   }
 
-  // Create like action
-  @PutMapping("/{id}/like")
+
+  // Like tweet action
+  @PostMapping("/{id}/like")
   public ResponseEntity<TweetResponseDTO> likeTweet(@PathVariable(name ="id") @Positive Long tweetId,
                                                     HttpServletRequest httpRequest){
-    return ResponseEntity.ok(tweetFacade.actionTweet((Long) httpRequest.getAttribute("userId"), tweetId,
+    return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.LIKE));
+  }
+
+
+  // Unlike tweet action
+  @PostMapping("/{id}/unlike")
+  public ResponseEntity<TweetResponseDTO> unLikeTweet(@PathVariable(name ="id") @Positive Long tweetId,
+                                                    HttpServletRequest httpRequest){
+    return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.LIKE));
   }
 
 
   // Create bookmark
-  @PutMapping("/{id}/bookmark")
+  @PostMapping("/{id}/bookmark")
   public ResponseEntity<TweetResponseDTO> bookmarkTweet(@PathVariable(name ="id") @Positive Long tweetId,
                                                     HttpServletRequest httpRequest){
-    return ResponseEntity.ok(tweetFacade.actionTweet((Long) httpRequest.getAttribute("userId"), tweetId,
+    return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.BOOKMARK));
   }
 
 
   // Create retweet
-  @PutMapping("/{id}/retweet")
+  @PostMapping("/{id}/retweet")
   public ResponseEntity<TweetResponseDTO> retweetTweet(@PathVariable(name ="id") @Positive Long tweetId,
                                                     HttpServletRequest httpRequest){
-    return ResponseEntity.ok(tweetFacade.actionTweet((Long) httpRequest.getAttribute("userId"), tweetId,
+    return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.RETWEET));
   }
 

@@ -58,14 +58,23 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public TweetResponseDTO actionTweet(Long userId, Long tweetId, TweetActionType tweetActionType){
+  public void deleteTweet(Long userId, Long tweetId){
+    tweetService.deleteTweet(userId, tweetId);
+  }
+
+
+  public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
     return convertToDto(tweetService
       .createTweetAction(userId, tweetId, tweetActionType));
   }
 
-  public void deleteTweet(Long userId, Long tweetId){
-    tweetService.deleteTweet(userId, tweetId);
+
+  public TweetResponseDTO removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
+    return convertToDto(tweetService
+      .removeTweetAction(userId, tweetId, tweetActionType));
   }
+
+
 
 
 

@@ -2,7 +2,7 @@ package app.service;
 
 import app.enums.TweetActionType;
 import app.enums.TweetType;
-import app.exceptions.tweetError.TweetDeleteError;
+import app.exceptions.tweetError.TweetPermissionException;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.model.Tweet;
 import app.repository.TweetModelRepository;
@@ -55,7 +55,14 @@ public class TweetService extends GeneralService<Tweet> {
 
   @Transactional
   public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
-    return tweetActionService.actionTweet(userService.getUser(userId), getTweet(tweetId), tweetActionType)
+    return tweetActionService.createTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
+      .getTweet();
+  }
+
+
+  @Transactional
+  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
+    return tweetActionService.removeTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
       .getTweet();
   }
 
@@ -63,7 +70,7 @@ public class TweetService extends GeneralService<Tweet> {
   @Transactional
   public void deleteTweet(Long userId, Long tweetId){
     Tweet tweet = getTweet(tweetId);
-    if (!tweet.getUser().getId().equals(userId)) throw new TweetDeleteError(tweetId);
+    if (!tweet.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
     delete(tweet);
     cloudinaryService.deleteTweetImages(userId, tweetId);
   }
