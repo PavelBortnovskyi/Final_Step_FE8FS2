@@ -1,15 +1,21 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.dto.rq.UserModelRequest;
+import app.dto.rq.UserRequestDTO;
 import app.facade.AuthFacade;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -18,19 +24,22 @@ import java.util.HashMap;
 @CrossOrigin
 @Log4j2
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @Validated
 public class AuthController {
 
-  private final AuthFacade authFacade;
+  @Autowired
+  private AuthFacade authFacade;
+
+  @Autowired
+  private ClientRegistrationRepository clientRegistrationRepository;
 
   /**
    * This endpoint waiting for valid loginDTO to check credentials and return new token pair(Access and Refresh)
    */
   @Validated({Marker.Existed.class})
   @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Marker.Existed.class) @Valid UserModelRequest loginDTO) {
+  public ResponseEntity<HashMap<String, String>> handleLogin(@RequestBody @JsonView(Marker.Existed.class) @Valid UserRequestDTO loginDTO) {
     return this.authFacade.makeLogin(loginDTO);
   }
 
@@ -39,7 +48,7 @@ public class AuthController {
    */
   @Validated({Marker.New.class})
   @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Marker.New.class) @Valid UserModelRequest signUpDTO) {
+  public ResponseEntity<HashMap<String, String>> handleRegistration(@RequestBody @JsonView(Marker.New.class) @Valid UserRequestDTO signUpDTO) {
     return this.authFacade.makeSighUp(signUpDTO);
   }
 
@@ -57,7 +66,7 @@ public class AuthController {
   @Validated({Marker.PasswordUpdate.class})
   @PostMapping(path = "/password/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handlePasswordUpdate(@RequestBody @JsonView({Marker.PasswordUpdate.class})
-                                                                      @Valid UserModelRequest passUpDto) {
+                                                                      @Valid UserRequestDTO passUpDto) {
     return this.authFacade.makePasswordUpdate(passUpDto);
   }
 
@@ -68,7 +77,7 @@ public class AuthController {
   @Validated({Marker.PasswordReset.class})
   @PostMapping(path = "/password/reset", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleGetPasswordResetToken(@RequestBody @JsonView({Marker.PasswordReset.class})
-                                                            @Valid UserModelRequest passResetDto) {
+                                                            @Valid UserRequestDTO passResetDto) {
     return this.authFacade.sendPasswordResetTokenToEmail(passResetDto);
   }
 
@@ -78,7 +87,12 @@ public class AuthController {
   @Validated({Marker.PasswordUpdateAfterReset.class})
   @PostMapping(path = "/password/reset/apply", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handleGetPasswordChange(@RequestBody @JsonView({Marker.PasswordUpdateAfterReset.class})
-                                                                         @Valid UserModelRequest passResetDto, HttpServletRequest request) {
+                                                                         @Valid UserRequestDTO passResetDto, HttpServletRequest request) {
     return this.authFacade.makePasswordReset(passResetDto, request);
+  }
+
+  @GetMapping(path = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<HashMap<String, String>> handleRefresh(HttpServletRequest request) {
+    return this.authFacade.makeRefresh(request);
   }
 }

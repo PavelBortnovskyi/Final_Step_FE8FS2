@@ -7,6 +7,7 @@ import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.service.TweetActionService;
 import app.service.TweetService;
+import app.service.ScheduleAlgoService;
 import lombok.NoArgsConstructor;
 import org.modelmapper.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   @Autowired
   TweetActionService tweetActionService;
 
-//  @Autowired
-//  ScheduleAlgo scheduleAlgo;
+  @Autowired
+  ScheduleAlgoService scheduleAlgoService;
 
 /*  @Autowired
   ViewedInfoService viewedInfoService;*/
@@ -67,10 +68,7 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
   }
 
   private Set<String> getImagesUrl(Tweet tweet) {
-    return tweetService.getTweet(tweet.getId())
-      .map(Tweet::getAttachmentImages)
-      .map(imageSet -> imageSet.stream()
-        .map(AttachmentImage::getImgUrl).collect(Collectors.toSet())).orElse(new HashSet<>());
+    return tweet.getAttachmentImages().stream().map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
   }
 
   public TweetResponse getTweetById(Long tweetId, HttpServletRequest request) {
@@ -93,25 +91,13 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
     return tweetService.getUserTweets(userId, page, pageSize).map(this::convertToDto);
   }
 
-  public List<TweetResponse> listTweets(int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.listTweets(page, pageSize);
-
-    List<Tweet> tweets = responseEntity.getBody();
-    List<TweetResponse> tweetResponses = tweets.stream()
-      .map(this::convertToDto)
-      .toList();
-    return tweetResponses;
+  public Page<TweetResponse> getAllTweets(int page, int pageSize) {
+    return tweetService.getAllTweets(page, pageSize).map(this::convertToDto);
   }
 
-//  public List<TweetResponse> listTopTweets(int page, int pageSize) {
-//    ResponseEntity<List<Tweet>> responseEntity = scheduleAlgo.listTopTweets(page, pageSize);
-//
-//    List<Tweet> tweets = responseEntity.getBody();
-//    List<TweetResponse> tweetResponses = tweets.stream()
-//      .map(this::convertToDto)
-//      .toList();
-//    return tweetResponses;
-//  }
+  public Page<TweetResponse> listTopTweets(int page, int pageSize) {
+    return scheduleAlgoService.listTopTweets(page, pageSize).map(this::convertToDto);
+  }
 
   public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
     ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, page, pageSize);
@@ -123,6 +109,10 @@ public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetRespons
       .collect(Collectors.toList());
 
     return tweetResponses;
+  }
+
+  public Page<TweetResponse> tweetsReply(Long tweetId, int page, int pageSize) {
+    return tweetService.tweetsReply(tweetId, page, pageSize).map(this::convertToDto);
   }
 
   public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request, int page, int pageSize) {

@@ -2,7 +2,7 @@ import { HomePage } from 'src/pages/HomePage';
 import { UserPage } from 'src/pages/UserPage';
 import { LoginPage } from 'src/pages/LoginPage';
 import { RegistrationPage } from 'src/pages/RegistrationPage';
-import TweetPage from 'src/pages/TweetPage';
+import TweetPage from 'src/pages/tweetPage/TweetPage';
 import { ModalTweetPage } from 'src/pages/ModalTweetPage';
 import { MessagesPage } from 'src/pages/MessagesPage';
 import { EditProfileModal } from 'src/components/EditProfile/EditProfileModal';
@@ -11,7 +11,7 @@ import { RightSection } from 'src/components/RightSection/RightSection';
 import { PageDeveloping } from 'src/components/PageDeveloping/PageDeveloping';
 import { FollowersPage } from 'src/pages/FollowersPage';
 import { FollowingsPage } from 'src/pages/FollowingsPage';
-import { UserBiIdPage } from 'src/pages/UserBiIdPage';
+import { UserBiIdPage } from 'src/pages/UserByIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 
@@ -112,11 +112,11 @@ export const mainRoutes = () => {
       element: <PageDeveloping />,
     },
     {
-      path: '/followers',
+      path: '/:id/followers',
       element: <FollowersPage />,
     },
     {
-      path: '/followings',
+      path: '/:id/followings',
       element: <FollowingsPage />,
     },
   ];

@@ -1,15 +1,16 @@
 package app.facade;
 
-import app.dto.rq.UserModelRequest;
+import app.dto.rq.UserRequestDTO;
 import app.enums.TokenType;
 import app.exceptions.authError.AuthErrorException;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
+import app.security.OAuth2UserDetailsImpl;
 import app.service.EmailService;
 import app.service.JwtTokenService;
-import app.service.UserModelService;
+import app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
@@ -36,9 +39,9 @@ public class AuthFacade {
 
   private final AuthenticationManager authenticationManager;
 
-  private final UserModelFacade userFacade;
+  private final UserFacade userFacade;
 
-  private final UserModelService userService;
+  private final UserService userService;
 
   private final PasswordEncoder encoder;
 
@@ -46,7 +49,7 @@ public class AuthFacade {
    * Method performs user login operation based on provided in DTO credentials and returns new token pair
    */
 
-  public ResponseEntity<HashMap<String, String>> makeLogin(UserModelRequest loginDTO) {
+  public ResponseEntity<HashMap<String, String>> makeLogin(UserRequestDTO loginDTO) {
     //Auth procedure handling
     Authentication authentication = authenticationManager
       .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
@@ -60,13 +63,13 @@ public class AuthFacade {
     Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
-    return ResponseEntity.ok(this.generateTokenPair(currentUser));
+    return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(currentUser));
   }
 
   /**
    * Method performs user sighUp operation based on provided in DTO credentials and returns new token pair
    */
-  public ResponseEntity<HashMap<String, String>> makeSighUp(UserModelRequest signUpDTO) {
+  public ResponseEntity<HashMap<String, String>> makeSighUp(UserRequestDTO signUpDTO) {
     //Email duplicate checking
     if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
       throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
@@ -79,7 +82,7 @@ public class AuthFacade {
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
     UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
 
-    return ResponseEntity.ok(this.generateTokenPair(freshUser));
+    return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(freshUser));
   }
 
   /**
@@ -94,7 +97,7 @@ public class AuthFacade {
   /**
    * Method performs user password update operation with email-old password combination checking
    */
-  public ResponseEntity<HashMap<String, String>> makePasswordUpdate(UserModelRequest passwordUpdateDto) {
+  public ResponseEntity<HashMap<String, String>> makePasswordUpdate(UserRequestDTO passwordUpdateDto) {
     if (this.userService.updatePassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword(), passwordUpdateDto.getFreshPassword())) {
       return ResponseEntity.ok(new HashMap<>() {{
         put("MESSAGE", "Password for account: " + passwordUpdateDto.getEmail() + " was updated");
@@ -107,7 +110,7 @@ public class AuthFacade {
   /**
    * Method send link with password reset token to user email
    */
-  public ResponseEntity<String> sendPasswordResetTokenToEmail(UserModelRequest passwordResetDto) {
+  public ResponseEntity<String> sendPasswordResetTokenToEmail(UserRequestDTO passwordResetDto) {
     if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
       String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
       //TODO: change link according to front end mapping
@@ -121,7 +124,7 @@ public class AuthFacade {
   /**
    * Method performs user password reset and update with validating reset token in request
    */
-  public ResponseEntity<HashMap<String, String>> makePasswordReset(UserModelRequest passwordResetDto, HttpServletRequest request) {
+  public ResponseEntity<HashMap<String, String>> makePasswordReset(UserRequestDTO passwordResetDto, HttpServletRequest request) {
     String resetPasswordToken = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException(" Please provide token for reset password!"));
     if (this.jwtTokenService.validateToken(resetPasswordToken, TokenType.PASSWORD_RESET)) {
 
@@ -129,7 +132,7 @@ public class AuthFacade {
       this.userService.updatePassword(userId, passwordResetDto.getFreshPassword());
       UserModel currUser = this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
-      return ResponseEntity.ok(this.generateTokenPair(currUser));
+      return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(currUser));
     } else return ResponseEntity.badRequest().body(new HashMap<>() {{
       put("ERROR", "Token is not valid to reset password");
     }});
@@ -138,7 +141,7 @@ public class AuthFacade {
   /**
    * Method send link with token pair to user email to verify email exist
    */
-  public ResponseEntity<String> sendRegisterTokenToEmail(UserModelRequest signUpDTO) {
+  public ResponseEntity<String> sendRegisterTokenToEmail(UserRequestDTO signUpDTO) {
     if (this.userService.isEmailPresentInDB(signUpDTO.getEmail())) {
       return ResponseEntity.badRequest().body("ERROR: " + signUpDTO.getEmail() + " is already registered");
     } else {
@@ -151,22 +154,12 @@ public class AuthFacade {
     }
   }
 
-  /**
-   * Method returns generated access and refresh token pair based on provided user model
-   */
-  public HashMap<String, String> generateTokenPair(UserModel user) {
-    String accessToken = this.jwtTokenService.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
-    String refreshToken = this.jwtTokenService.createToken(user.getId(), TokenType.REFRESH);
-
-    //Update refresh token for current user
-    this.jwtTokenService.updateRefreshToken(user, refreshToken);
-
-    //JWT tokens for response packing
-    HashMap<String, String> response = new HashMap<>();
-    response.put("ACCESS_TOKEN", accessToken);
-    response.put("REFRESH_TOKEN", refreshToken);
-    response.put("USER_ID", user.getId().toString());
-    return response;
+  public ResponseEntity<HashMap<String, String>> makeRefresh(HttpServletRequest request) {
+    String token = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+    if (this.jwtTokenService.validateToken(token, TokenType.REFRESH) && !this.jwtTokenService.checkRefreshTokenStatus(token)) {
+      UserModel currUser = this.userService.getUserByRefreshToken(token);
+      return ResponseEntity.ok(jwtTokenService.generateTokenPair(currUser));
+    } else return ResponseEntity.status(400).body(new HashMap<>());
   }
 }
 

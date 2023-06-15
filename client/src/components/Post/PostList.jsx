@@ -10,34 +10,22 @@ import {
 } from 'src/redux/selectors/selectors';
 import { Link } from 'react-router-dom';
 
-function PostList() {
-  // const tweet = useSelector(getTweetByID);
+function PostList({ id, tab }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user) || '';
-  // console.log(user);
-
+  const profile = useSelector((state) => state.user.user) || '';
+  const user = id || profile;
   const userTweets = useSelector(getUserTweets);
   const userTweetsArray = userTweets.userTweets || [];
 
-  // console.log(userTweetsArray !== false ? userTweetsArray : "");
-
-  //GET FOLLOWING TWEETS
-
-  // useEffect(() => {
-  //   dispatch(getTweets({ page: 0, pageSize: 5 }));
-  // }, []);
-  // const tweets = useSelector(getFollowingTweets);
-
-  //GET TWEETS BY ID
-
   useEffect(() => {
+    if (Number(user)) {
+      dispatch(getUserTweetsThunk({ userId: user, page: 0, pageSize: 100 }));
+    }
     if (user.id !== undefined && user.id !== '') {
-      const userId = user.id;
-      dispatch(getUserTweetsThunk({ userId, page: 0, pageSize: 100 }));
+      const idUser = user.id;
+      dispatch(getUserTweetsThunk({ userId: 1, page: 0, pageSize: 100 }));
     }
   }, [user]);
-
-  //GET ALL TWEETS
 
   return (
     <Box>

@@ -26,7 +26,7 @@ public class UserModel extends BaseEntityModel {
   @Column(name = "user_tag", nullable = false, unique = true)
   private String userTag;
 
-  @Column(name = "password", nullable = false)
+  @Column(name = "password") //nullable true for OAuth registration
   private String password;
 
   @Column(name = "email", nullable = false, updatable = false, unique = true)
@@ -54,7 +54,7 @@ public class UserModel extends BaseEntityModel {
   private String refreshToken;
 
   @Column(name = "token_used")
-  private boolean refreshed;
+  private boolean refreshed = false;
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
   @ManyToMany(fetch = FetchType.LAZY)

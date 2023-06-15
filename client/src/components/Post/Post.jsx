@@ -8,6 +8,7 @@ function Post({ tweet }) {
   return (
     <Box>
       <TweetPost
+        showIconList={true}
         id={tweet.tweetId}
         displayName={user.fullName}
         text={tweet.body}

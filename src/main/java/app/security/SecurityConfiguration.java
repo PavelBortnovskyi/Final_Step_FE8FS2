@@ -3,18 +3,18 @@ package app.security;
 import app.exceptions.FilterExceptionHandler;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.config.http.SessionCreationPolicy;;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -31,8 +31,14 @@ public class SecurityConfiguration {
   private FilterExceptionHandler filterExceptionHandler;
 
   @Autowired
-  @Qualifier("delegatedAuthenticationEntryPoint")
-  AuthenticationEntryPoint authEntryPoint;
+  private OAuth2UserServiceImpl oAuth2UserService;
+
+  @Autowired
+  private OAuth2SuccessLoginHandler oAuth2SuccessLoginHandler;
+
+//  @Autowired
+//  @Qualifier("delegatedAuthenticationEntryPoint")
+//  AuthenticationEntryPoint authEntryPoint;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
@@ -42,6 +48,7 @@ public class SecurityConfiguration {
       .and()
       .authorizeRequests()
       .antMatchers("/").permitAll()
+      .antMatchers("/login").permitAll()
       .antMatchers("/swagger-ui/**").permitAll()
       .antMatchers("/swagger-resources").permitAll()
       .antMatchers("/swagger-resources/**").permitAll()
@@ -50,15 +57,28 @@ public class SecurityConfiguration {
       .antMatchers("/h2-console/**").permitAll()
       .antMatchers("/api/v1/auth/register").permitAll()
       .antMatchers("/api/v1/auth/login").permitAll()
+      .antMatchers("/api/v1/auth/refresh").permitAll()
+      .antMatchers("/api/v1/auth/login/oauth2/**").permitAll()
       .antMatchers("/api/v1/auth/password/reset").permitAll()
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
-      //.antMatchers("/user/**").permitAll()
-      //.antMatchers("/tweet/**").permitAll()
+      .antMatchers("/chat-ws").permitAll()
+      .antMatchers("/chat-ws/**").permitAll()
+      .antMatchers("/notifications-ws").permitAll()
+      .antMatchers("/notifications-ws/**").permitAll()
+      .antMatchers("/api/v1/message").permitAll()
+      .antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
       .and()
-      //.oauth2Login();
-      .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+      .oauth2Login()
+      .loginPage("/login") //TODO: need to change on deploy
+      .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
+      .userInfoEndpoint().userService(oAuth2UserService)
+      .and()
+      .successHandler(oAuth2SuccessLoginHandler)
+      .and()
+      .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+    //.exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
@@ -71,8 +91,16 @@ public class SecurityConfiguration {
 
     //CORS config
     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-    configuration.addAllowedOrigin("http://localhost:3000/**");
-    configuration.addAllowedOrigin("https://final-step-fe-8-fs-2.vercel.app/**");
+    configuration.addAllowedOriginPattern("http://localhost:3000");
+    configuration.addAllowedOriginPattern("http://localhost:3000/**");
+    configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
+    configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
+    configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
+    configuration.addAllowedMethod(HttpMethod.GET);
+    configuration.addAllowedMethod(HttpMethod.POST);
+    configuration.addAllowedMethod(HttpMethod.PUT);
+    configuration.addAllowedMethod(HttpMethod.DELETE);
+    configuration.addAllowedMethod(HttpMethod.OPTIONS);
     httpSec.cors().configurationSource(request -> new CorsConfiguration(configuration));
     //httpSec.cors().disable();
 

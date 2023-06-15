@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class ChatService extends GeneralService<Chat> {
 
-  private final UserModelService userService;
+  private final UserService userService;
 
   private final ChatModelRepository chatRepository;
 

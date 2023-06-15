@@ -1,7 +1,7 @@
 import React from 'react';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
-function Location() {
+function Location({ hover }) {
   return (
     <div>
       <LocationOnOutlinedIcon
@@ -9,7 +9,7 @@ function Location() {
           fill: 'rgb(29, 155, 240)',
           '&:hover': {
             cursor: 'pointer',
-            backgroundColor: 'rgb(24, 44, 63)',
+            backgroundColor: { hover },
             borderRadius: '50%',
           },
         }}

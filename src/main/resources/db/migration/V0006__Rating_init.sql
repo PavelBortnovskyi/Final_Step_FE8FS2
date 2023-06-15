@@ -1,0 +1,4 @@
+CREATE TABLE rating_tweets (
+  tweet_id BIGINT PRIMARY KEY,
+  rating DOUBLE PRECISION NOT NULL
+);

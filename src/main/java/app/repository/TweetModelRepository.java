@@ -22,13 +22,16 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   //Page<Tweet> getTweetsByUserId(Long userId, Pageable pageable);
 
   @Query(value = "SELECT t FROM Tweet t")
-  Page<Tweet> listTweets(Pageable pageable);
+  Page<Tweet> getAllTweets(Pageable pageable);
 
   @Query("SELECT t FROM Tweet t WHERE t.user.id IN (:userIds) ORDER BY t.createdAt DESC")
   Page<Tweet> findTweetsByUserIdsSortedByDate(List<Long> userIds, Pageable pageable);
 
   @Query("SELECT COUNT(*) FROM Tweet t WHERE t.tweetType = :tweetType AND t.id = :tweetId")
   Integer getCountByTweetTypeAndId(@Param("tweetType") TweetType tweetType, @Param("tweetId") Long tweetId);
+
+  @Query("SELECT t FROM Tweet t WHERE t.parentTweetId = :parentTweet AND t.tweetType = 'REPLY'")
+  Page<Tweet> tweetsReply(@Param("parentTweet") Tweet parrentTweet, Pageable pageable);
 
   @Query("SELECT t FROM Tweet t ORDER BY t.createdAt DESC")
   List<Tweet> listLast50Tweets(Pageable pageable);

@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Log4j2
@@ -28,7 +29,7 @@ public class JwtTokenService {
   private final UserDetailsService userDetailsService;
 
   @Autowired
-  private UserModelService userModelService;
+  private UserService userService;
 
   @Value("${jwt.secret}")
   private String secretAccessKey;
@@ -239,28 +240,28 @@ public class JwtTokenService {
    * Method returns true if provided User Model is exist in DB and refreshToken updated
    */
   public void updateRefreshToken(UserModel userModel, String refreshToken) {
-    userModelService.updateRefreshTokenById(userModel.getId(), refreshToken);
+    userService.updateRefreshTokenById(userModel.getId(), refreshToken);
   }
 
   /**
    * Method returns true if provided refresh Token is not used
    */
   public boolean checkRefreshTokenStatus(String refreshToken) {
-    return this.userModelService.checkRefreshTokenStatus(refreshToken);
+    return this.userService.checkRefreshTokenStatus(refreshToken);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(Long userId, boolean usedStatus) {
-    this.userModelService.changeRefreshTokenStatusById(userId, usedStatus);
+    this.userService.changeRefreshTokenStatusById(userId, usedStatus);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(String token, boolean usedStatus) {
-    this.userModelService.changeTokenStatusByValue(token, usedStatus);
+    this.userService.changeTokenStatusByValue(token, usedStatus);
   }
 
   /**
@@ -307,6 +308,25 @@ public class JwtTokenService {
       default -> {
         return now;
       }
+    }}
+
+    /**
+     * Method returns generated access and refresh token pair based on provided user model
+     */
+    public HashMap<String, String> generateTokenPair(UserModel user) {
+      String accessToken = this.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
+      String refreshToken = this.createToken(user.getId(), TokenType.REFRESH);
+
+      //Update refresh token for current user
+      this.updateRefreshToken(user, refreshToken);
+      this.changeRefreshTokenStatus(user.getId(), false);
+
+      //JWT tokens for response packing
+      HashMap<String, String> response = new HashMap<>();
+      response.put("ACCESS_TOKEN", accessToken);
+      response.put("REFRESH_TOKEN", refreshToken);
+      response.put("USER_ID", user.getId().toString());
+      return response;
     }
   }
 
@@ -330,4 +350,3 @@ public class JwtTokenService {
 //    System.out.println(jwts.extractUserNameFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
 //    System.out.println(jwts.extractUserEmailFromClaims(jwts.extractClaimsFromToken(access, TokenType.ACCESS).get()).get());
 //  }
-}

@@ -27,6 +27,9 @@ public class ApplicationBeans {
   @Value("${cloudinary.apiSecret}")
   private String apiSecret;
 
+  @Value("${spring.mail.password}")
+  private String mailPass;
+
   @Bean
   public ModelMapper modelMapper() {
     ModelMapper mm = new ModelMapper();
@@ -49,7 +52,7 @@ public class ApplicationBeans {
     mailSender.setPort(587);
 
     mailSender.setUsername("fe8fs2finalstep@gmail.com");
-    mailSender.setPassword("vgrralowhzszavbs");
+    mailSender.setPassword(mailPass);
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
@@ -64,19 +67,6 @@ public class ApplicationBeans {
   public ObjectMapper getObjectMapper() {
     return new ObjectMapper();
   }
-//
-//  @Profile("local")
-//  @Bean
-//  Server h2Server() {
-//    Server server = new Server();
-//    try {
-//      server.runTool("-tcp");
-//      server.runTool("-tcpAllowOthers");
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//    return server;
-//  }
 
   @Bean
   public Cloudinary cloudinaryConfig() {

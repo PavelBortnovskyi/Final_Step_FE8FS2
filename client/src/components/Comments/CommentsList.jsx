@@ -1,23 +1,25 @@
 import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import TweetPost from 'src/UI/TweetPost';
-import { getTweetsFollowing } from 'src/redux/thunk/getTweets.js';
+import { getTweetReply } from 'src/redux/thunk/getTweetReply';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFollowingTweets } from 'src/redux/selectors/selectors';
+import { getTweetReplies } from 'src/redux/selectors/selectors';
+import { useParams } from 'react-router-dom';
 
 function CommentsList() {
   const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
+  const { id } = useParams();
 
-  //GET FOLLOWING TWEETS
   useEffect(() => {
-    dispatch(getTweetsFollowing({ page: 0, pageSize: 5 }));
+    dispatch(getTweetReply({ id, page: 0, pageSize: 5 }));
   }, [user.id]);
-  const tweets = useSelector(getFollowingTweets);
-  const tweetArray = tweets.tweets;
+  const tweets = useSelector(getTweetReplies);
+  // const tweetArray = tweets.tweets;
+
   return (
     <Box>
-      {tweetArray !== false &&
+      {/* {tweetArray !== false &&
         tweetArray.map((post) => {
           return (
             <TweetPost
@@ -34,7 +36,7 @@ function CommentsList() {
               retweet={post.countRetweets}
             />
           );
-        })}
+        })} */}
     </Box>
   );
 }

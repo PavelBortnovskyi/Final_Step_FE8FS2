@@ -1,9 +1,9 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.dto.rq.UserModelRequest;
-import app.dto.rs.UserModelResponse;
-import app.facade.UserModelFacade;
+import app.dto.rq.UserRequestDTO;
+import app.dto.rs.UserResponseDTO;
+import app.facade.UserFacade;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,91 +28,97 @@ import java.util.Map;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-  private final UserModelFacade userModelFacade;
+  private final UserFacade userFacade;
 
   @GetMapping("{userId}")
-  public ResponseEntity<UserModelResponse> getUserById(@PathVariable(name = "userId") @Positive Long userId) {
-    return ResponseEntity.ok(userModelFacade.getUserById(userId));
+  public ResponseEntity<UserResponseDTO> getUserById(@PathVariable(name = "userId") @Positive Long userId) {
+    return ResponseEntity.ok(userFacade.getUserById(userId));
   }
 
   @GetMapping("profile")
-  public ResponseEntity<UserModelResponse> getUser(HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.getUserById((Long) httpRequest.getAttribute("userId")));
+  public ResponseEntity<UserResponseDTO> getUser(HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userFacade.getUserById((Long) httpRequest.getAttribute("userId")));
   }
 
   @Validated({Marker.Update.class})
   @PutMapping("profile")
-  public ResponseEntity<UserModelResponse> updateUser(@RequestBody @JsonView({Marker.Update.class}) @Valid UserModelRequest userRequestDTO,
-                                                      HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.updateUser((Long) httpRequest.getAttribute("userId"), userRequestDTO));
+  public ResponseEntity<UserResponseDTO> updateUser(@RequestBody @JsonView({Marker.Update.class}) @Valid UserRequestDTO userRequestDTO,
+                                                    HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userFacade.updateUser((Long) httpRequest.getAttribute("userId"), userRequestDTO));
   }
 
   @PutMapping("profile/avatar_img")
   @ResponseStatus(HttpStatus.OK)
   public Map<String, String> uploadAvatarImg(@RequestParam("file") MultipartFile file,
                                              HttpServletRequest httpRequest) {
-    return userModelFacade.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file);
+    return userFacade.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file);
   }
 
   @PutMapping("profile/header_img")
   @ResponseStatus(HttpStatus.OK)
   public Map<String, String> uploadHeaderImg(@RequestParam("file") MultipartFile file,
                                              HttpServletRequest httpRequest) {
-    return userModelFacade.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file);
+    return userFacade.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file);
   }
 
   @PostMapping("subscribe/{userIdToFollowing}")
-  public ResponseEntity<UserModelResponse> subscribe(@PathVariable(name = "userIdToFollowing") @Positive Long userIdToFollowing,
-                                                     HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing));
+  public ResponseEntity<UserResponseDTO> subscribe(@PathVariable(name = "userIdToFollowing") @Positive Long userIdToFollowing,
+                                                   HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userFacade.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing));
   }
 
   @PostMapping("unsubscribe/{userIdToUnFollowing}")
-  public ResponseEntity<UserModelResponse> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing,
-                                                       HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(userModelFacade.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing));
+  public ResponseEntity<UserResponseDTO> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing,
+                                                     HttpServletRequest httpRequest) {
+    return ResponseEntity.ok(userFacade.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing));
   }
 
   @GetMapping("profile/followers")
-  public Page<UserModelResponse> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
-                                              HttpServletRequest httpServletRequest) {
-    return userModelFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
+  @ResponseStatus(HttpStatus.OK)
+  public Page<UserResponseDTO> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size,
+                                            HttpServletRequest httpServletRequest) {
+    return userFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("profile/followings")
-  public Page<UserModelResponse> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size,
-                                               HttpServletRequest httpServletRequest) {
-    return userModelFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
+  @ResponseStatus(HttpStatus.OK)
+  public Page<UserResponseDTO> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size,
+                                             HttpServletRequest httpServletRequest) {
+    return userFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("{userId}/followers")
-  public Page<UserModelResponse> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
-                                              @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return userModelFacade.getFollowers(userId, page, size);
+  @ResponseStatus(HttpStatus.OK)
+  public Page<UserResponseDTO> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
+                                            @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return userFacade.getFollowers(userId, page, size);
   }
 
   @GetMapping("{userId}/followings")
-  public Page<UserModelResponse> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
-                                                       @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                       @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return userModelFacade.getFollowings(userId, page, size);
+  @ResponseStatus(HttpStatus.OK)
+  public Page<UserResponseDTO> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
+                                                     @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                     @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return userFacade.getFollowings(userId, page, size);
   }
 
   @GetMapping("offer_followings")
-  public Page<UserModelResponse> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size,
-                                                    HttpServletRequest httpServletRequest) {
-    return userModelFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
+  @ResponseStatus(HttpStatus.OK)
+  public Page<UserResponseDTO> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                  @RequestParam(name = "size", defaultValue = "10") @Positive int size,
+                                                  HttpServletRequest httpServletRequest) {
+    return userFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
   }
 
   @GetMapping("search")
-  public Page<UserModelResponse> findUser(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                          @RequestParam(name = "size", defaultValue = "10") @Positive int size,
-                                          @RequestParam(name = "search_string", defaultValue = "") String serchString,
-                                          HttpServletRequest httpServletRequest) {
-    return userModelFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, page, size);
+  @ResponseStatus(HttpStatus.OK)
+  public Page<UserResponseDTO> findUser(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                        @RequestParam(name = "size", defaultValue = "10") @Positive int size,
+                                        @RequestParam(name = "search_string", defaultValue = "") String serchString,
+                                        HttpServletRequest httpServletRequest) {
+    return userFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, page, size);
   }
 }

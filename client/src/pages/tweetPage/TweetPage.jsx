@@ -1,17 +1,16 @@
 import { Box, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from 'react-router-dom';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
-import InputAvatar from 'src/UI/InputAvatar';
-import TweetButton from 'src/UI/TweetButton';
 import TweetPost from 'src/UI/TweetPost';
 import CommentsList from 'src/components/Comments/CommentsList';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTweetByID } from 'src/redux/selectors/selectors';
 import { getTweetById } from 'src/redux/thunk/getTweetById';
-import { likePost } from 'src/redux/thunk/likeTweet';
+
+import Retweet from './Retweet';
 
 function TweetPage() {
   const { id } = useParams();
@@ -25,9 +24,7 @@ function TweetPage() {
   const tweet = useSelector(getTweetByID);
   const post = tweet.tweet;
   /////////////////
-
   //Like tweet
-
   // useEffect(() => {
   //   dispatch(likePost(id));
   // }, [post.countLikes]);
@@ -85,22 +82,7 @@ function TweetPage() {
           />
         )}
       </Grid>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <InputAvatar
-          avatarUrl="/img/avatar.JPG"
-          placeholder="Tweet your reply"
-        />
-        <Box mr="10px">
-          <TweetButton text="Reply" />
-        </Box>
-      </Box>
+      <Retweet />
       <CommentsList />
     </Box>
   );

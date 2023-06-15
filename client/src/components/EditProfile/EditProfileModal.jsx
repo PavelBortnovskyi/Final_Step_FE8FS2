@@ -1,9 +1,7 @@
-import { EditFormShema } from "./EditFormShema";
-import { Box, Dialog } from "@mui/material";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
-import { useTheme } from "@mui/material";
+import { EditFormShema } from './EditFormShema';
+import { Box, Dialog, useTheme } from '@mui/material';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function EditProfileModal() {
   const [isOpen, setIsOpen] = useState(true);
@@ -18,7 +16,7 @@ export function EditProfileModal() {
     });
 
     // change back url
-    !!location.state ? navigate(-1) : navigate("/");
+    !!location.state ? navigate(-1) : navigate('/');
   };
   return (
     <>
@@ -26,12 +24,12 @@ export function EditProfileModal() {
         open={isOpen}
         onClose={handleClose}
         sx={{
-          backgroundColor: "rgba(91, 112, 131, 0.4)",
+          backgroundColor: 'rgba(91, 112, 131, 0.4)',
         }}
       >
         <Box
           sx={{
-            color: "white",
+            color: 'white',
             backgroundColor: `${theme.palette.background.default}`,
           }}
         >
