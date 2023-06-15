@@ -133,7 +133,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 accessor.setUser(user);
                 //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
                 //accessor.getSessionAttributes().put("userId", jwtUser.getId());
-                accessor.getSessionAttributes().put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()));
+                accessor.getSessionAttributes().put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
               } else {
                 throw new JwtAuthenticationException("Token is not valid");
               }
