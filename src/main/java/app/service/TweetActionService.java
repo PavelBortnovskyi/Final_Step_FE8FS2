@@ -51,7 +51,7 @@ public class TweetActionService {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.BOOKMARK);
   }
 
-  public Integer getCountRetweets(Tweet tweet) {
-    return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.RETWEET);
-  }
+//  public Integer getCountRetweets(Tweet tweet) {
+//    return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.RETWEET);
+//  }
 }

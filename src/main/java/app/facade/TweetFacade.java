@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -46,9 +47,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
     return super.convertToDto(tweet)
       .setCountReplays(tweetService.getCountReplays(tweet))
       .setCountQuoteTweets(tweetService.getCountQuoteTweets(tweet))
+      .setCountRetweets(tweetService.getCountRetweetTweets(tweet))
       .setCountLikes(tweetActionService.getCountLikes(tweet))
-      .setCountBookmarks(tweetActionService.getCountBookmarks(tweet))
-      .setCountRetweets(tweetActionService.getCountRetweets(tweet));
+      .setCountBookmarks(tweetActionService.getCountBookmarks(tweet));
   }
 
 
@@ -77,6 +78,11 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   public TweetResponseDTO removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
     return convertToDto(tweetService
       .removeTweetAction(userId, tweetId, tweetActionType));
+  }
+
+
+  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, int page, int size){
+    return tweetService.getAllTweetByUserId(userId, page, size).map(this::convertToDto);
   }
 
 

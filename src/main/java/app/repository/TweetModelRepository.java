@@ -3,6 +3,7 @@ package app.repository;
 
 import app.enums.TweetType;
 import app.model.Tweet;
+import app.model.UserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -43,5 +44,8 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
 
   Integer countByParentTweetAndTweetType(Tweet parentTweet, TweetType tweetType);
+
+
+  Page<Tweet> findByUserOrderByCreatedAtDesc(UserModel user, Pageable pageable);
 
 }
