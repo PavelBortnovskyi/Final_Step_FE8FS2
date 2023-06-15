@@ -35,7 +35,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
       .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
 
     mm.typeMap(Tweet.class, TweetResponseDTO.class)
-      .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages));
+      .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages))
+      .addMapping(src -> src.getParentTweet().getId(), TweetResponseDTO::setParentTweetId);
   }
 
 

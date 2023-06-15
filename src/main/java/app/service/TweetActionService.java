@@ -14,16 +14,13 @@ public class TweetActionService {
 
   private final TweetActionRepository tweetActionRepository;
 
-
   public Integer getCountLikes(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.LIKE);
   }
 
-
   public Integer getCountBookmarks(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.BOOKMARK);
   }
-
 
   public Integer getCountRetweets(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.RETWEET);

@@ -18,15 +18,15 @@ public class TweetResponseDTO {
 
   private String createdAt;
 
-  private String body;
-
   private TweetType tweetType;
 
-  private UserResponseDTO user;
+  private Long parentTweetId;
 
-  private TweetResponseDTO parentTweet;
+  private String body;
 
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
+
+  private UserResponseMiniDTO user;
 
   private Integer countReplays = 0;
 

@@ -31,7 +31,6 @@ public class TweetController {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), requestDTO));
   }
 
-
   @GetMapping("/{id}")
   public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
