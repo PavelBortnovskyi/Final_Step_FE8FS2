@@ -47,7 +47,9 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   }
 
   public Message addMessageToChat(Long userId, Message message) {
-    return this.chatService.addMessage(userId, message);
+    if (message.getUser().getId().equals(userId))
+      return chatService.addMessage(message);
+    else throw new BadRequestException(String.format("Current user with id: %d is not the author of message ", userId));
   }
 
   /**

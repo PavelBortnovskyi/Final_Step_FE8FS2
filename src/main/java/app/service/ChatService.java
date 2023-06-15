@@ -12,6 +12,7 @@ import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -102,17 +103,16 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns chat with added message
    */
-  public Message addMessage(Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
+  public Message addMessage(Message message) throws UserNotFoundException, ChatNotFoundException {
     AtomicInteger last = new AtomicInteger();
-    return this.chatRepository.save(this.chatRepository.findById(message.getChat().getId())
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId)))
+    return this.messageRepository.save(this.chatRepository.findById(message.getChat().getId())
+      .filter(chat -> chat.getUsers().contains(this.userService.findById(message.getUser().getId()).orElseThrow(() -> new UserNotFoundException(message.getUser().getId())))
         || chat.getInitiatorUser().getId().equals(message.getUser().getId()))
       .map(chat -> {
         chat.getMessages().add(message);
         last.set(chat.getMessages().size() - 1);
-        return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", message.getChat().getId(), userId))))
-      .getMessages().get(last.get());
+        return chat.getMessages().get(last.get());
+      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", message.getChat().getId(), message.getUser().getId()))));
   }
 
   /**
