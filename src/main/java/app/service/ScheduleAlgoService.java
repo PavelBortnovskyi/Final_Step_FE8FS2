@@ -1,26 +1,5 @@
 package app.service;
 
-import app.model.RatingModel;
-import app.model.Tweet;
-import app.repository.RatingModelRepository;
-import app.repository.TweetModelRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 //@Component
 //@EnableScheduling
 //@RequiredArgsConstructor

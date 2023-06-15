@@ -41,6 +41,6 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
   Optional<Tweet> findTweetById(Long tweetId);
 
-  Integer countByParentTweetIdAndTweetType(Long parentTweetId, TweetType tweetType);
+  Integer countByParentTweetAndTweetType(Tweet parentTweet, TweetType tweetType);
 
 }

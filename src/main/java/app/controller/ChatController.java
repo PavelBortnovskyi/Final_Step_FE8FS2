@@ -33,7 +33,7 @@ public class ChatController {
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponse>> handleCreateChat(@RequestParam("interlocutorId")
-                                                                                           @NotNull @Positive Long interlocutorId,
+                                                                                                @NotNull @Positive Long interlocutorId,
                                                                                                 HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));

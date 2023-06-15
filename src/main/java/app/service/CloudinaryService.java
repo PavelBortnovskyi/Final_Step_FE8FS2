@@ -48,11 +48,11 @@ public class CloudinaryService {
     }
   }
 
-  private String getUserFolder(Long userId){
+  private String getUserFolder(Long userId) {
     return PROJECT_FOLDER + "/userId_" + userId;
   }
 
-  private String getTweetFolder(Long userId, Long tweetId){
+  private String getTweetFolder(Long userId, Long tweetId) {
     return getUserFolder(userId) + "/tweets/tweetId_" + tweetId;
   }
 
@@ -73,7 +73,7 @@ public class CloudinaryService {
       .collect(Collectors.toCollection(HashSet::new));
   }
 
-  private void deleteTweetImages(Long userId, Long tweetId){
+  private void deleteTweetImages(Long userId, Long tweetId) {
     String folderPath = getTweetFolder(userId, tweetId);
     try {
       // Delete files in folder

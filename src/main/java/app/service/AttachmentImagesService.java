@@ -22,7 +22,7 @@ public class AttachmentImagesService extends GeneralService<AttachmentImage> {
     return attachmentImage;
   }
 
-  public Set<AttachmentImage> saveAttachmentImages(HashSet<String> urls, Tweet tweet){
+  public Set<AttachmentImage> saveAttachmentImages(HashSet<String> urls, Tweet tweet) {
     return urls.stream().map(url -> save(new AttachmentImage(tweet, url))).collect(Collectors.toSet());
   }
 

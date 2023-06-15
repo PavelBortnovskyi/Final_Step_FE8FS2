@@ -5,10 +5,8 @@ import app.exceptions.userError.IncorrectUserIdException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
 import app.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;

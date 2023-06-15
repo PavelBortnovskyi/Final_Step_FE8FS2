@@ -94,8 +94,9 @@ public class ChatService extends GeneralService<Chat> {
       this.chatRepository.save(chat);
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
         userToRemoveId, chatId, removeInitUserId));
-    } else return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-      userToRemoveId, chatId, removeInitUserId));
+    } else
+      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
   }
 
   /**

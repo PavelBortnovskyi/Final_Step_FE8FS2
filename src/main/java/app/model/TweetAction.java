@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
+//@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tweet_actions")
 @NoArgsConstructor
@@ -30,12 +30,12 @@ public class TweetAction extends BaseEntityModel {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Tweet tweet = (Tweet) o;
-    return getId().equals(tweet.getId());
+    TweetAction tweetAction = (TweetAction) o;
+    return getId().equals(tweetAction.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getId());
+    return Objects.hash(getId(), getCreatedAt());
   }
 }

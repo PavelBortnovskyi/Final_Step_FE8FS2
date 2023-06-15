@@ -27,7 +27,7 @@ public interface TweetActionRepository extends RepositoryInterface<TweetAction> 
 
   // ----------------------------------------------------------------------------------------------------------------
 
-  Integer countByTweetIdAndActionType(Long tweetId, TweetActionType actionType);
+  Integer countAByTweetAndActionType(Tweet tweet, TweetActionType actionType);
 
 }
 
