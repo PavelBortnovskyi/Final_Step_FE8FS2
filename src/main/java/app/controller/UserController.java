@@ -74,6 +74,7 @@ public class UserController {
   }
 
   @GetMapping("profile/followers")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                             HttpServletRequest httpServletRequest) {
@@ -81,6 +82,7 @@ public class UserController {
   }
 
   @GetMapping("profile/followings")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                              HttpServletRequest httpServletRequest) {
@@ -88,6 +90,7 @@ public class UserController {
   }
 
   @GetMapping("{userId}/followers")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
                                             @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
@@ -95,6 +98,7 @@ public class UserController {
   }
 
   @GetMapping("{userId}/followings")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
                                                      @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                      @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
@@ -102,6 +106,7 @@ public class UserController {
   }
 
   @GetMapping("offer_followings")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                   HttpServletRequest httpServletRequest) {
@@ -109,6 +114,7 @@ public class UserController {
   }
 
   @GetMapping("search")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> findUser(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                         @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                         @RequestParam(name = "search_string", defaultValue = "") String serchString,

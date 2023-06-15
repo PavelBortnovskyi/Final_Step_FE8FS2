@@ -8,6 +8,7 @@ import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
+import app.security.JwtUserDetails;
 import app.service.MessageService;
 import app.service.NotificationService;
 import app.service.UserService;
@@ -18,12 +19,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Log4j2
 @RestController
@@ -50,9 +53,9 @@ public class WebSocketController {
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                   MessageRequest messageDTO,
-                                                                                  HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(messageDTO.getChatId(), currUserId, this.messageFacade.convertToEntity(messageDTO)));
+                                                                                  @AuthenticationPrincipal JwtUserDetails userDetails) {
+   Long currUserId = userDetails.getId();
+   return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
   @Validated({Marker.Existed.class})
@@ -60,16 +63,17 @@ public class WebSocketController {
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
                                                                                       MessageRequest messageDTO,
-                                                                                      HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
+                                                                                      @AuthenticationPrincipal JwtUserDetails userDetails) {
+    Long currUserId = userDetails.getId();
     this.messageService.changeMessage(currUserId, this.messageFacade.convertToEntity(messageDTO));
     return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
   }
 
   @MessageMapping("/v1/message/delete")
   public void deleteMessage(@Payload @Valid @JsonView({Marker.Delete.class})
-                            MessageRequest messageDTO, HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
+                            MessageRequest messageDTO,
+                            @AuthenticationPrincipal JwtUserDetails userDetails) {
+    Long currUserId = userDetails.getId();
     if (this.messageService.deleteMessage(currUserId, messageDTO.getId()))
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }

@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
-import { UserAction } from "./UserAction";
-import { UserHeder } from "./UserHeder";
-import { UserInfo } from "./UserInfo";
+import { Box } from '@mui/material';
+import { UserAction } from './UserAction';
+import { UserHeder } from './UserHeder';
+import { UserInfo } from './UserInfo';
+import PostList from '../Post/PostList';
 
 export const User = ({
   userButton,
@@ -21,9 +22,9 @@ export const User = ({
   return (
     <Box
       sx={{
-        borderBottom: "1px solid #38444d",
+        borderBottom: '1px solid #38444d',
 
-        width: "100vw",
+        width: '100vw',
       }}
     >
       <UserHeder fullName={fullName} tweetsCounter={tweetsCounter} />
@@ -42,6 +43,7 @@ export const User = ({
         countUserFollowers={countUserFollowers}
       />
       <UserAction />
+      <PostList />
     </Box>
   );
 };

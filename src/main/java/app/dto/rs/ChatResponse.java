@@ -16,7 +16,7 @@ public class ChatResponse {
   private Long chatId;
 
   @JsonView(Marker.ChatDetails.class)
-  private Long initiatorUserId;
+  private UserResponseDTO initiatorUser;
 
   @JsonView(Marker.ChatDetails.class)
   private List<MessageResponse> messages;
