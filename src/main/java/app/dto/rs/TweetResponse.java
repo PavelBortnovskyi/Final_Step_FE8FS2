@@ -24,11 +24,15 @@ public class TweetResponse {
 
   @JsonView(Marker.Preview.class)
   private String userTag;
+
   private Integer countLikes;
+
   private Integer countRetweets;
+
   private Integer countReply;
 
   @JsonView(Marker.Preview.class)
   private TweetType tweetType;
+
   private Long parentTweetId;
 }

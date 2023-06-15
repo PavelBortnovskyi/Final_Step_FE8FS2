@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public class CustomPageImpl<T> implements Page<T> {
 
-  private Page<T> pageObj;
+  private final Page<T> pageObj;
 
   public CustomPageImpl(Page<T> pageObj) {
     this.pageObj = pageObj;
