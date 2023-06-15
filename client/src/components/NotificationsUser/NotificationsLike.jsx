@@ -30,14 +30,11 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 export const NotificationsLike = ({ notification }) => {
   const theme = useTheme();
-
   const Text = notification.tweet.body;
-  console.log(Text);
   const TextPreview = Text.length > 90 ? Text.slice(0, 90) + "..." : Text;
   const fullName = notification.initiator.fullName || '';
   const FirstName = fullName.length > 24 ? fullName.slice(0, 24) + "..." : fullName;
 
-  console.log(notification.tweet);
   return (
 
       <StyledLink to={`/tweet/${notification.tweet.tweetId}`} key={notification.tweet.tweetId}>
