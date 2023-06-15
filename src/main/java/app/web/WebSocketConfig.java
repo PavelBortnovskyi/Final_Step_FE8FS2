@@ -131,8 +131,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                   .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, "", jwtUserDetails.getAuthorities()))
                   .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
                 accessor.setUser(user);
-                JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
-                accessor.getSessionAttributes().put("userId", jwtUser.getId());
+                //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
+                //accessor.getSessionAttributes().put("userId", jwtUser.getId());
+                accessor.getSessionAttributes().put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()));
               } else {
                 throw new JwtAuthenticationException("Token is not valid");
               }
