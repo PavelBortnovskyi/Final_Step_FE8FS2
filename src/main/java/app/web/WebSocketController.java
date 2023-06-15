@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -53,8 +54,8 @@ public class WebSocketController {
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                   MessageRequest messageDTO,
-                                                                                  @AuthenticationPrincipal JwtUserDetails userDetails) {
-   Long currUserId = userDetails.getId();
+                                                                                  SimpMessageHeaderAccessor accessor) {
+   Long currUserId = (Long) accessor.getSessionAttributes().get("userId");;
    return this.messageFacade.convertToDto(this.chatFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
