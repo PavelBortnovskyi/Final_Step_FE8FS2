@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Main exception handler
+ * Main exception handler for http requests
  */
 @Log4j2
 @RestControllerAdvice
@@ -38,7 +38,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(BadRequestException.class)
-  public ErrorInfo handleUserNotFoundException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo handleBadRequestException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
@@ -53,28 +53,10 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
-//  @ExceptionHandler({IllegalArgumentException.class})
-//  @ResponseBody
-//  public ErrorInfo handleUrlException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-//    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//    log.error("Illegal url params: " + request.getRequestURI());
-//    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
-//  }
-
-//  @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
-//  @ResponseBody
-//  public ErrorInfo handleValidation(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-//    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//    log.error("Wrong request dto. Field validation failed!");
-//    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong request dto. Field validation failed!: " + ex.getMessage());
-//  }
-
   @ResponseBody
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ValidationErrorResponse onConstraintValidationException(
-    ConstraintViolationException e
-  ) {
+  public ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
     final List<Violation> violations = e.getConstraintViolations().stream()
       .map(
         violation -> new Violation(
@@ -89,13 +71,28 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
-  public ValidationErrorResponse onMethodArgumentNotValidException(
-    MethodArgumentNotValidException e
-  ) {
+  public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
     final List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
       .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
       .collect(Collectors.toList());
     return new ValidationErrorResponse(violations);
   }
+
+
+  //  @ExceptionHandler({IllegalArgumentException.class})
+//  @ResponseBody
+//  public ErrorInfo handleUrlException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+//    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//    log.error("Illegal url params: " + request.getRequestURI());
+//    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+//  }
+
+//  @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
+//  @ResponseBody
+//  public ErrorInfo handleValidation(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+//    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//    log.error("Wrong request dto. Field validation failed!");
+//    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "Wrong request dto. Field validation failed!: " + ex.getMessage());
+//  }
 }
 

@@ -5,6 +5,7 @@ import app.dto.rq.MessageRequest;
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.MessageResponse;
 import app.exceptions.httpError.BadRequestException;
+import app.exceptions.userError.UserNotFoundException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
@@ -90,7 +91,7 @@ public class WebSocketController {
           this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationRequestDTO)));
         return user;
       })
-      .orElseThrow(() -> new UsernameNotFoundException("Failed to send notification to user id: " + notificationRequestDTO.getReceiverUserId()));
+      .orElseThrow(() -> new UserNotFoundException("Failed to send notification to user id: " + notificationRequestDTO.getReceiverUserId()));
   }
 
   @MessageMapping("/v1/notifications/mark")

@@ -23,10 +23,12 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 
 import java.util.List;
 
@@ -74,7 +76,44 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     return false;
   }
 
-//  @Override
+  @Override
+  public void configureClientInboundChannel(ChannelRegistration registration) {
+    registration.interceptors(new ChannelInterceptor() {
+      @Override
+      @Order(Ordered.HIGHEST_PRECEDENCE + 99)
+      public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
+        StompHeaderAccessor accessor =
+          MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
+        if (accessor != null && accessor.getCommand() != null) {
+          if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+
+            String token = jwtTokenService.extractTokenFromHeader(accessor.getFirstNativeHeader("Authorization"))
+              .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+
+            if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
+              Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
+                .flatMap(jwtTokenService::extractIdFromClaims)
+                .map(JwtUserDetails::new)
+                .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, "", jwtUserDetails.getAuthorities()))
+                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
+              accessor.setUser(user);
+              //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
+              //accessor.getSessionAttributes().put("userId", jwtUser.getId());
+              accessor.getSessionAttributes().put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+            } else {
+              throw new JwtAuthenticationException("Token is not valid");
+            }
+          }
+        }
+        return message;
+      }
+    });
+  }
+
+
+  //  @Override
 //  public void configureClientInboundChannel(ChannelRegistration registration) {
 //    registration.interceptors(new ChannelInterceptor() {
 //      @Override
@@ -107,40 +146,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //        return message;
 //      }
 //    });
-
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-      registration.interceptors(new ChannelInterceptor() {
-        @Override
-        @Order(Ordered.HIGHEST_PRECEDENCE + 99)
-        public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
-          StompHeaderAccessor accessor =
-            MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-
-          if (accessor != null && accessor.getCommand() != null) {
-            if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-
-              String token = jwtTokenService.extractTokenFromHeader(accessor.getFirstNativeHeader("Authorization"))
-                .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
-
-              if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-                Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-                  .flatMap(jwtTokenService::extractIdFromClaims)
-                  .map(JwtUserDetails::new)
-                  .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, "", jwtUserDetails.getAuthorities()))
-                  .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-                accessor.setUser(user);
-                //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
-                //accessor.getSessionAttributes().put("userId", jwtUser.getId());
-                accessor.getSessionAttributes().put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-              } else {
-                throw new JwtAuthenticationException("Token is not valid");
-              }
-            }
-          }
-          return message;
-        }
-      });
-  }
 }
