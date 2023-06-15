@@ -40,14 +40,6 @@ public class WebSocketController {
 
   private final NotificationFacade notificationFacade;
 
-  private final ChatFacade chatFacade;
-
-  private final UserService userService;
-
-  private final MessageService messageService;
-
-  private final NotificationService notificationService;
-
   private final SimpMessagingTemplate template;
 
   @Validated({Marker.New.class})
@@ -56,42 +48,39 @@ public class WebSocketController {
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                   MessageRequest messageDTO,
                                                                                   SimpMessageHeaderAccessor accessor) {
-   Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-   return this.messageFacade.convertToDto(this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
+    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+    return this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO));
   }
 
   @Validated({Marker.Existed.class})
   @MessageMapping("/v1/message/edit")
-  @SendTo("/topic/chats")
-  public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
-                                                                                      MessageRequest messageDTO,
-                                                                                      SimpMessageHeaderAccessor accessor) {
+  public void processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
+                                     MessageRequest messageDTO,
+                                     SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-    this.messageService.changeMessage(currUserId, this.messageFacade.convertToEntity(messageDTO));
-    return this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO));
+    if (messageFacade.changeMessage(currUserId, messageFacade.convertToEntity(messageDTO)))
+      this.template.convertAndSend(messageDTO);
   }
 
+  @Validated({Marker.Delete.class})
   @MessageMapping("/v1/message/delete")
   public void deleteMessage(@Payload @Valid @JsonView({Marker.Delete.class})
                             MessageRequest messageDTO,
                             SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-    if (this.messageService.deleteMessage(currUserId, messageDTO.getId()))
+    if (this.messageFacade.deleteMessage(currUserId, messageDTO))
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }
 
   @Validated({Marker.New.class})
   @MessageMapping("/v1/notifications/private")
-  @SendTo("/specific")
   public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
-                                         NotificationRequest notificationRequestDTO) {
-    this.userService.getUserO(notificationRequestDTO.getReceiverUserId())
-      .map(user -> {
-        this.template.convertAndSendToUser(user.getEmail(), "/specific",
-          this.notificationFacade.save(this.notificationFacade.convertToEntity(notificationRequestDTO)));
-        return user;
-      })
-      .orElseThrow(() -> new UserNotFoundException("Failed to send notification to user id: " + notificationRequestDTO.getReceiverUserId()));
+                                         NotificationRequest notificationRequestDTO,
+                                         SimpMessageHeaderAccessor accessor) {
+    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+    if (this.notificationFacade.processNotification(notificationRequestDTO))
+      this.template.convertAndSendToUser(currUserId.toString(),
+        "/specific", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
   }
 
   @MessageMapping("/v1/notifications/mark")
@@ -100,13 +89,8 @@ public class WebSocketController {
                                    NotificationRequest notificationRequestDTO,
                                    SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-    this.notificationService.findById(notificationRequestDTO.getId())
-      .filter(n -> n.getReceiverUser().getId().equals(currUserId))
-      .map(n -> {
-        this.notificationService.setNotificationStatus(n.getId(), true);
-        this.template.convertAndSendToUser(this.userService.getOne(currUserId).getEmail(), "/specific", this.notificationFacade.convertToDto(n));
-        return n;
-      })
-      .orElseThrow(() -> new BadRequestException(String.format("No have such notification(id: %d) for user with id: %d", notificationRequestDTO.getId(), currUserId)));
+    if (notificationFacade.markNotification(currUserId, notificationRequestDTO))
+      this.template.convertAndSendToUser(currUserId.toString(),
+        "/specific", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
   }
 }

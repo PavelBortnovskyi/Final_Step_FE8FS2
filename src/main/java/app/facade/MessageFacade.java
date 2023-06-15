@@ -16,9 +16,17 @@ public class MessageFacade extends GeneralFacade<Message, MessageRequest, Messag
   @Autowired
   private MessageService messageService;
 
-  public Message addMessageToChat(Long userId, Message message) {
+  public MessageResponse addMessageToChat(Long userId, Message message) {
     if (message.getUser().getId().equals(userId))
-      return this.messageService.addMessage(message);
+      return this.convertToDto(this.messageService.addMessage(message));
     else throw new BadRequestException(String.format("Current user with id: %d is not the author of message ", userId));
+  }
+
+  public boolean changeMessage(Long userId, Message message){
+    return this.messageService.changeMessage(userId, message);
+  }
+
+  public boolean deleteMessage(Long userId, MessageRequest message) {
+    return this.messageService.deleteMessage(userId, message.getId());
   }
 }

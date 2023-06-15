@@ -2,8 +2,11 @@ package app.facade;
 
 import app.dto.rq.NotificationRequest;
 import app.dto.rs.NotificationResponse;
+import app.exceptions.httpError.BadRequestException;
+import app.exceptions.userError.UserNotFoundException;
 import app.model.Notification;
 import app.service.NotificationService;
+import app.service.UserService;
 import app.utils.CustomPageImpl;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ public class NotificationFacade extends GeneralFacade<Notification, Notification
 
   @Autowired
   private NotificationService notificationService;
+
+  @Autowired
+  private UserService userService;
 
   /**
    * Method returns user notification responses in page format
@@ -36,5 +42,25 @@ public class NotificationFacade extends GeneralFacade<Notification, Notification
    */
   public CustomPageImpl<NotificationResponse> getUnseenUserNotifications(Long userId, Integer pageSize, Integer pageNumber) {
     return new CustomPageImpl<>(this.notificationService.getUserUnreadNotificationsList(userId, pageSize, pageNumber).map(this::convertToDto));
+  }
+
+  public boolean processNotification(NotificationRequest notification) {
+    this.userService.getUserO(notification.getReceiverUserId()).map(user -> {
+        this.notificationService.save(this.convertToEntity(notification));
+        return user;
+      })
+      .orElseThrow(() -> new UserNotFoundException("Failed to send notification to user id: " + notification.getReceiverUserId()));
+    return true;
+  }
+
+  public boolean markNotification(Long userId, NotificationRequest notification){
+    this.notificationService.findById(notification.getId())
+      .filter(n -> n.getReceiverUser().getId().equals(userId))
+      .map(n -> {
+        this.notificationService.setNotificationStatus(n.getId(), true);
+        return n;
+      })
+      .orElseThrow(() -> new BadRequestException(String.format("No have such notification(id: %d) for user with id: %d", notification.getId(), userId)));
+    return true;
   }
 }

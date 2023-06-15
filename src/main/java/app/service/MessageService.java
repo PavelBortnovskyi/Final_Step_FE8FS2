@@ -35,7 +35,7 @@ public class MessageService extends GeneralService<Message> {
   /**
    * Method for change message body (checks userId as author of message)
    */
-  public void changeMessage(Long userId, Message message) throws MessageNotFoundException, MessageException {
+  public boolean changeMessage(Long userId, Message message) throws MessageNotFoundException, MessageException {
     if (userId.equals(message.getUser().getId())) {
       this.messageRepository.findById(message.getId())
         .map(m -> {
@@ -43,6 +43,7 @@ public class MessageService extends GeneralService<Message> {
           return m;
         })
         .orElseThrow(() -> new MessageNotFoundException(String.format("Message with id: %d not found", message.getId())));
+      return true;
     } else
       throw new MessageException(String.format("User with id: %d is not the author of message with id: %d", userId, message.getId()));
   }
