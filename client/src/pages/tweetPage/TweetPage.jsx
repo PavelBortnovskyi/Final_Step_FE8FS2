@@ -11,12 +11,14 @@ import { getTweetByID } from 'src/redux/selectors/selectors';
 import { getTweetById } from 'src/redux/thunk/getTweetById';
 
 import Retweet from './Retweet';
+import { useMode } from 'src/styles/_materialTheme';
 
 function TweetPage() {
   const { id } = useParams();
   const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
 
+  const theme = useMode();
   //getting single tweet
   useEffect(() => {
     dispatch(getTweetById(id));
@@ -32,15 +34,21 @@ function TweetPage() {
   return (
     <Box
       sx={{
-        borderLeft: '1px solid rgb(56, 68, 77)',
-        borderRight: '1px solid rgb(56, 68, 77)',
+        borderLeft: {
+          xs: 'none',
+          sm: `1px solid ${theme.palette.border.main}`,
+        },
+        borderRight: {
+          xs: 'none',
+          sm: `1px solid ${theme.palette.border.main}`,
+        },
       }}
     >
       {/* back to home page */}
       <Link to="/">
         <Box
           sx={{
-            color: '#fff',
+            color: `${theme.palette.text.primary}`,
             pt: '15px',
             display: 'flex',
             gap: '10px',
@@ -72,7 +80,10 @@ function TweetPage() {
         container
         alignItems="center"
         justifyContent="center"
-        sx={{ borderBottom: '1px solid rgb(56, 68, 77)', pb: '20px' }}
+        sx={{
+          borderBottom: `1px solid ${theme.palette.border.main}`,
+          pb: '20px',
+        }}
       >
         {post && (
           <PostIconList
