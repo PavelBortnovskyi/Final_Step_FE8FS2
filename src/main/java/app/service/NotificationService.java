@@ -89,9 +89,9 @@ public class NotificationService extends GeneralService<Notification> {
       @Override
       public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         NotificationRequest notificationRequest = new NotificationRequest();
-        notificationRequest.setTweetId(tweet.getParentTweetId().getId());
+        notificationRequest.setTweetId(tweet.getId());
         notificationRequest.setInitiatorUserId(senderUserId);
-        notificationRequest.setReceiverUserId(tweet.getUser().getId());
+        notificationRequest.setReceiverUserId(tweet.getParentTweetId().getUser().getId());
         switch (tweet.getTweetType()) {
           case QUOTE_TWEET -> notificationRequest.setNotificationType(NotificationType.QUOTE_TWEET);
           case REPLY -> notificationRequest.setNotificationType(NotificationType.REPLY);

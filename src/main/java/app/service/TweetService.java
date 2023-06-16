@@ -66,8 +66,7 @@ public class TweetService extends GeneralService<Tweet> {
     tweet.setUser(user);
     if (parentTweetId != null) {
       tweet.setParentTweetId(getTweetById(parentTweetId));
-      tweetModelRepository.save(tweet);
-      notificationService.sendNotification(tweet, user.getId());
+      notificationService.sendNotification(tweetModelRepository.save(tweet), user.getId());
     }
 
     if (tweetType.equals(TweetType.QUOTE_TWEET)) tweetActionService.addRetweet(tweet.getId(), request);
