@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
@@ -13,12 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.ArrayList;
 
 @Log4j2
 @Validated
@@ -35,9 +33,11 @@ public class TweetController {
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiOperation("Создать TWEET")
   //@RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<TweetResponseDTO> createNewTweet(@ModelAttribute @Valid TweetRequestDTO requestDTO,
+  public ResponseEntity<TweetResponseDTO> createNewTweet(//@ModelAttribute @Valid TweetRequestDTO requestDTO,
+                                                         @RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                         @RequestParam(value = "attachmentImages", required = false) MultipartFile[] attachmentImages,
                                                          HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), requestDTO,
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), tweetBody, attachmentImages,
       TweetType.TWEET, null));
   }
 
@@ -46,9 +46,11 @@ public class TweetController {
   @PostMapping("/{id}/quote")
   @ApiOperation("Создать QUOTE_TWEET твита с {id}")
   public ResponseEntity<TweetResponseDTO> createQuoteTweet(@PathVariable(name = "id") @Positive Long tweetId,
-                                                           @ModelAttribute @Valid TweetRequestDTO requestDTO,
+//                                                           @ModelAttribute @Valid TweetRequestDTO requestDTO,
+                                                           @RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                           @RequestParam(value = "attachmentImages", required = false) MultipartFile[] attachmentImages,
                                                            HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), requestDTO,
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), tweetBody, attachmentImages,
       TweetType.QUOTE_TWEET, tweetId));
   }
 
@@ -59,7 +61,7 @@ public class TweetController {
   public ResponseEntity<TweetResponseDTO> createRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId,
                                                              HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
-      new TweetRequestDTO("", new ArrayList<>()), TweetType.RETWEET, tweetId));
+      null, new MultipartFile[0], TweetType.RETWEET, tweetId));
   }
 
 
@@ -67,9 +69,11 @@ public class TweetController {
   @PostMapping("/{id}/replay")
   @ApiOperation("Создать REPLAY твита с {id}")
   public ResponseEntity<TweetResponseDTO> createReplyTweet(@PathVariable(name = "id") @Positive Long tweetId,
-                                                           @ModelAttribute @Valid TweetRequestDTO requestDTO,
+                                                           // @ModelAttribute @Valid TweetRequestDTO requestDTO,
+                                                           @RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                           @RequestParam(value = "attachmentImages", required = false) MultipartFile[] attachmentImages,
                                                            HttpServletRequest httpRequest) {
-    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), requestDTO,
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), tweetBody, attachmentImages,
       TweetType.REPLY, tweetId));
   }
 

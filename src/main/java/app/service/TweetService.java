@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-
 @Primary
 @Log4j2
 @Service
@@ -31,9 +29,10 @@ public class TweetService extends GeneralService<Tweet> {
 
 
   @Transactional
-  public Tweet createTweet(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId) {
-    Tweet tweet = new Tweet();
+  public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
+    if (files == null) files = new MultipartFile[0];
 
+    Tweet tweet = new Tweet();
     if (parentTweetId != null) tweet.setParentTweet(getTweet(parentTweetId));
     tweet
       .setUser(userService.getUser(userId))

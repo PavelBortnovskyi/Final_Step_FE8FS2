@@ -20,7 +20,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @SequenceGenerator(name = "custom_gen", sequenceName = "tweets_id_seq", allocationSize = 1)
 public class Tweet extends BaseEntityModel {
-  @Column(name = "body", nullable = false)
+  @Column(name = "body") // , nullable = false)
   private String body;
 
   @Enumerated(EnumType.STRING)

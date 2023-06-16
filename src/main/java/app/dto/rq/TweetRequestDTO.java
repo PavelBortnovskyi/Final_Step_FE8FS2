@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 @Data
@@ -15,10 +14,10 @@ import java.util.ArrayList;
 public class TweetRequestDTO {
 
   @ApiModelProperty(value = "Text of tweet", required = true)
-  @NotNull
+  //@NotNull
   private String tweetBody;
 
   @ApiModelProperty(value = "Images of tweet.", required = true, dataType = "Array of MultipartFile")
-  @NotNull
+  //@NotNull
   private ArrayList<MultipartFile> attachmentImages;
 }
