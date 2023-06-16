@@ -27,7 +27,7 @@ public class Tweet extends BaseEntityModel {
   @Column(name = "tweet_type", nullable = false, updatable = false)
   private TweetType tweetType;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private UserModel user;
 

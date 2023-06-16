@@ -1,6 +1,7 @@
 package app.dto.rs;
 
 import app.annotations.Marker;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.Data;
 @Data
 @ApiModel("Attachment image response DTO")
 public class AttachmentImageResponse {
-
+  @JsonIgnore
   private Long tweetId;
 
   @JsonView(Marker.Preview.class)
