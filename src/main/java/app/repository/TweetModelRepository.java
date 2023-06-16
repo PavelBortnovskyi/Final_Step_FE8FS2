@@ -46,6 +46,6 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
   Integer countByParentTweetAndTweetType(Tweet parentTweet, TweetType tweetType);
 
 
-  Page<Tweet> findByUserOrderByCreatedAtDesc(UserModel user, Pageable pageable);
+  Page<Tweet> findByUserAndTweetTypeNotOrderByCreatedAtDesc(UserModel user, TweetType excludeTweetType, Pageable pageable);
 
 }

@@ -94,6 +94,7 @@ public class TweetService extends GeneralService<Tweet> {
 
 
   public Page<Tweet> getAllTweetByUserId(Long userId, int page, int size){
-    return tweetRepository.findByUserOrderByCreatedAtDesc(userService.getUser(userId), PageRequest.of(page, size));
+    return tweetRepository.findByUserAndTweetTypeNotOrderByCreatedAtDesc(
+      userService.getUser(userId), TweetType.REPLY, PageRequest.of(page, size));
   }
 }

@@ -152,9 +152,4 @@ public class TweetController {
                                              HttpServletRequest httpRequest){
     return tweetFacade.getAllTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId, page, size);
   }
-
-
-
-
-
 }
