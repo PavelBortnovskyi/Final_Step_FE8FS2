@@ -12,7 +12,6 @@ import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -96,8 +94,9 @@ public class ChatService extends GeneralService<Chat> {
       this.chatRepository.save(chat);
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
         userToRemoveId, chatId, removeInitUserId));
-    } else return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-      userToRemoveId, chatId, removeInitUserId));
+    } else
+      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
   }
 
   /**
