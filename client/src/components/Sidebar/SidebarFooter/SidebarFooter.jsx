@@ -9,7 +9,7 @@ const BoxFooterSliderStyled = styled(Box)((props) => ({
 }))
 
 
-export const SidebarFooter = ({ displayName, username }) => {
+export const SidebarFooter = () => {
     return (
         <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
@@ -22,13 +22,11 @@ export const SidebarFooter = ({ displayName, username }) => {
 
                     <SidebarFooterBtnDropdown
                         popupState={popupState}
-                        displayName={displayName}
-                        username={username}
                     />
 
                     <SidebarFooterMenuDropdown
                         popupState={popupState}
-                        username={username}
+
                     />
 
                 </BoxFooterSliderStyled>

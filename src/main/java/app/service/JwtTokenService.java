@@ -159,6 +159,10 @@ public class JwtTokenService {
       .map(h -> h.substring(BEARER.length()));
   }
 
+  public Optional<String> extractTokenFromHeader(String header) {
+    return Optional.of(header.substring(BEARER.length()));
+  }
+
   /**
    * Method for extraction user id value from JWT Claims
    */

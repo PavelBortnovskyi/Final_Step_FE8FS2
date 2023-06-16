@@ -7,9 +7,9 @@ import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.Chat;
-import app.model.Message;
 import app.service.ChatService;
 import app.service.UserService;
+import app.utils.CustomPageImpl;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,10 +45,6 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
     return this.chatService.deleteChat(chatId, userId);
   }
 
-  public Message addMessageToChat(Long chatId, Long userId, Message message) {
-    return this.chatService.addMessage(chatId, userId, message);
-  }
-
   /**
    * Method for add new user to chat
    */
@@ -66,7 +62,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequest, ChatResponse> {
   /**
    * Method returns page of user chat responses with last message to preview
    */
-  public Page<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
+  public CustomPageImpl<ChatResponse> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
     return this.chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber);
   }
 

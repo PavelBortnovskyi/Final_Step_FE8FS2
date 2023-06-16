@@ -45,6 +45,7 @@ export const DropdownBtn = ({ popupState }) => {
                     fontSize: '18px',
                     color: `${theme.palette.text.primary}`
                 }}
+                fontWeight="bold"
             >
                 More
             </Typography>

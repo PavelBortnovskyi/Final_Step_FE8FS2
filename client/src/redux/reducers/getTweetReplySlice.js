@@ -29,4 +29,4 @@ export const tweetRepliesSlice = createSlice({
       });
   },
 });
-export default getTweetReply.reducer;
+export default tweetRepliesSlice.reducer;

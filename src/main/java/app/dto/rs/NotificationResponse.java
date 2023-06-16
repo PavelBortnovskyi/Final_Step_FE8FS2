@@ -9,22 +9,22 @@ import lombok.Data;
 @Data
 public class NotificationResponse {
 
-  @JsonView({Marker.Existed.class})
+  @JsonView(Marker.Preview.class)
   private Long id;
 
-  @JsonView({Marker.Existed.class})
+  @JsonView(Marker.Preview.class)
   @JsonFormat(shape = JsonFormat.Shape.STRING)
   private NotificationType notificationType;
 
-  @JsonView({Marker.Existed.class})
-  private Long receiverId;
+  @JsonView(Marker.Preview.class)
+  private UserResponseDTO receiver;
 
-  @JsonView({Marker.Existed.class})
-  private Long initiatorId;
+  @JsonView(Marker.Preview.class)
+  private UserResponseDTO initiator;
 
-  @JsonView({Marker.Existed.class})
-  private Long tweetId;
+  @JsonView(Marker.Preview.class)
+  private TweetResponse tweet;
 
-  @JsonView({Marker.Existed.class})
+  @JsonView(Marker.Preview.class)
   private boolean isRead;
 }

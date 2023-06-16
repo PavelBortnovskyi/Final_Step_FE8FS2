@@ -24,18 +24,18 @@ function TweetPost({
     <Box
       id={id}
       sx={{
-        borderBottom: `1px solid ${theme.palette.border.main}`,
         width: '100%',
+        pt: '16px',
+        pr: '5px',
         color: `${theme.palette.text.primary}`,
-        '&:hover': {
-          backgroundColor: `${theme.palette.background.hover}`,
-          cursor: 'pointer',
-        },
+        // '&:hover': {
+        //   backgroundColor: `${theme.palette.background.hover}`,
+        //   cursor: 'pointer',
+        // },
       }}
-      padding={2}
       display="flex"
     >
-      <Box padding={2}>
+      <Box sx={{ pr: '10px', pl: { xs: '5px', sm: '15px' } }}>
         <Avatar src={logoUrl} />
       </Box>
       <Box
@@ -63,7 +63,7 @@ function TweetPost({
             alt="Paella dish"
             sx={{
               borderRadius: '20px',
-              my: '20px',
+              mt: '20px',
             }}
           />
         ) : (

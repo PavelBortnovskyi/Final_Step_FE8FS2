@@ -10,7 +10,9 @@ import app.model.Message;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
+import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -89,7 +91,7 @@ public class ChatService extends GeneralService<Chat> {
   public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
     UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
-    if (!userToRemove.equals(chat.getInitiatorUser()) && chat.getUsers().contains(userToRemove)) {
+    if (!userToRemove.equals(chat.getInitiatorUser()) && userToRemove.equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
       chat.getUsers().remove(userToRemove);
       this.chatRepository.save(chat);
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
@@ -97,20 +99,6 @@ public class ChatService extends GeneralService<Chat> {
     } else
       return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
         userToRemoveId, chatId, removeInitUserId));
-  }
-
-  /**
-   * Method returns chat with added message
-   */
-  public Message addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
-    AtomicInteger last = new AtomicInteger();
-    return this.chatRepository.save(this.chatRepository.findById(chatId)
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))
-      .map(chat -> {
-        chat.getMessages().add(message);
-        last.set(chat.getMessages().size());
-        return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId)))).getMessages().get(last.get());
   }
 
   /**
@@ -131,15 +119,15 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns collection of user chats for only last message in each
    */
-  public Page<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
-    return chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
+  public CustomPageImpl<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
+    return new CustomPageImpl<>(chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
       Chat chat = (Chat) array[0];
       Message lastMessage = (Message) array[1];
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
       return this.modelMapper.map(chat, ChatResponse.class);
-    });
+    }));
   }
 
   /**

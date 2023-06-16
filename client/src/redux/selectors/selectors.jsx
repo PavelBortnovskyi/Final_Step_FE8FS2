@@ -14,7 +14,7 @@ export const getFollowingTweets = (state) => state.tweets;
 export const getTweetByID = (state) => state.singleTweet;
 
 //Tweet replies (comments)
-export const getTweetReplies = (state) => state.getTweetReplies;
+export const getTweetReplies = (state) => state.tweetReplies;
 
 //get user tweets
 export const getUserTweets = (state) => state.userTweets;

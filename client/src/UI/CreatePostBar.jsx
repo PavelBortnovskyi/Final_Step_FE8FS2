@@ -15,7 +15,6 @@ function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
   return (
     <Box
       sx={{
-        ml: '100px',
         mt: '15px',
         display: 'flex',
         gap: '15px',

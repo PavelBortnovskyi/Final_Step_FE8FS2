@@ -2,6 +2,7 @@ package app.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,11 +62,6 @@ public class ApplicationBeans {
     props.put("mail.debug", "true");
 
     return mailSender;
-  }
-
-  @Bean
-  public ObjectMapper getObjectMapper() {
-    return new ObjectMapper();
   }
 
   @Bean

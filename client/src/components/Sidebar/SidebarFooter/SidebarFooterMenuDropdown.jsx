@@ -1,20 +1,35 @@
 import React from 'react';
 import { bindMenu } from 'material-ui-popup-state';
 import { Box, Menu, MenuItem, styled, useTheme } from '@mui/material';
+import { ThemeSwitcher } from 'src/UI/ThemeSwitcher/ThemeSwitcher';
+import { LogoutButton } from 'src/UI/LogoutButton/LogoutButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logoutUser } from 'src/redux/thunk/logoutUser';
 
 
+const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
+    backgroundColor: `${theme.palette.background.default}`,
+    width: '268px',
+    padding: '12px',
+    '&:hover': {
+        backgroundColor: `${theme.palette.background.hover}`,
+    }
+}))
 
-export const SidebarFooterMenuDropdown = ({ popupState, username }) => {
+
+export const SidebarFooterMenuDropdown = ({ popupState }) => {
+    const navigate = useNavigate();
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.user) || "";
 
-    const MenuItemStyled = styled(MenuItem)((props) => ({
-        backgroundColor: `${theme.palette.background.default}`,
-        width: '268px',
-        padding: '12px',
-        '&:hover': {
-            backgroundColor: `${theme.palette.background.hover}`,
-        }
-    }))
+    const handleLogOut = () => {
+        dispatch(logoutUser());
+        navigate('/');
+        // Закрытие меню
+        popupState.close();
+    };
 
 
     return (
@@ -38,14 +53,14 @@ export const SidebarFooterMenuDropdown = ({ popupState, username }) => {
             }}
         >
 
-            <Box sx={{ borderTop: '1px solid rgb(56, 68, 77)'}}>
-            
-                <MenuItemStyled onClick={popupState.close}>
-                    Add an existing account
+            <Box sx={{ borderTop: '1px solid rgb(56, 68, 77)' }}>
+
+                <MenuItemStyled>
+                    <ThemeSwitcher />
                 </MenuItemStyled>
 
-                <MenuItemStyled onClick={popupState.close}>
-                    Log out @{username}
+                <MenuItemStyled onClick={handleLogOut}>
+                    <strong>Log out {user.userTag}</strong>
                 </MenuItemStyled>
             </Box>
 
