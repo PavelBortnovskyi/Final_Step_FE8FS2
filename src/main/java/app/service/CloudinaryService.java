@@ -71,12 +71,12 @@ public class CloudinaryService {
   }
 
 
-  public HashSet<String> uploadTweetImages(ArrayList<MultipartFile> files, Long userId, Long tweetId) {
+  public HashSet<String> uploadTweetImages(MultipartFile[] files, Long userId, Long tweetId) {
     // This is NOT FOR PRODUCTION. To avoid problems when testing and creating multiple tweets with the same ID.
     deleteTweetImages(userId, tweetId);
 
-    return IntStream.range(0, files.size())
-      .mapToObj(i -> uploadFile(files.get(i), "img_" + (i + 1), getTweetFolder(userId, tweetId)))
+    return IntStream.range(0, files.length)
+      .mapToObj(i -> uploadFile(files[i], "img_" + (i + 1), getTweetFolder(userId, tweetId)))
       .collect(Collectors.toCollection(HashSet::new));
   }
 

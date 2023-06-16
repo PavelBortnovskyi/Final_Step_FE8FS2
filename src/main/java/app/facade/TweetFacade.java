@@ -1,6 +1,5 @@
 package app.facade;
 
-import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
@@ -14,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.util.Set;
@@ -53,9 +53,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO, TweetType tweetType, Long parentTweetId) {
+  public TweetResponseDTO createTweet(Long userId, String tweetBody, MultipartFile[] attachmentImages, TweetType tweetType, Long parentTweetId) {
     return convertToDto(tweetService
-      .createTweet(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), tweetType, parentTweetId));
+      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId));
   }
 
 
