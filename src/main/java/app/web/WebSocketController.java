@@ -9,7 +9,6 @@ import app.exceptions.userError.UserNotFoundException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
-import app.security.JwtUserDetails;
 import app.service.MessageService;
 import app.service.NotificationService;
 import app.service.UserService;
@@ -21,14 +20,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Log4j2
 @RestController
@@ -56,8 +51,8 @@ public class WebSocketController {
   public @JsonView({Marker.ChatDetails.class}) MessageResponse processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                   MessageRequest messageDTO,
                                                                                   SimpMessageHeaderAccessor accessor) {
-   Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-   return this.messageFacade.convertToDto(this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
+    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+    return this.messageFacade.convertToDto(this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
   }
 
   @Validated({Marker.Existed.class})

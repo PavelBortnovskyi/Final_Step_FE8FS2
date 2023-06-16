@@ -1,7 +1,6 @@
 package app.dto.rs;
 
 import app.enums.TweetType;
-import app.model.AttachmentImage;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.experimental.Accessors;
