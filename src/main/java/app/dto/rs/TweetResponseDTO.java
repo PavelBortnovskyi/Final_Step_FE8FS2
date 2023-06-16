@@ -21,7 +21,7 @@ public class TweetResponseDTO {
 
   private UserResponseMiniDTO user;
 
-  private TweetResponseMiniDTO parentTweet;
+  private TweetResponseDTO parentTweet;
 
   private String body;
 
