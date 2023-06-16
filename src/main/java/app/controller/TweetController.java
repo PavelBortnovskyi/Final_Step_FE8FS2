@@ -31,7 +31,7 @@ public class TweetController {
 
 
   // Create Tweet
-  @PutMapping
+  @PostMapping
   @ApiOperation("Создать TWEET")
   //@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<TweetResponseDTO> createNewTweet(@ModelAttribute @Valid TweetRequestDTO requestDTO,
@@ -42,7 +42,7 @@ public class TweetController {
 
 
   // Create quote tweet
-  @PutMapping("/{id}/quote")
+  @PostMapping("/{id}/quote")
   @ApiOperation("Создать QUOTE_TWEET твита с {id}")
   public ResponseEntity<TweetResponseDTO> createQuoteTweet(@PathVariable(name = "id") @Positive Long tweetId,
                                                            @ModelAttribute @Valid TweetRequestDTO requestDTO,
@@ -53,7 +53,7 @@ public class TweetController {
 
 
   // Create retweet
-  @PutMapping("/{id}/retweet")
+  @PostMapping("/{id}/retweet")
   @ApiOperation("Создать RETWEET твита с {id}")
   public ResponseEntity<TweetResponseDTO> createRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId,
                                                              HttpServletRequest httpRequest) {
@@ -63,7 +63,7 @@ public class TweetController {
 
 
   // Create replay tweet
-  @PutMapping("/{id}/replay")
+  @PostMapping("/{id}/replay")
   @ApiOperation("Создать REPLAY твита с {id}")
   public ResponseEntity<TweetResponseDTO> createReplyTweet(@PathVariable(name = "id") @Positive Long tweetId,
                                                            @ModelAttribute @Valid TweetRequestDTO requestDTO,
