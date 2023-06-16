@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.annotations.Marker;
 import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
@@ -13,14 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 @Log4j2
 @Validated
@@ -45,9 +42,9 @@ public class TweetController {
 
   // Create quote tweet
   @PutMapping("/{id}/quote")
-  public ResponseEntity<TweetResponseDTO> createQuoteTweet(@PathVariable(name ="id") @Positive Long tweetId,
+  public ResponseEntity<TweetResponseDTO> createQuoteTweet(@PathVariable(name = "id") @Positive Long tweetId,
                                                            @ModelAttribute @Valid TweetRequestDTO requestDTO,
-                                                           HttpServletRequest httpRequest){
+                                                           HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), requestDTO,
       TweetType.QUOTE_TWEET, tweetId));
   }
@@ -55,8 +52,8 @@ public class TweetController {
 
   // Create retweet
   @PutMapping("/{id}/retweet")
-  public ResponseEntity<TweetResponseDTO> createRetweetTweet(@PathVariable(name ="id") @Positive Long tweetId,
-                                                             HttpServletRequest httpRequest){
+  public ResponseEntity<TweetResponseDTO> createRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId,
+                                                             HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
       new TweetRequestDTO("", new ArrayList<>()), TweetType.RETWEET, tweetId));
   }
@@ -64,13 +61,12 @@ public class TweetController {
 
   // Create replay tweet
   @PutMapping("/{id}/replay")
-  public ResponseEntity<TweetResponseDTO> createReplyTweet(@PathVariable(name ="id") @Positive Long tweetId,
+  public ResponseEntity<TweetResponseDTO> createReplyTweet(@PathVariable(name = "id") @Positive Long tweetId,
                                                            @ModelAttribute @Valid TweetRequestDTO requestDTO,
-                                                           HttpServletRequest httpRequest){
+                                                           HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"), requestDTO,
       TweetType.REPLY, tweetId));
   }
-
 
 
   // Get Tweet by id
@@ -83,16 +79,16 @@ public class TweetController {
   // Delete tweet
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteTweet(@PathVariable(name ="id") @Positive Long tweetId,
-                                          HttpServletRequest httpRequest){
+  public void deleteTweet(@PathVariable(name = "id") @Positive Long tweetId,
+                          HttpServletRequest httpRequest) {
     tweetFacade.deleteTweet((Long) httpRequest.getAttribute("userId"), tweetId);
   }
 
 
   // Like tweet action
   @PostMapping("/{id}/like")
-  public ResponseEntity<TweetResponseDTO> likeTweet(@PathVariable(name ="id") @Positive Long tweetId,
-                                                    HttpServletRequest httpRequest){
+  public ResponseEntity<TweetResponseDTO> likeTweet(@PathVariable(name = "id") @Positive Long tweetId,
+                                                    HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.LIKE));
   }
@@ -100,8 +96,8 @@ public class TweetController {
 
   // Unlike tweet action
   @PostMapping("/{id}/unlike")
-  public ResponseEntity<TweetResponseDTO> unLikeTweet(@PathVariable(name ="id") @Positive Long tweetId,
-                                                    HttpServletRequest httpRequest){
+  public ResponseEntity<TweetResponseDTO> unLikeTweet(@PathVariable(name = "id") @Positive Long tweetId,
+                                                      HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.LIKE));
   }
@@ -109,8 +105,8 @@ public class TweetController {
 
   // Create bookmark
   @PostMapping("/{id}/bookmark")
-  public ResponseEntity<TweetResponseDTO> bookmarkTweet(@PathVariable(name ="id") @Positive Long tweetId,
-                                                    HttpServletRequest httpRequest){
+  public ResponseEntity<TweetResponseDTO> bookmarkTweet(@PathVariable(name = "id") @Positive Long tweetId,
+                                                        HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.BOOKMARK));
   }
@@ -118,8 +114,8 @@ public class TweetController {
 
   // UnBookmark tweet action
   @PostMapping("/{id}/unbookmark")
-  public ResponseEntity<TweetResponseDTO> unBookmarkTweet(@PathVariable(name ="id") @Positive Long tweetId,
-                                                      HttpServletRequest httpRequest){
+  public ResponseEntity<TweetResponseDTO> unBookmarkTweet(@PathVariable(name = "id") @Positive Long tweetId,
+                                                          HttpServletRequest httpRequest) {
     return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
       TweetActionType.BOOKMARK));
   }
@@ -146,10 +142,10 @@ public class TweetController {
 
   // Get user all tweets
   @GetMapping({"/user/{id}", "/user"})
-  public Page<TweetResponseDTO> getAllTweets(@PathVariable(name ="id", required = false) Long userId,
+  public Page<TweetResponseDTO> getAllTweets(@PathVariable(name = "id", required = false) Long userId,
                                              @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
-                                             HttpServletRequest httpRequest){
+                                             HttpServletRequest httpRequest) {
     return tweetFacade.getAllTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId, page, size);
   }
 }

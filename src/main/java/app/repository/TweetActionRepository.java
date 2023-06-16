@@ -5,7 +5,6 @@ import app.enums.TweetActionType;
 import app.model.Tweet;
 import app.model.TweetAction;
 import app.model.UserModel;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

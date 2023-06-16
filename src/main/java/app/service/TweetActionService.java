@@ -20,7 +20,7 @@ public class TweetActionService {
   private final TweetActionRepository tweetActionRepository;
 
 
-  public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType){
+  public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType)
       .orElseThrow(() -> new TweetActionNotFoundException(actionType, tweet.getId()));
   }
@@ -30,13 +30,13 @@ public class TweetActionService {
 //  }
 
   @Transactional
-  public TweetAction createTweetAction(UserModel user, Tweet tweet, TweetActionType tweetActionType){
+  public TweetAction createTweetAction(UserModel user, Tweet tweet, TweetActionType tweetActionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, tweetActionType)
       .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, user, tweet)));
   }
 
   @Transactional
-  public TweetAction removeTweetAction(UserModel user, Tweet tweet, TweetActionType tweetActionType){
+  public TweetAction removeTweetAction(UserModel user, Tweet tweet, TweetActionType tweetActionType) {
     TweetAction tweetAction = getTweetAction(user, tweet, tweetActionType);
     if (!tweetAction.getUser().getId().equals(user.getId())) throw new TweetPermissionException(tweet.getId());
     tweetActionRepository.delete(tweetAction);

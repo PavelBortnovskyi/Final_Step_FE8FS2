@@ -2,8 +2,8 @@ package app.service;
 
 import app.enums.TweetActionType;
 import app.enums.TweetType;
-import app.exceptions.tweetError.TweetPermissionException;
 import app.exceptions.tweetError.TweetIsNotFoundException;
+import app.exceptions.tweetError.TweetPermissionException;
 import app.model.Tweet;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class TweetService extends GeneralService<Tweet> {
 
 
   @Transactional
-  public void deleteTweet(Long userId, Long tweetId){
+  public void deleteTweet(Long userId, Long tweetId) {
     Tweet tweet = getTweet(tweetId);
     if (!tweet.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
     delete(tweet);
@@ -65,14 +65,14 @@ public class TweetService extends GeneralService<Tweet> {
 
 
   @Transactional
-  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
+  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     return tweetActionService.createTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
       .getTweet();
   }
 
 
   @Transactional
-  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType){
+  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     return tweetActionService.removeTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
       .getTweet();
   }
@@ -93,7 +93,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Page<Tweet> getAllTweetByUserId(Long userId, int page, int size){
+  public Page<Tweet> getAllTweetByUserId(Long userId, int page, int size) {
     return tweetRepository.findByUserAndTweetTypeNotOrderByCreatedAtDesc(
       userService.getUser(userId), TweetType.REPLY, PageRequest.of(page, size));
   }
