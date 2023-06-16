@@ -37,9 +37,6 @@ import java.util.Objects;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Autowired
-  private WebSocketAuthInterceptor webSocketAuthInterceptor;
-
-  @Autowired
   private JwtTokenService jwtTokenService;
 
   @Autowired

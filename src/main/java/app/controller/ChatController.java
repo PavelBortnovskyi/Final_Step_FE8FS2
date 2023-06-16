@@ -113,7 +113,7 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to return page with search result in chat
    */
   @Validated({Marker.ChatDetails.class})
-  @PostMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
                                                              @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                              @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
@@ -129,7 +129,7 @@ public class ChatController {
   /**
    * This endpoint waiting for valid url params and token to return page with search result in all user chats
    */
-  @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponse> handleGetSearchResultFromChats(HttpServletRequest request,
                                                               @RequestParam("page") @NotNull Integer page,
                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
