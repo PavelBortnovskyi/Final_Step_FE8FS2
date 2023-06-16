@@ -1,7 +1,9 @@
 package app.service;
 
+import app.dto.rq.NotificationRequest;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
+import app.enums.NotificationType;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
@@ -11,10 +13,12 @@ import app.model.UserModel;
 import app.repository.TweetActionRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class TweetService extends GeneralService<Tweet> {
@@ -33,6 +38,8 @@ public class TweetService extends GeneralService<Tweet> {
   private final TweetActionService tweetActionService;
   private final TweetActionRepository tweetActionRepository;
   private final AttachmentImagesService attachmentImagesService;
+
+  private final NotificationService notificationService;
 
   public Optional<Tweet> getTweet(Long id) {
     Optional<Tweet> tweet = findById(id);
@@ -57,8 +64,11 @@ public class TweetService extends GeneralService<Tweet> {
     tweet.setBody(tweetBody);
     tweet.setTweetType(tweetType);
     tweet.setUser(user);
-    if (parentTweetId != null) tweet.setParentTweetId(getTweetById(parentTweetId));
-    tweetModelRepository.save(tweet);
+    if (parentTweetId != null) {
+      tweet.setParentTweetId(getTweetById(parentTweetId));
+      tweetModelRepository.save(tweet);
+      notificationService.sendNotification(tweet, user.getId());
+    }
 
     if (tweetType.equals(TweetType.QUOTE_TWEET)) tweetActionService.addRetweet(tweet.getId(), request);
 
@@ -114,7 +124,6 @@ public class TweetService extends GeneralService<Tweet> {
     }
     return tweet;
   }
-
 
 
   public ResponseEntity<List<Tweet>> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {

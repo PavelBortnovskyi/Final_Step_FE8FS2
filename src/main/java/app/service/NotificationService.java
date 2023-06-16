@@ -1,20 +1,36 @@
 package app.service;
 
+import app.dto.rq.NotificationRequest;
+import app.enums.NotificationType;
 import app.model.Notification;
+import app.model.Tweet;
 import app.repository.NotificationModelRepository;
 import app.utils.CustomPageImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandler;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.util.Optional;
 
+@Log4j2
 @Service
+@RequiredArgsConstructor
 public class NotificationService extends GeneralService<Notification> {
 
-  @Autowired
-  private NotificationModelRepository notificationRepository;
+  private final NotificationModelRepository notificationRepository;
+
+  private final SimpMessagingTemplate messagingTemplate;
+
+  private final WebSocketStompClient stompClient;
 
   /**
    * Method returns user notification in page format
@@ -66,5 +82,25 @@ public class NotificationService extends GeneralService<Notification> {
    */
   public Optional<Notification> findById(Long id) {
     return this.notificationRepository.findById(id);
+  }
+
+  public void sendNotification(Tweet tweet, Long senderUserId) {
+    StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
+      @Override
+      public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+        NotificationRequest notificationRequest = new NotificationRequest();
+        notificationRequest.setTweetId(tweet.getParentTweetId().getId());
+        notificationRequest.setInitiatorUserId(senderUserId);
+        notificationRequest.setReceiverUserId(tweet.getUser().getId());
+        switch (tweet.getTweetType()) {
+          case QUOTE_TWEET -> notificationRequest.setNotificationType(NotificationType.QUOTE_TWEET);
+          case REPLY -> notificationRequest.setNotificationType(NotificationType.REPLY);
+          //TODO: add other types after merge v2 main
+        };
+        log.info(notificationRequest.toString());
+        session.send("/api/v1/notifications/private", notificationRequest);
+      }
+    };
+    stompClient.connect("ws://localhost:8080/notifications-ws", sessionHandler);
   }
 }

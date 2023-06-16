@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.annotations.Marker;
+import app.dto.rq.NotificationRequest;
 import app.dto.rq.TweetRequest;
 import app.dto.rs.TweetResponse;
 import app.facade.TweetActionFacade;
@@ -14,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

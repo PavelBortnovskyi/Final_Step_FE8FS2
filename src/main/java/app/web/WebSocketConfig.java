@@ -23,12 +23,11 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
-import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -53,17 +52,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/topic/chats", "/specific");
+    registry.enableSimpleBroker("/topic/chats", "/topic/notifications");
     registry.setApplicationDestinationPrefixes("/api");
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**");//.addInterceptors(webSocketAuthInterceptor); //TODO: need to change on deploy
+      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**"); //TODO: need to change on deploy
 
     registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**"); //TODO: need to change on deploy
+      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**", "http://localhost:8080", "http://localhost:8080/**"); //TODO: need to change on deploy
   }
 
   @Override
@@ -87,7 +86,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         StompHeaderAccessor accessor =
           MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-        if (accessor != null && accessor.getCommand() != null) {
+        String origin = accessor.getFirstNativeHeader("Origin");
+
+        if (accessor != null && accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")) {
           if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
             String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
