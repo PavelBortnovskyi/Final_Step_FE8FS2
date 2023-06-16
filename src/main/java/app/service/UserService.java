@@ -5,10 +5,8 @@ import app.exceptions.userError.IncorrectUserIdException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
 import app.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,16 +73,16 @@ public class UserService extends GeneralService<UserModel> {
   @Transactional
   public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
-    userModel.setAvatarImgUrl(cloudinaryService.uploadFile(file, userId + "_avatar_img"));
-    userRepository.save(userModel);
+    userModel.setAvatarImgUrl(cloudinaryService.uploadUserAvatarImage(file, userId));
+    //userRepository.save(userModel);
     return userModel;
   }
 
   @Transactional
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
-    userModel.setHeaderImgUrl(cloudinaryService.uploadFile(file, userId + "_header_img"));
-    userRepository.save(userModel);
+    userModel.setHeaderImgUrl(cloudinaryService.uploadUserHeaderImage(file, userId));
+    //userRepository.save(userModel);
     return userModel;
   }
 

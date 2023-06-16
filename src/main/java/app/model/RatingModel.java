@@ -1,8 +1,6 @@
 package app.model;
 
-import app.model.BaseEntityModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

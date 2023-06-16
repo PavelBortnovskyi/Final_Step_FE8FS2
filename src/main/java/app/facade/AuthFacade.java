@@ -7,7 +7,6 @@ import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
-import app.security.OAuth2UserDetailsImpl;
 import app.service.EmailService;
 import app.service.JwtTokenService;
 import app.service.UserService;
@@ -23,9 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
