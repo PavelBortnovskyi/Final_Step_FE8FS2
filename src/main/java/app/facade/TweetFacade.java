@@ -1,6 +1,5 @@
 package app.facade;
 
-import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 

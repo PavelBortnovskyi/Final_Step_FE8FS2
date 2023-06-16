@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.dto.rq.TweetRequestDTO;
+
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.ArrayList;
 
 @Log4j2
 @Validated
