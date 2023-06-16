@@ -133,7 +133,7 @@ public class TweetController {
 
   // Get user all tweets
   @GetMapping({"/user/{id}", "/user"})
-  @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET/REPLAY of user with {id}, without {id} - current user")
+  @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
   public Page<TweetResponseDTO> getAllTweets(HttpServletRequest httpRequest,
                                              @PathVariable(name = "id", required = false) Long userId,
                                              @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
