@@ -1,5 +1,7 @@
 package app.service;
 
+import app.dto.rs.TweetResponseDTO;
+import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.exceptions.tweetError.TweetPermissionException;
@@ -90,4 +92,9 @@ public class TweetService extends GeneralService<Tweet> {
   public Page<Tweet> getAllTweets(Pageable pageable) {
     return tweetRepository.findByTweetTypeNotOrderByCreatedAtDesc(TweetType.REPLY, pageable);
   }
+
+
+//  public Page<Tweet> getTweetsLikedByUser(Long userId, TweetActionType tweetActionType, Pageable pageable) {
+//    return tweetRepository. (userService.getUser(userId), tweetActionType, pageable);
+//  }
 }

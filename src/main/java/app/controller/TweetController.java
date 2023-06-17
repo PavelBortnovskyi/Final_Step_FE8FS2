@@ -1,9 +1,13 @@
 package app.controller;
 
 
+import app.dto.rs.TweetActionResponseDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
+//import app.facade.TweetActionFacade;
+//import app.facade.TweetActionFacade;
+import app.facade.TweetActionFacade;
 import app.facade.TweetFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +33,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class TweetController {
 
   private final TweetFacade tweetFacade;
+  private final TweetActionFacade tweetActionFacade;
 
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -166,5 +171,16 @@ public class TweetController {
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getAllTweets(PageRequest.of(page, size));
   }
-  
+
+
+  @GetMapping({"like/user/{id}", "like/user"})
+  @ApiOperation("Get tweets LIKEd by the user")
+  public Page<TweetActionResponseDTO> getTweetsLikedByUser(HttpServletRequest httpRequest,
+                                                           @PathVariable(name = "id", required = false) Long userId,
+                                                           @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetActionFacade.getLikesByUser(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      TweetActionType.LIKE, PageRequest.of(page, size));
+  }
+
 }
