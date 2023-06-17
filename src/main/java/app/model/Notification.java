@@ -1,6 +1,7 @@
 package app.model;
 
 import app.enums.NotificationType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "notifications")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @SequenceGenerator(name = "custom_gen", sequenceName = "notifications_id_seq", allocationSize = 1)
 public class Notification extends BaseEntityModel {

@@ -12,6 +12,7 @@ function AddImage({ handleFileSelect, hover }) {
     >
       <input
         hidden
+        disabled={false}
         type="file"
         onChange={(e) => {
           handleFileSelect(e.target.files[0]);

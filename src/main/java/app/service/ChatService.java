@@ -133,7 +133,7 @@ public class ChatService extends GeneralService<Chat> {
    */
   public Page<MessageResponseDTO> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     this.chatRepository.findById(chatId)
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()))
+      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()) || chat.getInitiatorUser().getId().equals(userId))
       .orElseThrow(() -> new BadRequestException(String.format("User with id: %d cannot search in chat with id: %d", userId, chatId)));
     return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
