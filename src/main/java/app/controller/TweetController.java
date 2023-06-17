@@ -124,10 +124,10 @@ public class TweetController {
 
   @GetMapping({"/user/{id}", "/user"})
   @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
-  public Page<TweetResponseDTO> getAllTweets(HttpServletRequest httpRequest,
-                                             @PathVariable(name = "id", required = false) Long userId,
-                                             @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+  public Page<TweetResponseDTO> getAllTweetsOfUser(HttpServletRequest httpRequest,
+                                                   @PathVariable(name = "id", required = false) Long userId,
+                                                   @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getAllTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
       PageRequest.of(page, size));
   }
@@ -157,6 +157,14 @@ public class TweetController {
                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsOfTweet(tweetId, TweetType.QUOTE_TWEET, PageRequest.of(page, size));
+  }
+
+
+  @GetMapping
+  @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET")
+  public Page<TweetResponseDTO> getAllTweets(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getAllTweets(PageRequest.of(page, size));
   }
 
 

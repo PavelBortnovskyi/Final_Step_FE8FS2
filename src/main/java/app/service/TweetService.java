@@ -76,7 +76,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Page<Tweet> getAllTweetByUserId(Long userId, Pageable pageable) {
+  public Page<Tweet> getAllTweetsByUserId(Long userId, Pageable pageable) {
     return tweetRepository.findByUserAndTweetTypeNotOrderByCreatedAtDesc(
       userService.getUser(userId), TweetType.REPLY, pageable);
   }
@@ -86,5 +86,8 @@ public class TweetService extends GeneralService<Tweet> {
     return tweetRepository.findByParentTweetAndTweetTypeOrderByCreatedAtDesc(getTweet(tweetId), tweetType, pageable);
   }
 
-  ;
+
+  public Page<Tweet> getAllTweets(Pageable pageable) {
+    return tweetRepository.findByTweetTypeNotOrderByCreatedAtDesc(TweetType.REPLY, pageable);
+  }
 }

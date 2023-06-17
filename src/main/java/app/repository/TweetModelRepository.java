@@ -51,4 +51,7 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
   Page<Tweet> findByParentTweetAndTweetTypeOrderByCreatedAtDesc(Tweet tweet, TweetType tweetType, Pageable pageable);
 
+
+  Page<Tweet> findByTweetTypeNotOrderByCreatedAtDesc(TweetType excludeTweetType, Pageable pageable);
+
 }

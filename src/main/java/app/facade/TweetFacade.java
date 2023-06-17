@@ -83,12 +83,17 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, Pageable pageable) {
-    return tweetService.getAllTweetByUserId(userId, pageable).map(this::convertToDto);
+    return tweetService.getAllTweetsByUserId(userId, pageable).map(this::convertToDto);
   }
 
 
   public Page<TweetResponseDTO> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable) {
     return tweetService.getTweetsOfTweet(tweetId, tweetType, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getAllTweets(Pageable pageable) {
+    return tweetService.getAllTweets(pageable).map(this::convertToDto);
   }
 
 
