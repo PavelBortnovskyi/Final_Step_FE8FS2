@@ -12,6 +12,7 @@ import { getTweetById } from 'src/redux/thunk/getTweetById';
 
 import Retweet from './Retweet';
 import { useMode } from 'src/styles/_materialTheme';
+import { getTweetReply } from 'src/redux/thunk/getTweetReply';
 
 function TweetPage() {
   const { id } = useParams();
@@ -25,6 +26,11 @@ function TweetPage() {
   }, [id]);
   const tweet = useSelector(getTweetByID);
   const post = tweet.tweet;
+
+  useEffect(() => {
+    dispatch(getTweetReply({ id: id, page: 1, pageSize: 10 }));
+  }, [id]);
+
   /////////////////
   //Like tweet
   // useEffect(() => {
@@ -64,15 +70,16 @@ function TweetPage() {
 
       {post && (
         <TweetPost
-          id={post.tweetId}
-          displayName={user.fullName}
+          showIconList={false}
+          id={post.id}
+          displayName={post.user.fullName}
           text={post.body}
-          username={post.userTag}
-          logoUrl={post.userAvatarImage}
-          verified={user.isVerified}
-          image={post.attachmentsImages[0]}
+          username={post.user.userTag}
+          logoUrl={post.user.avatarImgUrl}
+          verified={post.user.isVerified}
+          images={post.attachmentImages}
           likes={post.countLikes}
-          reply={post.countReply}
+          reply={post.countReplays}
           retweet={post.countRetweets}
         />
       )}

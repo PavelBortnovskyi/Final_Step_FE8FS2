@@ -1,32 +1,33 @@
 import { Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { likePost } from 'src/redux/thunk/likeTweet';
+import { unLikePost } from 'src/redux/thunk/unlike';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getLikedTweet } from 'src/redux/selectors/selectors';
 
-function PostIconElementLike({ icon, quantity, color, id }) {
+function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
   const dispatch = useDispatch();
-  const [like, setLike] = useState(false);
+  const [isLikedTweet, setIsLikedTweet] = useState(isLiked || false);
 
-  // get like quantity
-
-  //add like to post
-  useEffect(() => {
-    if (like && id !== undefined) {
+  const handleLike = () => {
+    if (isLiked) {
+      dispatch(unLikePost({ id }));
+      console.log('unLiked');
+      setIsLikedTweet(false);
+    } else {
       dispatch(likePost({ id }));
-      console.log('added like');
+      console.log('Liked');
+      setIsLikedTweet(true);
     }
-  }, [like, id]);
+  };
 
+  // const likedTweet = useSelector(getLikedTweet());
   return (
     <Box
-      onClick={(e) => {
-        e.preventDefault();
-        setLike(!like);
-        console.log('working like');
-      }}
+      onClick={handleLike}
       display="flex"
       sx={{
         gap: '10px',
@@ -39,7 +40,7 @@ function PostIconElementLike({ icon, quantity, color, id }) {
         },
       }}
     >
-      {like ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon}
+      {isLiked ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon}
       {quantity}
     </Box>
   );

@@ -34,19 +34,29 @@ export const Modal = (props) => {
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle 
-        sx={{
-          backgroundColor: `${theme.palette.background.default}`, 
-          color: `${theme.palette.text.primary}`, 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          }}>
+        <DialogTitle
+          sx={{
+            backgroundColor: `${theme.palette.background.default}`,
+            color: `${theme.palette.text.primary}`,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           {title}
 
-          <CloseIcon onClick={handleClose} sx={{ color: `${theme.palette.text.primary}`, cursor: 'pointer'}}/>
+          <CloseIcon
+            onClick={handleClose}
+            sx={{ color: `${theme.palette.text.primary}`, cursor: 'pointer' }}
+          />
         </DialogTitle>
-        <DialogContent dividers sx={{ backgroundColor: `${theme.palette.background.default}`, color: `${theme.palette.black.main}` }}>
+        <DialogContent
+          dividers
+          sx={{
+            backgroundColor: `${theme.palette.background.default}`,
+            color: `${theme.palette.black.main}`,
+          }}
+        >
           {children}
         </DialogContent>
         {actionsBtn && <DialogActions dividers>{actionsBtn}</DialogActions>}
