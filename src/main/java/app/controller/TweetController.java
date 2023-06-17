@@ -66,7 +66,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("{id}/replay")
+  @PostMapping("{id}/reply")
   @ApiOperation("Create REPLAY from tweet with {id}")
   public ResponseEntity<TweetResponseDTO> createReplyTweet(HttpServletRequest httpRequest,
                                                            @PathVariable(name = "id") @Positive Long tweetId,
@@ -138,7 +138,7 @@ public class TweetController {
   }
 
 
-  @GetMapping("{id}/replay")
+  @GetMapping("{id}/reply")
   @ApiOperation("Get all REPLY of tweet with {id}")
   public Page<TweetResponseDTO> getReplyOfTweet(@PathVariable(name = "id") Long tweetId,
                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
