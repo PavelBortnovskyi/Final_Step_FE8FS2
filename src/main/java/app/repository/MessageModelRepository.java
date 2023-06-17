@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @Repository
 public interface MessageModelRepository extends RepositoryInterface<Message> {
 
-  @Query(value = "SELECT m FROM Message m WHERE chat.id = :id ORDER BY m.sent DESC")
+  @Query(value = "SELECT m FROM Message m WHERE chat.id = :id ORDER BY m.sent ASC")
   Page<Message> getMessagesFromChat(@Param("id") Long chatId, Pageable pageable);
 
   @Transactional
