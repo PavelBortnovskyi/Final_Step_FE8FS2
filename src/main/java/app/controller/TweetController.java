@@ -76,21 +76,21 @@ public class TweetController {
 
 
   @GetMapping("{id}")
-  @ApiOperation("Get TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Get TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
   }
 
 
   @DeleteMapping("{id}")
-  @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}.  Только свои можно удалять.")
+  @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}.  Только свои можно удалять.")
   public void deleteTweet(HttpServletRequest httpRequest, @PathVariable(name = "id") @Positive Long tweetId) {
     tweetFacade.deleteTweet((Long) httpRequest.getAttribute("userId"), tweetId);
   }
 
 
   @PostMapping("{id}/like")
-  @ApiOperation("Like TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Like TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> likeTweet(HttpServletRequest httpRequest,
                                                     @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -99,7 +99,7 @@ public class TweetController {
 
 
   @PostMapping("{id}/unlike")
-  @ApiOperation("Unlike лайк TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Unlike лайк TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> unLikeTweet(HttpServletRequest httpRequest,
                                                       @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -108,7 +108,7 @@ public class TweetController {
 
 
   @PostMapping("{id}/bookmark")
-  @ApiOperation("Add to bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Add to bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> bookmarkTweet(HttpServletRequest httpRequest,
                                                         @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -117,7 +117,7 @@ public class TweetController {
 
 
   @PostMapping("{id}/unbookmark")
-  @ApiOperation("Remove from bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Remove from bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> unBookmarkTweet(HttpServletRequest httpRequest,
                                                           @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -198,6 +198,7 @@ public class TweetController {
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
+
 
 
 }
