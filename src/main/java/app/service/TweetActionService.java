@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class TweetActionService {
 
   private final TweetActionRepository tweetActionRepository;
+  private final TweetService tweetService;
+  private final UserService userService;
 
 
   public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType) {
@@ -30,17 +32,19 @@ public class TweetActionService {
 //  }
 
   @Transactional
-  public TweetAction createTweetAction(UserModel user, Tweet tweet, TweetActionType tweetActionType) {
-    return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, tweetActionType)
-      .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, user, tweet)));
+  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    return (tweetActionRepository.getByUserAndTweetAndActionType(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType)
+      .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, userService.getUser(userId), tweetService.getTweet(tweetId)))))
+      .getTweet();
   }
 
+
   @Transactional
-  public TweetAction removeTweetAction(UserModel user, Tweet tweet, TweetActionType tweetActionType) {
-    TweetAction tweetAction = getTweetAction(user, tweet, tweetActionType);
-    if (!tweetAction.getUser().getId().equals(user.getId())) throw new TweetPermissionException(tweet.getId());
+  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    TweetAction tweetAction = getTweetAction(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType);
+    if (!tweetAction.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
     tweetActionRepository.delete(tweetAction);
-    return tweetAction;
+    return tweetAction.getTweet();
   }
 
   public Integer getCountLikes(Tweet tweet) {

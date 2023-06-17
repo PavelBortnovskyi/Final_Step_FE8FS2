@@ -25,7 +25,6 @@ public class TweetService extends GeneralService<Tweet> {
   private final UserService userService;
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
-  private final TweetActionService tweetActionService;
 
 
   @Transactional
@@ -60,20 +59,6 @@ public class TweetService extends GeneralService<Tweet> {
     if (!tweet.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
     delete(tweet);
     cloudinaryService.deleteTweetImages(userId, tweetId);
-  }
-
-
-  @Transactional
-  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return tweetActionService.createTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
-      .getTweet();
-  }
-
-
-  @Transactional
-  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return tweetActionService.removeTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
-      .getTweet();
   }
 
 

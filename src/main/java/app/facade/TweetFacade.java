@@ -70,13 +70,13 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(tweetService
+    return convertToDto(tweetActionService
       .createTweetAction(userId, tweetId, tweetActionType));
   }
 
 
   public TweetResponseDTO removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(tweetService
+    return convertToDto(tweetActionService
       .removeTweetAction(userId, tweetId, tweetActionType));
   }
 
