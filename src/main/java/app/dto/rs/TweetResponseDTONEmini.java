@@ -25,7 +25,7 @@ public class TweetResponseDTONEmini {
   private TweetType tweetType;
 
   @JsonView(Marker.Preview.class)
-  private UserResponseMiniDTO user;
+  private UserResponseDTO user;
 
   @JsonView(Marker.Preview.class)
   private String body;

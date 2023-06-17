@@ -16,6 +16,9 @@ public class NotificationResponseDTO {
   @JsonFormat(shape = JsonFormat.Shape.STRING)
   private NotificationType notificationType;
 
+//  @JsonView(Marker.Preview.class)
+//  private UserResponseDTO receiver;
+
   @JsonView(Marker.Preview.class)
   private UserResponseDTO initiator;
 
