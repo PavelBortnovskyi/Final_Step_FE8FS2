@@ -100,7 +100,7 @@ public class ChatController {
    * (only user that participates the chat can get messages)
    */
   @Validated({Marker.ChatDetails.class})
-  @GetMapping(path = "/{id}/messages/", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/{id}/messages", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponseDTO> handleGetChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
                                                 @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                 @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
