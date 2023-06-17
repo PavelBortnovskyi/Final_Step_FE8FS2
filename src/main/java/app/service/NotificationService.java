@@ -8,6 +8,7 @@ import app.model.Tweet;
 import app.repository.NotificationModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,6 +31,9 @@ public class NotificationService extends GeneralService<Notification> {
   private final SimpMessagingTemplate messagingTemplate;
 
   private final WebSocketStompClient stompClient;
+
+  @Value("${socket.host}")
+  private String socketUri;
 
   /**
    * Method returns user notification in page format
@@ -108,7 +112,7 @@ public class NotificationService extends GeneralService<Notification> {
         session.send("/api/v1/notifications/private", notificationRequestDTO);
       }
     };
-    stompClient.connect("ws://localhost:8080/notifications-ws", sessionHandler);
+    stompClient.connect(socketUri, sessionHandler);
     return tweet;
   }
 }

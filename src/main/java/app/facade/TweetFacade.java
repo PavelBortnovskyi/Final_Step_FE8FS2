@@ -58,8 +58,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweet(Long userId, String tweetBody, MultipartFile[] attachmentImages, TweetType tweetType, Long parentTweetId) {
-    return convertToDto(tweetService
-      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId));
+    return convertToDto(notificationService.sendNotification(tweetService
+      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId), userId, null));
   }
 
 
@@ -98,5 +98,4 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   public Page<TweetResponseDTO> getAllTweets(Pageable pageable) {
     return tweetService.getAllTweets(pageable).map(this::convertToDto);
   }
-
 }
