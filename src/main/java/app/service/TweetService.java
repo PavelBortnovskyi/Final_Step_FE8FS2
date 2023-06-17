@@ -59,7 +59,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Integer getCountReplays(Tweet tweet) {
+  public Integer getCountReplies(Tweet tweet) {
     return tweetRepository.countByParentTweetAndTweetType(tweet, TweetType.REPLY);
   }
 

@@ -44,7 +44,7 @@ public class TweetResponseDTO {
 
   private boolean currUserBookmarked;
 
-  private Integer countReplays = 0;
+  private Integer countReplies = 0;
 
   private Integer countQuoteTweets = 0;
 
