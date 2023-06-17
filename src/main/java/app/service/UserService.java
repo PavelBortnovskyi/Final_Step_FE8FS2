@@ -8,7 +8,7 @@ import app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,21 +86,21 @@ public class UserService extends GeneralService<UserModel> {
     return userModel;
   }
 
-  public Page<UserModel> getFollowers(Long userId, int page, int size) {
-    return userRepository.findByFollowingsContains(getUser(userId), PageRequest.of(page, size));
+  public Page<UserModel> getFollowers(Long userId, Pageable pageable) {
+    return userRepository.findByFollowingsContains(getUser(userId), pageable);
   }
 
-  public Page<UserModel> getFollowings(Long userId, int page, int size) {
-    return userRepository.findByFollowersContains(getUser(userId), PageRequest.of(page, size));
+  public Page<UserModel> getFollowings(Long userId, Pageable pageable) {
+    return userRepository.findByFollowersContains(getUser(userId), pageable);
   }
 
-  public Page<UserModel> getOfferFollowings(Long userId, int page, int size) {
-    return userRepository.findByIdNotAndFollowersNotContaining(userId, getUser(userId), PageRequest.of(page, size));
+  public Page<UserModel> getOfferFollowings(Long userId, Pageable pageable) {
+    return userRepository.findByIdNotAndFollowersNotContaining(userId, getUser(userId), pageable);
   }
 
-  public Page<UserModel> searchUsers(Long userId, String searchString, int page, int size) {
+  public Page<UserModel> searchUsers(Long userId, String searchString, Pageable pageable) {
     return userRepository.findByIdNotAndFullNameContainsIgnoreCaseOrUserTagContainsIgnoreCase(
-      userId, searchString, searchString, PageRequest.of(page, size));
+      userId, searchString, searchString, pageable);
   }
 
   public boolean checkRefreshTokenStatus(String refreshToken) {

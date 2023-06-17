@@ -1,6 +1,5 @@
 package app.facade;
 
-import app.dto.rq.TweetRequestDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
@@ -14,7 +13,9 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.util.Set;
@@ -54,9 +55,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public TweetResponseDTO createTweet(Long userId, TweetRequestDTO requestDTO, TweetType tweetType, Long parentTweetId) {
+  public TweetResponseDTO createTweet(Long userId, String tweetBody, MultipartFile[] attachmentImages, TweetType tweetType, Long parentTweetId) {
     return convertToDto(tweetService
-      .createTweet(userId, requestDTO.getTweetBody(), requestDTO.getAttachmentImages(), tweetType, parentTweetId));
+      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId));
   }
 
 
@@ -71,19 +72,29 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(tweetService
-      .createTweetAction(userId, tweetId, tweetActionType));
+    return convertToDto(tweetActionService
+      .createTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
 
 
   public TweetResponseDTO removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(tweetService
-      .removeTweetAction(userId, tweetId, tweetActionType));
+    return convertToDto(tweetActionService
+      .removeTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
 
 
-  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, int page, int size) {
-    return tweetService.getAllTweetByUserId(userId, page, size).map(this::convertToDto);
+  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, Pageable pageable) {
+    return tweetService.getAllTweetsByUserId(userId, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable) {
+    return tweetService.getTweetsOfTweet(tweetId, tweetType, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getAllTweets(Pageable pageable) {
+    return tweetService.getAllTweets(pageable).map(this::convertToDto);
   }
 
 

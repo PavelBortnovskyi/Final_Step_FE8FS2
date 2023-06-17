@@ -1,6 +1,5 @@
 package app.service;
 
-import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.exceptions.tweetError.TweetPermissionException;
@@ -10,12 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
 
 @Primary
 @Log4j2
@@ -27,15 +24,15 @@ public class TweetService extends GeneralService<Tweet> {
   private final UserService userService;
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
-  private final TweetActionService tweetActionService;
 
   private final NotificationService notificationService;
 
 
   @Transactional
-  public Tweet createTweet(Long userId, String tweetBody, ArrayList<MultipartFile> files, TweetType tweetType, Long parentTweetId) {
-    Tweet tweet = new Tweet();
+  public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
+    if (files == null) files = new MultipartFile[0];
 
+    Tweet tweet = new Tweet();
     if (parentTweetId != null) tweet.setParentTweet(getTweet(parentTweetId));
     tweet
       .setUser(userService.getUser(userId))
@@ -66,20 +63,6 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  @Transactional
-  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return notificationService.sendNotification(tweetActionService.createTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
-      .getTweet(), userId, tweetActionType);
-  }
-
-
-  @Transactional
-  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return tweetActionService.removeTweetAction(userService.getUser(userId), getTweet(tweetId), tweetActionType)
-      .getTweet();
-  }
-
-
   public Integer getCountReplays(Tweet tweet) {
     return tweetRepository.countByParentTweetAndTweetType(tweet, TweetType.REPLY);
   }
@@ -95,8 +78,18 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Page<Tweet> getAllTweetByUserId(Long userId, int page, int size) {
+  public Page<Tweet> getAllTweetsByUserId(Long userId, Pageable pageable) {
     return tweetRepository.findByUserAndTweetTypeNotOrderByCreatedAtDesc(
-      userService.getUser(userId), TweetType.REPLY, PageRequest.of(page, size));
+      userService.getUser(userId), TweetType.REPLY, pageable);
+  }
+
+
+  public Page<Tweet> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable) {
+    return tweetRepository.findByParentTweetAndTweetTypeOrderByCreatedAtDesc(getTweet(tweetId), tweetType, pageable);
+  }
+
+
+  public Page<Tweet> getAllTweets(Pageable pageable) {
+    return tweetRepository.findByTweetTypeNotOrderByCreatedAtDesc(TweetType.REPLY, pageable);
   }
 }
