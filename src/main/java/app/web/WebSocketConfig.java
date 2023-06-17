@@ -57,8 +57,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
       "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**"); //TODO: need to change on deploy
 
-    registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**", "http://localhost:8080", "http://localhost:8080/**"); //TODO: need to change on deploy
+    registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("final-step-fe2fs8tw.herokuapp.com",
+      "final-step-fe2fs8tw.herokuapp.com/**", "http://localhost:8080", "http://localhost:8080/**"); //TODO: need to change on deploy
   }
 
   @Override
