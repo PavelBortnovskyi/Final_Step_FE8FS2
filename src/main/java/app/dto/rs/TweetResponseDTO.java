@@ -36,7 +36,13 @@ public class TweetResponseDTO {
   @JsonView(Marker.Preview.class)
   private Set<AttachmentImageResponseDTO> attachmentImages = new HashSet<>();
 
-  private boolean currUserLikedThis;
+  private boolean currUserLiked;
+
+  private boolean currUserRetweeted;
+
+  private boolean currUserCommented;
+
+  private boolean currUserBookmarked;
 
   private Integer countReplays = 0;
 

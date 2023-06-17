@@ -60,7 +60,7 @@ public class TweetController {
   public ResponseEntity<TweetResponseDTO> createRetweetTweet(HttpServletRequest httpRequest,
                                                              @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
-      null, new MultipartFile[0], TweetType.RETWEET, tweetId));
+      "", new MultipartFile[0], TweetType.RETWEET, tweetId));
   }
 
 
@@ -182,7 +182,7 @@ public class TweetController {
   }
 
 
-  @GetMapping("bookmark/user")
+  @GetMapping("bookmark")
   @ApiOperation("Get tweets BOOKMARK by the current user")
   public Page<TweetActionResponseDTO> getTweetsLikedByUser(HttpServletRequest httpRequest,
                                                            @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
@@ -190,5 +190,8 @@ public class TweetController {
     return tweetActionFacade.getLikesByUser((Long) httpRequest.getAttribute("userId"),
       TweetActionType.BOOKMARK, PageRequest.of(page, size));
   }
+
+
+
 
 }
