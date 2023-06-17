@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,7 +87,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public Page<TweetResponseDTO> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable){
+  public Page<TweetResponseDTO> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable) {
     return tweetService.getTweetsOfTweet(tweetId, tweetType, pageable).map(this::convertToDto);
   }
 

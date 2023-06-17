@@ -79,7 +79,7 @@ public class UserController {
   public Page<UserResponseDTO> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                             HttpServletRequest httpServletRequest) {
-    return userFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page,size));
+    return userFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
   @GetMapping("profile/followings")
@@ -87,7 +87,7 @@ public class UserController {
   public Page<UserResponseDTO> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                              HttpServletRequest httpServletRequest) {
-    return userFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page,size));
+    return userFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
   @GetMapping("{userId}/followers")
@@ -95,7 +95,7 @@ public class UserController {
   public Page<UserResponseDTO> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
                                             @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return userFacade.getFollowers(userId, PageRequest.of(page,size));
+    return userFacade.getFollowers(userId, PageRequest.of(page, size));
   }
 
   @GetMapping("{userId}/followings")
@@ -103,7 +103,7 @@ public class UserController {
   public Page<UserResponseDTO> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
                                                      @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                      @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return userFacade.getFollowings(userId, PageRequest.of(page,size));
+    return userFacade.getFollowings(userId, PageRequest.of(page, size));
   }
 
   @GetMapping("offer_followings")
@@ -111,7 +111,7 @@ public class UserController {
   public Page<UserResponseDTO> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                   HttpServletRequest httpServletRequest) {
-    return userFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page,size));
+    return userFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
   @GetMapping("search")
@@ -120,6 +120,6 @@ public class UserController {
                                         @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                         @RequestParam(name = "search_string", defaultValue = "") String serchString,
                                         HttpServletRequest httpServletRequest) {
-    return userFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, PageRequest.of(page,size));
+    return userFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, PageRequest.of(page, size));
   }
 }

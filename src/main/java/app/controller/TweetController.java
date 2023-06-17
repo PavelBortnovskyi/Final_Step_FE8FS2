@@ -6,12 +6,10 @@ import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.facade.TweetFacade;
 import io.swagger.annotations.ApiOperation;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -131,34 +129,34 @@ public class TweetController {
                                              @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getAllTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
-      PageRequest.of(page,size));
+      PageRequest.of(page, size));
   }
 
 
   @GetMapping("/{id}/replay")
   @ApiOperation("Get all REPLAY of tweet with {id}")
   public Page<TweetResponseDTO> getReplayOfTweet(@PathVariable(name = "id") Long tweetId,
-                                                  @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                  @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.REPLY, PageRequest.of(page,size));
+                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.REPLY, PageRequest.of(page, size));
   }
 
 
   @GetMapping("/{id}/retweet")
   @ApiOperation("Get all RETWEET of tweet with {id}")
   public Page<TweetResponseDTO> getRetweetOfTweet(@PathVariable(name = "id") Long tweetId,
-                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.RETWEET, PageRequest.of(page,size));
+                                                  @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                  @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.RETWEET, PageRequest.of(page, size));
   }
 
 
   @GetMapping("/{id}/quote")
   @ApiOperation("Get all QUOTE of tweet with {id}")
   public Page<TweetResponseDTO> getQuoteOfTweet(@PathVariable(name = "id") Long tweetId,
-                                                  @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                  @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.QUOTE_TWEET, PageRequest.of(page,size));
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.QUOTE_TWEET, PageRequest.of(page, size));
   }
 
 
