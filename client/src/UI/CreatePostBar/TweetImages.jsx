@@ -1,55 +1,55 @@
 import { Box, CardMedia } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import React from 'react';
 
-const postPhoto = makeStyles((theme) => ({
-  singlePhoto: {
-    overflow: 'hidden',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    borderRadius: '20px',
-  },
-  doublePhoto: {
-    gap: '2px',
-    overflow: 'hidden',
-    borderRadius: '20px',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-  },
-  triplePhoto: {
-    gap: '2px',
-    overflow: 'hidden',
-    borderRadius: '20px',
-    maxHeight: '290px',
-    maxWidth: '515px',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(8, 1fr)',
-    gridTemplateRows: 'repeat(8, 1fr)',
-  },
-  quadruplePhoto: {
-    gap: '2px',
-    overflow: 'hidden',
-    borderRadius: '20px',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridTemplateRows: '1fr 1fr',
-  },
-}));
+const SinglePhoto = styled(Box)({
+  overflow: 'hidden',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  borderRadius: '20px',
+});
+
+const DoublePhoto = styled(Box)({
+  gap: '2px',
+  overflow: 'hidden',
+  borderRadius: '20px',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+});
+
+const TriplePhoto = styled(Box)({
+  gap: '2px',
+  overflow: 'hidden',
+  borderRadius: '20px',
+  maxHeight: '290px',
+  maxWidth: '515px',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(8, 1fr)',
+  gridTemplateRows: 'repeat(8, 1fr)',
+});
+
+const QuadruplePhoto = styled(Box)({
+  gap: '2px',
+  overflow: 'hidden',
+  borderRadius: '20px',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gridTemplateRows: '1fr 1fr',
+});
 
 function TweetImages({ images }) {
-  const classes = postPhoto();
   let quantity = images.length;
 
-  let quantityClass;
+  let QuantityComponent;
   if (quantity === 1) {
-    quantityClass = classes.singlePhoto;
+    QuantityComponent = SinglePhoto;
   } else if (quantity === 2) {
-    quantityClass = classes.doublePhoto;
+    QuantityComponent = DoublePhoto;
   } else if (quantity === 3) {
-    quantityClass = classes.triplePhoto;
+    QuantityComponent = TriplePhoto;
   } else if (quantity === 4) {
-    quantityClass = classes.quadruplePhoto;
+    QuantityComponent = QuadruplePhoto;
   }
 
   const photoStyles = (index, img) => {
@@ -91,7 +91,7 @@ function TweetImages({ images }) {
   };
 
   return (
-    <Box className={quantityClass} sx={{ mt: '10px' }}>
+    <QuantityComponent sx={{ mt: '10px' }}>
       {images
         ? images.map((img, index) => {
             return (
@@ -112,7 +112,7 @@ function TweetImages({ images }) {
             );
           })
         : null}
-    </Box>
+    </QuantityComponent>
   );
 }
 
