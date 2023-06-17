@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
@@ -11,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,8 +79,13 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Page<Tweet> getAllTweetByUserId(Long userId, int page, int size) {
+  public Page<Tweet> getAllTweetByUserId(Long userId, Pageable pageable) {
     return tweetRepository.findByUserAndTweetTypeNotOrderByCreatedAtDesc(
-      userService.getUser(userId), TweetType.REPLY, PageRequest.of(page, size));
+      userService.getUser(userId), TweetType.REPLY, pageable);
   }
+
+
+  public Page<Tweet> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable){
+    return tweetRepository.findByParentTweetAndTweetTypeOrderByCreatedAtDesc(getTweet(tweetId), tweetType, pageable);
+  };
 }

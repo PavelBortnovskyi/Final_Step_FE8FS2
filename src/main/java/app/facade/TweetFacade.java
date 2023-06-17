@@ -12,6 +12,8 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,18 +73,23 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     return convertToDto(tweetActionService
-      .createTweetAction(userId, tweetId, tweetActionType));
+      .createTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
 
 
   public TweetResponseDTO removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     return convertToDto(tweetActionService
-      .removeTweetAction(userId, tweetId, tweetActionType));
+      .removeTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
 
 
-  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, int page, int size) {
-    return tweetService.getAllTweetByUserId(userId, page, size).map(this::convertToDto);
+  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, Pageable pageable) {
+    return tweetService.getAllTweetByUserId(userId, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable){
+    return tweetService.getTweetsOfTweet(tweetId, tweetType, pageable).map(this::convertToDto);
   }
 
 

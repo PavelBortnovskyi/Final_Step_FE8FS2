@@ -32,19 +32,18 @@ public class TweetActionService {
 //  }
 
   @Transactional
-  public Tweet createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return (tweetActionRepository.getByUserAndTweetAndActionType(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType)
-      .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, userService.getUser(userId), tweetService.getTweet(tweetId)))))
-      .getTweet();
+  public TweetAction createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    return tweetActionRepository.getByUserAndTweetAndActionType(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType)
+      .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, userService.getUser(userId), tweetService.getTweet(tweetId))));
   }
 
 
   @Transactional
-  public Tweet removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+  public TweetAction removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     TweetAction tweetAction = getTweetAction(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType);
     if (!tweetAction.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
     tweetActionRepository.delete(tweetAction);
-    return tweetAction.getTweet();
+    return tweetAction;
   }
 
   public Integer getCountLikes(Tweet tweet) {

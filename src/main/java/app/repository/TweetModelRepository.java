@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -47,5 +48,8 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
 
   Page<Tweet> findByUserAndTweetTypeNotOrderByCreatedAtDesc(UserModel user, TweetType excludeTweetType, Pageable pageable);
+
+
+  Page<Tweet> findByParentTweetAndTweetTypeOrderByCreatedAtDesc(Tweet tweet, TweetType tweetType, Pageable pageable);
 
 }
