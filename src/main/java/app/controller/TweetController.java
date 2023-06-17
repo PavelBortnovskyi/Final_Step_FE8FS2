@@ -5,8 +5,6 @@ import app.dto.rs.TweetActionResponseDTO;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
-//import app.facade.TweetActionFacade;
-//import app.facade.TweetActionFacade;
 import app.facade.TweetActionFacade;
 import app.facade.TweetFacade;
 import io.swagger.annotations.ApiOperation;

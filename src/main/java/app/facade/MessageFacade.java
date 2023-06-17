@@ -22,7 +22,7 @@ public class MessageFacade extends GeneralFacade<Message, MessageRequestDTO, Mes
     else throw new BadRequestException(String.format("Current user with id: %d is not the author of message ", userId));
   }
 
-  public boolean changeMessage(Long userId, Message message){
+  public boolean changeMessage(Long userId, Message message) {
     return this.messageService.changeMessage(userId, message);
   }
 

@@ -1,7 +1,5 @@
 package app.service;
 
-import app.dto.rs.TweetResponseDTO;
-import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.exceptions.tweetError.TweetPermissionException;
@@ -41,7 +39,7 @@ public class TweetService extends GeneralService<Tweet> {
       .setBody(tweetBody)
       .setTweetType(tweetType);
 
-   save(tweet)
+    save(tweet)
       .getAttachmentImages()
       .addAll(attachmentImagesService
         .saveAttachmentImages(cloudinaryService

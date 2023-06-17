@@ -55,7 +55,7 @@ public class TweetActionService {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.BOOKMARK);
   }
 
-  public Page<TweetAction> getActionsByUser(UserModel user, TweetActionType tweetActionType, Pageable pageable){
+  public Page<TweetAction> getActionsByUser(UserModel user, TweetActionType tweetActionType, Pageable pageable) {
     return tweetActionRepository.findAllByUserAndActionTypeOrderByCreatedAtDesc(user, tweetActionType, pageable);
   }
 
