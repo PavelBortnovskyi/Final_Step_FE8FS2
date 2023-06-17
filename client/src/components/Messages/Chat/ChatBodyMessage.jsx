@@ -33,7 +33,7 @@ const Guest = styled(Box)`
 
 const BoxTime = styled(Box)`
   font-size: 10px;
-  color: #707070;
+  color: #9c9c9c;
   margin-top: 6px;
   border-top: 1px solid #f6f6f663;
   font-style: italic;

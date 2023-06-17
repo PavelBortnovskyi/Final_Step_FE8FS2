@@ -7,16 +7,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getChats } from 'src/redux/selectors/selectors';
 
 // ************ STYLE ************
-const Container = styled(Box)`
-  border-bottom: 1px solid #f6f6f6;
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  height: 40vh;
-  overflow-y: scroll;
-  padding: 0 6px 12px 0;
-  gap: 8px;
-`;
+const Container = styled(Box)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 0 auto',
+  height: '40vh',
+  overflowY: 'scroll',
+  padding: '0 6px 12px 0',
+  gap: '8px',
+}));
 // ************ STYLE ************
 
 // ************ ChatBody ************
@@ -25,29 +25,21 @@ export const ChatBody = () => {
   const [messages, setMessages] = useState([]);
 
   // get guest data from redux
-  const { currentChat } = useSelector(getChats);
-
-  console.log('chat', currentChat);
+  const { chatMessages } = useSelector(getChats);
 
   // get chat data
   useEffect(() => {
     const getChatData = async () => {
-      if (!currentChat) return;
-
+      if (!chatMessages) return;
       try {
-        // TODO: select only personal chat
-        const filteredData = currentChat.filter(
-          (item) => item.users.length === 1
-        );
-
-        setMessages(filteredData[0].messages);
+        setMessages(chatMessages.content);
       } catch (error) {
         console.log(error);
       }
     };
 
     getChatData();
-  }, [currentChat]);
+  }, [chatMessages]);
 
   // ************* SCROLL *************
   // setting browser-scroll to useRef() to automatically scroll when message is outside

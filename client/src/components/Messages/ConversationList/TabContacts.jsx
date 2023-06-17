@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { getChats, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import { ContactGuest } from './ContactGuest';
+import { setGuest } from 'src/redux/reducers/chatSlice';
 
 // ************ STYLE ************
 const BoxHeader = styled(Box)(({ theme }) => ({
@@ -38,64 +39,28 @@ export const TabContacts = () => {
     const getAllGuests = () => {
       try {
         if (allChats) {
-          // remove user from all chats initiator
-          const excludeUser = allChats.content.filter(
-            (guest) => guest.initiatorUser?.id !== user.id
+          const excludeGroup = allChats.content.filter(
+            (chat) => chat.users.length === 1
           );
-          // set guests info initiator chats | content[{..., initiatorUser: {id, ...}}]
-          // add preview message
-          if (excludeUser) {
-            const guests = excludeUser.map((guest) => {
-              const messageBody = guest.messages[0]?.body;
-              const messageSent = new Date(...guest.messages[0]?.sent);
-              return {
-                ...guest.initiatorUser,
-                messages: {
-                  body: messageBody,
-                  sent: messageSent,
-                },
-              };
-            });
-            setGuestConversation(guests);
-          }
 
-          /* Метод flatMap() позволяет сформировать массив,
-             применяя функцию к каждому элементу, затем уменьшает вложенность,
-             делая этот массив плоским, и возвращает его.
-          */
-          // get guests info member chats | content[{..., users: {id, ...}}]
-          // add preview message
-          const filteredUsers = allChats.content
-            .flatMap((item) => {
-              const messageBody = item.messages[0]?.body;
-              const messageSent = new Date(...item.messages[0]?.sent);
+          const setGuests = excludeGroup.map((guest) => {
+            const messageBody = guest.messages[0]?.body;
+            const messageSent = new Date(...guest.messages[0]?.sent);
+            const guestData =
+              guest.initiatorUser?.id !== user.id
+                ? guest.initiatorUser
+                : guest.users[0];
 
-              return item.users.map((guest) => ({
-                ...guest,
-                messages: {
-                  body: messageBody,
-                  sent: messageSent,
-                },
-              }));
-            })
-            .filter(
-              (guest) =>
-                guest.id !== user.id &&
-                !allChats.content.some(
-                  (item) => item.initiatorUser.id === guest.id
-                )
-            );
-
-          // remove duplicate id
-          const uniqueFilteredUsers = Array.from(
-            new Set(filteredUsers.map((guest) => guest.id))
-          ).map((id) => filteredUsers.find((guest) => guest.id === id));
-
-          // set additional guests
-          setGuestConversation((prevGuests) => [
-            ...prevGuests,
-            ...uniqueFilteredUsers,
-          ]);
+            return {
+              chatId: guest.chatId,
+              guestData,
+              messages: {
+                body: messageBody,
+                sent: messageSent,
+              },
+            };
+          });
+          setGuestConversation(setGuests);
         }
       } catch (error) {
         console.log(error);
@@ -121,15 +86,13 @@ export const TabContacts = () => {
       ) : !guestConversation.length ? (
         <Box sx={{ padding: '6px 0' }}>No contacts available.</Box>
       ) : (
-        guestConversation.map((guest) => (
-          <Box
-            key={guest.id}
-            // TODO: create chat with user
-            // onClick={() => handleCurrentChat(chat)}
-          >
-            <ContactGuest guest={guest} />
-          </Box>
-        ))
+        guestConversation.map((guest) => {
+          return (
+            <Box key={guest.guestData.id}>
+              <ContactGuest guest={guest} />
+            </Box>
+          );
+        })
       )}
     </Box>
   );

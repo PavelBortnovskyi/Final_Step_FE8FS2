@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import UserNames from 'src/UI/UserNames';
+import { setGuest } from 'src/redux/reducers/chatSlice';
 import { getGuest } from 'src/redux/thunk/getGuest';
 
 // ************ STYLE ************
@@ -21,21 +22,25 @@ const BoxContactGuest = styled(Box)(({ theme }) => ({
 
 export const ContactGuest = ({ guest }) => {
   const dispatch = useDispatch();
-  const { id, fullName, avatarImgUrl, userTag, messages } = guest;
+  const {
+    chatId,
+    guestData: { id, fullName, avatarImgUrl, userTag },
+    messages,
+  } = guest;
 
-  const handleClick = (id) => {
-    // get guest data
-    dispatch(getGuest(id));
+  const handleClick = () => {
+    // set guest from local data
+    dispatch(setGuest(guest));
   };
 
   // message character limit
   const truncatedText =
-    messages.body.length > 30
-      ? messages.body.slice(0, 30) + '...'
+    messages.body.length > 28
+      ? messages.body.slice(0, 28) + '...'
       : messages.body;
 
   return (
-    <BoxContactGuest onClick={() => handleClick(id)}>
+    <BoxContactGuest onClick={() => handleClick()}>
       <Avatar
         sx={{ width: 56, height: 56 }}
         alt={fullName}

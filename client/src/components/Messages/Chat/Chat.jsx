@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTheme } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
@@ -20,6 +21,7 @@ import { chatCloseConnection } from 'src/redux/reducers/chatSlice';
 import { ChatBody } from './ChatBody';
 import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { ChatSender } from './ChatSender';
+import { getChatMessages } from 'src/redux/thunk/getChatMessages';
 
 // id:2
 // fullName:"User2 Vasilevich"
@@ -85,7 +87,7 @@ export const Chat = () => {
   const dispatch = useDispatch();
 
   // get guest data from redux
-  const { isLoading, guest, currentChat } = useSelector(getChats);
+  const { isLoading, guest } = useSelector(getChats);
 
   // console.log('guest', guest);
   // console.log('currentChat', currentChat);
@@ -95,19 +97,17 @@ export const Chat = () => {
     dispatch(chatCloseConnection());
   };
 
-  // check data not empty
-  const isResult = guest ? true : false;
-
   // ************** CHAT FROM DB ***************
   // create chat
   useEffect(() => {
-    const createChat = async () => {
+    const createChat = () => {
       if (!guest) return;
 
       try {
-        // get chat id from redux (DB)
-        await dispatch(getCurrentChat(guest.id));
-        //
+        // get chat messages from DB
+        dispatch(
+          getChatMessages({ chatId: guest.chatId, page: 0, pageSize: 10 })
+        );
       } catch (error) {
         console.log(error);
       }
@@ -121,7 +121,7 @@ export const Chat = () => {
   return (
     <Container sx={{ display: 'flex' }}>
       <ChatContainer>
-        {!isResult ? (
+        {!guest ? (
           <ChatHeader>
             <Typography variant="h6">Chat</Typography>
 
@@ -147,18 +147,20 @@ export const Chat = () => {
                     alignSelf: 'flex-start',
                   }}
                 >
-                  <ArrowCircleLeftOutlinedIcon sx={{ fontSize: 20 }} />
+                  <ArrowBackIcon sx={{ fontSize: 20 }} />
                 </IconButton>
               </Tooltip>
               <Avatar
                 sx={{ width: 56, height: 56, marginBottom: '8px' }}
-                alt={guest.fullName}
-                src={guest.avatarImgUrl && 'img/avatar/empty-avatar.png'}
+                alt={guest.guestData.fullName}
+                src={
+                  guest.guestData.avatarImgUrl || 'img/avatar/empty-avatar.png'
+                }
               />
               <Typography sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-                {guest.fullName}
+                {guest.guestData.fullName}
               </Typography>
-              <Typography>{guest.userTag}</Typography>
+              <Typography>{guest.guestData.userTag}</Typography>
             </GuestInfo>
 
             {/* Chat */}

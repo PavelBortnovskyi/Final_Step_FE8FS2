@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { getChats, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
-import { ContactChat } from './ContactChat';
+import { ContactChat } from './_temp_ContactChat';
 
 // ************ STYLE ************
 const BoxHeader = styled(Box)(({ theme }) => ({
