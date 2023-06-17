@@ -3,13 +3,11 @@ package app.facade;
 import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
-import app.model.AttachmentImage;
 import app.model.Tweet;
 import app.service.NotificationService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @NoArgsConstructor
@@ -37,8 +33,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   public void init() {
     ModelMapper mm = super.getMm();
 
-    Converter<Set<AttachmentImage>, Set<String>> imagesToURLs = sa -> sa.getSource().stream()
-      .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
+//    Converter<Set<AttachmentImage>, Set<String>> imagesToURLs = sa -> sa.getSource().stream()
+//      .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
 //
 //    mm.typeMap(Tweet.class, TweetResponseDTO.class)
 //      .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages))
@@ -49,7 +45,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   @Override
   public TweetResponseDTO convertToDto(Tweet tweet) {
     return super.convertToDto(tweet)
-      .setCountReplays(tweetService.getCountReplays(tweet))
+      .setCountReplies(tweetService.getCountReplies(tweet))
       .setCountQuoteTweets(tweetService.getCountQuoteTweets(tweet))
       .setCountRetweets(tweetService.getCountRetweetTweets(tweet))
       .setCountLikes(tweetActionService.getCountLikes(tweet))
@@ -98,4 +94,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   public Page<TweetResponseDTO> getAllTweets(Pageable pageable) {
     return tweetService.getAllTweets(pageable).map(this::convertToDto);
   }
+
+  public Page<TweetResponseDTO> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
+    return tweetService.getTweetsFromSubscriptions(userId, pageable).map(this::convertToDto);
+  }
+
 }
