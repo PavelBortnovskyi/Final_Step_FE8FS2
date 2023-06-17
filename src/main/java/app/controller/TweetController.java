@@ -60,7 +60,7 @@ public class TweetController {
   public ResponseEntity<TweetResponseDTO> createRetweetTweet(HttpServletRequest httpRequest,
                                                              @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
-      null, new MultipartFile[0], TweetType.RETWEET, tweetId));
+      "", new MultipartFile[0], TweetType.RETWEET, tweetId));
   }
 
 
