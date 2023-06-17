@@ -6,6 +6,7 @@ import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.model.AttachmentImage;
 import app.model.Tweet;
+import app.service.NotificationService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;

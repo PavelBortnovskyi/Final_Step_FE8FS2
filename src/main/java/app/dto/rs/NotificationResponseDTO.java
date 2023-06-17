@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 @Data
-public class NotificationResponse {
+public class NotificationResponseDTO {
 
   @JsonView(Marker.Preview.class)
   private Long id;
@@ -17,13 +17,10 @@ public class NotificationResponse {
   private NotificationType notificationType;
 
   @JsonView(Marker.Preview.class)
-  private UserResponseDTO receiver;
-
-  @JsonView(Marker.Preview.class)
   private UserResponseDTO initiator;
 
   @JsonView(Marker.Preview.class)
-  private TweetResponse tweet;
+  private TweetResponseDTONE tweet;
 
   @JsonView(Marker.Preview.class)
   private boolean isRead;

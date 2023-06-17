@@ -1,14 +1,13 @@
 package app.service;
 
-import app.dto.rq.NotificationRequest;
+import app.dto.rq.NotificationRequestDTO;
 import app.enums.NotificationType;
+import app.enums.TweetActionType;
 import app.model.Notification;
 import app.model.Tweet;
 import app.repository.NotificationModelRepository;
-import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -84,23 +83,30 @@ public class NotificationService extends GeneralService<Notification> {
     return this.notificationRepository.findById(id);
   }
 
-  public void sendNotification(Tweet tweet, Long senderUserId) {
+  public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
     StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
       @Override
       public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-        NotificationRequest notificationRequest = new NotificationRequest();
-        notificationRequest.setTweetId(tweet.getId());
-        notificationRequest.setInitiatorUserId(senderUserId);
-        notificationRequest.setReceiverUserId(tweet.getParentTweetId().getUser().getId());
-        switch (tweet.getTweetType()) {
-          case QUOTE_TWEET -> notificationRequest.setNotificationType(NotificationType.QUOTE_TWEET);
-          case REPLY -> notificationRequest.setNotificationType(NotificationType.REPLY);
-          //TODO: add other types after merge v2 main
+        NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
+          .setInitiatorUserId(senderUserId)
+          .setTweetId(tweet.getId());
+
+        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE))
+          notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
+            .setNotificationType(NotificationType.LIKE);
+
+        else notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());;
+
+          switch (tweet.getTweetType()) {
+          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
         };
-        log.info(notificationRequest.toString());
-        session.send("/api/v1/notifications/private", notificationRequest);
+        log.info(notificationRequestDTO.toString());
+        session.send("/api/v1/notifications/private", notificationRequestDTO);
       }
     };
     stompClient.connect("ws://localhost:8080/notifications-ws", sessionHandler);
+    return tweet;
   }
 }
