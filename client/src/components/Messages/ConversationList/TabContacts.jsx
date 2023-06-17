@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography, styled } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
-import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import { Box, styled } from '@mui/material';
+import { useSelector } from 'react-redux';
 
-import { Conversation } from './Conversation';
 import { getChats, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import { ContactGuest } from './ContactGuest';
@@ -27,8 +23,8 @@ const BoxLoading = styled(Box)`
 `;
 // ************ STYLE ************
 
-// ************ Contacts ************
-export const Contacts = () => {
+// ************ TabContacts ************
+export const TabContacts = () => {
   // get all chats from redux
   const { isLoading, allChats } = useSelector(getChats);
 
@@ -37,8 +33,6 @@ export const Contacts = () => {
 
   // set chats where user be
   const [guestConversation, setGuestConversation] = useState([]);
-
-  console.log('all', allChats);
 
   useEffect(() => {
     const getAllGuests = () => {
@@ -110,8 +104,6 @@ export const Contacts = () => {
 
     getAllGuests();
   }, [allChats, user?.id]);
-
-  console.log(guestConversation);
 
   return (
     <Box>

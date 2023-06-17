@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 import { getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
 import { getGuest } from 'src/redux/thunk/getGuest';
-import { useDispatch } from 'react-redux';
 
 // ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
@@ -64,7 +64,7 @@ export const TabPeople = () => {
                   fullName={fullName}
                   verified={verified}
                   userTag={userTag}
-                  text={'Lorem ipsum dolor color red sit amet ...'}
+                  text={'Lorem ipsum dolor sit amet ...'}
                 />
               </BoxSearchPerson>
             )

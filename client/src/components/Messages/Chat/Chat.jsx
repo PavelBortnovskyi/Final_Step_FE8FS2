@@ -6,15 +6,13 @@ import {
   IconButton,
   styled,
   Container,
+  alpha,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import { useTheme } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-
-import { socketUrl } from 'src/utils/socketSetup';
-import { io } from 'socket.io-client';
 
 import { Loading } from 'src/UI/Loading';
 import { getChats } from 'src/redux/selectors/selectors';
@@ -65,6 +63,20 @@ const GuestInfo = styled(Box)(({ theme }) => ({
   paddingBottom: '12px',
   borderBottom: `1px solid ${theme.palette.border.main}`,
 }));
+
+const WelcomeMessage = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
+  flexDirection: 'column',
+  margin: '10px 0 12px',
+  paddingTop: '12px',
+  borderTop: `1px solid ${theme.palette.border.main}`,
+  color: alpha(theme.palette.text.primary, 0.5),
+}));
+
 // ************ STYLE ************
 
 // ************ Chat ************
@@ -94,9 +106,7 @@ export const Chat = () => {
 
       try {
         // get chat id from redux (DB)
-        dispatch(getCurrentChat(guest.id));
-        //
-        console.log('chat create');
+        await dispatch(getCurrentChat(guest.id));
         //
       } catch (error) {
         console.log(error);
@@ -105,6 +115,7 @@ export const Chat = () => {
 
     createChat();
   }, [dispatch, guest]);
+
   // ************** CHAT FROM DB ***************
 
   return (
@@ -113,10 +124,16 @@ export const Chat = () => {
         {!isResult ? (
           <ChatHeader>
             <Typography variant="h6">Chat</Typography>
-            {isLoading && (
+
+            {isLoading ? (
               <BoxLoading>
                 <Loading size={34} />
               </BoxLoading>
+            ) : (
+              <WelcomeMessage>
+                Choose from your existing conversations, start a new one, or
+                just keep swimming.
+              </WelcomeMessage>
             )}
           </ChatHeader>
         ) : (

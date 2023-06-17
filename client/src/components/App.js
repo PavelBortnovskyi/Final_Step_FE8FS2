@@ -18,17 +18,11 @@ export const App = () => {
 
   // const stompClientRef = useRef(null);
 
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
-
   // useEffect(() => {
-  // const socket = new SockJS(
-  //   'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
-  // );
-  // const client = Stomp.over(() => socket);
+  //   const headers = {
+  //     Authorization: `Bearer ${accessToken}`,
+  //   };
 
-  // useEffect(() => {
   //   const client = new Client({
   //     brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
   //     connectHeaders: headers,
@@ -36,6 +30,11 @@ export const App = () => {
   //       console.log(str);
   //     },
   //   });
+
+  //   // TODO: delete
+  //   const date = Math.random();
+
+  //   console.log('socket ***' + accessToken);
 
   //   // chatId - chat message recipient
   //   // userId - message author
@@ -50,7 +49,7 @@ export const App = () => {
   //       body: JSON.stringify({
   //         chatId: 24,
   //         userId: 2,
-  //         body: 'Hello, server!',
+  //         body: `${date} message`,
   //       }),
   //     });
   //   };

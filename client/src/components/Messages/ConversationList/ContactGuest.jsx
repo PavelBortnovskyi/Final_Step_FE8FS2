@@ -1,6 +1,9 @@
 import { Avatar, Box, alpha, styled } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import UserNames from 'src/UI/UserNames';
+import { getGuest } from 'src/redux/thunk/getGuest';
 
 // ************ STYLE ************
 const BoxContactGuest = styled(Box)(({ theme }) => ({
@@ -17,24 +20,33 @@ const BoxContactGuest = styled(Box)(({ theme }) => ({
 // ************ STYLE ************
 
 export const ContactGuest = ({ guest }) => {
-  const { fullName, avatarImgUrl, userTag, messages } = guest;
-  // onClick={() => handleClick(id)}
-  // console.log(messages.body);
+  const dispatch = useDispatch();
+  const { id, fullName, avatarImgUrl, userTag, messages } = guest;
+
+  const handleClick = (id) => {
+    // get guest data
+    dispatch(getGuest(id));
+  };
 
   // message character limit
   const truncatedText =
-    messages.body.length > 40
-      ? messages.body.slice(0, 40) + '...'
+    messages.body.length > 30
+      ? messages.body.slice(0, 30) + '...'
       : messages.body;
 
   return (
-    <BoxContactGuest>
+    <BoxContactGuest onClick={() => handleClick(id)}>
       <Avatar
         sx={{ width: 56, height: 56 }}
         alt={fullName}
-        src={avatarImgUrl && 'img/avatar/empty-avatar.png'}
+        src={avatarImgUrl || 'img/avatar/empty-avatar.png'}
       />
-      <UserNames fullName={fullName} userTag={userTag} text={truncatedText} />
+      <UserNames
+        fullName={fullName}
+        userTag={userTag}
+        text={truncatedText}
+        postTime={messages.sent}
+      />
     </BoxContactGuest>
   );
 };

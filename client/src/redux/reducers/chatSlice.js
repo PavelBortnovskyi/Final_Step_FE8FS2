@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getGuest } from '../thunk/getGuest.js';
 import { getCurrentChat } from '../thunk/getCurrentChat.js';
 import { getAllChats } from '../thunk/getAllChats.js';
+import { getChatMessages } from '../thunk/getChatMessages.js';
 
 const initialState = {
   guest: null,
   currentChat: null,
   allChats: null,
+  chatMessages: null,
   socketChat: null,
   isLoading: false,
   error: '',
@@ -69,6 +71,21 @@ export const chatSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getAllChats.rejected, (state, action) => {
+      state.error = action.payload?.info;
+      state.isLoading = false;
+    });
+
+    // getChatMessages
+    builder.addCase(getChatMessages.pending, (state, action) => {
+      // state.guest = null;
+      state.isLoading = true;
+      state.error = '';
+    });
+    builder.addCase(getChatMessages.fulfilled, (state, action) => {
+      state.chatMessages = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getChatMessages.rejected, (state, action) => {
       state.error = action.payload?.info;
       state.isLoading = false;
     });

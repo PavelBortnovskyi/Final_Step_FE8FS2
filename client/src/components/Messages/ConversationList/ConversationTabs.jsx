@@ -4,7 +4,8 @@ import ContactEmergencyOutlinedIcon from '@mui/icons-material/ContactEmergencyOu
 import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
 import { useState } from 'react';
 
-import { Contacts } from './Contacts';
+import { TabContacts } from './TabContacts';
+import { TabChats } from './TabChats';
 
 // ************ STYLE ************
 const TabSearch = styled(Tab)(({ theme }) => ({
@@ -87,10 +88,10 @@ export const ConversationTabs = () => {
         </Tabs>
       </TabHeader>
       <TabPanel value={value} index={0}>
-        <Contacts />
+        <TabContacts />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Chats
+        <TabChats />
       </TabPanel>
     </Box>
   );

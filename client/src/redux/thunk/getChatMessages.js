@@ -1,12 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 
-export const getAllChats = createAsyncThunk(
-  'chat/getAllChats',
-  async ({ page = 0, pageSize = 5 }, { rejectWithValue }) => {
+// get messages of chat from DB
+export const getChatMessages = createAsyncThunk(
+  'chat/getChatMessages',
+  async ({ chatId, page = 0, pageSize = 10 }, { rejectWithValue }) => {
     try {
-      const { data } = await myAxios.get(
-        `/chat/all?page=${page}&pageSize=${pageSize}`
+      const { data } = await myAxios.post(
+        `/api/v1/chat/${chatId}/messages/?page=${page}&pageSize=${pageSize}`
       );
       return data;
       //
