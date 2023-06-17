@@ -22,10 +22,10 @@ public class Chat extends BaseEntityModel {
   @ManyToOne
   private UserModel initiatorUser;
 
-  @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
   private List<Message> messages = new ArrayList<>();
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "chats_users", joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
   private Set<UserModel> users = new HashSet<>();

@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @ApiModel(description = "Chat response")
-public class ChatResponse {
+public class ChatResponseDTO {
 
   @JsonView(Marker.ChatDetails.class)
   private Long chatId;
@@ -19,7 +19,7 @@ public class ChatResponse {
   private UserResponseDTO initiatorUser;
 
   @JsonView(Marker.ChatDetails.class)
-  private List<MessageResponse> messages;
+  private List<MessageResponseDTO> messages;
 
   @JsonView(Marker.ChatDetails.class)
   private Set<UserResponseDTO> users;

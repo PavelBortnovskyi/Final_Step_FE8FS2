@@ -1,136 +1,102 @@
 package app.facade;
 
-import app.dto.rq.TweetRequest;
-import app.dto.rs.TweetResponse;
-import app.exceptions.tweetError.TweetIsNotFoundException;
+import app.dto.rs.TweetResponseDTO;
+import app.enums.TweetActionType;
+import app.enums.TweetType;
 import app.model.AttachmentImage;
 import app.model.Tweet;
+import app.service.NotificationService;
 import app.service.TweetActionService;
 import app.service.TweetService;
-import app.service.ScheduleAlgoService;
 import lombok.NoArgsConstructor;
 import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 @NoArgsConstructor
-public class TweetFacade extends GeneralFacade<Tweet, TweetRequest, TweetResponse> {
-  @Autowired
-  TweetService tweetService;
+public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   @Autowired
-  TweetActionService tweetActionService;
+  private TweetService tweetService;
+  @Autowired
+  private TweetActionService tweetActionService;
 
   @Autowired
-  ScheduleAlgoService scheduleAlgoService;
-
-/*  @Autowired
-  ViewedInfoService viewedInfoService;*/
-
+  private NotificationService notificationService;
 
   @PostConstruct
   public void init() {
-    Converter<Set<AttachmentImage>, Set<String>> imagesToURL = sa -> sa.getSource().stream()
+    ModelMapper mm = super.getMm();
+
+    Converter<Set<AttachmentImage>, Set<String>> imagesToURLs = sa -> sa.getSource().stream()
       .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
-
-    super.getMm().typeMap(Tweet.class, TweetResponse.class)
-      .addMapping(src -> src.getBody(), TweetResponse::setBody)
-      .addMapping(src -> src.getId(), TweetResponse::setTweetId)
-      .addMapping(src -> src.getUser().getUserTag(), TweetResponse::setUserTag)
-      .addMapping(src -> src.getUser().getAvatarImgUrl(), TweetResponse::setUserAvatarImage)
-      .addMapping(src -> src.getParentTweetId().getId(), TweetResponse::setParentTweetId)
-      .addMappings(mapper -> mapper.using(imagesToURL).map(Tweet::getAttachmentImages, TweetResponse::setAttachmentsImages))
-      .addMapping(this::getCountLikes, TweetResponse::setCountLikes)
-      .addMapping(this::getCountReply, TweetResponse::setCountReply)
-      .addMapping(this::getCountRetweet, TweetResponse::setCountRetweets);
+//
+//    mm.typeMap(Tweet.class, TweetResponseDTO.class)
+//      .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages))
+//      .addMapping(src -> src.getParentTweet().getId(), TweetResponseDTO::setParentTweetId);
   }
 
-  private Integer getCountLikes(Tweet tweet) {
-    return tweetActionService.getCountLikes(tweet.getId());
-  }
-
-  private Integer getCountReply(Tweet tweet) {
-    return tweetService.getCountReply(tweet.getId());
-  }
-
-  private Integer getCountRetweet(Tweet tweet) {
-    return tweetActionService.getCountRetweet(tweet.getId());
-  }
-
-  private Set<String> getImagesUrl(Tweet tweet) {
-    return tweet.getAttachmentImages().stream().map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
-  }
-
-  public TweetResponse getTweetById(Long tweetId, HttpServletRequest request) {
-    TweetResponse tweetResponse = tweetService.getTweet(tweetId).map(this::convertToDto)
-      .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
-    tweetResponse.setCountRetweets(tweetActionService.getCountRetweet(tweetResponse.getTweetId()));
-    tweetResponse.setCountLikes(tweetActionService.getCountLikes(tweetResponse.getTweetId()));
-    tweetResponse.setCountReply(tweetService.getCountReply(tweetResponse.getTweetId()));
-
-    //viewedInfoService.addView(tweetService.getTweet(tweetId).get(), request);
-    return tweetResponse;
-  }
-
-  public TweetResponse updateTweet(Long tweetId, TweetRequest tweetRequest) {
-    return tweetService.updateTweet(tweetId, tweetRequest).map(this::convertToDto)
-      .orElseThrow(() -> new TweetIsNotFoundException(tweetId));
-  }
-
-  public Page<TweetResponse> getUserTweets(Long userId, int page, int pageSize) {
-    return tweetService.getUserTweets(userId, page, pageSize).map(this::convertToDto);
-  }
-
-  public Page<TweetResponse> getAllTweets(int page, int pageSize) {
-    return tweetService.getAllTweets(page, pageSize).map(this::convertToDto);
-  }
-
-  public Page<TweetResponse> listTopTweets(int page, int pageSize) {
-    return scheduleAlgoService.listTopTweets(page, pageSize).map(this::convertToDto);
-  }
-
-  public List<TweetResponse> allUserFollowingTweet(HttpServletRequest request, int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.allUserFollowingTweet(request, page, pageSize);
-
-    List<Tweet> tweets = responseEntity.getBody();
-
-    List<TweetResponse> tweetResponses = tweets.stream()
-      .map(this::convertToDto)
-      .collect(Collectors.toList());
-
-    return tweetResponses;
-  }
-
-  public Page<TweetResponse> tweetsReply(Long tweetId, int page, int pageSize) {
-    return tweetService.tweetsReply(tweetId, page, pageSize).map(this::convertToDto);
-  }
-
-  public List<TweetResponse> getAllBookmarksTweet(HttpServletRequest request, int page, int pageSize) {
-    ResponseEntity<List<Tweet>> responseEntity = tweetService.getAllBookmarks(request, page, pageSize);
-
-    List<Tweet> tweets = responseEntity.getBody();
-
-    List<TweetResponse> tweetResponses = tweets.stream()
-      .map(this::convertToDto)
-      .collect(Collectors.toList());
-
-
-    return tweetResponses;
-  }
 
   @Override
-  public Tweet convertToEntity(TweetRequest dto) {
-    Tweet sample = new Tweet();
-    super.getMm().map(dto, sample);
-    return sample;
+  public TweetResponseDTO convertToDto(Tweet tweet) {
+    return super.convertToDto(tweet)
+      .setCountReplays(tweetService.getCountReplays(tweet))
+      .setCountQuoteTweets(tweetService.getCountQuoteTweets(tweet))
+      .setCountRetweets(tweetService.getCountRetweetTweets(tweet))
+      .setCountLikes(tweetActionService.getCountLikes(tweet))
+      .setCountBookmarks(tweetActionService.getCountBookmarks(tweet));
   }
+
+
+  public TweetResponseDTO createTweet(Long userId, String tweetBody, MultipartFile[] attachmentImages, TweetType tweetType, Long parentTweetId) {
+    return convertToDto(tweetService
+      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId));
+  }
+
+
+  public TweetResponseDTO getTweetById(Long tweetId) {
+    return convertToDto(tweetService.getTweet(tweetId));
+  }
+
+
+  public void deleteTweet(Long userId, Long tweetId) {
+    tweetService.deleteTweet(userId, tweetId);
+  }
+
+
+  public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    return convertToDto(notificationService.sendNotification(tweetActionService
+      .createTweetAction(userId, tweetId, tweetActionType).getTweet(), userId, tweetActionType));
+  }
+
+
+  public TweetResponseDTO removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    return convertToDto(tweetActionService
+      .removeTweetAction(userId, tweetId, tweetActionType).getTweet());
+  }
+
+
+  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, Pageable pageable) {
+    return tweetService.getAllTweetsByUserId(userId, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getTweetsOfTweet(Long tweetId, TweetType tweetType, Pageable pageable) {
+    return tweetService.getTweetsOfTweet(tweetId, tweetType, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getAllTweets(Pageable pageable) {
+    return tweetService.getAllTweets(pageable).map(this::convertToDto);
+  }
+
 }

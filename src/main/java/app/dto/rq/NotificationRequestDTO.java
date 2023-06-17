@@ -5,11 +5,13 @@ import app.enums.NotificationType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NotificationRequest {
+@Accessors(chain = true)
+public class NotificationRequestDTO {
 
   @JsonView({Marker.Existed.class})
   @NotNull(message = "Id must be specified", groups = {Marker.Existed.class})

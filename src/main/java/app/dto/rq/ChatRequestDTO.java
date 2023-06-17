@@ -11,7 +11,7 @@ import javax.validation.constraints.Null;
 
 @Data
 @ApiModel(description = "Chat request")
-public class ChatRequest {
+public class ChatRequestDTO {
 
   @ApiModelProperty(value = "Chat id", example = "599", required = true)
   @JsonView({Marker.ChatDetails.class})

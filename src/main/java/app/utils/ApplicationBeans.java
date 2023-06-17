@@ -2,14 +2,16 @@ package app.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -44,6 +46,14 @@ public class ApplicationBeans {
   public Validator validator() {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     return factory.getValidator();
+  }
+
+  @Bean
+  public WebSocketStompClient WebSocketStompClient() {
+    WebSocketClient webSocketClient = new StandardWebSocketClient();
+    WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
+    stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+    return stompClient;
   }
 
   @Bean

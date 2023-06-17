@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(description = "Chat request")
-public class MessageRequest {
+public class MessageRequestDTO {
 
   @JsonView({Marker.Delete.class, Marker.Existed.class})
   @NotNull(message = "Message id must be specified", groups = {Marker.Delete.class, Marker.Existed.class})
