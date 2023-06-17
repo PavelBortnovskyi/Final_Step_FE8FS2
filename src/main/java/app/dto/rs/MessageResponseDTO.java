@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(description = "Message response")
-public class MessageResponse {
+public class MessageResponseDTO {
 
   @JsonView(Marker.ChatDetails.class)
   private Long messageId;

@@ -23,7 +23,6 @@ public class TweetActionService {
   private final TweetService tweetService;
   private final UserService userService;
 
-
   public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType)
       .orElseThrow(() -> new TweetActionNotFoundException(actionType, tweet.getId()));

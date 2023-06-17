@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.dto.rs.NotificationResponse;
+import app.dto.rs.NotificationResponseDTO;
 import app.facade.NotificationFacade;
 import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -32,9 +32,9 @@ public class NotificationController {
 
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<NotificationResponse> handleGetAllUserNotifications(HttpServletRequest request,
-                                                                            @RequestParam("page") @NotNull Integer page,
-                                                                            @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<NotificationResponseDTO> handleGetAllUserNotifications(HttpServletRequest request,
+                                                                               @RequestParam("page") @NotNull Integer page,
+                                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getAllUserNotifications(currUserId, pageSize, page);
   }
@@ -44,9 +44,9 @@ public class NotificationController {
    */
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<NotificationResponse> handleGetSeenUserNotifications(HttpServletRequest request,
-                                                                             @RequestParam("page") @NotNull Integer page,
-                                                                             @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<NotificationResponseDTO> handleGetSeenUserNotifications(HttpServletRequest request,
+                                                                                @RequestParam("page") @NotNull Integer page,
+                                                                                @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getSeenUserNotifications(currUserId, pageSize, page);
   }
@@ -56,9 +56,9 @@ public class NotificationController {
    */
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<NotificationResponse> handleGetUnSeenUserNotifications(HttpServletRequest request,
-                                                                               @RequestParam("page") @NotNull Integer page,
-                                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<NotificationResponseDTO> handleGetUnSeenUserNotifications(HttpServletRequest request,
+                                                                                  @RequestParam("page") @NotNull Integer page,
+                                                                                  @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.notificationFacade.getUnseenUserNotifications(currUserId, pageSize, page);
   }

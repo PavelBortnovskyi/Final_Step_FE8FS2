@@ -1,7 +1,7 @@
 package app.facade;
 
-import app.dto.rq.MessageRequest;
-import app.dto.rs.MessageResponse;
+import app.dto.rq.MessageRequestDTO;
+import app.dto.rs.MessageResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.model.Message;
 import app.service.MessageService;
@@ -11,14 +11,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class MessageFacade extends GeneralFacade<Message, MessageRequest, MessageResponse> {
+public class MessageFacade extends GeneralFacade<Message, MessageRequestDTO, MessageResponseDTO> {
 
   @Autowired
   private MessageService messageService;
 
-  public Message addMessageToChat(Long userId, Message message) {
+  public MessageResponseDTO addMessageToChat(Long userId, Message message) {
     if (message.getUser().getId().equals(userId))
-      return this.messageService.addMessage(message);
+      return this.convertToDto(this.messageService.addMessage(message));
     else throw new BadRequestException(String.format("Current user with id: %d is not the author of message ", userId));
+  }
+
+  public boolean changeMessage(Long userId, Message message){
+    return this.messageService.changeMessage(userId, message);
+  }
+
+  public boolean deleteMessage(Long userId, MessageRequestDTO message) {
+    return this.messageService.deleteMessage(userId, message.getId());
   }
 }
