@@ -39,13 +39,12 @@ public class TweetService extends GeneralService<Tweet> {
       .setBody(tweetBody)
       .setTweetType(tweetType);
 
-   save(tweet)
+    save(tweet)
       .getAttachmentImages()
       .addAll(attachmentImagesService
         .saveAttachmentImages(cloudinaryService
           .uploadTweetImages(files, userId, tweet.getId()), tweet));
-
-    return notificationService.sendNotification(tweet, userId, null);
+    return tweet;
   }
 
 
