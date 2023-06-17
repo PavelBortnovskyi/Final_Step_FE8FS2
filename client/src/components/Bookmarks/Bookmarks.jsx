@@ -10,6 +10,7 @@ import { getAuthorizationData } from 'src/redux/selectors/selectors';
 export const Bookmarks = () => {
   const user = useSelector((state) => state.user.user) || "";
   const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
+  const Bookmarks = userBookmarks.content || [];
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -23,15 +24,16 @@ export const Bookmarks = () => {
   useEffect(() => {
     dispatch(getBookmarks({ page: 0, pageSize: 10 }));
   }, [dispatch]);
-
+console.log(userBookmarks);
+console.log(Bookmarks);
   return (
     <Box sx={{ height: '100vh', padding: '4px 0 0 16px' }}>
       <Typography variant="h5">Bookmarks</Typography>
       <UserNick userTag={user.userTag} />
       {user !== '' ? (
-        userBookmarks.map((tweet) =>
-          <Link to={`/tweet/${tweet.tweetId}`} key={tweet.tweetId}>
-            <Post tweet={tweet} key={tweet.tweetId} />
+        Bookmarks.map((bookmark) =>
+          <Link to={`/tweet/${bookmark.tweet.id}`} key={bookmark.tweet.id}>
+            <Post tweet={bookmark.tweet} key={bookmark.tweet.id} />
           </Link>)
       ) : (
         <Box

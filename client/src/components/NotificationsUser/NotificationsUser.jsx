@@ -9,6 +9,7 @@ import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getNotifications } from 'src/redux/thunk/getNotifications';
 import { NotificationsReplying } from './NotificationsReplying';
 import { NotificationsEmpty } from './NotificationsEmpty';
+import { NotificationsQuote } from './NotificationsQuote';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -31,8 +32,8 @@ export const NotificationsUser = () => {
   const theme = useTheme();
   const userNotifications = useSelector(state => state.userNotifications.userNotifications);
   const Notifications = userNotifications.content;
-
-
+const arrFoto = ['./img/06.jpg', './img/03.png']
+console.log();
 
   // send user to home if not authorization
   useEffect(() => {
@@ -48,6 +49,8 @@ export const NotificationsUser = () => {
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
   };
+
+console.log(Notifications);
   return (
     <Box sx={{ height: '100vh', padding: '8px 0 0 0' }}>
       <Typography variant="h5" sx={{ padding: '0 0 8px 16px', }}>
@@ -71,10 +74,6 @@ export const NotificationsUser = () => {
       }}>
         <NotificationsEmpty userNotifications={userNotifications} tabIndex={tabIndex} />
 
-
-
-
-
         {
           tabIndex === 0 && Notifications && Notifications.map(notification => (
             (notification.notificationType === ''
@@ -82,6 +81,9 @@ export const NotificationsUser = () => {
             ||
             (notification.notificationType === 'LIKE'
             && <NotificationsLike notification={notification} key={notification.id} />)
+            ||
+            (notification.notificationType === 'QUOTE_TWEET1'
+            && <NotificationsQuote notification={notification} key={notification.id} arrFoto={arrFoto}/>)
             ||
             (notification.notificationType === 'REPLY'
             && <NotificationsReplying notification={notification} key={notification.id} />)

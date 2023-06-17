@@ -25,7 +25,7 @@ function PostList({ id, tab }) {
     }
     if (user.id !== undefined && user.id !== '') {
       const idUser = user.id;
-      dispatch(getUserTweetsThunk({ userId: 1, page: 0, pageSize: 100 }));
+      dispatch(getUserTweetsThunk({ userId: idUser, page: 0, pageSize: 100 }));
     }
   }, [user]);
 
@@ -35,7 +35,7 @@ function PostList({ id, tab }) {
       {userTweetsArray !== false &&
         userTweetsArray.map((tweet) => (
           <Box
-            key={tweet.tweetId}
+            key={tweet.id}
             sx={{
               borderBottom: `1px solid ${theme.palette.border.main}`,
               transition: 'background-color 0.3s ease',
@@ -45,7 +45,7 @@ function PostList({ id, tab }) {
               },
             }}
           >
-            <Link to={`/tweet/${tweet.tweetId}`}>
+            <Link to={`/tweet/${tweet.id}`}>
               <Post tweet={tweet} />
             </Link>
             <Box
@@ -60,7 +60,7 @@ function PostList({ id, tab }) {
                 likes={tweet.countLikes}
                 reply={tweet.countReply}
                 retweet={tweet.countRetweets}
-                id={tweet.tweetId}
+                id={tweet.id}
               />
             </Box>
           </Box>

@@ -1,7 +1,11 @@
-import { Avatar, Box, Typography, styled, useTheme } from '@mui/material'
 import React from 'react'
-import RepeatIcon from '@mui/icons-material/Repeat';
+import Post from '../Post/Post'
+import { Avatar, Box, Typography, styled } from '@mui/material'
 import { Link } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
+import TranslatedText from 'src/UI/TranslatedText/TranslatedText';
+import UserNames from 'src/UI/UserNames';
+
 
 
 const CustomImg = styled(Box)(({ img }) => {
@@ -27,29 +31,30 @@ const StyledLink = styled(Link)(({ theme }) => ({
 }));
 
 
-
-export const NotificationsRetweet = ({ notification }) => {
+export const NotificationsQuote = ({ notification, arrFoto }) => {
   const theme = useTheme();
 
   const Text = "Text tweet Що таке Lorem Ipsum? Lorem Ipsum - це текст по суті незмінною. Вона популяризувалась в 60-их роках минулого сторіччя завдяки виданню зразків шрифтів Letraset, які містили уривки з Lorem Ipsum, і вдруге - нещодавно завдяки програмам комп'ютерного верстування на кшталт Aldus Pagemaker, які використовували різні версії Lorem Ipsum."
   const TextPreview = Text.length > 90 ? Text.slice(0, 90) + "..." : Text;
   const fullName = notification.initiator.fullName || '';
   const FirstName = fullName.length > 24 ? fullName.slice(0, 24) + "..." : fullName;
-  const Images = notification.tweet.attachmentsImages || [];
+  // const Images = notification.tweet.attachmentsImages || [];
+  const Images = arrFoto;
 
+console.log(notification);
   return (
     <StyledLink to={`/tweet/${notification.tweet.tweetId}`} key={notification.tweet.tweetId}>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'start',
-        paddingBottom: '6px',
-      }}>
-        <RepeatIcon sx={{ color: 'rgb(0, 186, 124)', fontSize: 34, width: '56px' }} />
-        <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '32px', height: '32px' }} />
-      </Box>
-      <Box sx={{ paddingLeft: '56px' }}>
+Quote
+    <Box sx={{
+      // height: '300px',
+      width: '100%',
+      
+    }}>
+            <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '32px', height: '32px' }} />
+
+            <Box sx={{ paddingLeft: '56px' }}>
         <Typography variant='body1' sx={{ color: `${theme.palette.text.primary}` }}>
-          <strong style={{ textTransform: 'capitalize' }}> {FirstName} </strong> Retweeted your Tweet
+          <strong style={{ textTransform: 'capitalize' }}> {FirstName} </strong> Quote your Tweet
         </Typography>
         <Typography variant='body2'
           sx={{
@@ -86,10 +91,65 @@ export const NotificationsRetweet = ({ notification }) => {
           </Box>
         )}
       </Box>
+    </Box>
 
-      <Typography variant='body2' sx={{ padding: '10px 0 0 56px', color: `${theme.palette.text.link}` }}>
-        Show all
-      </Typography>
-    </StyledLink>
+
+
+{/* tweet который цитируют */}
+{
+  notification && (
+
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'end',
+        width: '80%',
+        p: '16px',
+        color: `${theme.palette.text.primary}`,
+        // '&:hover': {
+        //   backgroundColor: `${theme.palette.background.hover}`,
+        //   cursor: 'pointer',
+        // },
+      }}
+    >
+    <Box sx={{
+      p: '16px',
+      border: '1px solid red',
+      borderRadius: '30px'
+    }}>
+
+    
+      <Box sx={{ pr: '10px', pl: { xs: '5px', sm: '15px' } }}>
+        <Avatar src={notification.receiver.avatarImgUrl} />
+      </Box>
+      <Box
+        padding={1}
+        sx={{
+          width: '100%',
+        }}
+      >
+        <UserNames
+          fullName={notification.receiver.fullName}
+          userTag={notification.receiver.userTag}
+          postTime="10h"
+        />
+
+        <Typography variant="body" sx={{ fontSize: '15px' }}>
+          {'jsahdjadjashdh   jashdjsdj jsdjkahdj hdjkhasjdhajshdj  sadjashdj  ksjdhakjshdjkahdh sajd hsjdjkahdja jnjadshjkahdjkhajsdhajkhdjashdkjahdjahs notification.tweet.body'}
+        </Typography>
+        <TranslatedText text={notification.tweet.body} />
+        {Images.length > 0 && (
+          <Box sx={{ paddingTop: '10px', height: '100px', display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+            {Images.map(img => (
+              <CustomImg img={img} key={img} ></CustomImg>
+            ))}
+          </Box>
+        )}
+
+      </Box>
+      </Box>
+    </Box>
+  )}
+</StyledLink>
   )
 }
