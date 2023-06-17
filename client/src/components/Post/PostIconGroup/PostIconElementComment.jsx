@@ -10,7 +10,6 @@ import { useMode } from 'src/styles/_materialTheme';
 
 function PostIconElementComment({ quantity, color, id }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,10 +23,7 @@ function PostIconElementComment({ quantity, color, id }) {
   const theme = useMode();
   return (
     <Box
-      onClick={(e) => {
-        e.preventDefault();
-        setIsModalOpen(!isModalOpen);
-      }}
+      onClick={() => setIsModalOpen(!isModalOpen)}
       display="flex"
       sx={{
         color: `${theme.palette.text.primary}`,
