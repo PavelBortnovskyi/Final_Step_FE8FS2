@@ -134,10 +134,10 @@ public class TweetController {
 
 
   @GetMapping("/{id}/replay")
-  @ApiOperation("Get all REPLAY of tweet with {id}")
-  public Page<TweetResponseDTO> getReplayOfTweet(@PathVariable(name = "id") Long tweetId,
-                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+  @ApiOperation("Get all REPLY of tweet with {id}")
+  public Page<TweetResponseDTO> getReplyOfTweet(@PathVariable(name = "id") Long tweetId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsOfTweet(tweetId, TweetType.REPLY, PageRequest.of(page, size));
   }
 
