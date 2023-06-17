@@ -39,7 +39,7 @@ public class TweetService extends GeneralService<Tweet> {
       .setBody(tweetBody)
       .setTweetType(tweetType);
 
-   save(tweet)
+    save(tweet)
       .getAttachmentImages()
       .addAll(attachmentImagesService
         .saveAttachmentImages(cloudinaryService
@@ -92,4 +92,9 @@ public class TweetService extends GeneralService<Tweet> {
   public Page<Tweet> getAllTweets(Pageable pageable) {
     return tweetRepository.findByTweetTypeNotOrderByCreatedAtDesc(TweetType.REPLY, pageable);
   }
+
+
+//  public Page<Tweet> getTweetsLikedByUser(Long userId, TweetActionType tweetActionType, Pageable pageable) {
+//    return tweetRepository. (userService.getUser(userId), tweetActionType, pageable);
+//  }
 }

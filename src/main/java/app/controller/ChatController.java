@@ -34,7 +34,7 @@ public class ChatController {
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponseDTO>> handleCreateChat(@RequestParam("interlocutorId")
-                                                                                                @NotNull @Positive Long interlocutorId,
+                                                                                                   @NotNull @Positive Long interlocutorId,
                                                                                                    HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));
@@ -62,9 +62,9 @@ public class ChatController {
   @PutMapping(path = "/{id}/user_add", produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonView(Marker.ChatDetails.class)
   public ResponseEntity<ChatResponseDTO> handleAddUserToChat(@RequestParam("userId")
-                                                          @NotNull(groups = Marker.ChatDetails.class)
-                                                          @Positive(groups = Marker.ChatDetails.class)
-                                                          Long userIdToAdd,
+                                                             @NotNull(groups = Marker.ChatDetails.class)
+                                                             @Positive(groups = Marker.ChatDetails.class)
+                                                             Long userIdToAdd,
                                                              @PathVariable(name = "id") Long chatId) {
     return ResponseEntity.ok(this.chatFacade.addUserToChat(userIdToAdd, chatId));
   }
@@ -104,7 +104,7 @@ public class ChatController {
   public Page<MessageResponseDTO> handleGetChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
                                                 @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                 @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
-                                             @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
+                                                @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatMessages(currUserId, chatId, pageSize, page);
   }
@@ -117,7 +117,7 @@ public class ChatController {
   public Page<MessageResponseDTO> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
                                                                 @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                                 @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
-                                                             @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
+                                                                @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                                 @RequestParam("keyword") String keyword) {
     if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");

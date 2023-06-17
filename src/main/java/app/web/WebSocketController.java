@@ -36,7 +36,7 @@ public class WebSocketController {
   @MessageMapping("/v1/message")
   @SendTo("/topic/chats")
   public @JsonView({Marker.ChatDetails.class}) MessageResponseDTO processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
-                                                                                    MessageRequestDTO messageDTO,
+                                                                                     MessageRequestDTO messageDTO,
                                                                                      SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     return this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO));
@@ -45,7 +45,7 @@ public class WebSocketController {
   @Validated({Marker.Existed.class})
   @MessageMapping("/v1/message/edit")
   public void processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
-                                       MessageRequestDTO messageDTO,
+                                     MessageRequestDTO messageDTO,
                                      SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     if (messageFacade.changeMessage(currUserId, messageFacade.convertToEntity(messageDTO)))
@@ -55,7 +55,7 @@ public class WebSocketController {
   @Validated({Marker.Delete.class})
   @MessageMapping("/v1/message/delete")
   public void deleteMessage(@Payload @Valid @JsonView({Marker.Delete.class})
-                              MessageRequestDTO messageDTO,
+                            MessageRequestDTO messageDTO,
                             SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     if (this.messageFacade.deleteMessage(currUserId, messageDTO))
@@ -65,7 +65,7 @@ public class WebSocketController {
   @Validated({Marker.New.class})
   @MessageMapping("/v1/notifications/private")
   public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
-                                           NotificationRequestDTO notificationRequestDTO,
+                                         NotificationRequestDTO notificationRequestDTO,
                                          SimpMessageHeaderAccessor accessor) {
     //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     log.info(notificationRequestDTO.toString());
@@ -76,7 +76,7 @@ public class WebSocketController {
 
   @MessageMapping("/v1/notifications/mark")
   public void markReadNotification(@Payload @Valid @JsonView({Marker.Existed.class})
-                                     NotificationRequestDTO notificationRequestDTO,
+                                   NotificationRequestDTO notificationRequestDTO,
                                    SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
     if (notificationFacade.markNotification(currUserId, notificationRequestDTO))

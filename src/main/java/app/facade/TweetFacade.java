@@ -99,5 +99,4 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
     return tweetService.getAllTweets(pageable).map(this::convertToDto);
   }
 
-
 }
