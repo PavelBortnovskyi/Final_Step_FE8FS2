@@ -183,4 +183,14 @@ public class TweetController {
       TweetActionType.LIKE, PageRequest.of(page, size));
   }
 
+
+  @GetMapping("bookmark/user")
+  @ApiOperation("Get tweets BOOKMARK by the current user")
+  public Page<TweetActionResponseDTO> getTweetsLikedByUser(HttpServletRequest httpRequest,
+                                                           @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetActionFacade.getLikesByUser((Long) httpRequest.getAttribute("userId"),
+      TweetActionType.BOOKMARK, PageRequest.of(page, size));
+  }
+
 }
