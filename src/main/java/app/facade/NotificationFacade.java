@@ -64,7 +64,7 @@ public class NotificationFacade extends GeneralFacade<Notification, Notification
     return true;
   }
 
-  public boolean markNotification(Long userId, NotificationRequestDTO notification){
+  public boolean markNotification(Long userId, NotificationRequestDTO notification) {
     this.notificationService.findById(notification.getId())
       .filter(n -> n.getReceiverUser().getId().equals(userId))
       .map(n -> {
