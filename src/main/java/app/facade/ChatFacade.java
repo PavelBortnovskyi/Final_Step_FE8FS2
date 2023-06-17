@@ -72,7 +72,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
   public Page<MessageResponseDTO> getChatMessages(Long userId, Long chatId, Integer pageSize, Integer pageNumber) {
     this.chatService.findById(chatId)
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId)
-        .orElseThrow(() -> new UserNotFoundException(userId))))
+        .orElseThrow(() -> new UserNotFoundException(userId))) || chat.getInitiatorUser().getId().equals(userId))
       .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId)));
     return this.chatService.getMessages(chatId, pageSize, pageNumber);
   }
