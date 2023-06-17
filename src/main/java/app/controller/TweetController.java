@@ -192,7 +192,7 @@ public class TweetController {
   }
 
   @GetMapping("subscriptions")
-  @ApiOperation("Get all tweets (TWEET/RETWEET/QUOTE_TWEET/REPLY) from the current user's subscriptions")
+  @ApiOperation("Get all tweets (TWEET/RETWEET/QUOTE_TWEET) from the current user's subscriptions")
   public Page<TweetResponseDTO> getTweetsFromSubscriptions(HttpServletRequest httpRequest,
                                                            @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
