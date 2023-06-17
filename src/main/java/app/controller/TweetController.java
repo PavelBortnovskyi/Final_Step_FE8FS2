@@ -41,7 +41,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("/{id}/quote")
+  @PostMapping("{id}/quote")
   @ApiOperation("Create QUOTE_TWEET from tweet with {id}")
   public ResponseEntity<TweetResponseDTO> createQuoteTweet(HttpServletRequest httpRequest,
                                                            @PathVariable(name = "id") @Positive Long tweetId,
@@ -52,7 +52,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("/{id}/retweet")
+  @PostMapping("{id}/retweet")
   @ApiOperation("Create RETWEET from tweet with {id}")
   public ResponseEntity<TweetResponseDTO> createRetweetTweet(HttpServletRequest httpRequest,
                                                              @PathVariable(name = "id") @Positive Long tweetId) {
@@ -61,7 +61,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("/{id}/replay")
+  @PostMapping("{id}/replay")
   @ApiOperation("Create REPLAY from tweet with {id}")
   public ResponseEntity<TweetResponseDTO> createReplyTweet(HttpServletRequest httpRequest,
                                                            @PathVariable(name = "id") @Positive Long tweetId,
@@ -72,21 +72,21 @@ public class TweetController {
   }
 
 
-  @GetMapping("/{id}")
+  @GetMapping("{id}")
   @ApiOperation("Get TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
   public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
   }
 
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("{id}")
   @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}.  Только свои можно удалять.")
   public void deleteTweet(HttpServletRequest httpRequest, @PathVariable(name = "id") @Positive Long tweetId) {
     tweetFacade.deleteTweet((Long) httpRequest.getAttribute("userId"), tweetId);
   }
 
 
-  @PostMapping("/{id}/like")
+  @PostMapping("{id}/like")
   @ApiOperation("Like TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
   public ResponseEntity<TweetResponseDTO> likeTweet(HttpServletRequest httpRequest,
                                                     @PathVariable(name = "id") @Positive Long tweetId) {
@@ -95,7 +95,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("/{id}/unlike")
+  @PostMapping("{id}/unlike")
   @ApiOperation("Unlike лайк TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
   public ResponseEntity<TweetResponseDTO> unLikeTweet(HttpServletRequest httpRequest,
                                                       @PathVariable(name = "id") @Positive Long tweetId) {
@@ -104,7 +104,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("/{id}/bookmark")
+  @PostMapping("{id}/bookmark")
   @ApiOperation("Add to bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
   public ResponseEntity<TweetResponseDTO> bookmarkTweet(HttpServletRequest httpRequest,
                                                         @PathVariable(name = "id") @Positive Long tweetId) {
@@ -113,7 +113,7 @@ public class TweetController {
   }
 
 
-  @PostMapping("/{id}/unbookmark")
+  @PostMapping("{id}/unbookmark")
   @ApiOperation("Remove from bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
   public ResponseEntity<TweetResponseDTO> unBookmarkTweet(HttpServletRequest httpRequest,
                                                           @PathVariable(name = "id") @Positive Long tweetId) {
@@ -122,7 +122,7 @@ public class TweetController {
   }
 
 
-  @GetMapping({"/user/{id}", "/user"})
+  @GetMapping({"user/{id}", "/user"})
   @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
   public Page<TweetResponseDTO> getAllTweetsOfUser(HttpServletRequest httpRequest,
                                                    @PathVariable(name = "id", required = false) Long userId,
@@ -133,7 +133,7 @@ public class TweetController {
   }
 
 
-  @GetMapping("/{id}/replay")
+  @GetMapping("{id}/replay")
   @ApiOperation("Get all REPLY of tweet with {id}")
   public Page<TweetResponseDTO> getReplyOfTweet(@PathVariable(name = "id") Long tweetId,
                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
@@ -142,7 +142,7 @@ public class TweetController {
   }
 
 
-  @GetMapping("/{id}/retweet")
+  @GetMapping("{id}/retweet")
   @ApiOperation("Get all RETWEET of tweet with {id}")
   public Page<TweetResponseDTO> getRetweetOfTweet(@PathVariable(name = "id") Long tweetId,
                                                   @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
@@ -151,7 +151,7 @@ public class TweetController {
   }
 
 
-  @GetMapping("/{id}/quote")
+  @GetMapping("{id}/quote")
   @ApiOperation("Get all QUOTE of tweet with {id}")
   public Page<TweetResponseDTO> getQuoteOfTweet(@PathVariable(name = "id") Long tweetId,
                                                 @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
@@ -166,6 +166,5 @@ public class TweetController {
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getAllTweets(PageRequest.of(page, size));
   }
-
-
+  
 }
