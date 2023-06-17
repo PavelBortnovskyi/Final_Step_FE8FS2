@@ -25,6 +25,8 @@ public class TweetService extends GeneralService<Tweet> {
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
 
+  private final NotificationService notificationService;
+
 
   @Transactional
   public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
@@ -37,13 +39,13 @@ public class TweetService extends GeneralService<Tweet> {
       .setBody(tweetBody)
       .setTweetType(tweetType);
 
-    save(tweet)
+   save(tweet)
       .getAttachmentImages()
       .addAll(attachmentImagesService
         .saveAttachmentImages(cloudinaryService
           .uploadTweetImages(files, userId, tweet.getId()), tweet));
 
-    return tweet;
+    return notificationService.sendNotification(tweet, userId, null);
   }
 
 

@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 @ApiModel(description = "Tweet response")
-public class TweetResponseDTO {
+public class TweetResponseDTONE {
 
   @JsonView(Marker.Preview.class)
   private Long id;
@@ -25,27 +25,15 @@ public class TweetResponseDTO {
   private TweetType tweetType;
 
   @JsonView(Marker.Preview.class)
-  private UserResponseMiniDTO user;
+  private UserResponseDTO user;
 
   @JsonView(Marker.Preview.class)
-  private TweetResponseDTO parentTweet;
+  private TweetResponseDTONEmini parentTweet;
 
   @JsonView(Marker.Preview.class)
   private String body;
 
   @JsonView(Marker.Preview.class)
   private Set<AttachmentImageResponseDTO> attachmentImages = new HashSet<>();
-
-  private boolean currUserLikedThis;
-
-  private Integer countReplays = 0;
-
-  private Integer countQuoteTweets = 0;
-
-  private Integer countRetweets = 0;
-
-  private Integer countLikes = 0;
-
-  private Integer countBookmarks = 0;
 
 }

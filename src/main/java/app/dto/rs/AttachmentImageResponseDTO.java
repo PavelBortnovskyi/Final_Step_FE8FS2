@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @ApiModel("Attachment image response DTO")
-public class AttachmentImageResponse {
+public class AttachmentImageResponseDTO {
   @JsonIgnore
   private Long tweetId;
 

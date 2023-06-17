@@ -5,6 +5,7 @@ import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.model.AttachmentImage;
 import app.model.Tweet;
+import app.service.NotificationService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   @Autowired
   private TweetActionService tweetActionService;
 
+  @Autowired
+  private NotificationService notificationService;
 
   @PostConstruct
   public void init() {
@@ -71,8 +74,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(tweetActionService
-      .createTweetAction(userId, tweetId, tweetActionType).getTweet());
+    return convertToDto(notificationService.sendNotification(tweetActionService
+      .createTweetAction(userId, tweetId, tweetActionType).getTweet(), userId, tweetActionType));
   }
 
 
