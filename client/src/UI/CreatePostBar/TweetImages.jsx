@@ -1,46 +1,46 @@
-import React from 'react';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-
-import { Box } from '@mui/material';
+import { Box, CardMedia } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-const imgStyle = {
-  width: '100%',
-  borderRadius: '5%',
-  maxHeight: '600px',
-};
+import React from 'react';
 
 const SinglePhoto = styled(Box)({
-  padding: '10px',
+  overflow: 'hidden',
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
+  borderRadius: '20px',
 });
 
 const DoublePhoto = styled(Box)({
-  padding: '10px',
+  gap: '2px',
+  overflow: 'hidden',
+  borderRadius: '20px',
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
-  gap: '10px',
 });
 
 const TriplePhoto = styled(Box)({
-  padding: '10px',
+  gap: '2px',
+  overflow: 'hidden',
+  borderRadius: '20px',
+  maxHeight: '290px',
+  maxWidth: '515px',
   display: 'grid',
   gridTemplateColumns: 'repeat(8, 1fr)',
   gridTemplateRows: 'repeat(8, 1fr)',
-  gap: '10px',
 });
 
 const QuadruplePhoto = styled(Box)({
-  padding: '10px',
+  gap: '2px',
+  overflow: 'hidden',
+  borderRadius: '20px',
   display: 'grid',
-  gap: '10px',
   gridTemplateColumns: '1fr 1fr',
   gridTemplateRows: '1fr 1fr',
 });
 
-function AddingFile({ images, handleDeleteImage, quantity }) {
+function TweetImages({ images }) {
+  let quantity = images.length;
+
   let QuantityComponent;
   if (quantity === 1) {
     QuantityComponent = SinglePhoto;
@@ -59,11 +59,10 @@ function AddingFile({ images, handleDeleteImage, quantity }) {
         style = {
           gridRow: '1 / span 8',
           gridColumn: '1 / span 4',
-          width: '250px',
+          maxWidth: '250px',
         };
       } else if (index === 1) {
         style = {
-          borderRadius: '5%',
           gridRow: '1 / span 4',
           gridColumn: '5 / span 8',
           backgroundImage: `url(${img})`,
@@ -76,7 +75,6 @@ function AddingFile({ images, handleDeleteImage, quantity }) {
         };
       } else if (index === 2) {
         style = {
-          borderRadius: '5%',
           gridRow: '5 / span 4',
           gridColumn: '5 / span 8',
           backgroundImage: `url(${img})`,
@@ -93,45 +91,29 @@ function AddingFile({ images, handleDeleteImage, quantity }) {
   };
 
   return (
-    <QuantityComponent>
-      {images.map((item, index) => {
-        if (!item) {
-          return null; // Пропустити видалені елементи
-        }
-
-        return (
-          <Box
-            key={index}
-            sx={{
-              position: 'relative',
-              ...photoStyles(index, URL.createObjectURL(item) || ''),
-            }}
-          >
-            <div onClick={() => handleDeleteImage(index)}>
-              <CancelRoundedIcon
+    <QuantityComponent sx={{ mt: '10px' }}>
+      {images
+        ? images.map((img, index) => {
+            return (
+              <Box
+                key={img.imgUrl}
                 sx={{
-                  position: 'absolute',
-                  top: '10px',
-                  left: '15px',
-                  color: '#fff',
-                  '&:hover': {
-                    cursor: 'pointer',
-                    transition: 'linear, 500ms',
-                    transform: 'scale(1.3)',
-                  },
+                  ...photoStyles(index, img.imgUrl),
                 }}
-              />
-            </div>
-            <img
-              style={imgStyle}
-              src={URL.createObjectURL(item)}
-              alt="Adding image"
-            />
-          </Box>
-        );
-      })}
+              >
+                <CardMedia
+                  key={img.imgUrl}
+                  component="img"
+                  height="auto"
+                  image={img.imgUrl}
+                  alt="tweet img"
+                />
+              </Box>
+            );
+          })
+        : null}
     </QuantityComponent>
   );
 }
 
-export default AddingFile;
+export default TweetImages;

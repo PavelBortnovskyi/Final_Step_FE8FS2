@@ -10,10 +10,9 @@ import followers from 'src/redux/reducers/followersSlice';
 import followings from 'src/redux/reducers/followingsSlice';
 import userBiId from 'src/redux/reducers/userBiIdSlice';
 import userBookmarks from 'src/redux/reducers/getBookmarksSlise';
-// import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
+import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
+import likedTweet from 'src/redux/reducers/likedTweetSlice';
 import userNotifications from 'src/redux/reducers/getNotificationsSlice';
-
-
 
 const rootReducer = {
   auth,
@@ -22,7 +21,8 @@ const rootReducer = {
   tweets,
   singleTweet,
   userTweets,
-  // tweetReplies,
+  tweetReplies,
+  likedTweet,
   chat,
   followers,
   followings,

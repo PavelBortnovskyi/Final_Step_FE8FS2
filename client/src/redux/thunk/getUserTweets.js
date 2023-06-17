@@ -6,7 +6,7 @@ export const getUserTweetsThunk = createAsyncThunk(
   async ({ userId, page, pageSize }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(
-        `/tweet/tweets/${userId}?page=${page}&pageSize=${pageSize}`
+        `/tweet/user/${userId}?page=${page}&pageSize=${pageSize}`
       );
       return data.content;
     } catch (error) {

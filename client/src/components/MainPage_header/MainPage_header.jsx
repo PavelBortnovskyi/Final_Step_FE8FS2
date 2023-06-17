@@ -17,16 +17,16 @@ const CustomTab = styled(Tab)((props) => ({
   },
 }));
 
-function MainPage_header({ handleTab }) {
+function MainPage_header({ tabIndex, setTabIndex }) {
   const user = useSelector((state) => state.user.user) || '';
-  const [tabIndex, setTabIndex] = useState(0);
+
   const [isOpen, setIsOpen] = useState(false);
   const theme = useMode();
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
-    handleTab(tabIndex);
-    console.log('in Heder ', tabIndex);
+    // console.log('in Heder ', tabIndex);
+    // console.log('tab is', tab);
   };
 
   return (

@@ -52,6 +52,7 @@ function TweetBox({ placeholder, fnc, userAvatar }) {
         />
         {postImages.length > 0 && (
           <AddingFile
+            quantity={postImages.length}
             handleDeleteImage={handleDeleteImage}
             images={postImages}
           />

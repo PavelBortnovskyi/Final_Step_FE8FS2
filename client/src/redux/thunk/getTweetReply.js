@@ -6,7 +6,7 @@ export const getTweetReply = createAsyncThunk(
   async ({ id, page, pageSize }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(
-        `/tweet/tweet_reply/${id}?page=${page}&pageSize=${pageSize}`
+        `/tweet/user/${id}?page=${page}&pageSize=${pageSize}`
       );
       return data;
     } catch (error) {
