@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import Post from '../Post/Post';
-import TweetPost from 'src/UI/TweetPost';
+import TweetPost from 'src/UI/tweet/TweetPost';
 
 function Comment({
   displayName,

@@ -12,7 +12,7 @@ import { Box } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import PostElementBookmarks from './PostElementBookmarks';
 
-function PostIconList({ likes, reply, retweet, id }) {
+function PostIconList({ likes, reply, retweet, id, isLiked }) {
   const location = useLocation();
   const theme = useMode();
   return (
@@ -43,7 +43,7 @@ function PostIconList({ likes, reply, retweet, id }) {
         quantity={likes}
         color="red"
         id={id}
-        isLiked={false}
+        isLiked={isLiked}
       />
       <PostIconElement
         icon={<PublishOutlinedIcon fontSize="small" />}

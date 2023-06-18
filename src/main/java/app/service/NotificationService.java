@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
@@ -27,8 +26,6 @@ import java.util.Optional;
 public class NotificationService extends GeneralService<Notification> {
 
   private final NotificationModelRepository notificationRepository;
-
-  private final SimpMessagingTemplate messagingTemplate;
 
   private final WebSocketStompClient stompClient;
 

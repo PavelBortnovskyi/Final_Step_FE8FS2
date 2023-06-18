@@ -28,12 +28,11 @@ public class TweetResponseDTONE {
   private UserResponseDTO user;
 
   @JsonView(Marker.Preview.class)
-  private TweetResponseDTONEmini parentTweet;
-
-  @JsonView(Marker.Preview.class)
   private String body;
 
   @JsonView(Marker.Preview.class)
   private Set<AttachmentImageResponseDTO> attachmentImages = new HashSet<>();
 
+  @JsonView(Marker.Preview.class)
+  private TweetResponseDTONEmini parentTweet;
 }

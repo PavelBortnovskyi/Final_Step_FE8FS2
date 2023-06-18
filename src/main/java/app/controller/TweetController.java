@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @Log4j2
 @Validated
@@ -76,21 +77,21 @@ public class TweetController {
 
 
   @GetMapping("{id}")
-  @ApiOperation("Get TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Get TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
   }
 
 
   @DeleteMapping("{id}")
-  @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}.  Только свои можно удалять.")
+  @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}.  Только свои можно удалять.")
   public void deleteTweet(HttpServletRequest httpRequest, @PathVariable(name = "id") @Positive Long tweetId) {
     tweetFacade.deleteTweet((Long) httpRequest.getAttribute("userId"), tweetId);
   }
 
 
   @PostMapping("{id}/like")
-  @ApiOperation("Like TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Like TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> likeTweet(HttpServletRequest httpRequest,
                                                     @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -99,7 +100,7 @@ public class TweetController {
 
 
   @PostMapping("{id}/unlike")
-  @ApiOperation("Unlike лайк TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Unlike лайк TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> unLikeTweet(HttpServletRequest httpRequest,
                                                       @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -108,7 +109,7 @@ public class TweetController {
 
 
   @PostMapping("{id}/bookmark")
-  @ApiOperation("Add to bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Add to bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> bookmarkTweet(HttpServletRequest httpRequest,
                                                         @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -117,7 +118,7 @@ public class TweetController {
 
 
   @PostMapping("{id}/unbookmark")
-  @ApiOperation("Remove from bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLAY with {id}")
+  @ApiOperation("Remove from bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
   public ResponseEntity<TweetResponseDTO> unBookmarkTweet(HttpServletRequest httpRequest,
                                                           @PathVariable(name = "id") @Positive Long tweetId) {
     return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
@@ -127,12 +128,23 @@ public class TweetController {
 
   @GetMapping({"user/{id}", "/user"})
   @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
-  public Page<TweetResponseDTO> getAllTweetsOfUser(HttpServletRequest httpRequest,
-                                                   @PathVariable(name = "id", required = false) Long userId,
-                                                   @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetFacade.getAllTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
-      PageRequest.of(page, size));
+  public Page<TweetResponseDTO> getTweetsOfUser(HttpServletRequest httpRequest,
+                                                @PathVariable(name = "id", required = false) Long userId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      List.of(TweetType.TWEET, TweetType.RETWEET, TweetType.QUOTE_TWEET), PageRequest.of(page, size));
+  }
+
+
+  @GetMapping({"reply/user/{id}", "reply/user"})
+  @ApiOperation("Get all replies of user with {id}, without {id} - current user")
+  public Page<TweetResponseDTO> getAllRepliesOfUser(HttpServletRequest httpRequest,
+                                                @PathVariable(name = "id", required = false) Long userId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      List.of(TweetType.REPLY), PageRequest.of(page, size));
   }
 
 
@@ -191,6 +203,13 @@ public class TweetController {
       TweetActionType.BOOKMARK, PageRequest.of(page, size));
   }
 
+  @GetMapping("subscriptions")
+  @ApiOperation("Get all tweets (TWEET/RETWEET/QUOTE_TWEET) from the current user's subscriptions")
+  public Page<TweetResponseDTO> getTweetsFromSubscriptions(HttpServletRequest httpRequest,
+                                                           @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
+  }
 
 
 
