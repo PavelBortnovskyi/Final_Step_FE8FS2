@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import React from 'react'
 
 export default function SmallBtnTweet() {
