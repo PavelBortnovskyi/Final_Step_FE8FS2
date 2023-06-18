@@ -13,6 +13,8 @@ import userBookmarks from 'src/redux/reducers/getBookmarksSlise';
 import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
 import likedTweet from 'src/redux/reducers/likedTweetSlice';
 import userNotifications from 'src/redux/reducers/getNotificationsSlice';
+import userLikes from 'src/redux/reducers/userLikesSlice';
+import userReplise from 'src/redux/reducers/userRepliseSlice';
 
 const rootReducer = {
   auth,
@@ -29,6 +31,8 @@ const rootReducer = {
   userBiId,
   userBookmarks,
   userNotifications,
+  userLikes,
+  userReplise,
 };
 
 export const store = configureStore({
