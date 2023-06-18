@@ -3,9 +3,11 @@ import Box from '@mui/material/Box';
 // import { UserActionButton } from './UserActionButton';
 // import { Tab, Tabs } from '@mui/material';
 import React from 'react';
-import { TabContext, TabList } from '@mui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Tab } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
+import { UserLikes } from 'src/pages/UserLikes';
+import PostList from '../Post/PostList';
 
 export function UserAction() {
   const theme = useMode();
@@ -44,11 +46,20 @@ export function UserAction() {
               // component={NavLink}
               // to={linkToFollowers}
               label="Likes"
-              value="4"
+              value="3"
               sx={{ width: '33.33%', color: `${theme.palette.text.primary}` }}
             />
           </TabList>
         </Box>
+        <TabPanel sx={{ padding: '0' }} value="1">
+          <PostList />
+        </TabPanel>
+        <TabPanel sx={{ padding: '0' }} value="2">
+          <p>asd</p>
+        </TabPanel>
+        <TabPanel sx={{ padding: '0' }} value="3">
+          <UserLikes />
+        </TabPanel>
       </TabContext>
     </Box>
     // <Box>

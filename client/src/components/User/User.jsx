@@ -44,7 +44,7 @@ export const User = ({
         countUserFollowers={countUserFollowers}
       />
       <UserAction />
-      <PostList />
+      {/* <PostList /> */}
     </Box>
   );
 };
