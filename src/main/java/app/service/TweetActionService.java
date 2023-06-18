@@ -23,6 +23,7 @@ public class TweetActionService {
   private final TweetService tweetService;
   private final UserService userService;
 
+
   public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType)
       .orElseThrow(() -> new TweetActionNotFoundException(actionType, tweet.getId()));
@@ -44,17 +45,21 @@ public class TweetActionService {
     return tweetAction;
   }
 
+
   public Integer getCountLikes(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.LIKE);
   }
+
 
   public Integer getCountBookmarks(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.BOOKMARK);
   }
 
+
   public Page<TweetAction> getActionsByUser(UserModel user, TweetActionType tweetActionType, Pageable pageable) {
     return tweetActionRepository.findAllByUserAndActionTypeOrderByCreatedAtDesc(user, tweetActionType, pageable);
   }
+
 
   public boolean isUserActionTweet(UserModel currUser, Tweet tweet, TweetActionType tweetActionType) {
     return tweetActionRepository.existsByUserAndTweetAndActionType(currUser, tweet, tweetActionType);
