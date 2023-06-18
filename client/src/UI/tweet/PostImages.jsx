@@ -59,10 +59,6 @@ function PostImages({ images, quantity }) {
       break;
   }
 
-  if (images.length === 0) {
-    return <p>No photos</p>;
-  }
-
   const photoStyles = (index, img) => {
     let style = {};
     if (quantity === 3) {
