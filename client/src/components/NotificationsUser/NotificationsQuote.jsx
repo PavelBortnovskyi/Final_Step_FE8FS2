@@ -6,7 +6,7 @@ import { NotificationsBoxImg } from './NotificationsUI/NotificationsBoxImg';
 
 
 const StyledLink = styled(Link)(({ theme }) => ({
-  border: `0.5px solid ${theme.palette.border.main}`,
+  borderBottom: `1px solid ${theme.palette.border.main}`,
   padding: '12px 16px',
   width: '100%',
   '&:hover': {

@@ -32,8 +32,6 @@ export const NotificationsUser = () => {
   const theme = useTheme();
   const userNotifications = useSelector(state => state.userNotifications.userNotifications);
   const Notifications = userNotifications.content;
-const arrFoto = ['./img/06.jpg', './img/03.png']
-console.log();
 
   // send user to home if not authorization
   useEffect(() => {
@@ -43,7 +41,7 @@ console.log();
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getNotifications({ page: 0, pageSize: 120 }));
+    dispatch(getNotifications({ page: 0, pageSize: 20 }));
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
@@ -74,7 +72,6 @@ console.log(Notifications);
       </Tabs>
 
       <Box sx={{
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -91,7 +88,7 @@ console.log(Notifications);
             && <NotificationsLike notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'QUOTE_TWEET'
-            && <NotificationsQuote notification={notification} key={notification.id} arrFoto={arrFoto}/>)
+            && <NotificationsQuote notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'REPLY'
             && <NotificationsReplying notification={notification} key={notification.id} />)

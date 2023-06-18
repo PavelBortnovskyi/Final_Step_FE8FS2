@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React, { useEffect } from 'react';
 import { UserNick } from '../User/UserNIck';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 export const Bookmarks = () => {
+  const theme = useTheme();
   const user = useSelector((state) => state.user.user) || "";
   const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
   const Bookmarks = userBookmarks.content || [];
@@ -26,14 +27,16 @@ export const Bookmarks = () => {
   }, [dispatch]);
 
   return (
-    <Box sx={{ padding: '4px 0 0 16px' }}>
+    <Box sx={{ paddingTop: '4px' }}>
       <Box sx={{
         backdropFilter: 'blur(15px)',
         width: '100%',
         pb: '2px',
+        px: '16px',
         position: 'sticky',
         top: '0',
         zIndex: 13,
+        borderBottom: `1px solid ${theme.palette.border.main}`
       }}>
         <Typography variant="h5">Bookmarks</Typography>
         <UserNick userTag={user.userTag} />
@@ -42,7 +45,10 @@ export const Bookmarks = () => {
       {user !== '' ? (
         Bookmarks.map((bookmark) =>
           <Link to={`/tweet/${bookmark.tweet.id}`} key={bookmark.tweet.id}>
-            <Post tweet={bookmark.tweet} key={bookmark.tweet.id} />
+            <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}`}}>
+              <Post tweet={bookmark.tweet} key={bookmark.tweet.id} />
+            </Box>
+
           </Link>)
       ) : (
         <Box
