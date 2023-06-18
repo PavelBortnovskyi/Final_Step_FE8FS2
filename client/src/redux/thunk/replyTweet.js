@@ -13,7 +13,7 @@ export const createTweetReply = createAsyncThunk(
       postImages.forEach((image, index) => {
         formData.append(`attachmentImages`, image);
       });
-      const data = await myAxios.post(`/tweet/${id}/replay`, formData);
+      const data = await myAxios.post(`/tweet/${id}/reply`, formData);
 
       return data;
     } catch (error) {

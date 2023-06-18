@@ -6,21 +6,19 @@ import { likePost } from 'src/redux/thunk/likeTweet';
 import { unLikePost } from 'src/redux/thunk/unlike';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { getLikedTweet } from 'src/redux/selectors/selectors';
 
 function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
   const dispatch = useDispatch();
-  const [isLikedTweet, setIsLikedTweet] = useState(isLiked || false);
-
+  console.log(isLiked);
   const handleLike = () => {
     if (isLiked) {
       dispatch(unLikePost({ id }));
       console.log('unLiked');
-      setIsLikedTweet(false);
+      // setIsLikedTweet(false);
     } else {
       dispatch(likePost({ id }));
       console.log('Liked');
-      setIsLikedTweet(true);
+      // setIsLikedTweet(true);
     }
   };
 

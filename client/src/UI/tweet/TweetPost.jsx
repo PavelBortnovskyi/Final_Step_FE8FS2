@@ -1,10 +1,10 @@
 import { Box, Avatar, Typography, CardMedia } from '@mui/material';
 import React from 'react';
-import UserNames from './UserNames';
+import UserNames from '../UserNames';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
-import TranslatedText from './TranslatedText/TranslatedText';
+import TranslatedText from '../TranslatedText/TranslatedText';
 import { useMode } from 'src/styles/_materialTheme';
-import TweetImages from './CreatePostBar/TweetImages';
+import PostImages from './PostImages';
 
 function TweetPost({
   displayName,
@@ -18,6 +18,7 @@ function TweetPost({
   reply,
   retweet,
   id,
+  isLiked,
 }) {
   const theme = useMode();
 
@@ -53,10 +54,15 @@ function TweetPost({
         </Typography>
         <TranslatedText text={text} />
 
-        <TweetImages images={images} />
-
+        <PostImages images={images} quantity={images.length} />
         {showIconList ? (
-          <PostIconList likes={likes} reply={reply} retweet={retweet} id={id} />
+          <PostIconList
+            likes={likes}
+            isLiked={isLiked}
+            reply={reply}
+            retweet={retweet}
+            id={id}
+          />
         ) : (
           false
         )}

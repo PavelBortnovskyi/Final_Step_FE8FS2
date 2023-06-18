@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import TweetPost from 'src/UI/TweetPost';
+import TweetPost from 'src/UI/tweet/TweetPost';
 
 function Post({ tweet }) {
   console.log(tweet);
@@ -18,6 +18,9 @@ function Post({ tweet }) {
         likes={tweet.countLikes}
         reply={tweet.countReplays}
         retweet={tweet.countRetweets}
+        isLiked={tweet.currUserLiked}
+        isRetweet={tweet.countRetweets}
+        isComment={tweet.countReplays}
       />
     </Box>
   );
