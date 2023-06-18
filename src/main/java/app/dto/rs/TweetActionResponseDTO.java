@@ -6,9 +6,11 @@ import lombok.Data;
 @Data
 public class TweetActionResponseDTO {
 
-  TweetActionType tweetActionType;
+  Long id;
 
   String createdAt;
+
+  TweetActionType tweetActionType;
 
   UserResponseMiniDTO user;
 

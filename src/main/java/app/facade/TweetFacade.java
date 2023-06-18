@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 @NoArgsConstructor
@@ -81,8 +82,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public Page<TweetResponseDTO> getAllTweetsByUserId(Long userId, Pageable pageable) {
-    return tweetService.getAllTweetsByUserId(userId, pageable).map(this::convertToDto);
+  public Page<TweetResponseDTO> getTweetsByUserId(Long userId, List<TweetType> tweetTypes, Pageable pageable) {
+    return tweetService.getTweetsByUserId(userId, tweetTypes, pageable).map(this::convertToDto);
   }
 
 

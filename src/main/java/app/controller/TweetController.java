@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @Log4j2
 @Validated
@@ -127,12 +128,23 @@ public class TweetController {
 
   @GetMapping({"user/{id}", "/user"})
   @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
-  public Page<TweetResponseDTO> getAllTweetsOfUser(HttpServletRequest httpRequest,
-                                                   @PathVariable(name = "id", required = false) Long userId,
-                                                   @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetFacade.getAllTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
-      PageRequest.of(page, size));
+  public Page<TweetResponseDTO> getTweetsOfUser(HttpServletRequest httpRequest,
+                                                @PathVariable(name = "id", required = false) Long userId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      List.of(TweetType.TWEET, TweetType.RETWEET, TweetType.QUOTE_TWEET), PageRequest.of(page, size));
+  }
+
+
+  @GetMapping({"reply/user/{id}", "reply/user"})
+  @ApiOperation("Get all replies of user with {id}, without {id} - current user")
+  public Page<TweetResponseDTO> getAllRepliesOfUser(HttpServletRequest httpRequest,
+                                                @PathVariable(name = "id", required = false) Long userId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      List.of(TweetType.REPLY), PageRequest.of(page, size));
   }
 
 

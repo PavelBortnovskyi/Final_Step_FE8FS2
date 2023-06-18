@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Primary
 @Log4j2
 @Service
@@ -74,9 +76,9 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Page<Tweet> getAllTweetsByUserId(Long userId, Pageable pageable) {
-    return tweetRepository.findByUserAndTweetTypeNotOrderByCreatedAtDesc(
-      userService.getUser(userId), TweetType.REPLY, pageable);
+  public Page<Tweet> getTweetsByUserId(Long userId, List<TweetType> tweetTypes, Pageable pageable) {
+    return tweetRepository.findByUserAndTweetTypeInOrderByCreatedAtDesc(
+      userService.getUser(userId), tweetTypes, pageable);
   }
 
 
