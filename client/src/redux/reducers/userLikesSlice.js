@@ -1,5 +1,3 @@
-// userLikesSlice
-
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserLikes } from '../thunk/getUserLikes.js';
 

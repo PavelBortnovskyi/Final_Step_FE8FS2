@@ -8,6 +8,7 @@ import { Tab } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { UserLikes } from 'src/pages/UserLikes';
 import PostList from '../Post/PostList';
+import { UserReplise } from 'src/pages/UserReplise';
 
 export function UserAction() {
   const theme = useMode();
@@ -55,7 +56,7 @@ export function UserAction() {
           <PostList />
         </TabPanel>
         <TabPanel sx={{ padding: '0' }} value="2">
-          <p>asd</p>
+          <UserReplise />
         </TabPanel>
         <TabPanel sx={{ padding: '0' }} value="3">
           <UserLikes />

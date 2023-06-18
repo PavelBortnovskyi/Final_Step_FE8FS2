@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonSubscribe } from 'src/components/User/ButtonSubscribe';
 import { User } from 'src/components/User/User';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PostList from 'src/components/Post/PostList';
 import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
 import { getUserLikes } from 'src/redux/thunk/getUserLikes';
 import Post from 'src/components/Post/Post';
 import TweetPost from 'src/UI/tweet/TweetPost';
+import { useMode } from 'src/styles/_materialTheme';
 
 export const UserLikes = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export const UserLikes = () => {
   const userLikes = useSelector((state) => state.userLikes.userLikes) || [];
 
   const us = userLikes.content;
+  const theme = useMode();
 
   // const profile = useSelector((state) => state.user.user) || '';
 
@@ -45,23 +47,35 @@ export const UserLikes = () => {
     us &&
     us.map((likeTweet) => {
       return (
-        <Box id={likeTweet.tweet.id}>
-          <TweetPost
-            showIconList={true}
-            id={likeTweet.tweet.id}
-            displayName={likeTweet.tweet.user.fullName}
-            text={likeTweet.tweet.body}
-            username={likeTweet.tweet.user.userTag}
-            logoUrl={likeTweet.tweet.user.avatarImgUrl}
-            verified={likeTweet.tweet.user.isVerified}
-            images={likeTweet.tweet.attachmentImages}
-            likes={likeTweet.tweet.countLikes}
-            reply={likeTweet.tweet.countReplays}
-            retweet={likeTweet.tweet.countRetweets}
-            isLiked={likeTweet.tweet.currUserLiked}
-            isRetweet={likeTweet.tweet.countRetweets}
-            isComment={likeTweet.tweet.countReplays}
-          />
+        <Box
+          key={likeTweet.tweet.id}
+          sx={{
+            borderBottom: `1px solid ${theme.palette.border.main}`,
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              backgroundColor: `${theme.palette.background.hover}`,
+              cursor: 'pointer',
+            },
+          }}
+        >
+          <Link to={`/tweet/${likeTweet.tweet.id}`}>
+            <TweetPost
+              showIconList={true}
+              id={likeTweet.tweet.id}
+              displayName={likeTweet.tweet.user.fullName}
+              text={likeTweet.tweet.body}
+              username={likeTweet.tweet.user.userTag}
+              logoUrl={likeTweet.tweet.user.avatarImgUrl}
+              verified={likeTweet.tweet.user.isVerified}
+              images={likeTweet.tweet.attachmentImages}
+              likes={likeTweet.tweet.countLikes}
+              reply={likeTweet.tweet.countReplays}
+              retweet={likeTweet.tweet.countRetweets}
+              isLiked={likeTweet.tweet.currUserLiked}
+              isRetweet={likeTweet.tweet.countRetweets}
+              isComment={likeTweet.tweet.countReplays}
+            />
+          </Link>
         </Box>
       );
     })

@@ -36,3 +36,6 @@ export const getUserBiId = (state) => state.userBiId;
 
 //get user likes
 export const getUserLikes = (state) => state.userLikes;
+
+//get user replise
+export const getUserReplise = (state) => state.userReplise;
