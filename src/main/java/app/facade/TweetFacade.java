@@ -27,7 +27,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   private final CurrUserService currUserService;
 
 
-  private TweetResponseDTO setCustomFields(UserModel currUser, TweetResponseDTO tweetResponseDTO) {
+  private TweetResponseDTO setCustomFields(TweetResponseDTO tweetResponseDTO, UserModel currUser) {
     if (tweetResponseDTO == null) return null;
     Tweet tweet = tweetService.getTweet(tweetResponseDTO.getId());
     tweetResponseDTO
@@ -41,14 +41,14 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
       .setCurrUserRetweeted(tweetService.isUserTweetedTweet(currUser, tweet, TweetType.RETWEET))
       .setCurrUserCommented(tweetService.isUserTweetedTweet(currUser, tweet, TweetType.REPLY))
       .setCurrUserQuoted(tweetService.isUserTweetedTweet(currUser, tweet, TweetType.QUOTE_TWEET));
-    setCustomFields(currUser, tweetResponseDTO.getParentTweet());
+    setCustomFields(tweetResponseDTO.getParentTweet(), currUser);
     return tweetResponseDTO;
   }
 
 
   @Override
   public TweetResponseDTO convertToDto(Tweet tweet) {
-    return setCustomFields(currUserService.getCurrUser(), super.convertToDto(tweet));
+    return setCustomFields(super.convertToDto(tweet), currUserService.getCurrUser());
   }
 
 
