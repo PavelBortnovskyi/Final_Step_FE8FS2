@@ -5,7 +5,7 @@ export const likePost = createAsyncThunk(
   'tweet/likeToTweet',
   async ({ id }, thunkAPI) => {
     try {
-      const { data } = await myAxios.post(`/tweet/like/${id}`);
+      const { data } = await myAxios.post(`/tweet/${id}/like`);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

@@ -312,31 +312,32 @@ public class JwtTokenService {
       default -> {
         return now;
       }
-    }}
-
-    /**
-     * Method returns generated access and refresh token pair based on provided user model
-     */
-    public HashMap<String, String> generateTokenPair(UserModel user) {
-      String accessToken = this.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
-      String refreshToken = this.createToken(user.getId(), TokenType.REFRESH);
-
-      //Update refresh token for current user
-      this.updateRefreshToken(user, refreshToken);
-      this.changeRefreshTokenStatus(user.getId(), false);
-
-      //JWT tokens for response packing
-      HashMap<String, String> response = new HashMap<>();
-      response.put("ACCESS_TOKEN", accessToken);
-      response.put("REFRESH_TOKEN", refreshToken);
-      response.put("USER_ID", user.getId().toString());
-      return response;
     }
   }
 
   /**
-   * Sandbox
+   * Method returns generated access and refresh token pair based on provided user model
    */
+  public HashMap<String, String> generateTokenPair(UserModel user) {
+    String accessToken = this.createToken(user.getId(), TokenType.ACCESS, user.getUserTag(), user.getEmail());
+    String refreshToken = this.createToken(user.getId(), TokenType.REFRESH);
+
+    //Update refresh token for current user
+    this.updateRefreshToken(user, refreshToken);
+    this.changeRefreshTokenStatus(user.getId(), false);
+
+    //JWT tokens for response packing
+    HashMap<String, String> response = new HashMap<>();
+    response.put("ACCESS_TOKEN", accessToken);
+    response.put("REFRESH_TOKEN", refreshToken);
+    response.put("USER_ID", user.getId().toString());
+    return response;
+  }
+}
+
+/**
+ * Sandbox
+ */
 //  public static void main(String[] args) {
 //    JwtTokenService jwts = new JwtTokenService();
 //    String access = jwts.createToken(1L, TokenType.ACCESS, "DUFF", "111@gmail.com");

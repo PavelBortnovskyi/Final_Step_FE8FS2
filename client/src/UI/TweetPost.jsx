@@ -4,13 +4,14 @@ import UserNames from './UserNames';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import TranslatedText from './TranslatedText/TranslatedText';
 import { useMode } from 'src/styles/_materialTheme';
+import TweetImages from './CreatePostBar/TweetImages';
 
 function TweetPost({
   displayName,
   username,
   verified,
   text,
-  image,
+  images,
   logoUrl,
   showIconList,
   likes,
@@ -28,10 +29,6 @@ function TweetPost({
         pt: '16px',
         pr: '5px',
         color: `${theme.palette.text.primary}`,
-        // '&:hover': {
-        //   backgroundColor: `${theme.palette.background.hover}`,
-        //   cursor: 'pointer',
-        // },
       }}
       display="flex"
     >
@@ -51,24 +48,12 @@ function TweetPost({
           postTime="10h"
         />
 
-        <Typography variant="body" sx={{ fontSize: '15px' }}>
+        <Typography variant="body" sx={{ fontSize: '15px', mb: '20px' }}>
           {text}
         </Typography>
         <TranslatedText text={text} />
-        {image ? (
-          <CardMedia
-            component="img"
-            height="auto"
-            image={image}
-            alt="Paella dish"
-            sx={{
-              borderRadius: '20px',
-              mt: '20px',
-            }}
-          />
-        ) : (
-          false
-        )}
+
+        <TweetImages images={images} />
 
         {showIconList ? (
           <PostIconList likes={likes} reply={reply} retweet={retweet} id={id} />

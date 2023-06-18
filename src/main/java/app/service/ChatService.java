@@ -1,7 +1,7 @@
 package app.service;
 
-import app.dto.rs.ChatResponse;
-import app.dto.rs.MessageResponse;
+import app.dto.rs.ChatResponseDTO;
+import app.dto.rs.MessageResponseDTO;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
@@ -12,7 +12,6 @@ import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -96,16 +94,17 @@ public class ChatService extends GeneralService<Chat> {
       this.chatRepository.save(chat);
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
         userToRemoveId, chatId, removeInitUserId));
-    } else return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
-      userToRemoveId, chatId, removeInitUserId));
+    } else
+      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
   }
 
   /**
    * Method returns pageable list of chat messages
    */
-  public Page<MessageResponse> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
+  public Page<MessageResponseDTO> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
     return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber))
-      .map(m -> modelMapper.map(m, MessageResponse.class));
+      .map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
   /**
@@ -118,32 +117,32 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns collection of user chats for only last message in each
    */
-  public CustomPageImpl<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
+  public CustomPageImpl<ChatResponseDTO> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
     return new CustomPageImpl<>(chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
       Chat chat = (Chat) array[0];
       Message lastMessage = (Message) array[1];
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
-      return this.modelMapper.map(chat, ChatResponse.class);
+      return this.modelMapper.map(chat, ChatResponseDTO.class);
     }));
   }
 
   /**
    * Method returns page of message responses from user chat according to keyword matches
    */
-  public Page<MessageResponse> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+  public Page<MessageResponseDTO> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     this.chatRepository.findById(chatId)
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()))
       .orElseThrow(() -> new BadRequestException(String.format("User with id: %d cannot search in chat with id: %d", userId, chatId)));
-    return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
+    return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
   /**
    * Method returns page of message responses from user chats according to keyword matches
    */
-  public Page<MessageResponse> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
+  public Page<MessageResponseDTO> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+    return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
 //  public List<Page> getSearchResult(Long userId, Integer pageSize, Integer pageNumber, String keyword){

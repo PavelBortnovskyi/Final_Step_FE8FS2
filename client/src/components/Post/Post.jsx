@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import TweetPost from 'src/UI/TweetPost';
 
 function Post({ tweet }) {
-  console.log(tweet);
   return (
     <Box>
       <TweetPost

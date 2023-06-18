@@ -1,22 +1,9 @@
 import React from 'react'
-import Post from '../Post/Post'
 import { Avatar, Box, Typography, styled } from '@mui/material'
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-import TranslatedText from 'src/UI/TranslatedText/TranslatedText';
-import UserNames from 'src/UI/UserNames';
+import { NotificationsBoxImg } from './NotificationsUI/NotificationsBoxImg';
 
-
-
-const CustomImg = styled(Box)(({ img }) => {
-  return ({
-    width: '48%',
-    backgroundImage: `url(${img})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  });
-})
 
 const StyledLink = styled(Link)(({ theme }) => ({
   border: `0.5px solid ${theme.palette.border.main}`,
@@ -31,125 +18,105 @@ const StyledLink = styled(Link)(({ theme }) => ({
 }));
 
 
-export const NotificationsQuote = ({ notification, arrFoto }) => {
+export const NotificationsQuote = ({ notification }) => {
   const theme = useTheme();
 
-  const Text = "Text tweet Що таке Lorem Ipsum? Lorem Ipsum - це текст по суті незмінною. Вона популяризувалась в 60-их роках минулого сторіччя завдяки виданню зразків шрифтів Letraset, які містили уривки з Lorem Ipsum, і вдруге - нещодавно завдяки програмам комп'ютерного верстування на кшталт Aldus Pagemaker, які використовували різні версії Lorem Ipsum."
-  const TextPreview = Text.length > 90 ? Text.slice(0, 90) + "..." : Text;
-  const fullName = notification.initiator.fullName || '';
-  const FirstName = fullName.length > 24 ? fullName.slice(0, 24) + "..." : fullName;
-  // const Images = notification.tweet.attachmentsImages || [];
-  const Images = arrFoto;
+  const TextInitiator = notification.tweet.body || '';
+  const TextPreviewInitiator = TextInitiator.length > 90 ? TextInitiator.slice(0, 90) + "..." : TextInitiator;
+  const TextUser = notification.tweet.parentTweet.body || '';
+  const TextPreviewUser = TextUser.length > 90 ? TextUser.slice(0, 90) + "..." : TextUser;
 
-console.log(notification);
+  const fullNameInitiator = notification.initiator.fullName || '';
+  const FirstNameInitiator = fullNameInitiator.length > 24 ? fullNameInitiator.slice(0, 24) + "..." : fullNameInitiator;
+  const fullNameUser = notification.tweet.parentTweet.user.fullName || '';
+  const FirstNameUser = fullNameUser.length > 24 ? fullNameUser.slice(0, 24) + "..." : fullNameUser;
+
+  const ImagesInitiator = notification.tweet.attachmentImages || [];
+  const ImagesUser = notification.tweet.parentTweet.attachmentImages || [];
+  console.log(notification);
+
   return (
-    <StyledLink to={`/tweet/${notification.tweet.tweetId}`} key={notification.tweet.tweetId}>
-Quote
-    <Box sx={{
-      // height: '300px',
-      width: '100%',
-      
-    }}>
-            <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '32px', height: '32px' }} />
+    <StyledLink to={`/tweet/${notification.tweet.id}`} key={notification.tweet.id}>
 
-            <Box sx={{ paddingLeft: '56px' }}>
-        <Typography variant='body1' sx={{ color: `${theme.palette.text.primary}` }}>
-          <strong style={{ textTransform: 'capitalize' }}> {FirstName} </strong> Quote your Tweet
-        </Typography>
-        <Typography variant='body2'
-          sx={{
-            paddingTop: '12px',
-            color: `${theme.palette.text.secondary}`,
-          }}>
-          {TextPreview}
-        </Typography>
+      <Box sx={{
+        width: '100%',
+      }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'start',
+          alignItems: 'center',
+          paddingBottom: '6px',
+        }}>
+          <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '40px', height: '40px' }} />
+          <Typography variant='body1' sx={{ paddingLeft: '16px', color: `${theme.palette.text.primary}` }}>
+            <strong style={{ textTransform: 'capitalize' }}>
+              {FirstNameInitiator}
+            </strong>
+            <span style={{ paddingLeft: '4px' }}>Quote your Tweet</span>
+          </Typography>
+        </Box>
 
-        {/* if img = 1 */}
-        {Images.length === 1 && (
-          <Box sx={{ height: '100px', paddingTop: '10px', display: 'flex', }}>
-            {Images.map(img => (
-              <CustomImg img={img} key={img}></CustomImg>
-            ))}
+        <Box sx={{ paddingLeft: '56px' }}>
+          <Typography variant='body2'
+            sx={{
+              color: `${theme.palette.text.secondary}`,
+            }}>
+            {TextPreviewInitiator}
+          </Typography>
+        </Box>
+
+        <NotificationsBoxImg Images={ImagesInitiator} pl='56'/>
+      </Box>
+
+
+
+      {/* tweet который цитируют */}
+      {
+        notification && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+              justifyItems: 'end',
+              width: '100%',
+              py: '16px',
+              color: `${theme.palette.text.primary}`,
+            }}
+          >
+            <Box sx={{
+              marginLeft: '56px',
+              width: '100%',
+              p: '16px',
+              border: `1px solid ${theme.palette.border.main}`,
+              borderRadius: '30px'
+            }}>
+
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}>
+                <Avatar src={notification.tweet.parentTweet.user.avatarImgUrl} />
+                <Typography variant='body1' sx={{ paddingLeft: '16px', color: `${theme.palette.text.primary}` }}>
+                  <strong style={{ textTransform: 'capitalize' }}>
+                    {FirstNameUser}
+                  </strong>
+                </Typography>
+              </Box>
+
+
+              <Box sx={{ paddingLeft: '56px' }}>
+                <Typography variant='body2'
+                  sx={{
+                    color: `${theme.palette.text.secondary}`,
+                  }}>
+                  {TextPreviewUser}
+                </Typography>
+              </Box>
+
+              <NotificationsBoxImg Images={ImagesUser} pl='56'/>
+            </Box>
           </Box>
         )}
-
-        {/* if img = 2 */}
-        {Images.length === 2 && (
-          <Box sx={{ paddingTop: '10px', height: '100px', display: 'flex', justifyContent: 'space-between', gap: '10px' }} >
-            {Images.map(img => (
-              <CustomImg img={img} key={img} ></CustomImg>
-            ))}
-          </Box>
-        )}
-
-        {/* if img > 2 */}
-        {Images.length > 2 && (
-          <Box sx={{ paddingTop: '10px', height: '100px', display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-            {Images.map(img => (
-              <CustomImg img={img} key={img} ></CustomImg>
-            ))}
-          </Box>
-        )}
-      </Box>
-    </Box>
-
-
-
-{/* tweet который цитируют */}
-{
-  notification && (
-
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'end',
-        width: '80%',
-        p: '16px',
-        color: `${theme.palette.text.primary}`,
-        // '&:hover': {
-        //   backgroundColor: `${theme.palette.background.hover}`,
-        //   cursor: 'pointer',
-        // },
-      }}
-    >
-    <Box sx={{
-      p: '16px',
-      border: '1px solid red',
-      borderRadius: '30px'
-    }}>
-
-    
-      <Box sx={{ pr: '10px', pl: { xs: '5px', sm: '15px' } }}>
-        <Avatar src={notification.receiver.avatarImgUrl} />
-      </Box>
-      <Box
-        padding={1}
-        sx={{
-          width: '100%',
-        }}
-      >
-        <UserNames
-          fullName={notification.receiver.fullName}
-          userTag={notification.receiver.userTag}
-          postTime="10h"
-        />
-
-        <Typography variant="body" sx={{ fontSize: '15px' }}>
-          {'jsahdjadjashdh   jashdjsdj jsdjkahdj hdjkhasjdhajshdj  sadjashdj  ksjdhakjshdjkahdh sajd hsjdjkahdja jnjadshjkahdjkhajsdhajkhdjashdkjahdjahs notification.tweet.body'}
-        </Typography>
-        <TranslatedText text={notification.tweet.body} />
-        {Images.length > 0 && (
-          <Box sx={{ paddingTop: '10px', height: '100px', display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-            {Images.map(img => (
-              <CustomImg img={img} key={img} ></CustomImg>
-            ))}
-          </Box>
-        )}
-
-      </Box>
-      </Box>
-    </Box>
-  )}
-</StyledLink>
+    </StyledLink>
   )
 }

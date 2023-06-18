@@ -10,25 +10,24 @@ function ModalCommentPage() {
   const post = tweet.tweet;
   const user = useSelector((state) => state.user.user) || '';
 
-  console.log(post);
-
   return (
     <Modal title="">
       {post && (
         <TweetPost
-          id={post.tweetId}
-          displayName={user.fullName}
+          showIconList={false}
+          id={post.id}
+          displayName={post.user.fullName}
           text={post.body}
-          username={post.userTag}
-          logoUrl={post.userAvatarImage}
-          verified={user.isVerified}
-          image={post.attachmentsImages[0]}
+          username={post.user.userTag}
+          logoUrl={post.user.avatarImgUrl}
+          verified={post.user.isVerified}
+          images={post.attachmentImages}
           likes={post.countLikes}
-          reply={post.countReply}
+          reply={post.countReplays}
           retweet={post.countRetweets}
         />
       )}
-      <TweetBox />
+      <TweetBox placeholder="Tweet your reply" />
     </Modal>
   );
 }

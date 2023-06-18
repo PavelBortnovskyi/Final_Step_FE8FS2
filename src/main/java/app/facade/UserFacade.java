@@ -8,6 +8,7 @@ import app.service.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,19 +64,19 @@ public class UserFacade extends GeneralFacade<UserModel, UserRequestDTO, UserRes
     return convertToDto(userService.unsubscribe(userId, userIdToUnFollowing));
   }
 
-  public Page<UserResponseDTO> getFollowers(Long userId, int page, int size) {
-    return userService.getFollowers(userId, page, size).map(this::convertToDto);
+  public Page<UserResponseDTO> getFollowers(Long userId, Pageable pageable) {
+    return userService.getFollowers(userId, pageable).map(this::convertToDto);
   }
 
-  public Page<UserResponseDTO> getFollowings(Long userId, int page, int size) {
-    return userService.getFollowings(userId, page, size).map(this::convertToDto);
+  public Page<UserResponseDTO> getFollowings(Long userId, Pageable pageable) {
+    return userService.getFollowings(userId, pageable).map(this::convertToDto);
   }
 
-  public Page<UserResponseDTO> getOfferFollowings(Long userId, int page, int size) {
-    return userService.getOfferFollowings(userId, page, size).map(this::convertToDto);
+  public Page<UserResponseDTO> getOfferFollowings(Long userId, Pageable pageable) {
+    return userService.getOfferFollowings(userId, pageable).map(this::convertToDto);
   }
 
-  public Page<UserResponseDTO> findUser(Long userId, String searchString, int page, int size) {
-    return userService.searchUsers(userId, searchString, page, size).map(this::convertToDto);
+  public Page<UserResponseDTO> findUser(Long userId, String searchString, Pageable pageable) {
+    return userService.searchUsers(userId, searchString, pageable).map(this::convertToDto);
   }
 }

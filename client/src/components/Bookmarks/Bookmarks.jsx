@@ -24,12 +24,21 @@ export const Bookmarks = () => {
   useEffect(() => {
     dispatch(getBookmarks({ page: 0, pageSize: 10 }));
   }, [dispatch]);
-console.log(userBookmarks);
-console.log(Bookmarks);
+
   return (
-    <Box sx={{ height: '100vh', padding: '4px 0 0 16px' }}>
-      <Typography variant="h5">Bookmarks</Typography>
-      <UserNick userTag={user.userTag} />
+    <Box sx={{ padding: '4px 0 0 16px' }}>
+      <Box sx={{
+        backdropFilter: 'blur(15px)',
+        width: '100%',
+        pb: '2px',
+        position: 'sticky',
+        top: '0',
+        zIndex: 13,
+      }}>
+        <Typography variant="h5">Bookmarks</Typography>
+        <UserNick userTag={user.userTag} />
+      </Box>
+
       {user !== '' ? (
         Bookmarks.map((bookmark) =>
           <Link to={`/tweet/${bookmark.tweet.id}`} key={bookmark.tweet.id}>

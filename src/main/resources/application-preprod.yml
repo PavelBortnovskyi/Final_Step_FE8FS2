@@ -88,6 +88,8 @@ google:
 facebook:
   client-id: ${FACEBOOK_CLIENT_ID}
   client-secret: ${FACEBOOK_CLIENT_SECRET}
+socket:
+  host: "ws://final-step-fe2fs8tw.herokuapp.com/notifications-ws"
 
 
 

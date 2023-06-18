@@ -1,16 +1,16 @@
 import React from 'react';
-
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 import PostIconElement from './PostIconElement';
 import PostIconElementLike from './PostIconElementLike';
 import PostIconElementComment from './PostIconElementComment';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { Box } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
+import PostElementBookmarks from './PostElementBookmarks';
 
 function PostIconList({ likes, reply, retweet, id }) {
   const location = useLocation();
@@ -18,23 +18,23 @@ function PostIconList({ likes, reply, retweet, id }) {
   return (
     <Box
       sx={{
+        mt: '20px',
         display: 'flex',
         justifyContent: 'space-between',
         width: '90%',
         color: `${theme.palette.text.primary}`,
       }}
     >
-      <Link
+      <NavLink
         to="/modal/comment"
         state={{ background: location }}
         component={NavLink}
       >
         <PostIconElementComment quantity={retweet} color="#72bcd4" id={id} />
-      </Link>
-
+      </NavLink>
       <PostIconElement
         icon={<RepeatOutlinedIcon fontSize="small" />}
-        quantity="19"
+        quantity={retweet}
         color="lightgreen"
       />
 
@@ -43,11 +43,18 @@ function PostIconList({ likes, reply, retweet, id }) {
         quantity={likes}
         color="red"
         id={id}
+        isLiked={false}
       />
       <PostIconElement
         icon={<PublishOutlinedIcon fontSize="small" />}
         quantity={reply}
         color="lightblue"
+      />
+      <PostElementBookmarks
+        icon={<BookmarkBorderIcon fontSize="small" />}
+        isBookmarks={false}
+        quantity="10"
+        color="#1d9bf0"
       />
     </Box>
   );

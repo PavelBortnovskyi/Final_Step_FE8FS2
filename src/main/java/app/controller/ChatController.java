@@ -1,8 +1,8 @@
 package app.controller;
 
 import app.annotations.Marker;
-import app.dto.rs.ChatResponse;
-import app.dto.rs.MessageResponse;
+import app.dto.rs.ChatResponseDTO;
+import app.dto.rs.MessageResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.utils.CustomPageImpl;
@@ -33,9 +33,9 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to return created chat response
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-  public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponse>> handleCreateChat(@RequestParam("interlocutorId")
-                                                                                                @NotNull @Positive Long interlocutorId,
-                                                                                                HttpServletRequest request) {
+  public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponseDTO>> handleCreateChat(@RequestParam("interlocutorId")
+                                                                                                   @NotNull @Positive Long interlocutorId,
+                                                                                                   HttpServletRequest request) {
     Long currUserId = (Long) request.getAttribute("userId");
     return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));
   }
@@ -61,11 +61,11 @@ public class ChatController {
   @Validated({Marker.ChatDetails.class})
   @PutMapping(path = "/{id}/user_add", produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonView(Marker.ChatDetails.class)
-  public ResponseEntity<ChatResponse> handleAddUserToChat(@RequestParam("userId")
-                                                          @NotNull(groups = Marker.ChatDetails.class)
-                                                          @Positive(groups = Marker.ChatDetails.class)
-                                                          Long userIdToAdd,
-                                                          @PathVariable(name = "id") Long chatId) {
+  public ResponseEntity<ChatResponseDTO> handleAddUserToChat(@RequestParam("userId")
+                                                             @NotNull(groups = Marker.ChatDetails.class)
+                                                             @Positive(groups = Marker.ChatDetails.class)
+                                                             Long userIdToAdd,
+                                                             @PathVariable(name = "id") Long chatId) {
     return ResponseEntity.ok(this.chatFacade.addUserToChat(userIdToAdd, chatId));
   }
 
@@ -88,9 +88,9 @@ public class ChatController {
 
   @JsonView(value = Marker.ChatDetails.class)
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<ChatResponse> handleGetChatsForPreview(HttpServletRequest request,
-                                                               @RequestParam("page") @NotNull Integer page,
-                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+  public CustomPageImpl<ChatResponseDTO> handleGetChatsForPreview(HttpServletRequest request,
+                                                                  @RequestParam("page") @NotNull Integer page,
+                                                                  @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatsForPreview(currUserId, pageSize, page);
   }
@@ -100,11 +100,11 @@ public class ChatController {
    * (only user that participates the chat can get messages)
    */
   @Validated({Marker.ChatDetails.class})
-  @GetMapping(path = "/{id}/messages/", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponse> handleGetChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
-                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
-                                             @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
-                                             @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
+  @GetMapping(path = "/{id}/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponseDTO> handleGetChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
+                                                @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
+                                                @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                                @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     Long currUserId = (Long) request.getAttribute("userId");
     return this.chatFacade.getChatMessages(currUserId, chatId, pageSize, page);
   }
@@ -113,12 +113,12 @@ public class ChatController {
    * This endpoint waiting for valid url params and token to return page with search result in chat
    */
   @Validated({Marker.ChatDetails.class})
-  @PostMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponse> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
-                                                             @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
-                                                             @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
-                                                             @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
-                                                             @RequestParam("keyword") String keyword) {
+  @GetMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponseDTO> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
+                                                                @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
+                                                                @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                                                @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
+                                                                @RequestParam("keyword") String keyword) {
     if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
     }
@@ -129,11 +129,11 @@ public class ChatController {
   /**
    * This endpoint waiting for valid url params and token to return page with search result in all user chats
    */
-  @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponse> handleGetSearchResultFromChats(HttpServletRequest request,
-                                                              @RequestParam("page") @NotNull Integer page,
-                                                              @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
-                                                              @RequestParam("keyword") String keyword) {
+  @GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<MessageResponseDTO> handleGetSearchResultFromChats(HttpServletRequest request,
+                                                                 @RequestParam("page") @NotNull Integer page,
+                                                                 @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
+                                                                 @RequestParam("keyword") String keyword) {
     if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
     }

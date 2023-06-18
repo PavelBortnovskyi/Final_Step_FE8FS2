@@ -6,6 +6,7 @@ export const createTweet = createAsyncThunk(
   async (tweet, { rejectWithValue }) => {
     try {
       const { postInputText, postImages } = tweet;
+      console.log(postImages);
 
       const formData = new FormData();
       formData.append('tweetBody', postInputText);

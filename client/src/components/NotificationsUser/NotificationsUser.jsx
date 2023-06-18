@@ -43,7 +43,7 @@ console.log();
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getNotifications({ page: 0, pageSize: 10 }));
+    dispatch(getNotifications({ page: 0, pageSize: 120 }));
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
@@ -52,8 +52,16 @@ console.log();
 
 console.log(Notifications);
   return (
-    <Box sx={{ height: '100vh', padding: '8px 0 0 0' }}>
-      <Typography variant="h5" sx={{ padding: '0 0 8px 16px', }}>
+    <Box sx={{ padding: '8px 0 0 0' }}>
+      <Typography variant="h5"
+      sx={{
+        backdropFilter: 'blur(15px)',
+        width: '100%',
+        padding: '8px 0 8px 16px',
+        position: 'sticky',
+        top: '0',
+        zIndex: 13,
+      }}>
         Notifications
       </Typography>
       <Tabs value={tabIndex} onChange={handleTabChange}
@@ -82,7 +90,7 @@ console.log(Notifications);
             (notification.notificationType === 'LIKE'
             && <NotificationsLike notification={notification} key={notification.id} />)
             ||
-            (notification.notificationType === 'QUOTE_TWEET1'
+            (notification.notificationType === 'QUOTE_TWEET'
             && <NotificationsQuote notification={notification} key={notification.id} arrFoto={arrFoto}/>)
             ||
             (notification.notificationType === 'REPLY'
