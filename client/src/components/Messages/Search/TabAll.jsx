@@ -10,7 +10,7 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'start',
   alignItems: 'center',
-  color: '#bf1414',
+  color: `${theme.palette.primary.main}`,
   borderBottom: `1px solid ${theme.palette.border.main}`,
   padding: '6px 0',
 }));

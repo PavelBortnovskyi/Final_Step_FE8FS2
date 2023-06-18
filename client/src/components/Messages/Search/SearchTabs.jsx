@@ -81,7 +81,6 @@ export const SearchTabs = () => {
             label="All"
             {...tabsProps(0)}
           />
-          {/* <PeopleAltIcon sx={{ fontSize: 20, marginRight: '10px' }} /> */}
           <TabSearch
             icon={<PeopleAltIcon />}
             label="People"

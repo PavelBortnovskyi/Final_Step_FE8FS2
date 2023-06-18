@@ -11,8 +11,8 @@ function UserNames({
   fullName = '',
   verified = false,
   userTag = '',
-  postTime = '',
-  text = null,
+  text = '',
+  postTime = null,
 }) {
   const theme = useTheme();
   return (

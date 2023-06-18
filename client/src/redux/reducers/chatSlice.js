@@ -7,7 +7,7 @@ import { getChatMessages } from '../thunk/getChatMessages.js';
 
 const initialState = {
   guest: null,
-  // currentChat: null,
+  currentChat: null,
   chatMessages: null,
   allChats: null,
   socketChat: null,
@@ -57,19 +57,19 @@ export const chatSlice = createSlice({
     // });
 
     // getCurrentChat
-    // builder.addCase(getCurrentChat.pending, (state, action) => {
-    //   // state.guest = null;
-    //   state.isLoading = true;
-    //   state.error = '';
-    // });
-    // builder.addCase(getCurrentChat.fulfilled, (state, action) => {
-    //   state.currentChat = action.payload;
-    //   state.isLoading = false;
-    // });
-    // builder.addCase(getCurrentChat.rejected, (state, action) => {
-    //   state.error = action.payload?.info;
-    //   state.isLoading = false;
-    // });
+    builder.addCase(getCurrentChat.pending, (state, action) => {
+      // state.guest = null;
+      state.isLoading = true;
+      state.error = '';
+    });
+    builder.addCase(getCurrentChat.fulfilled, (state, action) => {
+      state.currentChat = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getCurrentChat.rejected, (state, action) => {
+      state.error = action.payload?.info;
+      state.isLoading = false;
+    });
 
     // getAllChats
     builder.addCase(getAllChats.pending, (state, action) => {
