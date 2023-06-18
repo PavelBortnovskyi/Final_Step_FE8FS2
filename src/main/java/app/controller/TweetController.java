@@ -140,9 +140,9 @@ public class TweetController {
   @GetMapping({"reply/user/{id}", "reply/user"})
   @ApiOperation("Get all replies of user with {id}, without {id} - current user")
   public Page<TweetResponseDTO> getAllRepliesOfUser(HttpServletRequest httpRequest,
-                                                @PathVariable(name = "id", required = false) Long userId,
-                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+                                                    @PathVariable(name = "id", required = false) Long userId,
+                                                    @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
       List.of(TweetType.REPLY), PageRequest.of(page, size));
   }
@@ -210,7 +210,6 @@ public class TweetController {
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
-
 
 
 }
