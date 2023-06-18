@@ -56,4 +56,7 @@ public class TweetActionService {
     return tweetActionRepository.findAllByUserAndActionTypeOrderByCreatedAtDesc(user, tweetActionType, pageable);
   }
 
+  public boolean isUserActionTweet(UserModel currUser, Tweet tweet, TweetActionType tweetActionType) {
+    return tweetActionRepository.existsByUserAndTweetAndActionType(currUser, tweet, tweetActionType);
+  }
 }

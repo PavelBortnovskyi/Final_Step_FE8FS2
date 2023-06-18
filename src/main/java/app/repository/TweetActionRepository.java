@@ -36,6 +36,8 @@ public interface TweetActionRepository extends RepositoryInterface<TweetAction> 
   Optional<TweetAction> getByUserAndTweetAndActionType(UserModel user, Tweet tweet, TweetActionType actionType);
 
   Page<TweetAction> findAllByUserAndActionTypeOrderByCreatedAtDesc(UserModel user, TweetActionType actionType, Pageable pageable);
+
+  boolean existsByUserAndTweetAndActionType(UserModel user, Tweet tweet, TweetActionType tweetActionType);
 }
 
 

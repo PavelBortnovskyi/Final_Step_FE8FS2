@@ -42,19 +42,16 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
   Optional<Tweet> findTweetById(Long tweetId);
 
-
   Integer countByParentTweetAndTweetType(Tweet parentTweet, TweetType tweetType);
-
 
   Page<Tweet> findByUserAndTweetTypeInOrderByCreatedAtDesc(UserModel user, List<TweetType> tweetTypes, Pageable pageable);
 
-
   Page<Tweet> findByParentTweetAndTweetTypeOrderByCreatedAtDesc(Tweet tweet, TweetType tweetType, Pageable pageable);
-
 
   Page<Tweet> findByTweetTypeNotOrderByCreatedAtDesc(TweetType excludeTweetType, Pageable pageable);
 
-
   Page<Tweet> findAllByUser_FollowersContainingAndTweetTypeNotOrderByCreatedAtDesc(UserModel userModel, TweetType tweetType, Pageable pageable);
+
+  boolean existsByUserAndParentTweetAndTweetType(UserModel currUser, Tweet tweet, TweetType tweetType);
 
 }

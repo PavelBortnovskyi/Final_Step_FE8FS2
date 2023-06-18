@@ -4,6 +4,7 @@ import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.exceptions.tweetError.TweetPermissionException;
 import app.model.Tweet;
+import app.model.UserModel;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -95,5 +96,9 @@ public class TweetService extends GeneralService<Tweet> {
   public Page<Tweet> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
     return tweetRepository
       .findAllByUser_FollowersContainingAndTweetTypeNotOrderByCreatedAtDesc(userService.getUser(userId), TweetType.REPLY, pageable);
+  }
+
+  public boolean isUserTweetedTweet(UserModel currUser, Tweet tweet, TweetType tweetType) {
+    return tweetRepository.existsByUserAndParentTweetAndTweetType(currUser, tweet, tweetType);
   }
 }
