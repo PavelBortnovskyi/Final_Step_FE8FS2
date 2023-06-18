@@ -16,6 +16,9 @@ public class NotificationResponseDTO {
   @JsonFormat(shape = JsonFormat.Shape.STRING)
   private NotificationType notificationType;
 
+  @JsonView(Marker.Preview.class)
+  private boolean isRead;
+
 //  @JsonView(Marker.Preview.class)
 //  private UserResponseDTO receiver;
 
@@ -25,6 +28,5 @@ public class NotificationResponseDTO {
   @JsonView(Marker.Preview.class)
   private TweetResponseDTONE tweet;
 
-  @JsonView(Marker.Preview.class)
-  private boolean isRead;
+
 }
