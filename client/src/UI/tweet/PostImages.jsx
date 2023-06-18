@@ -1,6 +1,6 @@
+import React from 'react';
 import { Box, CardMedia } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React from 'react';
 
 const SinglePhoto = styled(Box)({
   overflow: 'hidden',
@@ -38,18 +38,29 @@ const QuadruplePhoto = styled(Box)({
   gridTemplateRows: '1fr 1fr',
 });
 
-function TweetImages({ images }) {
-  let quantity = images.length;
+function PostImages({ images, quantity }) {
+  let PhotoComponent;
 
-  let QuantityComponent;
-  if (quantity === 1) {
-    QuantityComponent = SinglePhoto;
-  } else if (quantity === 2) {
-    QuantityComponent = DoublePhoto;
-  } else if (quantity === 3) {
-    QuantityComponent = TriplePhoto;
-  } else if (quantity === 4) {
-    QuantityComponent = QuadruplePhoto;
+  switch (quantity) {
+    case 1:
+      PhotoComponent = SinglePhoto;
+      break;
+    case 2:
+      PhotoComponent = DoublePhoto;
+      break;
+    case 3:
+      PhotoComponent = TriplePhoto;
+      break;
+    case 4:
+      PhotoComponent = QuadruplePhoto;
+      break;
+    default:
+      PhotoComponent = SinglePhoto;
+      break;
+  }
+
+  if (images.length === 0) {
+    return <p>No photos</p>;
   }
 
   const photoStyles = (index, img) => {
@@ -91,7 +102,7 @@ function TweetImages({ images }) {
   };
 
   return (
-    <QuantityComponent sx={{ mt: '10px' }}>
+    <PhotoComponent>
       {images
         ? images.map((img, index) => {
             return (
@@ -112,8 +123,8 @@ function TweetImages({ images }) {
             );
           })
         : null}
-    </QuantityComponent>
+    </PhotoComponent>
   );
 }
 
-export default TweetImages;
+export default PostImages;

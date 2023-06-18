@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getTweetReply } from '../thunk/getTweetReply.js';
 
 const initialState = {
-  tweetReplies: [],
+  tweetReplies: null,
   isLoading: false,
   error: '',
 };
