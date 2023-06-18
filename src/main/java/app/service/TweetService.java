@@ -25,9 +25,6 @@ public class TweetService extends GeneralService<Tweet> {
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
 
-  private final NotificationService notificationService;
-
-
   @Transactional
   public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
     if (files == null) files = new MultipartFile[0];
@@ -44,8 +41,7 @@ public class TweetService extends GeneralService<Tweet> {
       .addAll(attachmentImagesService
         .saveAttachmentImages(cloudinaryService
           .uploadTweetImages(files, userId, tweet.getId()), tweet));
-
-    return notificationService.sendNotification(tweet, userId, null);
+    return tweet;
   }
 
 
@@ -63,7 +59,7 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-  public Integer getCountReplays(Tweet tweet) {
+  public Integer getCountReplies(Tweet tweet) {
     return tweetRepository.countByParentTweetAndTweetType(tweet, TweetType.REPLY);
   }
 
@@ -94,7 +90,8 @@ public class TweetService extends GeneralService<Tweet> {
   }
 
 
-//  public Page<Tweet> getTweetsLikedByUser(Long userId, TweetActionType tweetActionType, Pageable pageable) {
-//    return tweetRepository. (userService.getUser(userId), tweetActionType, pageable);
-//  }
+  public Page<Tweet> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
+    return tweetRepository
+      .findAllByUser_FollowersContainingAndTweetTypeNotOrderByCreatedAtDesc(userService.getUser(userId), TweetType.REPLY, pageable);
+  }
 }

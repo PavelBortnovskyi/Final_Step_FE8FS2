@@ -47,7 +47,7 @@ create table messages (
 );
 
 create table notifications (
-             id bigint DEFAULT nextval('messages_id_seq') NOT NULL,
+             id bigint DEFAULT nextval('notifications_id_seq') NOT NULL,
              created_at timestamp,
              created_by varchar(255),
              updated_at timestamp,
@@ -77,7 +77,7 @@ create table tweets (
              created_by varchar(255),
              updated_at timestamp,
              updated_by varchar(255),
-             body varchar(2048) not null,
+             body varchar(2048),
              tweet_type varchar(255) not null,
              parent_tweet bigint,
              user_id bigint,

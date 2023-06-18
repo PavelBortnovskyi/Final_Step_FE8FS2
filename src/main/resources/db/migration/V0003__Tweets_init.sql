@@ -1,257 +1,91 @@
 INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.138204', null, TIMESTAMP '2023-05-30 18:45:31.138204', null, 'first tweet with some text', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.392204', null, TIMESTAMP '2023-05-30 18:45:31.392204', null, 'Second tweet for sample1', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.537203', null, TIMESTAMP '2023-05-30 18:45:31.537203', null, 'Third tweet for sample1', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.717325', null, TIMESTAMP '2023-05-30 18:45:31.717325', null, 'Fourth tweet for sample1', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.957149', null, TIMESTAMP '2023-05-30 18:45:31.957149', null, 'Fifth tweet for sample1', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.138777', null, TIMESTAMP '2023-05-30 18:45:32.138777', null, 'Sixth tweet for sample1', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.363538', null, TIMESTAMP '2023-05-30 18:45:32.363538', null, 'Seventh tweet for sample1', 'TWEET', null, 1);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.608534', null, TIMESTAMP '2023-05-30 18:45:32.608534', null, 'First tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.880577', null, TIMESTAMP '2023-05-30 18:45:32.880577', null, 'Second tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.198836', null, TIMESTAMP '2023-05-30 18:45:33.198836', null, 'Third tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.485369', null, TIMESTAMP '2023-05-30 18:45:33.485369', null, 'Fourth tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.760847', null, TIMESTAMP '2023-05-30 18:45:33.760847', null, 'Fifth tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.988499', null, TIMESTAMP '2023-05-30 18:45:33.988499', null, 'Sixth tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.300531', null, TIMESTAMP '2023-05-30 18:45:34.300531', null, 'Seventh tweet for sample2', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.529247', null, TIMESTAMP '2023-05-30 18:45:34.529247', null, 'First tweet for sample3', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.785908', null, TIMESTAMP '2023-05-30 18:45:34.785908', null, 'Second tweet for sample3', 'TWEET', null, 2);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.065689', null, TIMESTAMP '2023-05-30 18:45:35.065689', null, 'First tweet for sample4', 'TWEET', null, 3);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.344603', null, TIMESTAMP '2023-05-30 18:45:35.344603', null, 'Second tweet for sample4', 'TWEET', null, 3);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.734986', null, TIMESTAMP '2023-05-30 18:45:35.734986', null, 'Example tweet for sample4', 'TWEET', null, 4);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.932016', null, TIMESTAMP '2023-05-30 18:45:35.932016', null, 'Example some tweet for sample4', 'TWEET', null, 4);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.126192', null, TIMESTAMP '2023-05-30 18:45:36.126192', null, 'First tweet for sample5', 'TWEET', null, 5);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.356653', null, TIMESTAMP '2023-05-30 18:45:36.356653', null, 'Second tweet for sample5', 'TWEET', null, 5);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.628961', null, TIMESTAMP '2023-05-30 18:45:36.628961', null, 'Third tweet for sample5', 'TWEET', null, 5);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.969894', null, TIMESTAMP '2023-05-30 18:45:36.969894', null, 'Fourth tweet for sample5', 'TWEET', null, 5);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.196665', null, TIMESTAMP '2023-05-30 18:45:37.196665', null, 'Fifth tweet for sample5', 'TWEET', null, 5);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.422815', null, TIMESTAMP '2023-05-30 18:45:37.422815', null, 'Sixth tweet for sample5', 'TWEET', null, 5);
-
-INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.645847', null, TIMESTAMP '2023-05-30 18:45:37.645847', null, 'Seventh tweet for sample5', 'TWEET', null, 5);
+VALUES
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.138204', null, TIMESTAMP '2023-05-30 18:45:31.138204', null, 'first tweet with some text', 'TWEET', null, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.392204', null, TIMESTAMP '2023-05-30 18:45:31.392204', null, 'Second tweet for sample1', 'TWEET', null, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.537203', null, TIMESTAMP '2023-05-30 18:45:31.537203', null, 'Third tweet for sample1', 'TWEET', null, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.608534', null, TIMESTAMP '2023-05-30 18:45:32.608534', null, 'First tweet for sample2', 'QUOTE_TWEET', 1, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.880577', null, TIMESTAMP '2023-05-30 18:45:32.880577', null, 'Second tweet for sample2', 'REPLY', 1, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.198836', null, TIMESTAMP '2023-05-30 18:45:33.198836', null, 'Third tweet for sample2', 'RETWEET', 1, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.485369', null, TIMESTAMP '2023-05-30 18:45:33.485369', null, 'Fourth tweet for sample2', 'QUOTE_TWEET', 2, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.760847', null, TIMESTAMP '2023-05-30 18:45:33.760847', null, 'Fifth tweet for sample2', 'REPLY', 2, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.988499', null, TIMESTAMP '2023-05-30 18:45:33.988499', null, 'Sixth tweet for sample2', 'RETWEET', 2, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.300531', null, TIMESTAMP '2023-05-30 18:45:34.300531', null, 'Seventh tweet for sample2', 'QUOTE_TWEET', 4, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.529247', null, TIMESTAMP '2023-05-30 18:45:34.529247', null, 'First tweet for sample3', 'REPLY', 4, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.785908', null, TIMESTAMP '2023-05-30 18:45:34.785908', null, 'Second tweet for sample3', 'RETWEET', 4, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.065689', null, TIMESTAMP '2023-05-30 18:45:35.065689', null, 'First tweet for sample4', 'TWEET', null, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.344603', null, TIMESTAMP '2023-05-30 18:45:35.344603', null, 'Second tweet for sample4', 'TWEET', null, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.734986', null, TIMESTAMP '2023-05-30 18:45:35.734986', null, 'Example tweet for sample4', 'TWEET', null, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.932016', null, TIMESTAMP '2023-05-30 18:45:35.932016', null, 'Example some tweet for sample4', 'TWEET', null, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.126192', null, TIMESTAMP '2023-05-30 18:45:36.126192', null, 'First tweet for sample5', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.356653', null, TIMESTAMP '2023-05-30 18:45:36.356653', null, 'Second tweet for sample5', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.628961', null, TIMESTAMP '2023-05-30 18:45:36.628961', null, 'Third tweet for sample5', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.969894', null, TIMESTAMP '2023-05-30 18:45:36.969894', null, 'Fourth tweet for sample5', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.196665', null, TIMESTAMP '2023-05-30 18:45:37.196665', null, 'Fifth tweet for sample5', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.422815', null, TIMESTAMP '2023-05-30 18:45:37.422815', null, 'Sixth tweet for sample5', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.645847', null, TIMESTAMP '2023-05-30 18:45:37.645847', null, 'Seventh tweet for sample5', 'TWEET', null, 5);
 
 INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.245205', null, TIMESTAMP '2023-05-30 18:45:31.245205', null, 'https://telegraf.com.ua/static/storage/thumbs/1044x587/1/62/86daad98-939aa3eb076510417e7e31a1a9026621.webp', 1);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://images.unian.net/photos/2022_05/1652013870-1213.jpg', 2);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.595203', null, TIMESTAMP '2023-05-30 18:45:31.595203', null, 'https://images.unian.net/photos/2022_06/1656498354-6918.jpg', 3);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.786753', null, TIMESTAMP '2023-05-30 18:45:31.786753', null, 'https://images.unian.net/photos/2022_06/1656498356-7655.jpg', 4);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.843434', null, TIMESTAMP '2023-05-30 18:45:31.843434', null, 'https://images.unian.net/photos/2022_06/1656496720-6469.jpg', 4);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.003678', null, TIMESTAMP '2023-05-30 18:45:32.003678', null, 'https://images.unian.net/photos/2022_06/1656498357-9174.jpg', 5);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.226818', null, TIMESTAMP '2023-05-30 18:45:32.226818', null, 'https://images.unian.net/photos/2022_06/1656498358-8955.jpg', 6);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.454620', null, TIMESTAMP '2023-05-30 18:45:32.454620', null, 'https://images.unian.net/photos/2022_06/1656498359-4116.jpeg', 7);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.733319', null, TIMESTAMP '2023-05-30 18:45:32.733319', null, 'https://images.unian.net/photos/2022_06/1656498361-1772.jpg', 8);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.974837', null, TIMESTAMP '2023-05-30 18:45:32.974837', null, 'https://images.unian.net/photos/2022_06/1656498362-4940.jpg', 9);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.063061', null, TIMESTAMP '2023-05-30 18:45:33.063061', null, 'https://images.unian.net/photos/2022_06/1656498361-1772.jpg', 9);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.287101', null, TIMESTAMP '2023-05-30 18:45:33.287101', null, 'https://images.unian.net/photos/2022_06/1656498363-1526.jpg', 10);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.620557', null, TIMESTAMP '2023-05-30 18:45:33.620557', null, 'https://images.unian.net/photos/2022_06/1656498364-2927.jpg', 11);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.849317', null, TIMESTAMP '2023-05-30 18:45:33.849317', null, 'https://images.unian.net/photos/2022_06/1656498365-9664.jpg', 12);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.077472', null, TIMESTAMP '2023-05-30 18:45:34.077472', null, 'https://images.unian.net/photos/2022_06/1656497311-2625.jpg', 13);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.164996', null, TIMESTAMP '2023-05-30 18:45:34.164996', null, 'https://images.unian.net/photos/2022_06/1656496721-2719.jpg', 13);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.391339', null, TIMESTAMP '2023-05-30 18:45:34.391339', null, 'https://images.unian.net/photos/2022_06/1656497311-5608.jpg', 14);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.618560', null, TIMESTAMP '2023-05-30 18:45:34.618560', null, 'https://images.unian.net/photos/2022_06/1656497312-3436.jpg', 15);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.904625', null, TIMESTAMP '2023-05-30 18:45:34.904625', null, 'https://images.unian.net/photos/2022_06/1656497313-7631.jpg ', 16);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.192059', null, TIMESTAMP '2023-05-30 18:45:35.192059', null, 'https://images.unian.net/photos/2022_06/1656497314-5114.jpg', 27);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.459015', null, TIMESTAMP '2023-05-30 18:45:35.459015', null, 'https://images.unian.net/photos/2022_06/1656497315-9664.jpg', 18);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.547256', null, TIMESTAMP '2023-05-30 18:45:35.547256', null, 'https://images.unian.net/photos/2022_06/1656497134-7822.jpg', 18);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.216520', null, TIMESTAMP '2023-05-30 18:45:36.216520', null, 'https://images.unian.net/photos/2021_08/1629469199-3761.jpg', 21);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.445838', null, TIMESTAMP '2023-05-30 18:45:36.445838', null, 'https://images.unian.net/photos/2021_08/1629471815-9795.jpg', 22);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.801664', null, TIMESTAMP '2023-05-30 18:45:36.801664', null, 'https://images.unian.net/photos/2020_11/1605089297-6848.jpg', 23);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.060674', null, TIMESTAMP '2023-05-30 18:45:37.060674', null, 'https://images.unian.net/photos/2022_06/1656496716-2254.jpg', 24);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.286602', null, TIMESTAMP '2023-05-30 18:45:37.286602', null, 'https://images.unian.net/photos/2022_06/1656496717-1624.jpg', 25);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.511120', null, TIMESTAMP '2023-05-30 18:45:37.511120', null, 'https://images.unian.net/photos/2022_06/1656496718-3408.jpg', 26);
-
-INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.734106', null, TIMESTAMP '2023-05-30 18:45:37.734106', null, 'https://images.unian.net/photos/2022_06/1656496719-6416.jpg', 27);
+VALUES
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.245205', null, TIMESTAMP '2023-05-30 18:45:31.245205', null, 'https://telegraf.com.ua/static/storage/thumbs/1044x587/1/62/86daad98-939aa3eb076510417e7e31a1a9026621.webp', 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://pon.org.ua/uploads/posts/2022-03/1646311695_1fc5f435c3b935ac.jpg', 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://defence-ua.com/media/illustration/articles/9466300c0918bfff.jpg', 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://ecopolitic.com.ua/wp-content/uploads/2022/03/shutterstock_2119226741-750x500.jpg', 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://www.tripzaza.com/ru/destinations/wp-content/uploads/2018/06/1-Yosemite_Valley-e1528945436839.jpg', 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__text_with_image___twi_image/public/2021-01/Iguassu-Falls.jpg', 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://vandruy.by/wp-content/uploads/2018/08/201302121832369554-min.jpeg', 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.595203', null, TIMESTAMP '2023-05-30 18:45:31.595203', null, 'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__text_with_image___twi_image/public/2021-01/Mu-Cang-Chai-2.jpg', 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.595203', null, TIMESTAMP '2023-05-30 18:45:31.595203', null, 'https://avatars.dzeninfra.ru/get-zen_doc/5227693/pub_6129441efb292907169c3d89_6129447cd1cfb8354455b4da/scale_1200', 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.786753', null, TIMESTAMP '2023-05-30 18:45:31.786753', null, 'https://images.unian.net/photos/2022_06/1656498356-7655.jpg', 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.003678', null, TIMESTAMP '2023-05-30 18:45:32.003678', null, 'https://avatars.dzeninfra.ru/get-zen_doc/48747/pub_5bd5d54745d57300ab3d07ef_5bd5dcf1844db800aa5b5f81/scale_1200', 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.003678', null, TIMESTAMP '2023-05-30 18:45:32.003678', null, 'https://www.tripzaza.com/ru/destinations/wp-content/uploads/2018/06/10-Kawachi_Fuji_Garden-e1528946732331.jpg', 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.003678', null, TIMESTAMP '2023-05-30 18:45:32.003678', null, 'https://harpersbazaar.kz/wp-content/uploads/2022/04/shutterstock_733724497-740x370.jpg', 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.226818', null, TIMESTAMP '2023-05-30 18:45:32.226818', null, 'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__text_with_image___twi_image/public/2021-04/Neuschwanstein-castle_0.jpg', 7),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.226818', null, TIMESTAMP '2023-05-30 18:45:32.226818', null, 'https://planetofhotels.com/guide/sites/default/files/styles/node__blog_post__bp_banner/public/2021-04/Chambord-castle.jpg', 7),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.226818', null, TIMESTAMP '2023-05-30 18:45:32.226818', null, 'https://i.ytimg.com/vi/VYhn1XQvCV4/sddefault.jpg', 7),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.226818', null, TIMESTAMP '2023-05-30 18:45:32.226818', null, 'https://lifeglobe.net/x/entry/1307/16_3.jpg', 7),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.454620', null, TIMESTAMP '2023-05-30 18:45:32.454620', null, 'https://n1s1.hsmedia.ru/7f/d4/a5/7fd4a5e5457a59c575df1fa38d8be61e/1920x1152_0xac120003_12726234471666876992.jpeg', 8),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.454620', null, TIMESTAMP '2023-05-30 18:45:32.454620', null, 'https://avatars.dzeninfra.ru/get-zen_doc/1641049/pub_5d1b66cd3b4cd800adc731f8_5d1b76b27b832900ad7f4d33/scale_1200', 8),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.733319', null, TIMESTAMP '2023-05-30 18:45:32.733319', null, 'https://images.unian.net/photos/2022_06/1656498361-1772.jpg', 8),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.974837', null, TIMESTAMP '2023-05-30 18:45:32.974837', null, 'https://images.unian.net/photos/2022_06/1656498362-4940.jpg', 10),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.063061', null, TIMESTAMP '2023-05-30 18:45:33.063061', null, 'https://images.unian.net/photos/2022_06/1656498361-1772.jpg', 10),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.287101', null, TIMESTAMP '2023-05-30 18:45:33.287101', null, 'https://images.unian.net/photos/2022_06/1656498363-1526.jpg', 11),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.620557', null, TIMESTAMP '2023-05-30 18:45:33.620557', null, 'https://images.unian.net/photos/2022_06/1656498364-2927.jpg', 13),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.849317', null, TIMESTAMP '2023-05-30 18:45:33.849317', null, 'https://images.unian.net/photos/2022_06/1656498365-9664.jpg', 13),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.077472', null, TIMESTAMP '2023-05-30 18:45:34.077472', null, 'https://images.unian.net/photos/2022_06/1656497311-2625.jpg', 13),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.164996', null, TIMESTAMP '2023-05-30 18:45:34.164996', null, 'https://images.unian.net/photos/2022_06/1656496721-2719.jpg', 13),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.391339', null, TIMESTAMP '2023-05-30 18:45:34.391339', null, 'https://images.unian.net/photos/2022_06/1656497311-5608.jpg', 14),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.618560', null, TIMESTAMP '2023-05-30 18:45:34.618560', null, 'https://images.unian.net/photos/2022_06/1656497312-3436.jpg', 15),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.904625', null, TIMESTAMP '2023-05-30 18:45:34.904625', null, 'https://images.unian.net/photos/2022_06/1656497313-7631.jpg ', 16),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.192059', null, TIMESTAMP '2023-05-30 18:45:35.192059', null, 'https://images.unian.net/photos/2022_06/1656497314-5114.jpg', 17),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.459015', null, TIMESTAMP '2023-05-30 18:45:35.459015', null, 'https://images.unian.net/photos/2022_06/1656497315-9664.jpg', 18),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.547256', null, TIMESTAMP '2023-05-30 18:45:35.547256', null, 'https://images.unian.net/photos/2022_06/1656497134-7822.jpg', 18),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.216520', null, TIMESTAMP '2023-05-30 18:45:36.216520', null, 'https://images.unian.net/photos/2021_08/1629469199-3761.jpg', 21),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.445838', null, TIMESTAMP '2023-05-30 18:45:36.445838', null, 'https://images.unian.net/photos/2021_08/1629471815-9795.jpg', 22),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.801664', null, TIMESTAMP '2023-05-30 18:45:36.801664', null, 'https://images.unian.net/photos/2020_11/1605089297-6848.jpg', 23);
 
 INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.874406', null, TIMESTAMP '2023-05-30 18:45:37.874406', null, 'LIKE', 1, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.975519', null, TIMESTAMP '2023-05-30 18:45:37.975519', null, 'LIKE', 2, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.108611', null, TIMESTAMP '2023-05-30 18:45:38.108611', null, 'LIKE', 3, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.209233', null, TIMESTAMP '2023-05-30 18:45:38.209233', null, 'LIKE', 1, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.304021', null, TIMESTAMP '2023-05-30 18:45:38.304021', null, 'LIKE', 2, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.399350', null, TIMESTAMP '2023-05-30 18:45:38.399350', null, 'LIKE', 3, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.534652', null, TIMESTAMP '2023-05-30 18:45:38.534652', null, 'LIKE', 7, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.671466', null, TIMESTAMP '2023-05-30 18:45:38.671466', null, 'LIKE', 7, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.807081', null, TIMESTAMP '2023-05-30 18:45:38.807081', null, 'LIKE', 7, 3);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.963193', null, TIMESTAMP '2023-05-30 18:45:38.963193', null, 'LIKE', 10, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.106848', null, TIMESTAMP '2023-05-30 18:45:39.106848', null, 'LIKE', 11, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.240436', null, TIMESTAMP '2023-05-30 18:45:39.240436', null, 'LIKE', 12, 3);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.375714', null, TIMESTAMP '2023-05-30 18:45:39.375714', null, 'LIKE', 13, 4);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.510908', null, TIMESTAMP '2023-05-30 18:45:39.510908', null, 'LIKE', 14, 5);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.645318', null, TIMESTAMP '2023-05-30 18:45:39.645318', null, 'LIKE', 15, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.782866', null, TIMESTAMP '2023-05-30 18:45:39.782866', null, 'LIKE', 16, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.949213', null, TIMESTAMP '2023-05-30 18:45:39.949213', null, 'LIKE', 17, 3);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.086168', null, TIMESTAMP '2023-05-30 18:45:40.086168', null, 'LIKE', 18, 4);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.220538', null, TIMESTAMP '2023-05-30 18:45:40.220538', null, 'LIKE', 19, 5);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.355691', null, TIMESTAMP '2023-05-30 18:45:40.355691', null, 'LIKE', 20, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.494714', null, TIMESTAMP '2023-05-30 18:45:40.494714', null, 'LIKE', 21, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.629989', null, TIMESTAMP '2023-05-30 18:45:40.629989', null, 'LIKE', 22, 3);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.774380', null, TIMESTAMP '2023-05-30 18:45:40.774380', null, 'LIKE', 23, 4);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.911569', null, TIMESTAMP '2023-05-30 18:45:40.911569', null, 'LIKE', 24, 5);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.046938', null, TIMESTAMP '2023-05-30 18:45:41.046938', null, 'LIKE', 25, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.183532', null, TIMESTAMP '2023-05-30 18:45:41.183532', null, 'LIKE', 26, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.323714', null, TIMESTAMP '2023-05-30 18:45:41.323714', null, 'LIKE', 27, 3);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.465594', null, TIMESTAMP '2023-05-30 18:45:41.465594', null, 'LIKE', 23, 1);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.601703', null, TIMESTAMP '2023-05-30 18:45:41.601703', null, 'LIKE', 24, 2);
-
-INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
-VALUES (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.737991', null, TIMESTAMP '2023-05-30 18:45:41.737991', null, 'LIKE', 25, 3);
+VALUES
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.874406', null, TIMESTAMP '2023-05-30 18:45:37.874406', null, 'LIKE', 1, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.975519', null, TIMESTAMP '2023-05-30 18:45:37.975519', null, 'LIKE', 2, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.108611', null, TIMESTAMP '2023-05-30 18:45:38.108611', null, 'LIKE', 3, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.209233', null, TIMESTAMP '2023-05-30 18:45:38.209233', null, 'LIKE', 1, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.304021', null, TIMESTAMP '2023-05-30 18:45:38.304021', null, 'LIKE', 2, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.399350', null, TIMESTAMP '2023-05-30 18:45:38.399350', null, 'LIKE', 3, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.534652', null, TIMESTAMP '2023-05-30 18:45:38.534652', null, 'LIKE', 7, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.671466', null, TIMESTAMP '2023-05-30 18:45:38.671466', null, 'LIKE', 7, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.807081', null, TIMESTAMP '2023-05-30 18:45:38.807081', null, 'LIKE', 7, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:38.963193', null, TIMESTAMP '2023-05-30 18:45:38.963193', null, 'LIKE', 10, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.106848', null, TIMESTAMP '2023-05-30 18:45:39.106848', null, 'LIKE', 11, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.240436', null, TIMESTAMP '2023-05-30 18:45:39.240436', null, 'LIKE', 12, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.375714', null, TIMESTAMP '2023-05-30 18:45:39.375714', null, 'LIKE', 13, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.510908', null, TIMESTAMP '2023-05-30 18:45:39.510908', null, 'LIKE', 14, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.645318', null, TIMESTAMP '2023-05-30 18:45:39.645318', null, 'LIKE', 15, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.782866', null, TIMESTAMP '2023-05-30 18:45:39.782866', null, 'LIKE', 16, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:39.949213', null, TIMESTAMP '2023-05-30 18:45:39.949213', null, 'LIKE', 17, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.086168', null, TIMESTAMP '2023-05-30 18:45:40.086168', null, 'LIKE', 18, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.220538', null, TIMESTAMP '2023-05-30 18:45:40.220538', null, 'LIKE', 19, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.355691', null, TIMESTAMP '2023-05-30 18:45:40.355691', null, 'LIKE', 20, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.494714', null, TIMESTAMP '2023-05-30 18:45:40.494714', null, 'LIKE', 21, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.629989', null, TIMESTAMP '2023-05-30 18:45:40.629989', null, 'LIKE', 22, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.774380', null, TIMESTAMP '2023-05-30 18:45:40.774380', null, 'LIKE', 23, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.465594', null, TIMESTAMP '2023-05-30 18:45:41.465594', null, 'LIKE', 23, 1);
