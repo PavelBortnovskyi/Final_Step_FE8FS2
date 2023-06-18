@@ -13,14 +13,17 @@ public class CurrUserService {
 
   private final UserService userService;
 
+
   private JwtUserDetails getUserDetails() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return (JwtUserDetails) authentication.getPrincipal();
   }
 
+
   public Long getCurrUserId() {
     return getUserDetails().getId();
   }
+
 
   public UserModel getCurrUser() {
     return userService.getUser(getCurrUserId());
