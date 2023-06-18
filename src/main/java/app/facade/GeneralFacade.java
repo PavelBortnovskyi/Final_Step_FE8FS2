@@ -23,7 +23,7 @@ public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
   @Autowired
   private ModelMapper mm;
 
-  @Autowired
+  @Autowired(required = false)
   private ServiceInterface<E> service;
 
   private Class<E> getClassE() {

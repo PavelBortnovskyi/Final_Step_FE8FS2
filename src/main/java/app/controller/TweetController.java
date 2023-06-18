@@ -1,17 +1,17 @@
 package app.controller;
 
-import app.annotations.Marker;
-import app.dto.rq.TweetRequest;
-import app.dto.rs.TweetResponse;
+
+import app.dto.rs.TweetActionResponseDTO;
+import app.dto.rs.TweetResponseDTO;
+import app.enums.TweetActionType;
+import app.enums.TweetType;
 import app.facade.TweetActionFacade;
 import app.facade.TweetFacade;
-import app.model.Tweet;
-import app.service.TweetActionService;
-import app.service.TweetService;
-import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,150 +19,197 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
-import java.util.Optional;
 
 @Log4j2
+@Validated
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@Validated
-@RequestMapping("api/v1/tweet")
+@RequestMapping("/api/v1/tweet")
 public class TweetController {
 
-  private final TweetService tweetService;
-  private final TweetActionService tweetActionService;
-  private final TweetActionFacade tweetActionFacade;
   private final TweetFacade tweetFacade;
+  private final TweetActionFacade tweetActionFacade;
 
-  //get tweet by id (don`t need token)
-  @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<TweetResponse> getTweet(@PathVariable(name = "id") Long id, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.getTweetById(id, request));
+
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ApiOperation("Create TWEET")
+  public ResponseEntity<TweetResponseDTO> createNewTweet(HttpServletRequest httpRequest,
+                                                         @RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                         @RequestParam(value = "attachmentImages", required = false) MultipartFile[] attachmentImages) {
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
+      tweetBody, attachmentImages, TweetType.TWEET, null));
   }
 
-  //delete tweet by id
-  @DeleteMapping("/delete/{id}")
-  public void deleteTweet(@PathVariable String id, HttpServletRequest request) {
-    Optional<Tweet> tweet = tweetService.findById(Long.valueOf(id));
-    if (tweet.isPresent() && tweet.get().getUser().getId().equals(request.getAttribute("userId"))) {
-      tweetService.deleteTweet(Long.valueOf(id), request);
-    }
+
+  @PostMapping("{id}/quote")
+  @ApiOperation("Create QUOTE_TWEET from tweet with {id}")
+  public ResponseEntity<TweetResponseDTO> createQuoteTweet(HttpServletRequest httpRequest,
+                                                           @PathVariable(name = "id") @Positive Long tweetId,
+                                                           @RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                           @RequestParam(value = "attachmentImages", required = false) MultipartFile[] attachmentImages) {
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
+      tweetBody, attachmentImages, TweetType.QUOTE_TWEET, tweetId));
   }
 
-  //update tweet
-  @PutMapping(path = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  @Validated({Marker.Update.class})
-  public ResponseEntity<TweetResponse> updateTweet(@Valid @JsonView({Marker.Update.class}) @PathVariable Long id,
-                                                   @RequestBody TweetRequest tweetRequest) {
-    return ResponseEntity.ok(tweetFacade.updateTweet(id, tweetRequest));
+
+  @PostMapping("{id}/retweet")
+  @ApiOperation("Create RETWEET from tweet with {id}")
+  public ResponseEntity<TweetResponseDTO> createRetweetTweet(HttpServletRequest httpRequest,
+                                                             @PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
+      "", new MultipartFile[0], TweetType.RETWEET, tweetId));
   }
 
-  //create new tweet
-  @PutMapping("/tweet")
-  @Validated({Marker.New.class})
-  public ResponseEntity<TweetResponse> createTweet(@RequestParam(value = "tweetBody") String tweetBody,
-                                                   @RequestParam(value = "file", required = false) MultipartFile[] file,
-                                                   HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createTweet(request, tweetBody, file));
+
+  @PostMapping("{id}/reply")
+  @ApiOperation("Create REPLAY from tweet with {id}")
+  public ResponseEntity<TweetResponseDTO> createReplyTweet(HttpServletRequest httpRequest,
+                                                           @PathVariable(name = "id") @Positive Long tweetId,
+                                                           @RequestParam(value = "tweetBody", required = false) String tweetBody,
+                                                           @RequestParam(value = "attachmentImages", required = false) MultipartFile[] attachmentImages) {
+    return ResponseEntity.ok(tweetFacade.createTweet((Long) httpRequest.getAttribute("userId"),
+      tweetBody, attachmentImages, TweetType.REPLY, tweetId));
   }
 
-  @PutMapping("/retweet")
-  @Validated({Marker.Retweet.class})
-  public ResponseEntity<TweetResponse> createRetweet(@RequestParam(value = "tweetBody", required = false) String tweetBody,
-                                                     @RequestParam(value = "parentTweetId") Long parenTweetId,
-                                                     @RequestParam(value = "file", required = false) MultipartFile[] file,
-                                                     HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createRetweet(request, tweetBody, parenTweetId, file));
+
+  @GetMapping("{id}")
+  @ApiOperation("Get TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
+  public ResponseEntity<TweetResponseDTO> getTweetById(@PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.getTweetById(tweetId));
   }
 
-  @PutMapping("/reply")
-  @Validated({Marker.Retweet.class})
-  public ResponseEntity<TweetResponse> createReply(@RequestParam(value = "tweetBody", required = false) String tweetBody,
-                                                   @RequestParam(value = "parentTweetId") Long parenTweetId,
-                                                   @RequestParam(value = "file", required = false) MultipartFile[] file,
-                                                   HttpServletRequest request) {
-    return ResponseEntity.ok(tweetService.createReply(request, tweetBody, parenTweetId, file));
+
+  @DeleteMapping("{id}")
+  @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}.  Только свои можно удалять.")
+  public void deleteTweet(HttpServletRequest httpRequest, @PathVariable(name = "id") @Positive Long tweetId) {
+    tweetFacade.deleteTweet((Long) httpRequest.getAttribute("userId"), tweetId);
   }
 
-  //get List tweets following users
-  @GetMapping("/following_tweets")
-  public List<TweetResponse> getAllUserFollowingsTweets(@RequestParam("page") @NotNull int page,
-                                                        @RequestParam("pageSize") @NotNull @Positive int pageSize,
-                                                        HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.allUserFollowingTweet(request, page, pageSize)).getBody();
+
+  @PostMapping("{id}/like")
+  @ApiOperation("Like TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
+  public ResponseEntity<TweetResponseDTO> likeTweet(HttpServletRequest httpRequest,
+                                                    @PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.LIKE));
   }
 
-  // get user tweets
-  @GetMapping("/tweets/{id}")
-  public Page<TweetResponse> getUserTweets(@PathVariable(name = "id") Long userId,
-                                           @RequestParam("page") @NotNull Integer page,
-                                           @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    return tweetFacade.getUserTweets(userId, page, pageSize);
+
+  @PostMapping("{id}/unlike")
+  @ApiOperation("Unlike лайк TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
+  public ResponseEntity<TweetResponseDTO> unLikeTweet(HttpServletRequest httpRequest,
+                                                      @PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.LIKE));
   }
 
-  @PostMapping("/like/{tweetId}")
-  public ResponseEntity<Boolean> LikeToTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionFacade.addLike(tweetId, request));
+
+  @PostMapping("{id}/bookmark")
+  @ApiOperation("Add to bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
+  public ResponseEntity<TweetResponseDTO> bookmarkTweet(HttpServletRequest httpRequest,
+                                                        @PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.createTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.BOOKMARK));
   }
 
-  @PostMapping("/bookmark/{tweetId}")
-  public ResponseEntity<Boolean> BookmarkTweet(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionFacade.addBookmark(tweetId, request));
+
+  @PostMapping("{id}/unbookmark")
+  @ApiOperation("Remove from bookmarks TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}")
+  public ResponseEntity<TweetResponseDTO> unBookmarkTweet(HttpServletRequest httpRequest,
+                                                          @PathVariable(name = "id") @Positive Long tweetId) {
+    return ResponseEntity.ok(tweetFacade.removeTweetAction((Long) httpRequest.getAttribute("userId"), tweetId,
+      TweetActionType.BOOKMARK));
   }
 
-  @GetMapping("/bookmarks")
-  public List<TweetResponse> getAllBookmarks(@RequestParam("page") @NotNull int page,
-                                             @RequestParam("pageSize") @NotNull @Positive int pageSize,
-                                             HttpServletRequest request) {
-    return ResponseEntity.ok(tweetFacade.getAllBookmarksTweet(request, page, pageSize)).getBody();
+
+  @GetMapping({"user/{id}", "/user"})
+  @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
+  public Page<TweetResponseDTO> getTweetsOfUser(HttpServletRequest httpRequest,
+                                                @PathVariable(name = "id", required = false) Long userId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      List.of(TweetType.TWEET, TweetType.RETWEET, TweetType.QUOTE_TWEET), PageRequest.of(page, size));
   }
 
-  @DeleteMapping("/delete_like/{tweetId}")
-  public void deleteLike(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    tweetActionService.deleteLike(tweetId, request);
+
+  @GetMapping({"reply/user/{id}", "reply/user"})
+  @ApiOperation("Get all replies of user with {id}, without {id} - current user")
+  public Page<TweetResponseDTO> getAllRepliesOfUser(HttpServletRequest httpRequest,
+                                                    @PathVariable(name = "id", required = false) Long userId,
+                                                    @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      List.of(TweetType.REPLY), PageRequest.of(page, size));
   }
 
-  @DeleteMapping("/delete_bookmark/{tweetId}")
-  public void deleteBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    tweetActionService.deleteBookmark(tweetId, request);
+
+  @GetMapping("{id}/reply")
+  @ApiOperation("Get all REPLY of tweet with {id}")
+  public Page<TweetResponseDTO> getReplyOfTweet(@PathVariable(name = "id") Long tweetId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.REPLY, PageRequest.of(page, size));
   }
 
-  @GetMapping("/status_like/{tweetId}")
-  public ResponseEntity statusLike(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionService.statusLike(tweetId, request));
+
+  @GetMapping("{id}/retweet")
+  @ApiOperation("Get all RETWEET of tweet with {id}")
+  public Page<TweetResponseDTO> getRetweetOfTweet(@PathVariable(name = "id") Long tweetId,
+                                                  @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                  @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.RETWEET, PageRequest.of(page, size));
   }
 
-  @GetMapping("/status_bookmark/{tweetId}")
-  public ResponseEntity statusBookmark(@PathVariable(name = "tweetId") Long tweetId, HttpServletRequest request) {
-    return ResponseEntity.ok(tweetActionService.statusBookmark(tweetId, request));
+
+  @GetMapping("{id}/quote")
+  @ApiOperation("Get all QUOTE of tweet with {id}")
+  public Page<TweetResponseDTO> getQuoteOfTweet(@PathVariable(name = "id") Long tweetId,
+                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsOfTweet(tweetId, TweetType.QUOTE_TWEET, PageRequest.of(page, size));
   }
 
-  @GetMapping("/get_likes/{id}")
-  public ResponseEntity getCount(@PathVariable(name = "id") Long tweetId) {
-    return ResponseEntity.ok(tweetActionService.getCountLikes(tweetId));
+
+  @GetMapping
+  @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET")
+  public Page<TweetResponseDTO> getAllTweets(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getAllTweets(PageRequest.of(page, size));
   }
 
-  @GetMapping("/all_tweets")
-  public Page<TweetResponse> getAllTweets(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                          @RequestParam(name = "pageSize", defaultValue = "10") @Positive int pageSize) {
-    return tweetFacade.getAllTweets(page, pageSize);
+
+  @GetMapping({"like/user/{id}", "like/user"})
+  @ApiOperation("Get tweets LIKEd by the user")
+  public Page<TweetActionResponseDTO> getTweetsLikedByUser(HttpServletRequest httpRequest,
+                                                           @PathVariable(name = "id", required = false) Long userId,
+                                                           @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetActionFacade.getLikesByUser(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+      TweetActionType.LIKE, PageRequest.of(page, size));
   }
 
-//  @GetMapping("/top_tweets")
-//  public List<TweetResponse> listTopTweets(@RequestParam("page") @NotNull int page,
-//                                        @RequestParam("pageSize") @NotNull @Positive int pageSize) {
-//    return ResponseEntity.ok(tweetFacade.listTopTweets(page, pageSize)).getBody();
-//  }
 
-  @GetMapping("/tweet_reply/{tweetId}")
-  public Page<TweetResponse> tweetsReply(@PathVariable(name = "tweetId") Long tweetId,
-                                         @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                         @RequestParam(name = "pageSize", defaultValue = "10") @Positive int pageSize) {
-    return tweetFacade.tweetsReply(tweetId, page, pageSize);
+  @GetMapping("bookmark")
+  @ApiOperation("Get tweets BOOKMARK by the current user")
+  public Page<TweetActionResponseDTO> getTweetsLikedByUser(HttpServletRequest httpRequest,
+                                                           @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetActionFacade.getLikesByUser((Long) httpRequest.getAttribute("userId"),
+      TweetActionType.BOOKMARK, PageRequest.of(page, size));
   }
+
+  @GetMapping("subscriptions")
+  @ApiOperation("Get all tweets (TWEET/RETWEET/QUOTE_TWEET) from the current user's subscriptions")
+  public Page<TweetResponseDTO> getTweetsFromSubscriptions(HttpServletRequest httpRequest,
+                                                           @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
+  }
+
+
 }

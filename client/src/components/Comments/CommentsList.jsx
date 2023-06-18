@@ -1,22 +1,12 @@
 import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
-import TweetPost from 'src/UI/TweetPost';
+import TweetPost from 'src/UI/tweet/TweetPost';
 import { getTweetReply } from 'src/redux/thunk/getTweetReply';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTweetReplies } from 'src/redux/selectors/selectors';
 import { useParams } from 'react-router-dom';
 
-function CommentsList() {
-  const user = useSelector((state) => state.user.user) || '';
-  const dispatch = useDispatch();
-  const { id } = useParams();
-
-  useEffect(() => {
-    dispatch(getTweetReply({ id, page: 0, pageSize: 5 }));
-  }, [user.id]);
-  const tweets = useSelector(getTweetReplies);
-  // const tweetArray = tweets.tweets;
-
+function CommentsList({ tweets }) {
   return (
     <Box>
       {/* {tweetArray !== false &&

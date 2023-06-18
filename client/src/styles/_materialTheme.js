@@ -8,91 +8,94 @@ export const themeSettings = (colorTheme) => {
     palette: {
       ...(colorTheme === 'dark'
         ? {
-            //colors for elements
-            primary: {
-              main: 'rgb(30, 155, 240)',
-              disabled: 'rgb(25,93,142)',
-              hover: 'rgb(26,140,216)',
-            },
-            //text colors
-            text: {
-              primary: '#fff',
-              active: '#fff',
-            },
-            //background colors
-            background: {
-              default: 'rgb(21, 32, 43)',
-              additional: 'rgb(39, 51, 64)',
-              hover: 'rgb(39,51,64)',
-            },
-            border: {
-              main: '#38444d',
-            },
-            gray: {
-              main: '#eff3f4',
-              contrastText: '#fff',
-            },
-            white: {
-              main: '#eff3f4',
-              contrastText: '#fff',
-            },
-            transparent: {
-              main: '#eff3f4',
-              contrastText: '#000',
-            },
-            black: {
-              main: '#000',
-              contrastText: '#fff',
-            },
-            logo: {
-              main: '#FFF',
-            },
-            border: {
-              main: '#4d4d4d',
-            },
-          }
+          //colors for elements
+          primary: {
+            main: 'rgb(30, 155, 240)',
+            disabled: 'rgb(25,93,142)',
+            hover: 'rgb(26,140,216)',
+          },
+          //text colors
+          text: {
+            primary: '#fff',
+            secondary: 'rgb(139, 152, 165)',
+            active: '#fff',
+            link: 'rgb(29, 155, 240)',
+          },
+          //background colors
+          background: {
+            default: 'rgb(21, 32, 43)',
+            additional: 'rgb(39, 51, 64)',
+            hover: 'rgb(39,51,64)',
+          },
+          border: {
+            main: '#38444d',
+          },
+          gray: {
+            main: '#eff3f4',
+            contrastText: '#fff',
+          },
+          white: {
+            main: '#eff3f4',
+            contrastText: '#fff',
+          },
+          transparent: {
+            main: '#eff3f4',
+            contrastText: '#000',
+          },
+          black: {
+            main: '#000',
+            contrastText: '#fff',
+          },
+          logo: {
+            main: '#FFF',
+          },
+          border: {
+            main: '#4d4d4d',
+          },
+        }
         : {
-            primary: {
-              main: 'rgb(30, 155, 240)',
-              disabled: 'rgb(25,93,142)',
-              hover: 'rgb(26,140,216)',
-            },
-            text: {
-              primary: 'rgb(15, 20, 26)',
-              secondary: 'rgb(82, 99, 113)',
-              active: 'rgb(15, 20, 25)',
-            },
-            background: {
-              default: '#fff',
-              additional: 'rgb(238, 241, 241)',
-              hover: 'rgb(233,232,233)',
-            },
-            border: {
-              main: '#fff',
-            },
-            gray: {
-              main: '#eff3f4',
-              contrastText: '#fff',
-            },
-            white: {
-              main: '#eff3f4',
-              contrastText: '#fff',
-            },
-            transparent: {
-              main: '#eff3f4',
-              contrastText: '#000',
-            },
-            black: {
-              main: '#000',
-              contrastText: '#fff',
-            },
-            logo: {
-              main: 'rgb(30, 155, 240)',
-            },
-            border: {
-              main: '#dfdfdf',
-            },
-          }),
+          primary: {
+            main: 'rgb(30, 155, 240)',
+            disabled: 'rgb(25,93,142)',
+            hover: 'rgb(26,140,216)',
+          },
+          text: {
+            primary: 'rgb(15, 20, 26)',
+            secondary: 'rgb(82, 99, 113)',
+            active: 'rgb(15, 20, 25)',
+            link: 'rgb(29, 155, 240)',
+          },
+          background: {
+            default: '#fff',
+            additional: 'rgb(238, 241, 241)',
+            hover: 'rgb(233,232,233)',
+          },
+          border: {
+            main: '#fff',
+          },
+          gray: {
+            main: '#eff3f4',
+            contrastText: '#fff',
+          },
+          white: {
+            main: '#eff3f4',
+            contrastText: '#fff',
+          },
+          transparent: {
+            main: '#eff3f4',
+            contrastText: '#000',
+          },
+          black: {
+            main: '#000',
+            contrastText: '#fff',
+          },
+          logo: {
+            main: 'rgb(30, 155, 240)',
+          },
+          border: {
+            main: '#dfdfdf',
+          },
+        }),
     },
     breakpoints: {
       values: {

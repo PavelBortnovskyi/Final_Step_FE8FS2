@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import React from 'react'
 import { myAxios } from 'src/utils/axiosSetup';
 
 export const getBookmarks = createAsyncThunk(
@@ -9,7 +8,7 @@ export const getBookmarks = createAsyncThunk(
 
     try {
       const { data } = await myAxios.get(
-        `/tweet/bookmarks/?page=${page}&pageSize=${pageSize}`
+        `/tweet/bookmark/?page=${page}&size=${pageSize}`
       );
       return data;
     } catch (error) {

@@ -58,7 +58,7 @@ export const UserBiIdPage = () => {
           countUserFollowers={user.countUserFollowers}
         />
       </Box>
-      <PostList id={userId} />
+      {/* <PostList id={userId} /> */}
     </>
   );
 };

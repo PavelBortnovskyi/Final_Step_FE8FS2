@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -19,8 +17,10 @@ import java.util.stream.IntStream;
 public class CloudinaryService {
 
   private final Cloudinary cloudinary;
+  private final String PROJECT_FOLDER = "TWEETER_v1";
 
-  public void checkImageType(MultipartFile file) {
+
+  private void checkImageType(MultipartFile file) {
     Map<String, ArrayList<Byte>> signatures = new HashMap<>();
     signatures.put("*.jpeg, *.jpg", new ArrayList<>(Arrays.asList((byte) 0xFF, (byte) 0xD8)));
     signatures.put("*.png", new ArrayList<>(Arrays.asList((byte) 0x89, (byte) 0x50, (byte) 0x4E, (byte) 0x47, (byte) 0x0D, (byte) 0x0A, (byte) 0x1A, (byte) 0x0A)));
@@ -36,17 +36,61 @@ public class CloudinaryService {
     throw new UploadImageException("Supported type: " + signatures.keySet());
   }
 
-  public String uploadFile(MultipartFile file, String imgId) {
+
+  private String uploadFile(MultipartFile file, String imageName, String folder) {
     checkImageType(file);
     try {
       return cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-        "public_id", imgId,
-        "overwrite", true
+        "public_id", imageName,
+        "overwrite", true,
+        "folder", folder
       )).get("url").toString();
     } catch (IOException e) {
-      throw new UploadImageException(imgId + ". " + e);
+      throw new UploadImageException(imageName + ". " + e);
     }
   }
+
+
+  private String getUserFolder(Long userId) {
+    return PROJECT_FOLDER + "/user_id_" + userId;
+  }
+
+
+  private String getTweetFolder(Long userId, Long tweetId) {
+    return getUserFolder(userId) + "/tweets/tweet_id_" + tweetId;
+  }
+
+
+  public String uploadUserAvatarImage(MultipartFile file, Long userId) {
+    return uploadFile(file, "avatar", getUserFolder(userId) + "/profile");
+  }
+
+
+  public String uploadUserHeaderImage(MultipartFile file, Long userId) {
+    return uploadFile(file, "header", getUserFolder(userId) + "/profile");
+  }
+
+
+  public HashSet<String> uploadTweetImages(MultipartFile[] files, Long userId, Long tweetId) {
+    return IntStream.range(0, files.length)
+      .mapToObj(i -> uploadFile(files[i], "img_" + (i + 1), getTweetFolder(userId, tweetId)))
+      .collect(Collectors.toCollection(HashSet::new));
+  }
+
+
+  public void deleteTweetImages(Long userId, Long tweetId) {
+    String folderPath = getTweetFolder(userId, tweetId);
+    try {
+      // Delete files in folder
+      cloudinary.api().deleteResourcesByPrefix(folderPath, ObjectUtils.emptyMap());
+      // Delete folder
+      cloudinary.api().deleteFolder(folderPath, ObjectUtils.emptyMap());
+      System.out.println("Папка успешно удалена.");
+    } catch (Exception e) {
+      System.out.println("Ошибка при удалении папки: " + e.getMessage());
+    }
+  }
+
 
   public boolean deleteFile(String imgId) {
     try {

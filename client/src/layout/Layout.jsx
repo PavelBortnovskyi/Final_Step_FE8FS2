@@ -1,5 +1,11 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Box, Container, Grid, ListItemIcon } from '@mui/material';
+import {
+  Box,
+  Container,
+  Grid,
+  ListItemIcon,
+  useMediaQuery,
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
@@ -50,21 +56,20 @@ export const Layout = () => {
           >
             <Sidebar isAuthenticated={isAuthenticated} />
           </Grid>
-
           <Grid
             item
             xs={12}
             sm={9}
             md={6}
             sx={{
-              borderLeft: `1px solid ${theme.palette.border.main}`,
-              borderRight: `1px solid ${theme.palette.border.main}`,
-              borderLeft: theme.breakpoints.only('xs')
-                ? 'none'
-                : `1px solid ${theme.palette.border.main}`,
-              borderRight: theme.breakpoints.only('xs')
-                ? 'none'
-                : `1px solid ${theme.palette.border.main}`,
+              borderLeft: {
+                xs: 'none',
+                sm: `1px solid ${theme.palette.border.main}`,
+              },
+              borderRight: {
+                xs: 'none',
+                sm: `1px solid ${theme.palette.border.main}`,
+              },
             }}
           >
             {/* routes for main components */}

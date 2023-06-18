@@ -14,13 +14,16 @@ export const getFollowingTweets = (state) => state.tweets;
 export const getTweetByID = (state) => state.singleTweet;
 
 //Tweet replies (comments)
-export const getTweetReplies = (state) => state.getTweetReplies;
+export const getTweetReplies = (state) => state.tweetReplies;
 
 //get user tweets
 export const getUserTweets = (state) => state.userTweets;
 
 // get chats data
 export const getChats = (state) => state.chat;
+
+//get single liked tweet
+export const getLikedTweet = (state) => state.likedTweet;
 
 // get followers
 export const getFollowers = (state) => state.followers;
@@ -30,3 +33,9 @@ export const getFollowings = (state) => state.followings;
 
 // get user bi id
 export const getUserBiId = (state) => state.userBiId;
+
+//get user likes
+export const getUserLikes = (state) => state.userLikes;
+
+//get user replise
+export const getUserReplise = (state) => state.userReplise;

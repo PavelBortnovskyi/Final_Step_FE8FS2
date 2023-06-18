@@ -1,7 +1,7 @@
 package app.service;
 
-import app.dto.rs.ChatResponse;
-import app.dto.rs.MessageResponse;
+import app.dto.rs.ChatResponseDTO;
+import app.dto.rs.MessageResponseDTO;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
@@ -10,17 +10,15 @@ import app.model.Message;
 import app.model.UserModel;
 import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
+import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,16 +35,22 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns created chat between 2 users
    */
-  public Chat createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
+  public Set<Chat> createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
     UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
-    return this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
-      add(interlocutor);
-      //add(initiator);
-    }}));
+
+    return this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
+      .orElseGet(() ->
+      {
+        HashSet<Chat> c = new HashSet<>();
+        c.add(this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
+          add(interlocutor);
+        }})));
+        return c;
+      });
   }
 
-  public Optional<Chat> getChatByUsersIdPair(Long userId, Long interlocutorId) {
+  public Optional<Set<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {
     return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 
@@ -59,7 +63,7 @@ public class ChatService extends GeneralService<Chat> {
       .map(chat -> {
         this.chatRepository.delete(chat);
         return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
+      }).orElseThrow(() -> new BadRequestException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
     return this.chatRepository.existsById(chatId);
   }
 
@@ -82,36 +86,25 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns boolean result of user deleting from chat operation
    */
-  public boolean removeUser(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
+  public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
     UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
-    if (chat.getInitiatorUser().getId().equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
+    if (!userToRemove.equals(chat.getInitiatorUser()) && userToRemove.equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
       chat.getUsers().remove(userToRemove);
       this.chatRepository.save(chat);
-      return true;
-    } else return false;
-  }
-
-  /**
-   * Method returns chat with added message
-   */
-  public Message addMessage(Long chatId, Long userId, Message message) throws UserNotFoundException, ChatNotFoundException {
-    AtomicInteger last = new AtomicInteger();
-    return this.chatRepository.save(this.chatRepository.findById(chatId)
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))))
-      .map(chat -> {
-        chat.getMessages().add(message);
-        last.set(chat.getMessages().size());
-        return chat;
-      }).orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId)))).getMessages().get(last.get());
+      return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
+    } else
+      return ResponseEntity.badRequest().body(String.format("Error in attempt to remove user with id: %d from chat id: %d by user with id: %d",
+        userToRemoveId, chatId, removeInitUserId));
   }
 
   /**
    * Method returns pageable list of chat messages
    */
-  public Page<MessageResponse> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
+  public Page<MessageResponseDTO> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
     return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber))
-      .map(m -> modelMapper.map(m, MessageResponse.class));
+      .map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
   /**
@@ -124,32 +117,32 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns collection of user chats for only last message in each
    */
-  public Page<ChatResponse> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
-    return chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
+  public CustomPageImpl<ChatResponseDTO> getUserChatsWithLastMessage(Long userId, Integer pageSize, Integer pageNumber) {
+    return new CustomPageImpl<>(chatRepository.getChatListForPreview(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).map(array -> {
       Chat chat = (Chat) array[0];
       Message lastMessage = (Message) array[1];
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
-      return this.modelMapper.map(chat, ChatResponse.class);
-    });
+      return this.modelMapper.map(chat, ChatResponseDTO.class);
+    }));
   }
 
   /**
    * Method returns page of message responses from user chat according to keyword matches
    */
-  public Page<MessageResponse> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+  public Page<MessageResponseDTO> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     this.chatRepository.findById(chatId)
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()))
+      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()) || chat.getInitiatorUser().getId().equals(userId))
       .orElseThrow(() -> new BadRequestException(String.format("User with id: %d cannot search in chat with id: %d", userId, chatId)));
-    return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
+    return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
   /**
    * Method returns page of message responses from user chats according to keyword matches
    */
-  public Page<MessageResponse> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponse.class));
+  public Page<MessageResponseDTO> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
+    return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
 //  public List<Page> getSearchResult(Long userId, Integer pageSize, Integer pageNumber, String keyword){

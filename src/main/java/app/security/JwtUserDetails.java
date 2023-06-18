@@ -1,50 +1,57 @@
 package app.security;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 
-@Data
-@RequiredArgsConstructor
-public class JwtUserDetails implements UserDetails {
+public class JwtUserDetails implements UserDetails, Serializable {
 
   private final Long id;
 
+  public JwtUserDetails(Long id) {
+    this.id = id;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return Collections.emptyList();
   }
 
   @Override
   public String getPassword() {
-    return null;
+    return "";
   }
 
   @Override
   public String getUsername() {
-    return null;
+    return "JWTAuthUser";
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean isEnabled() {
-    return false;
+    return true;
+  }
+
+  public Long getId() {
+    return id;
   }
 }
+

@@ -1,5 +1,6 @@
 ### IntelliJ IDEA ###
 **/application-local.yml
+**/application.yml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/

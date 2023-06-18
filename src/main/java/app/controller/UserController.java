@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -74,45 +75,51 @@ public class UserController {
   }
 
   @GetMapping("profile/followers")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowers(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                             HttpServletRequest httpServletRequest) {
-    return userFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), page, size);
+    return userFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
   @GetMapping("profile/followings")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                              @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                              HttpServletRequest httpServletRequest) {
-    return userFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
+    return userFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
   @GetMapping("{userId}/followers")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowers(@PathVariable(name = "userId") @Positive Long userId,
                                             @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return userFacade.getFollowers(userId, page, size);
+    return userFacade.getFollowers(userId, PageRequest.of(page, size));
   }
 
   @GetMapping("{userId}/followings")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
                                                      @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                      @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return userFacade.getFollowings(userId, page, size);
+    return userFacade.getFollowings(userId, PageRequest.of(page, size));
   }
 
   @GetMapping("offer_followings")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                                   HttpServletRequest httpServletRequest) {
-    return userFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), page, size);
+    return userFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
   @GetMapping("search")
+  @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> findUser(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                         @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                         @RequestParam(name = "search_string", defaultValue = "") String serchString,
                                         HttpServletRequest httpServletRequest) {
-    return userFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, page, size);
+    return userFacade.findUser((Long) httpServletRequest.getAttribute("userId"), serchString, PageRequest.of(page, size));
   }
 }

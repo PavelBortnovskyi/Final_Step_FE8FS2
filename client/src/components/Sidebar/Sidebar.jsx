@@ -7,7 +7,7 @@ import { SidebarFooter } from './SidebarFooter/SidebarFooter';
 import { SidebarDropdown } from './SidebarDropdown/SidebarDropdown';
 import SmallBtnTweet from './SmallBtnTweet/SmallBtnTweet';
 import TweetButton from 'src/UI/TweetButton';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { MainMenuSidebar } from './MainMenuSidebar';
 import { LogoTwitter } from './LogoTwitter';
 
@@ -41,7 +41,7 @@ const BoxContainerStyled = styled(Box)((props) => ({
 
 export const Sidebar = ({ isAuthenticated }) => {
   const location = useLocation();
-  // console.log(isAuthenticated);
+
 
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')
@@ -82,7 +82,7 @@ export const Sidebar = ({ isAuthenticated }) => {
               >
                 <TweetButton
                   text="Tweet"
-                  w="230"
+                  w="200"
                   h="50"
                   fw="800"
                   isDisabled={false}
@@ -102,7 +102,7 @@ export const Sidebar = ({ isAuthenticated }) => {
         </Box>
 
         {isAuthenticated && (
-          <SidebarFooter displayName="Алексей SlaAll00" username="slaall00" />
+          <SidebarFooter />
         )}
       </BoxContainerStyled>
 

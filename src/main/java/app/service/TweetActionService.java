@@ -1,108 +1,59 @@
 package app.service;
 
 import app.enums.TweetActionType;
-import app.exceptions.tweetError.TweetIsNotFoundException;
+import app.exceptions.TweetAction.TweetActionNotFoundException;
+import app.exceptions.tweetError.TweetPermissionException;
+import app.model.Tweet;
 import app.model.TweetAction;
 import app.model.UserModel;
 import app.repository.TweetActionRepository;
-import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-
-
+@Log4j2
 @Service
 @RequiredArgsConstructor
-public class TweetActionService extends GeneralService<TweetAction> {
-  private final UserService userService;
-  private final TweetModelRepository tweetModelRepository;
+public class TweetActionService {
+
   private final TweetActionRepository tweetActionRepository;
+  private final TweetService tweetService;
+  private final UserService userService;
 
-  public TweetAction add(Long tweetId, HttpServletRequest request, TweetActionType tweetActionType) {
-    UserModel user = userService.getUser((Long) request.getAttribute("userId"));
-    TweetAction tweetAction = new TweetAction();
-    tweetAction.setActionType(tweetActionType);
-    tweetAction.setTweet(tweetModelRepository.findById(tweetId).orElseThrow(() -> new TweetIsNotFoundException(tweetId)));
-    tweetAction.setUser(user);
-    TweetAction savedAction = tweetActionRepository.save(tweetAction);
-    return savedAction;
+  public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType) {
+    return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType)
+      .orElseThrow(() -> new TweetActionNotFoundException(actionType, tweet.getId()));
   }
 
-  public Boolean addLike(Long tweetId, HttpServletRequest request) {
-    if (!statusLike(tweetId, request)) {
-      add(tweetId, request, TweetActionType.LIKE);
-      return true;
-    } else {
-      delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-        userService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.LIKE));
-    }
-    return false;
 
+  @Transactional
+  public TweetAction createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    return tweetActionRepository.getByUserAndTweetAndActionType(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType)
+      .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, userService.getUser(userId), tweetService.getTweet(tweetId))));
   }
 
-  public TweetAction addRetweet(Long tweetId, HttpServletRequest request) {
-    return add(tweetId, request, TweetActionType.RETWEET);
+
+  @Transactional
+  public TweetAction removeTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    TweetAction tweetAction = getTweetAction(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType);
+    if (!tweetAction.getUser().getId().equals(userId)) throw new TweetPermissionException(tweetId);
+    tweetActionRepository.delete(tweetAction);
+    return tweetAction;
   }
 
-  public Boolean addBookmark(Long tweetId, HttpServletRequest request) {
-    if (!statusBookmark(tweetId, request)) {
-      add(tweetId, request, TweetActionType.BOOKMARK);
-      return true;
-    } else {
-      delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-        userService.getUser((Long) request.getAttribute("userId")).getId(), TweetActionType.BOOKMARK));
-    }
-    return false;
+  public Integer getCountLikes(Tweet tweet) {
+    return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.LIKE);
   }
 
-  public Integer getCount(Long tweetId, TweetActionType tweetActionType) {
-    return tweetActionRepository.getCountByTweetIdAndActionType(tweetId, tweetActionType);
+  public Integer getCountBookmarks(Tweet tweet) {
+    return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.BOOKMARK);
   }
 
-  public Integer getCountLikes(Long tweetId) {
-    return getCount(tweetId, TweetActionType.LIKE);
+  public Page<TweetAction> getActionsByUser(UserModel user, TweetActionType tweetActionType, Pageable pageable) {
+    return tweetActionRepository.findAllByUserAndActionTypeOrderByCreatedAtDesc(user, tweetActionType, pageable);
   }
 
-  public Integer getCountBookmarks(Long tweetId) {
-    return getCount(tweetId, TweetActionType.BOOKMARK);
-  }
-
-  public Integer getCountRetweet(Long tweetId) {
-    return getCount(tweetId, TweetActionType.RETWEET);
-  }
-
-  public void deleteLike(Long tweetId, HttpServletRequest request) {
-    delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-      userService.getUser((Long) request.getAttribute("userId")).getId(),
-      TweetActionType.LIKE));
-  }
-
-  public void deleteRetweet(Long tweetId, HttpServletRequest request) {
-    delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-      userService.getUser((Long) request.getAttribute("userId")).getId(),
-      TweetActionType.RETWEET));
-  }
-
-  public void deleteBookmark(Long tweetId, HttpServletRequest request) {
-    delete(tweetActionRepository.findByTweetIdAndUserIdAndActionType(tweetId,
-      userService.getUser((Long) request.getAttribute("userId")).getId(),
-      TweetActionType.BOOKMARK));
-  }
-
-  public boolean statusLike(Long tweetId, HttpServletRequest request) {
-    if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.LIKE,
-      userService.getUser((Long) request.getAttribute("userId")).getId(),
-      tweetId) == 0) return false;
-    else return true;
-
-  }
-
-  public boolean statusBookmark(Long tweetId, HttpServletRequest request) {
-    if (tweetActionRepository.countByActionTypeAndUserIdAndTweetId(TweetActionType.BOOKMARK,
-      userService.getUser((Long) request.getAttribute("userId")).getId(),
-      tweetId) == 0) return false;
-    else return true;
-
-  }
 }

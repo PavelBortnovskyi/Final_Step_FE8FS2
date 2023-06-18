@@ -9,12 +9,11 @@ export const createTweetReply = createAsyncThunk(
 
       const formData = new FormData();
       formData.append('tweetBody', postInputText);
-      formData.append('parentTweetId', id);
-      // formData.append('file', postImages);
-
-      const data = await myAxios.put(`/tweet/reply`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      // formData.append('parentTweetId', id);
+      postImages.forEach((image, index) => {
+        formData.append(`attachmentImages`, image);
       });
+      const data = await myAxios.post(`/tweet/${id}/reply`, formData);
 
       return data;
     } catch (error) {

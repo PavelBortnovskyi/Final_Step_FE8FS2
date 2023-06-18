@@ -9,6 +9,7 @@ function Retweet() {
   const dispatch = useDispatch();
 
   const handleSubmitRetweet = (postInputText, postImages) => {
+    console.log('is working');
     dispatch(createTweetReply({ id, postInputText, postImages }));
   };
 

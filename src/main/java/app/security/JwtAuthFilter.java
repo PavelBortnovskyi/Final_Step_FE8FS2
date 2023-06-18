@@ -2,7 +2,6 @@ package app.security;
 
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
-import app.model.UserModel;
 import app.service.JwtTokenService;
 import app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,8 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Log4j2
 @Component
@@ -47,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
 
         log.info("Token is valid continue...");
-        this.processRequestWithToken(request, response, filterChain, token);
+        this.processRequestWithToken(request, token);
 
         //Add value of userId to request to more simple access to it in controllers
         request.setAttribute("userId", this.tokenService.getIdFromRequest(request).get());
@@ -77,8 +74,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/auth/refresh", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod)
+      new AntPathRequestMatcher("/chat-ws", requestMethod),
+      new AntPathRequestMatcher("/chat-ws/**", requestMethod),
+      new AntPathRequestMatcher("/notifications-ws", requestMethod),
+      new AntPathRequestMatcher("/notifications-ws/**", requestMethod)
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
@@ -89,8 +90,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     return false;
   }
 
-  private void processRequestWithToken(HttpServletRequest request, HttpServletResponse response,
-                                       FilterChain filterChain, String token) throws ServletException, IOException {
+  private void processRequestWithToken(HttpServletRequest request, String token) throws ServletException, IOException {
     try {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(this.tokenService::extractIdFromClaims)
