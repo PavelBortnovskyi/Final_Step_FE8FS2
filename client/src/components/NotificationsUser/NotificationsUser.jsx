@@ -9,6 +9,7 @@ import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getNotifications } from 'src/redux/thunk/getNotifications';
 import { NotificationsReplying } from './NotificationsReplying';
 import { NotificationsEmpty } from './NotificationsEmpty';
+import { NotificationsQuote } from './NotificationsQuote';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -32,8 +33,6 @@ export const NotificationsUser = () => {
   const userNotifications = useSelector(state => state.userNotifications.userNotifications);
   const Notifications = userNotifications.content;
 
-
-
   // send user to home if not authorization
   useEffect(() => {
     if (!isAuthenticated) {
@@ -42,15 +41,25 @@ export const NotificationsUser = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getNotifications({ page: 0, pageSize: 10 }));
+    dispatch(getNotifications({ page: 0, pageSize: 20 }));
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
   };
+
+console.log(Notifications);
   return (
-    <Box sx={{ height: '100vh', padding: '8px 0 0 0' }}>
-      <Typography variant="h5" sx={{ padding: '0 0 8px 16px', }}>
+    <Box sx={{ padding: '8px 0 0 0' }}>
+      <Typography variant="h5"
+      sx={{
+        backdropFilter: 'blur(15px)',
+        width: '100%',
+        padding: '8px 0 8px 16px',
+        position: 'sticky',
+        top: '0',
+        zIndex: 13,
+      }}>
         Notifications
       </Typography>
       <Tabs value={tabIndex} onChange={handleTabChange}
@@ -63,17 +72,12 @@ export const NotificationsUser = () => {
       </Tabs>
 
       <Box sx={{
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
 
       }}>
         <NotificationsEmpty userNotifications={userNotifications} tabIndex={tabIndex} />
-
-
-
-
 
         {
           tabIndex === 0 && Notifications && Notifications.map(notification => (
@@ -82,6 +86,9 @@ export const NotificationsUser = () => {
             ||
             (notification.notificationType === 'LIKE'
             && <NotificationsLike notification={notification} key={notification.id} />)
+            ||
+            (notification.notificationType === 'QUOTE_TWEET'
+            && <NotificationsQuote notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'REPLY'
             && <NotificationsReplying notification={notification} key={notification.id} />)
