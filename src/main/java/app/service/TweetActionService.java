@@ -28,9 +28,6 @@ public class TweetActionService {
       .orElseThrow(() -> new TweetActionNotFoundException(actionType, tweet.getId()));
   }
 
-//  public boolean isTweetActionPresent(UserModel user, Tweet tweet, TweetActionType actionType){
-//    return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType).isPresent();
-//  }
 
   @Transactional
   public TweetAction createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {

@@ -26,7 +26,6 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   private TweetService tweetService;
   @Autowired
   private TweetActionService tweetActionService;
-
   @Autowired
   private NotificationService notificationService;
 
