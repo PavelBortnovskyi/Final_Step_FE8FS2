@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { UserAction } from './UserAction';
 import { UserHeder } from './UserHeder';
 import { UserInfo } from './UserInfo';
@@ -19,10 +19,11 @@ export const User = ({
   countUserFollowings,
   countUserFollowers,
 }) => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        borderBottom: '1px solid #38444d',
+        borderBottom: `1px solid ${theme.palette.border.main}`,
 
         width: '100vw',
       }}

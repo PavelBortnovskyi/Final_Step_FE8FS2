@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+
 // import { UserActionButton } from './UserActionButton';
 // import { Tab, Tabs } from '@mui/material';
 import React from 'react';
@@ -14,37 +15,37 @@ export function UserAction() {
     setValue(newValue);
   };
   return (
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}` }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)' }}>
+        <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}` }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab
               // component={NavLink}
               // to={linkTofollowings}
               label="Tweets"
               value="1"
-              sx={{ width: '25%', color: `${theme.palette.text.primary}` }}
+              sx={{ width: '33.33%', color: `${theme.palette.text.primary}` }}
             />
             <Tab
               // component={NavLink}
               // to={linkToFollowers}
               label="Replise"
               value="2"
-              sx={{ width: '25%', color: `${theme.palette.text.primary}` }}
+              sx={{ width: '33.33%', color: `${theme.palette.text.primary}` }}
             />
-            <Tab
+            {/* <Tab
               // component={NavLink}
               // to={linkToFollowers}
               label="Media"
               value="3"
               sx={{ width: '25%', color: `${theme.palette.text.primary}` }}
-            />
+            /> */}
             <Tab
               // component={NavLink}
               // to={linkToFollowers}
               label="Likes"
               value="4"
-              sx={{ width: '25%', color: `${theme.palette.text.primary}` }}
+              sx={{ width: '33.33%', color: `${theme.palette.text.primary}` }}
             />
           </TabList>
         </Box>
