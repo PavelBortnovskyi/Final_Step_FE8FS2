@@ -88,7 +88,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         log.info("Origin:" + origin);
 
-        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")) {
+        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")  && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
           log.info("Command: " + accessor.getCommand());
 
           if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
