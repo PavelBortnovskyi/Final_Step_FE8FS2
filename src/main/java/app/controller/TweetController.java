@@ -203,6 +203,7 @@ public class TweetController {
       TweetActionType.BOOKMARK, PageRequest.of(page, size));
   }
 
+
   @GetMapping("subscriptions")
   @ApiOperation("Get all tweets (TWEET/RETWEET/QUOTE_TWEET) from the current user's subscriptions")
   public Page<TweetResponseDTO> getTweetsFromSubscriptions(HttpServletRequest httpRequest,
@@ -210,6 +211,7 @@ public class TweetController {
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
+
 
   @GetMapping("top")
   @ApiOperation("Get top tweets")

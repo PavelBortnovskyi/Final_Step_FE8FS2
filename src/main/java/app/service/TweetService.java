@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Primary
+
 @Log4j2
 @Service
 @RequiredArgsConstructor

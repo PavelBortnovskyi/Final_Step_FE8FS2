@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CurrUserService {
+public class AuthUserService {
 
   private final UserService userService;
 
