@@ -33,6 +33,7 @@ export const UserPage = () => {
         }}
       >
         <User
+          idUser={user.id}
           userButton={editProfile}
           lincToFollowers={lincToFollowers}
           lincToFollowings={lincToFollowings}

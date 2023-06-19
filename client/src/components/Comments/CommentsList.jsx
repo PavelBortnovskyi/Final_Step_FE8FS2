@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import TweetPost from 'src/UI/tweet/TweetPost';
-import { getTweetReply } from 'src/redux/thunk/getTweetReply';
+import { getTweetReply } from 'src/redux/thunk/tweets/getTweetReply';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTweetReplies } from 'src/redux/selectors/selectors';
 import { useParams } from 'react-router-dom';

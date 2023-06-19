@@ -1,6 +1,7 @@
 package app.utils;
 
 
+import app.security.JwtUserDetails;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;

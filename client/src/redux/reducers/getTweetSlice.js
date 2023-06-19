@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweetsFollowing } from '../thunk/getTweets.js';
+import { getTweetsFollowing } from '../thunk/tweets/getFollowingTweets.js';
 
 const initialState = {
   tweets: [],

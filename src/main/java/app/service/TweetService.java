@@ -1,5 +1,6 @@
 package app.service;
 
+import app.annotations.SendNotification;
 import app.enums.TweetType;
 import app.exceptions.tweetError.TweetIsNotFoundException;
 import app.exceptions.tweetError.TweetPermissionException;
@@ -28,8 +29,8 @@ public class TweetService extends GeneralService<Tweet> {
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
 
-
   @Transactional
+  @SendNotification
   public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
     if (files == null) files = new MultipartFile[0];
 

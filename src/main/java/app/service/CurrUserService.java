@@ -14,9 +14,11 @@ public class CurrUserService {
   private final UserService userService;
 
 
-  private JwtUserDetails getUserDetails() {
+  public JwtUserDetails getUserDetails() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication.getPrincipal() instanceof JwtUserDetails)
     return (JwtUserDetails) authentication.getPrincipal();
+    else return new JwtUserDetails(0L, "@Zero");
   }
 
 

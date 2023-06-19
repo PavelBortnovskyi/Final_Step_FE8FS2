@@ -10,8 +10,7 @@ import app.model.Chat;
 import app.service.ChatService;
 import app.service.UserService;
 import app.utils.CustomPageImpl;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -20,14 +19,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponseDTO> {
 
-  @Autowired
-  private ChatService chatService;
+  private final ChatService chatService;
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
 
   /**
    * Method creates new chat between 2 users
