@@ -3,9 +3,8 @@ package app.facade;
 
 import app.model.BaseEntityModel;
 import app.service.ServiceInterface;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +13,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 @Component
+@RequiredArgsConstructor
 public abstract class GeneralFacade<E extends BaseEntityModel, I, O> {
 
   @Autowired

@@ -6,7 +6,6 @@ import app.enums.TweetType;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.service.CurrUserService;
-import app.service.NotificationService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   private final TweetService tweetService;
   private final TweetActionService tweetActionService;
-  private final NotificationService notificationService;
   private final CurrUserService currUserService;
 
 
@@ -53,8 +51,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweet(Long userId, String tweetBody, MultipartFile[] attachmentImages, TweetType tweetType, Long parentTweetId) {
-    return convertToDto(notificationService.sendNotification(tweetService
-      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId), userId, null));
+    return convertToDto(tweetService
+      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId));
   }
 
 
@@ -69,8 +67,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(notificationService.sendNotification(tweetActionService
-      .createTweetAction(userId, tweetId, tweetActionType).getTweet(), userId, tweetActionType));
+    return convertToDto(tweetActionService
+      .createTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
 
 

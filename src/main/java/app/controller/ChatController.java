@@ -7,6 +7,7 @@ import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,9 +26,9 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/v1/chat")
 @Validated
+@RequiredArgsConstructor
 public class ChatController {
-  @Autowired
-  private ChatFacade chatFacade;
+  private final ChatFacade chatFacade;
 
   /**
    * This endpoint waiting for valid url params and token to return created chat response

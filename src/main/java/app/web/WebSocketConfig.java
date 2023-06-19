@@ -5,6 +5,7 @@ import app.exceptions.authError.JwtAuthenticationException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -31,6 +32,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import java.util.List;
 import java.util.Objects;
 
+@Log4j2
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
@@ -80,13 +82,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       @Order(Ordered.HIGHEST_PRECEDENCE + 99)
       public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
-        StompHeaderAccessor accessor =
-          MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
         String origin = accessor.getFirstNativeHeader("Origin");
 
-        if (accessor != null && accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")) {
-          if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+        //log.info("Origin:" + origin);
+
+        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")  && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
+          //log.info("Command: " + accessor.getCommand());
+
+          if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
 
             String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
               .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
@@ -101,12 +106,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
               //accessor.getSessionAttributes().put("userId", jwtUser.getId());
               accessor.getSessionAttributes()
-                .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+                .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+              //log.info("Token:" + token);
+              //log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
             } else {
               throw new JwtAuthenticationException("Token is not valid");
             }
           }
         }
+        //log.info("Assessor message " + accessor.getMessage());
         return message;
       }
     });
