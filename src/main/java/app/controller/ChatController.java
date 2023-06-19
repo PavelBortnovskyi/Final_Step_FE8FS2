@@ -5,12 +5,11 @@ import app.dto.rs.ChatResponseDTO;
 import app.dto.rs.MessageResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
-import app.service.CurrUserService;
+import app.service.AuthUserService;
 import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ import java.util.Set;
 public class ChatController {
   private final ChatFacade chatFacade;
 
-  private final CurrUserService authUserService;
+  private final AuthUserService authUserService;
 
   /**
    * This endpoint waiting for valid url params and token to return created chat response

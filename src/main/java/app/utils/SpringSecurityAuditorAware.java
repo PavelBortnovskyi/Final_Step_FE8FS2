@@ -1,6 +1,6 @@
 package app.utils;
 
-import app.service.CurrUserService;
+import app.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import java.util.Optional;
 class SpringSecurityAuditorAware implements AuditorAware<String> {
 
   @Autowired
-  private CurrUserService currUserService;
+  private AuthUserService authUserService;
 
   public Optional<String> getCurrentAuditor() {
-   return Optional.ofNullable(currUserService.getUserDetails().getUsername());
+   return Optional.ofNullable(authUserService.getUserDetails().getUsername());
   }
 }
