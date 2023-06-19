@@ -25,6 +25,7 @@ public class UserService extends GeneralService<UserModel> {
   private final PasswordEncoder encoder;
   private final CloudinaryService cloudinaryService;
 
+
   /**
    * Methods returns Optional of UserModel by different parameters
    */
@@ -32,27 +33,33 @@ public class UserService extends GeneralService<UserModel> {
     return userRepository.findByEmail(email);
   }
 
+
   public Optional<UserModel> getUserO(Long id) {
     return userRepository.findById(id);
   }
+
 
   public UserModel getUser(String email) {
     return userRepository.findByEmail(email)
       .orElseThrow(() -> new UserNotFoundException(email));
   }
 
+
   public UserModel getUser(Long userId) {
     return userRepository.findById(userId)
       .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
+
   public UserModel getUserByRefreshToken(String refreshToken) {
     return userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new JwtAuthenticationException("Wrong refresh token!"));
   }
 
+
   public Optional<UserModel> getUserByTagO(String userTag) {
     return userRepository.findByUserTag(userTag);
   }
+
 
   @Transactional
   public UserModel subscribe(Long userCurrentId, Long userToFollowingId) {
@@ -63,12 +70,14 @@ public class UserService extends GeneralService<UserModel> {
     return userModel;
   }
 
+
   @Transactional
   public UserModel unsubscribe(Long userCurrentId, Long userToUnFollowingId) {
     UserModel userModel = getUser(userCurrentId);
     userModel.getFollowings().remove(getUser(userToUnFollowingId));
     return userModel;
   }
+
 
   @Transactional
   public UserModel uploadAvatarImg(Long userId, MultipartFile file) {
@@ -78,6 +87,7 @@ public class UserService extends GeneralService<UserModel> {
     return userModel;
   }
 
+
   @Transactional
   public UserModel uploadHeaderImg(Long userId, MultipartFile file) {
     UserModel userModel = getUser(userId);
@@ -86,41 +96,50 @@ public class UserService extends GeneralService<UserModel> {
     return userModel;
   }
 
+
   public Page<UserModel> getFollowers(Long userId, Pageable pageable) {
     return userRepository.findByFollowingsContains(getUser(userId), pageable);
   }
+
 
   public Page<UserModel> getFollowings(Long userId, Pageable pageable) {
     return userRepository.findByFollowersContains(getUser(userId), pageable);
   }
 
+
   public Page<UserModel> getOfferFollowings(Long userId, Pageable pageable) {
     return userRepository.findByIdNotAndFollowersNotContaining(userId, getUser(userId), pageable);
   }
+
 
   public Page<UserModel> searchUsers(Long userId, String searchString, Pageable pageable) {
     return userRepository.findByIdNotAndFullNameContainsIgnoreCaseOrUserTagContainsIgnoreCase(
       userId, searchString, searchString, pageable);
   }
 
+
   public boolean checkRefreshTokenStatus(String refreshToken) {
     return getUserByRefreshToken(refreshToken).isRefreshed();
   }
+
 
   @Transactional
   public void updateRefreshTokenById(Long userId, String refreshToken) {
     getUser(userId).setRefreshToken(refreshToken);
   }
 
+
   @Transactional
   public void changeRefreshTokenStatusById(Long userId, boolean usedStatus) {
     getUser(userId).setRefreshed(usedStatus);
   }
 
+
   @Transactional
   public void changeTokenStatusByValue(String token, boolean usedStatus) {
     getUserByRefreshToken(token).setRefreshed(usedStatus);
   }
+
 
   /**
    * Method returns boolean result of updating user password operation (after checking login&password combination) and updates it in case right combination
@@ -133,6 +152,7 @@ public class UserService extends GeneralService<UserModel> {
     return true;
   }
 
+
   /**
    * Method returns boolean result of updating user password operation (only for reset password case)
    */
@@ -141,6 +161,7 @@ public class UserService extends GeneralService<UserModel> {
     getUser(userId).setPassword(freshPassword);
   }
 
+
   /**
    * Method returns boolean result of checking presence in DB user with login&password combination
    */
@@ -148,12 +169,14 @@ public class UserService extends GeneralService<UserModel> {
     return encoder.matches(password, getUser(email).getPassword());
   }
 
+
   /**
    * Method returns true if provided email address is present in DB
    */
   public boolean isEmailPresentInDB(String email) {
     return userRepository.findByEmail(email).isPresent();
   }
+
 
   public boolean isUserTagPresentInDB(String userTag) {
     return getUserByTagO(userTag).isPresent();
