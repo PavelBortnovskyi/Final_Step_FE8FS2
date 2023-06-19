@@ -1,4 +1,4 @@
-// convert message.sent[] to Date
+// convert chats->message.sent[] to Date
 export const arrToDate = (arr) => {
   const year = arr[0];
   const month = arr[1] - 1; // Месяцы в JavaScript начинаются с 0, поэтому вычитаем 1
