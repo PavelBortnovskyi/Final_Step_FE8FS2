@@ -86,7 +86,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         String origin = accessor.getFirstNativeHeader("Origin");
 
-        if (accessor != null && accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")) {
+        log.info(origin);
+
+        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")) {
+          log.info(accessor.getCommand());
           if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
             String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
@@ -110,8 +113,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             }
           }
         }
-        log.info(origin);
-        log.info(accessor.getCommand());
         log.info(accessor.getMessage());
         return message;
       }
