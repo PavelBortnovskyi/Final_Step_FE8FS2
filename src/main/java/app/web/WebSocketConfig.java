@@ -86,11 +86,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         String origin = accessor.getFirstNativeHeader("Origin");
 
-        log.info(origin);
+        log.info("Origin:" + origin);
 
         if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")) {
-          log.info(accessor.getCommand());
-          if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+          log.info("Command: " + accessor.getCommand());
+
+          if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
 
             String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
               .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
