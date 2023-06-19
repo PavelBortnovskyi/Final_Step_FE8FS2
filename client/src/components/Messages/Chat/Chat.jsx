@@ -105,9 +105,7 @@ export const Chat = () => {
 
       try {
         // get chat messages from DB
-        dispatch(
-          getChatMessages({ chatId: guest.chatId, page: 0, pageSize: 10 })
-        );
+        dispatch(getChatMessages({ chatId: guest.chatId, page: 0 }));
       } catch (error) {
         console.log(error);
       }

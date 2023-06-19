@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 
-import { getUserData } from 'src/redux/selectors/selectors';
+import { getMessages } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
 
@@ -13,11 +13,15 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 }));
 
 export const SearchPeople = () => {
-  const { isLoading, findUser } = useSelector(getUserData);
+  const { isLoading, findUser } = useSelector(getMessages);
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)
-    return <Typography sx={{margin: "16px"}}>Try searching for people or messages</Typography>;
+    return (
+      <Typography sx={{ margin: '16px' }}>
+        Try searching for people or messages
+      </Typography>
+    );
 
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
@@ -29,15 +33,18 @@ export const SearchPeople = () => {
   return (
     <>
       {!isResult ? (
-        <Box >
-          <Typography variant="h5" sx={{margin: "16px 0"}}>no results</Typography>
-          <Typography variant="body2">The term you entered did not bring up any results</Typography>
-          
+        <Box>
+          <Typography variant="h5" sx={{ margin: '16px 0' }}>
+            no results
+          </Typography>
+          <Typography variant="body2">
+            The term you entered did not bring up any results
+          </Typography>
         </Box>
       ) : (
         <Box
           sx={{
-            marginTop: "16px",
+            marginTop: '16px',
             display: 'flex',
             gap: '8px',
             flexDirection: 'column',

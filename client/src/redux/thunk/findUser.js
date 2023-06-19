@@ -2,14 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 
 export const findUser = createAsyncThunk(
-  'user/findUser',
-  async ({ search, size = 5, page = 0 }, { rejectWithValue }) => {
+  'messagesSlice/findUser',
+  async ({ search, size = 999, page = 0 }, { rejectWithValue }) => {
     try {
-      // request to server if we have token in localStorage it will inject src/utils/axiosSetup into request
-      //api/v1/user/search?search_string=user&size=2&page=0
-      // console.log(
-      //   `/user/search?search_string=${search}&size=${size}&page=${page}`
-      // );
       if (search.trim() === '') return { searchStr: search.trim() };
 
       const { data } = await myAxios.get(

@@ -3,7 +3,8 @@ import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined'
 import AttachFile from '@mui/icons-material/AttachFile';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getChats } from 'src/redux/selectors/selectors';
+import { getChats, getUserData } from 'src/redux/selectors/selectors';
+import { getTokens } from 'src/utils/tokens';
 
 // ************ STYLE ************
 const Sender = styled('div')(({ theme }) => ({
@@ -45,27 +46,35 @@ const SenderInputBase = styled(InputBase)(({ theme }) => ({
 export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
 
-  const { guest, currentChat, socketChat } = useSelector(getChats);
+  const { guest, socketChat } = useSelector(getChats);
+  const { user } = useSelector(getUserData);
+
+  const { accessToken } = getTokens();
 
   // set send text
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
-      // TODO: need create send message
+      // chatId - chat message recipient
+      // userId - message author
       const message = {
-        userId: guest.id,
-        chatId: currentChat.chatId,
+        userId: user.id,
+        chatId: guest.chatId,
+        // body: JSON.stringify(messageText),
         body: messageText,
       };
 
       console.log(message);
-      console.log(socketChat);
-
-      // send message to DB
-      // await newMessage(message);
 
       // send event about new message to Socket server
-      socketChat.emit('/api/v1/message', message);
+      socketChat.publish({
+        destination: '/api/v1/message',
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`,
+        //   Origin: 'client',
+        // },
+        body: JSON.stringify(message),
+      });
 
       // clear sender input
       setMessageText('');

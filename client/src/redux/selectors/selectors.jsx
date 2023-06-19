@@ -22,6 +22,9 @@ export const getUserTweets = (state) => state.userTweets;
 // get chats data
 export const getChats = (state) => state.chat;
 
+// get chats data
+export const getMessages = (state) => state.messages;
+
 //get single liked tweet
 export const getLikedTweet = (state) => state.likedTweet;
 

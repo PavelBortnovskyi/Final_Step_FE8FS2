@@ -1,7 +1,11 @@
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getChats, getUserData } from 'src/redux/selectors/selectors';
+import {
+  getChats,
+  getMessages,
+  getUserData,
+} from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
 import { getGuest } from 'src/redux/thunk/getGuest';
@@ -27,7 +31,8 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 // ************ TabPeople ************
 export const TabPeople = () => {
   const dispatch = useDispatch();
-  const { isLoading, findUser, user } = useSelector(getUserData);
+  const { user } = useSelector(getUserData);
+  const { isLoading, findUser } = useSelector(getMessages);
   const { currentChat } = useSelector(getChats);
 
   // set Guest for chat
@@ -38,6 +43,8 @@ export const TabPeople = () => {
 
   // set chat
   useEffect(() => {
+    console.log('new chat?', currentChat?.length);
+
     if (currentChat) {
       // find only personal chats
       const tempChatData = currentChat.find((chat) => chat.users.length === 1);

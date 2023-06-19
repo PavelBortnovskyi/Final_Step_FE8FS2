@@ -30,7 +30,7 @@ export const chatSlice = createSlice({
     chatCloseConnection(state, actions) {
       state.guest = null;
       state.chatMessages = null;
-      // state.currentChat = null;
+      state.currentChat = null;
     },
     setSocketChat(state, action) {
       state.socketChat = action.payload;

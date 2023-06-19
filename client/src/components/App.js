@@ -9,6 +9,7 @@ import { getTokens } from 'src/utils/tokens';
 
 import { Stomp, Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { setSocketChat } from 'src/redux/reducers/chatSlice';
 
 // 3
 export const App = () => {
@@ -16,62 +17,77 @@ export const App = () => {
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const { accessToken } = getTokens();
 
-  // const stompClientRef = useRef(null);
+  const stompClientRef = useRef(null);
 
-  // useEffect(() => {
-  //   const headers = {
-  //     Authorization: `Bearer ${accessToken}`,
-  //   };
+  //****************** CONNECT TO SOCKET *********************/
+  useEffect(() => {
+    if (isAuthenticated) {
+      // create header
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        Origin: 'client',
+      };
 
-  //   const client = new Client({
-  //     brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
-  //     connectHeaders: headers,
-  //     debug: function (str) {
-  //       console.log(str);
-  //     },
-  //   });
+      try {
+        // create connect to socket
+        stompClientRef.current = new Client({
+          brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
+          connectHeaders: headers,
+          debug: function (str) {
+            console.log(str);
+          },
+        });
 
-  //   // TODO: delete
-  //   const date = Math.random();
+        // after activate connect
+        const connectCallback = () => {
+          console.log('Connected to STOMP server');
 
-  //   console.log('socket ***' + accessToken);
+          stompClientRef.current.subscribe(
+            '/topic/chats',
+            onMessageReceived,
+            headers
+          );
 
-  //   // chatId - chat message recipient
-  //   // userId - message author
-  //   const connectCallback = () => {
-  //     console.log('Connected to STOMP server');
-  //     client.subscribe('/topic/chats', onMessageReceived);
-  //     client.publish({
-  //       destination: '/api/v1/message',
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //       body: JSON.stringify({
-  //         chatId: 24,
-  //         userId: 2,
-  //         body: `${date} message`,
-  //       }),
-  //     });
-  //   };
+          // set socket connect to redux
+          dispatch(setSocketChat(stompClientRef.current));
+        };
 
-  //   const errorCallback = (error) => {
-  //     console.error('Error:', error);
-  //   };
+        // error socket
+        const errorCallback = (error) => {
+          console.error('Error:', error);
+        };
 
-  //   const onMessageReceived = (message) => {
-  //     console.log('Received message:', message.body);
-  //   };
+        // TODO:  create code for received messages
+        const onMessageReceived = (message) => {
+          console.log('Received message:', message.body);
+        };
 
-  //   client.onConnect = connectCallback;
-  //   client.onStompError = errorCallback;
+        stompClientRef.current.onConnect = connectCallback;
+        stompClientRef.current.onStompError = errorCallback;
 
-  //   client.activate();
+        // activate connect
+        stompClientRef.current.activate();
+        //
+      } catch (error) {
+        console.error('Error activating STOMP connection:', error);
+      }
 
-  //   return () => {
-  //     client.deactivate();
-  //   };
-  // }, [accessToken]);
+      return () => {
+        try {
+          stompClientRef.current.deactivate();
+          //
+        } catch (error) {
+          console.error('Error deactivating STOMP connection:', error);
 
+          // Если ошибка связи, попытайтесь переконектиться
+          if (error.message === 'Lost connection to server') {
+            console.log('Attempting to reconnect...');
+            stompClientRef.current.activate();
+          }
+        }
+      };
+    }
+  }, [dispatch, accessToken, isAuthenticated]);
   //*********************************************************/
 
   useEffect(() => {
