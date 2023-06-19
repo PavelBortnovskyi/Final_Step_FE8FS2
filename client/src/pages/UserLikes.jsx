@@ -28,21 +28,6 @@ export const UserLikes = () => {
   const likes = userLikes.content;
   const theme = useMode();
 
-  // const profile = useSelector((state) => state.user.user) || '';
-
-  // let subscribe;
-
-  // if (user.id === profile.id) {
-  //   subscribe = <LinkToEditProfile />;
-  // } else {
-  //   subscribe = <ButtonSubscribe userId={user.id} />;
-  // }
-
-  // const lincToFollowings = `/${user.id}/followings`;
-  // const lincToFollowers = `/${user.id}/followers`;
-
-  // const userId = user.id;
-
   return (
     likes && <TweetList tweets={likes} />
     // us &&
