@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweetById } from '../thunk/getTweetById.js';
+import { getTweetById } from '../thunk/tweets/getTweetById.js';
 
 const initialState = {
   singleTweet: {},

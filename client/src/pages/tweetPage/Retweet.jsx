@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { createTweetReply } from 'src/redux/thunk/replyTweet';
+import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 
 function Retweet() {
