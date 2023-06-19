@@ -20,13 +20,12 @@ export const UserLikes = () => {
 
   const { id } = useParams();
   const userId = id;
-  console.log(userId);
   useEffect(() => {
     dispatch(getUserLikes(userId));
   }, [dispatch, userId]);
   const userLikes = useSelector((state) => state.userLikes.userLikes) || [];
 
-  const us = userLikes.content;
+  const likes = userLikes.content;
   const theme = useMode();
 
   // const profile = useSelector((state) => state.user.user) || '';
@@ -45,7 +44,7 @@ export const UserLikes = () => {
   // const userId = user.id;
 
   return (
-    <TweetList tweets={us} />
+    likes && <TweetList tweets={likes} />
     // us &&
     // us.map((likeTweet) => {
     //   return (
