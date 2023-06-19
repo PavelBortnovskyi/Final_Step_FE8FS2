@@ -12,10 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.nio.DoubleBuffer;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -28,8 +24,8 @@ public class ScheduleAlgoService {
   private final TweetActionService tweetActionService;
   private final TweetService tweetService;
 
-  //@Scheduled(fixedRate = 3600000L) // Выполнять каждый час
-  @Scheduled(fixedRate = 10000L) // Выполнять каждый час
+  @Scheduled(fixedRate = 3600000L) // Выполнять каждый час
+  //@Scheduled(fixedRate = 10000L) // Выполнять каждый час
   public void ratingAlgorithm() {
     Map<Long, Double> tweetsRating = new HashMap<>();
     //получаем последние 50 твитов
