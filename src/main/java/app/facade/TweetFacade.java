@@ -6,6 +6,7 @@ import app.enums.TweetType;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.service.CurrUserService;
+import app.service.ScheduleAlgoService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   private final TweetService tweetService;
   private final TweetActionService tweetActionService;
   private final CurrUserService currUserService;
+  private final ScheduleAlgoService scheduleAlgoService;
 
 
   private TweetResponseDTO setCustomFields(TweetResponseDTO tweetResponseDTO, UserModel currUser) {
@@ -95,6 +97,10 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   public Page<TweetResponseDTO> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
     return tweetService.getTweetsFromSubscriptions(userId, pageable).map(this::convertToDto);
+  }
+
+  public Page<TweetResponseDTO> getTopTweets(Pageable pageable) {
+    return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDto);
   }
 
 }
