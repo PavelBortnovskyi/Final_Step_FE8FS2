@@ -5,6 +5,7 @@ CREATE SEQUENCE notifications_id_seq START 1;
 CREATE SEQUENCE tweet_actions_id_seq START 1;
 CREATE SEQUENCE tweets_id_seq START 1;
 CREATE SEQUENCE users_id_seq START 1;
+CREATE SEQUENCE users_id_seq START 1;
 
 create table attachment_images (
              id bigint DEFAULT nextval('attachment_images_id_seq') NOT NULL,
