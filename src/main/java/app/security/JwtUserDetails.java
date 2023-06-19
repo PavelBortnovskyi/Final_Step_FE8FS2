@@ -1,23 +1,29 @@
 package app.security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public class JwtUserDetails implements UserDetails, Serializable {
 
   private final Long id;
 
-  public JwtUserDetails(Long id) {
-    this.id = id;
+  private final String userTag;
+
+  public JwtUserDetails(Long id, String userTag) {
+    this.id = id; this.userTag = userTag;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("USER"));
+    return authorities;
   }
 
   @Override
@@ -27,7 +33,7 @@ public class JwtUserDetails implements UserDetails, Serializable {
 
   @Override
   public String getUsername() {
-    return "JWTAuthUser";
+    return this.userTag;
   }
 
   @Override
@@ -51,7 +57,7 @@ public class JwtUserDetails implements UserDetails, Serializable {
   }
 
   public Long getId() {
-    return id;
+    return this.id;
   }
 }
 
