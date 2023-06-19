@@ -46,7 +46,6 @@ export const User = ({
         countUserFollowers={countUserFollowers}
       />
       <UserAction idUser={idUser} />
-      {/* <PostList /> */}
     </Box>
   );
 };
