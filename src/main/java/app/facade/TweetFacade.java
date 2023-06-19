@@ -6,7 +6,6 @@ import app.enums.TweetType;
 import app.model.Tweet;
 import app.model.UserModel;
 import app.service.CurrUserService;
-import app.service.NotificationService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.RequiredArgsConstructor;

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AttachmentImagesService extends GeneralService<AttachmentImage> {
-  private final CloudinaryService cloudinaryService;
 
   //add
   //delete
