@@ -10,21 +10,17 @@ import app.model.UserModel;
 import app.service.NotificationService;
 import app.service.UserService;
 import app.utils.CustomPageImpl;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class NotificationFacade extends GeneralFacade<Notification, NotificationRequestDTO, NotificationResponseDTO> {
+  private final NotificationService notificationService;
 
-  @Autowired
-  private NotificationService notificationService;
-
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
 
   @PostConstruct
   public void init() {
