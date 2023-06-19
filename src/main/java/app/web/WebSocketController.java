@@ -38,7 +38,7 @@ public class WebSocketController {
   public @JsonView({Marker.ChatDetails.class}) MessageResponseDTO processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                                                                      MessageRequestDTO messageDTO,
                                                                                      SimpMessageHeaderAccessor accessor) {
-    Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+    Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
     return this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO));
   }
 

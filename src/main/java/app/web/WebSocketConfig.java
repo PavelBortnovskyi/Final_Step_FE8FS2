@@ -80,8 +80,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       @Order(Ordered.HIGHEST_PRECEDENCE + 99)
       public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
-        StompHeaderAccessor accessor =
-          MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
         String origin = accessor.getFirstNativeHeader("Origin");
 
@@ -101,7 +100,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
               //accessor.getSessionAttributes().put("userId", jwtUser.getId());
               accessor.getSessionAttributes()
-                .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+                .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
             } else {
               throw new JwtAuthenticationException("Token is not valid");
             }
