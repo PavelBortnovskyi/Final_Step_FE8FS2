@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { likePost } from '../thunk/likeTweet.js';
+import { likePost } from '../thunk/tweets/likeTweet.js';
 
 const initialState = {
   likedTweet: {},
@@ -19,7 +19,7 @@ export const likedTweetSlice = createSlice({
         state.error = null;
       })
       .addCase(likePost.fulfilled, (state, action) => {
-        state.tweet = action.payload;
+        state.likedTweet = action.payload;
         state.isLoading = false;
         state.error = null;
       })

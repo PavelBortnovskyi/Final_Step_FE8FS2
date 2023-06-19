@@ -21,7 +21,6 @@ function TweetPost({
   isLiked,
 }) {
   const theme = useMode();
-
   return (
     <Box
       id={id}

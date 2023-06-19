@@ -1,36 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getUserTweetsThunk } from '../thunk/tweets/getUserTweets.js';
+import { getSubscriptionsTweets } from '../thunk/tweets/getSubscriptionsTweets.js';
 import { likePost } from '../thunk/tweets/likeTweet.js';
 
 const initialState = {
-  userTweets: [],
+  subscriptionsTweets: [],
   isLoading: false,
   error: '',
 };
 
 export const getUserTweetsSlice = createSlice({
-  name: 'userTweets',
+  name: 'subscriptionsTweets',
   initialState,
 
   extraReducers: (builder) => {
     builder
-      .addCase(getUserTweetsThunk.pending, (state) => {
+      .addCase(getSubscriptionsTweets.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getUserTweetsThunk.fulfilled, (state, action) => {
-        state.userTweets = action.payload;
+      .addCase(getSubscriptionsTweets.fulfilled, (state, action) => {
+        state.subscriptionsTweets = action.payload;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getUserTweetsThunk.rejected, (state, action) => {
+      .addCase(getSubscriptionsTweets.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
+        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === likedTweet.id ? likedTweet : tweet
         );
       });

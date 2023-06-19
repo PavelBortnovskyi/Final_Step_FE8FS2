@@ -13,6 +13,8 @@ import userBookmarks from 'src/redux/reducers/getBookmarksSlise';
 import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
 import likedTweet from 'src/redux/reducers/likedTweetSlice';
 import userNotifications from 'src/redux/reducers/getNotificationsSlice';
+import allTweets from 'src/redux/reducers/getAllTweetsSlicer';
+import subscriptionsTweets from 'src/redux/reducers/subscriptionsTweetsSlicer';
 import userLikes from 'src/redux/reducers/userLikesSlice';
 import userReplise from 'src/redux/reducers/userRepliseSlice';
 
@@ -31,6 +33,8 @@ const rootReducer = {
   userBiId,
   userBookmarks,
   userNotifications,
+  allTweets,
+  subscriptionsTweets,
   userLikes,
   userReplise,
 };

@@ -12,7 +12,15 @@ import { Box } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import PostElementBookmarks from './PostElementBookmarks';
 
-function PostIconList({ likes, reply, retweet, id, isLiked }) {
+function PostIconList({
+  likes,
+  reply,
+  retweet,
+  id,
+  isLiked,
+  isRetweet,
+  isComment,
+}) {
   const location = useLocation();
   const theme = useMode();
   return (

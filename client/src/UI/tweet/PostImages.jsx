@@ -3,6 +3,7 @@ import { Box, CardMedia } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const SinglePhoto = styled(Box)({
+  mt: '10px',
   overflow: 'hidden',
   width: '100%',
   display: 'flex',
@@ -11,6 +12,7 @@ const SinglePhoto = styled(Box)({
 });
 
 const DoublePhoto = styled(Box)({
+  mt: '10px',
   gap: '2px',
   overflow: 'hidden',
   borderRadius: '20px',
@@ -19,6 +21,7 @@ const DoublePhoto = styled(Box)({
 });
 
 const TriplePhoto = styled(Box)({
+  mt: '10px',
   gap: '2px',
   overflow: 'hidden',
   borderRadius: '20px',
@@ -30,6 +33,7 @@ const TriplePhoto = styled(Box)({
 });
 
 const QuadruplePhoto = styled(Box)({
+  mt: '10px',
   gap: '2px',
   overflow: 'hidden',
   borderRadius: '20px',
@@ -98,7 +102,7 @@ function PostImages({ images, quantity }) {
   };
 
   return (
-    <PhotoComponent>
+    <PhotoComponent sx={{ mt: '10px' }}>
       {images
         ? images.map((img, index) => {
             return (
