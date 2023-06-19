@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "rating_tweets")
 @NoArgsConstructor
 @Data
-@SequenceGenerator(name = "custom_gen", sequenceName = "tweets_id_seq", allocationSize = 1)
+@SequenceGenerator(name = "custom_gen", sequenceName = "rating_tweets_id_seq", allocationSize = 1)
 public class RatingModel {
   @Id
   @Column(name = "tweet_id")
