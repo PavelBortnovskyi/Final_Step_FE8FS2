@@ -211,5 +211,12 @@ public class TweetController {
     return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
+  @GetMapping("top_tweets")
+  @ApiOperation("Get top tweets")
+  public Page<TweetResponseDTO> getTopTweets(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTopTweets(PageRequest.of(page, size));
+  }
+
 
 }

@@ -5,6 +5,7 @@ import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.model.Tweet;
 import app.service.NotificationService;
+import app.service.ScheduleAlgoService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,9 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   private TweetActionService tweetActionService;
   @Autowired
   private NotificationService notificationService;
+
+  @Autowired
+  private ScheduleAlgoService scheduleAlgoService;
 
   @PostConstruct
   public void init() {
@@ -97,6 +101,10 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   public Page<TweetResponseDTO> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
     return tweetService.getTweetsFromSubscriptions(userId, pageable).map(this::convertToDto);
+  }
+
+  public Page<TweetResponseDTO> getTopTweets(Pageable pageable) {
+    return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDto);
   }
 
 }
