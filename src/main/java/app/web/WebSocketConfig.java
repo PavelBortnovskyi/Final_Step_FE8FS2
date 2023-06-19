@@ -5,6 +5,7 @@ import app.exceptions.authError.JwtAuthenticationException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -31,6 +32,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import java.util.List;
 import java.util.Objects;
 
+@Log4j2
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
@@ -101,11 +103,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               //accessor.getSessionAttributes().put("userId", jwtUser.getId());
               accessor.getSessionAttributes()
                 .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+              log.info("Token:" + token);
+              log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
             } else {
               throw new JwtAuthenticationException("Token is not valid");
             }
           }
         }
+        log.info(origin);
+        log.info(accessor.getCommand());
+        log.info(accessor.getMessage());
         return message;
       }
     });
