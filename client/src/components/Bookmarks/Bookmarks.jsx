@@ -2,16 +2,20 @@ import { Box, Typography, useTheme } from '@mui/material';
 import React, { useEffect } from 'react';
 import { UserNick } from '../User/UserNIck';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBookmarks } from 'src/redux/thunk/getBookmarks';
+import { getBookmarks } from 'src/redux/thunk/thunkBookmarks/getBookmarks';
 import Post from '../Post/Post';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import PostList from '../Post/PostList';
+import PostIconList from '../Post/PostIconGroup/PostIconList';
+import TweetList from 'src/UI/TweetList';
 
 export const Bookmarks = () => {
   const theme = useTheme();
   const user = useSelector((state) => state.user.user) || "";
   const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
-  const Bookmarks = userBookmarks.content || [];
+  const Bookmarks = userBookmarks || [];
+  console.log(Bookmarks);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -43,13 +47,7 @@ export const Bookmarks = () => {
       </Box>
 
       {user !== '' ? (
-        Bookmarks.map((bookmark) =>
-          <Link to={`/tweet/${bookmark.tweet.id}`} key={bookmark.tweet.id}>
-            <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}`}}>
-              <Post tweet={bookmark.tweet} key={bookmark.tweet.id} />
-            </Box>
-
-          </Link>)
+        <TweetList tweets={Bookmarks}/>
       ) : (
         <Box
           sx={{

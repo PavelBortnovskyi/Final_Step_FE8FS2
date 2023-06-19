@@ -9,7 +9,7 @@ import chat from 'src/redux/reducers/chatSlice';
 import followers from 'src/redux/reducers/followersSlice';
 import followings from 'src/redux/reducers/followingsSlice';
 import userBiId from 'src/redux/reducers/userBiIdSlice';
-import userBookmarks from 'src/redux/reducers/getBookmarksSlise';
+import userBookmarks from 'src/redux/reducers/bookmarksSlise'
 import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
 import likedTweet from 'src/redux/reducers/likedTweetSlice';
 import userNotifications from 'src/redux/reducers/getNotificationsSlice';

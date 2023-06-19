@@ -9,7 +9,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
   const dispatch = useDispatch();
-  console.log(isLiked);
+  // console.log(isLiked);
+  
   const handleLike = () => {
     if (isLiked) {
       dispatch(unLikePost({ id }));

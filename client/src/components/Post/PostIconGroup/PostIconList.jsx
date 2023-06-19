@@ -53,6 +53,7 @@ function PostIconList({ likes, reply, retweet, id, isLiked }) {
       <PostElementBookmarks
         icon={<BookmarkBorderIcon fontSize="small" />}
         isBookmarks={false}
+        id={id}
         quantity="10"
         color="#1d9bf0"
       />

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { getUserTweetsThunk } from '../thunk/getUserTweets.js';
+import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 
 const initialState = {
   userTweets: [],
@@ -26,7 +27,7 @@ export const getUserTweetsSlice = createSlice({
       .addCase(getUserTweetsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
   },
 });
 export default getUserTweetsSlice.reducer;
