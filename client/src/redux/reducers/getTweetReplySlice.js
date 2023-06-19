@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweetReply } from '../thunk/getTweetReply.js';
+import { getTweetReply } from '../thunk/tweets/getTweetReply.js';
 
 const initialState = {
   tweetReplies: null,
