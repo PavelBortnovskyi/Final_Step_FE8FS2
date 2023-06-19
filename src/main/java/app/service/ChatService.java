@@ -12,14 +12,17 @@ import app.repository.ChatModelRepository;
 import app.repository.MessageModelRepository;
 import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ChatService extends GeneralService<Chat> {
@@ -39,15 +42,17 @@ public class ChatService extends GeneralService<Chat> {
     UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
     UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
 
-    return this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
-      .orElseGet(() ->
-      {
-        HashSet<Chat> c = new HashSet<>();
-        c.add(this.chatRepository.save(new Chat(initiator, null, new HashSet<>() {{
-          add(interlocutor);
-        }})));
-        return c;
-      });
+    Set<Chat> chats = this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
+      .orElse(new HashSet<>());
+
+    if (chats.isEmpty()) {
+      Chat newChat = this.chatRepository.save(new Chat(initiator, new ArrayList<>(), new HashSet<>() {{
+        add(interlocutor);
+      }}));
+      chats.add(newChat);
+    }
+
+    return chats;
   }
 
   public Optional<Set<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {

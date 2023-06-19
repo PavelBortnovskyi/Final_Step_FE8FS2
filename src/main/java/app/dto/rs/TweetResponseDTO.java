@@ -38,11 +38,13 @@ public class TweetResponseDTO {
 
   private boolean currUserLiked;
 
+  private boolean currUserBookmarked;
+
   private boolean currUserRetweeted;
 
   private boolean currUserCommented;
 
-  private boolean currUserBookmarked;
+  private boolean currUserQuoted;
 
   private Integer countReplies = 0;
 

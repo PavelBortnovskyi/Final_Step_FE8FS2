@@ -1,8 +1,8 @@
 package app.security;
 
 import app.exceptions.FilterExceptionHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,25 +17,20 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-;
 
 @Log4j2
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
-  @Autowired
-  private JwtAuthFilter jwtAuthFilter;
+  private final JwtAuthFilter jwtAuthFilter;
 
-  @Autowired
-  private FilterExceptionHandler filterExceptionHandler;
+  private final FilterExceptionHandler filterExceptionHandler;
 
-  @Autowired
-  private OAuth2UserServiceImpl oAuth2UserService;
-
-  @Autowired
-  private OAuth2SuccessLoginHandler oAuth2SuccessLoginHandler;
+  private final OAuth2UserServiceImpl oAuth2UserService;
+  private final OAuth2SuccessLoginHandler oAuth2SuccessLoginHandler;
 
 //  @Autowired
 //  @Qualifier("delegatedAuthenticationEntryPoint")

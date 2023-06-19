@@ -5,23 +5,21 @@ import app.enums.TweetActionType;
 import app.model.TweetAction;
 import app.service.TweetActionService;
 import app.service.UserService;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class TweetActionFacade extends GeneralFacade<TweetAction, Void, TweetActionResponseDTO> {
 
-  @Autowired
-  private UserService userService;
-  @Autowired
-  private TweetActionService tweetActionService;
+  private final UserService userService;
+  private final TweetActionService tweetActionService;
 
-  public Page<TweetActionResponseDTO> getLikesByUser(Long userId, TweetActionType tweetAction, Pageable pageable) {
+
+  public Page<TweetActionResponseDTO> getTweetActionsByUser(Long userId, TweetActionType tweetAction, Pageable pageable) {
     return tweetActionService.getActionsByUser(userService.getUser(userId), tweetAction, pageable).map(this::convertToDto);
   }
 
