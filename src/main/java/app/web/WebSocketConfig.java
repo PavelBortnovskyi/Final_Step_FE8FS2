@@ -113,7 +113,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             }
           }
         }
-        log.info(accessor.getMessage());
+        log.info("Assessor message " + accessor.getMessage());
         return message;
       }
     });
