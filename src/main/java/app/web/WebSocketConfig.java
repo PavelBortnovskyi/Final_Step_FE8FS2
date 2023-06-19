@@ -86,10 +86,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         String origin = accessor.getFirstNativeHeader("Origin");
 
-        log.info("Origin:" + origin);
+        //log.info("Origin:" + origin);
 
         if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")  && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
-          log.info("Command: " + accessor.getCommand());
+          //log.info("Command: " + accessor.getCommand());
 
           if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
 
@@ -107,14 +107,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               //accessor.getSessionAttributes().put("userId", jwtUser.getId());
               accessor.getSessionAttributes()
                 .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
-              log.info("Token:" + token);
-              log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+              //log.info("Token:" + token);
+              //log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
             } else {
               throw new JwtAuthenticationException("Token is not valid");
             }
           }
         }
-        log.info("Assessor message " + accessor.getMessage());
+        //log.info("Assessor message " + accessor.getMessage());
         return message;
       }
     });
