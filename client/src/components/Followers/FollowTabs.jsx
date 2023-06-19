@@ -27,7 +27,7 @@ export const FollowTabs = () => {
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: '1px solid rgb(56, 68, 77)' }}>
+        <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}` }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab
               component={NavLink}

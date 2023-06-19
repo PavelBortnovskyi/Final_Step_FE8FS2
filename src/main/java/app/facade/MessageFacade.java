@@ -5,16 +5,13 @@ import app.dto.rs.MessageResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.model.Message;
 import app.service.MessageService;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class MessageFacade extends GeneralFacade<Message, MessageRequestDTO, MessageResponseDTO> {
-
-  @Autowired
-  private MessageService messageService;
+  private final MessageService messageService;
 
   public MessageResponseDTO addMessageToChat(Long userId, Message message) {
     if (message.getUser().getId().equals(userId))

@@ -31,15 +31,18 @@ public class UserController {
 
   private final UserFacade userFacade;
 
+
   @GetMapping("{userId}")
   public ResponseEntity<UserResponseDTO> getUserById(@PathVariable(name = "userId") @Positive Long userId) {
     return ResponseEntity.ok(userFacade.getUserById(userId));
   }
 
+
   @GetMapping("profile")
   public ResponseEntity<UserResponseDTO> getUser(HttpServletRequest httpRequest) {
     return ResponseEntity.ok(userFacade.getUserById((Long) httpRequest.getAttribute("userId")));
   }
+
 
   @Validated({Marker.Update.class})
   @PutMapping("profile")
@@ -48,12 +51,14 @@ public class UserController {
     return ResponseEntity.ok(userFacade.updateUser((Long) httpRequest.getAttribute("userId"), userRequestDTO));
   }
 
+
   @PutMapping("profile/avatar_img")
   @ResponseStatus(HttpStatus.OK)
   public Map<String, String> uploadAvatarImg(@RequestParam("file") MultipartFile file,
                                              HttpServletRequest httpRequest) {
     return userFacade.uploadAvatarImg((Long) httpRequest.getAttribute("userId"), file);
   }
+
 
   @PutMapping("profile/header_img")
   @ResponseStatus(HttpStatus.OK)
@@ -62,17 +67,20 @@ public class UserController {
     return userFacade.uploadHeaderImg((Long) httpRequest.getAttribute("userId"), file);
   }
 
+
   @PostMapping("subscribe/{userIdToFollowing}")
   public ResponseEntity<UserResponseDTO> subscribe(@PathVariable(name = "userIdToFollowing") @Positive Long userIdToFollowing,
                                                    HttpServletRequest httpRequest) {
     return ResponseEntity.ok(userFacade.subscribe((Long) httpRequest.getAttribute("userId"), userIdToFollowing));
   }
 
+
   @PostMapping("unsubscribe/{userIdToUnFollowing}")
   public ResponseEntity<UserResponseDTO> unsubscribe(@PathVariable(name = "userIdToUnFollowing") @Positive Long userIdToUnFollowing,
                                                      HttpServletRequest httpRequest) {
     return ResponseEntity.ok(userFacade.unsubscribe((Long) httpRequest.getAttribute("userId"), userIdToUnFollowing));
   }
+
 
   @GetMapping("profile/followers")
   @ResponseStatus(HttpStatus.OK)
@@ -82,6 +90,7 @@ public class UserController {
     return userFacade.getFollowers((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
 
+
   @GetMapping("profile/followings")
   @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
@@ -89,6 +98,7 @@ public class UserController {
                                              HttpServletRequest httpServletRequest) {
     return userFacade.getFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
+
 
   @GetMapping("{userId}/followers")
   @ResponseStatus(HttpStatus.OK)
@@ -98,6 +108,7 @@ public class UserController {
     return userFacade.getFollowers(userId, PageRequest.of(page, size));
   }
 
+
   @GetMapping("{userId}/followings")
   @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getFollowingsByUserId(@PathVariable(name = "userId") @Positive Long userId,
@@ -106,6 +117,7 @@ public class UserController {
     return userFacade.getFollowings(userId, PageRequest.of(page, size));
   }
 
+
   @GetMapping("offer_followings")
   @ResponseStatus(HttpStatus.OK)
   public Page<UserResponseDTO> getOfferFollowings(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
@@ -113,6 +125,7 @@ public class UserController {
                                                   HttpServletRequest httpServletRequest) {
     return userFacade.getOfferFollowings((Long) httpServletRequest.getAttribute("userId"), PageRequest.of(page, size));
   }
+
 
   @GetMapping("search")
   @ResponseStatus(HttpStatus.OK)
