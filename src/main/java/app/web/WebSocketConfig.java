@@ -29,6 +29,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -109,12 +110,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 })
                 .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
                 .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
-                .map((UsernamePasswordAuthenticationToken auth) -> {
-                  auth.setDetails(new WebAuthenticationDetailsSource()
-                    .buildDetails((HttpServletRequest) ((List<?>) accessor.getHeader(SimpMessageHeaderAccessor.NATIVE_HEADERS)).get(0)));
-                  SecurityContextHolder.getContext().setAuthentication(auth);
-                  return SecurityContextHolder.getContext().getAuthentication();
-                }).orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
+                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
+              SecurityContextHolder.getContext().setAuthentication(user);
               accessor.setUser(user);
 
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
