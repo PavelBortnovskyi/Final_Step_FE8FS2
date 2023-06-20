@@ -8,7 +8,9 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Data
 @ApiModel(description = "Chat request")
@@ -31,5 +33,5 @@ public class MessageRequestDTO {
   @Size(min = 1, max = 4096, message = "Message body length must be in range 1..4096 characters", groups = {Marker.New.class, Marker.Existed.class})
   private String body;
 
-  private LocalDateTime sent = LocalDateTime.now();
+  private Timestamp sent = Timestamp.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
 }

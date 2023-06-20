@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createTweet } from '../thunk/createTweet.js';
+import { createTweet } from '../thunk/tweets/createTweet.js';
 
 const initialState = {
   text: '',

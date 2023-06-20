@@ -25,6 +25,12 @@ export const getChats = (state) => state.chat;
 // get chats data
 export const getMessages = (state) => state.messages;
 
+//get all tweets
+export const getAllTweets = (state) => state.allTweets;
+
+//get all tweets from the current user's subscriptions
+export const subscriptionsTweets = (state) => state.subscriptionsTweets;
+
 //get single liked tweet
 export const getLikedTweet = (state) => state.likedTweet;
 

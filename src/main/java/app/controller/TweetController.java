@@ -128,10 +128,10 @@ public class TweetController {
 
   @GetMapping({"user/{id}", "/user"})
   @ApiOperation("Get all TWEET/RETWEET/QUOTE_TWEET of user with {id}, without {id} - current user")
-  public Page<TweetResponseDTO> getTweetsOfUser(HttpServletRequest httpRequest,
-                                                @PathVariable(name = "id", required = false) Long userId,
-                                                @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
-                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+  public Page<TweetResponseDTO> getTweetsByTypeOfUser(HttpServletRequest httpRequest,
+                                                      @PathVariable(name = "id", required = false) Long userId,
+                                                      @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                                      @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsByUserId(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
       List.of(TweetType.TWEET, TweetType.RETWEET, TweetType.QUOTE_TWEET), PageRequest.of(page, size));
   }
@@ -189,7 +189,7 @@ public class TweetController {
                                                            @PathVariable(name = "id", required = false) Long userId,
                                                            @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetActionFacade.getLikesByUser(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
+    return tweetActionFacade.getTweetActionsByUser(userId == null ? (Long) httpRequest.getAttribute("userId") : userId,
       TweetActionType.LIKE, PageRequest.of(page, size));
   }
 
@@ -199,9 +199,10 @@ public class TweetController {
   public Page<TweetActionResponseDTO> getTweetsLikedByUser(HttpServletRequest httpRequest,
                                                            @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-    return tweetActionFacade.getLikesByUser((Long) httpRequest.getAttribute("userId"),
+    return tweetActionFacade.getTweetActionsByUser((Long) httpRequest.getAttribute("userId"),
       TweetActionType.BOOKMARK, PageRequest.of(page, size));
   }
+
 
   @GetMapping("subscriptions")
   @ApiOperation("Get all tweets (TWEET/RETWEET/QUOTE_TWEET) from the current user's subscriptions")
@@ -209,6 +210,14 @@ public class TweetController {
                                                            @RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
                                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
     return tweetFacade.getTweetsFromSubscriptions((Long) httpRequest.getAttribute("userId"), PageRequest.of(page, size));
+  }
+
+
+  @GetMapping("top")
+  @ApiOperation("Get top tweets")
+  public Page<TweetResponseDTO> getTopTweets(@RequestParam(name = "page", defaultValue = "0") @PositiveOrZero int page,
+                                             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    return tweetFacade.getTopTweets(PageRequest.of(page, size));
   }
 
 

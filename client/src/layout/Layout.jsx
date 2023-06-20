@@ -22,6 +22,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { RightRoutes } from './../routes/RightRoutes';
 import { mainSidebarElementsMobile } from 'src/components/SidebarMobile/SidebarMobileElements';
+import SmallBtnTweet from 'src/components/Sidebar/SmallBtnTweet/SmallBtnTweet';
 
 export const Layout = () => {
   // get Authentication
@@ -95,18 +96,33 @@ export const Layout = () => {
 
         <Box
           sx={{
+            borderTop: `1px solid ${theme.palette.border.main}`,
             display: { xs: 'flex', sm: 'none' },
             justifyContent: 'space-around',
             alignItems: 'center',
             position: 'fixed',
             bottom: 0,
             left: 0,
-            background: `${theme.palette.background.default}`,
+            // background: `${theme.palette.background.default}`,
+            backdropFilter: 'blur(25px)',
             height: '50px',
             width: '100%',
             zIndex: '10',
           }}
         >
+          <Box sx={{
+            position: 'absolute',
+            top: '-84px',
+            right: '28px',
+          }}>
+            <Link
+              to="/modal/tweet"
+              state={{ background: location }}
+              component={NavLink}
+            >
+              <SmallBtnTweet />
+            </Link>
+          </Box>
           {mainSidebarElementsMobile.map((navElement) => (
             <Link
               to={navElement.route}

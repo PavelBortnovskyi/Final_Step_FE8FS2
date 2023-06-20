@@ -12,7 +12,17 @@ import { Box } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import PostElementBookmarks from './PostElementBookmarks';
 
-function PostIconList({ likes, reply, retweet, id, isLiked }) {
+function PostIconList({
+  likes,
+  reply,
+  retweet,
+  id,
+  isLiked,
+  isRetweet,
+  isComment,
+  isBookmarks,
+  bookmarks
+}) {
   const location = useLocation();
   const theme = useMode();
   return (
@@ -52,8 +62,8 @@ function PostIconList({ likes, reply, retweet, id, isLiked }) {
       />
       <PostElementBookmarks
         icon={<BookmarkBorderIcon fontSize="small" />}
-        isBookmarks={false}
-        quantity="10"
+        quantity={bookmarks}
+        id={id}
         color="#1d9bf0"
       />
     </Box>

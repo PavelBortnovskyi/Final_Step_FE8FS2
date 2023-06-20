@@ -1,6 +1,7 @@
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, styled, useTheme } from '@mui/material';
 import React, { useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom';
+
 
 export const SidebarMobileBtn = ({ navElement }) => {
   const [isSwappedIcon, setIsSwappedIcon] = useState(false);
@@ -30,7 +31,7 @@ export const SidebarMobileBtn = ({ navElement }) => {
 
   return (
     <Link
-      to={navElement.route}
+      to={`/${navElement.route}`}
       underline="none"
       key={navElement.id}
       component={NavLink}

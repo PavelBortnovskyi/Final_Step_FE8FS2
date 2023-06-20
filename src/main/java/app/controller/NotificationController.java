@@ -3,6 +3,7 @@ package app.controller;
 import app.annotations.Marker;
 import app.dto.rs.NotificationResponseDTO;
 import app.facade.NotificationFacade;
+import app.service.AuthUserService;
 import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -26,17 +26,17 @@ public class NotificationController {
 
   private final NotificationFacade notificationFacade;
 
+  private final AuthUserService authUserService;
+
   /**
    * This endpoint waiting for valid url params to return all user notifications in page format
    */
 
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<NotificationResponseDTO> handleGetAllUserNotifications(HttpServletRequest request,
-                                                                               @RequestParam("page") @NotNull Integer page,
+  public CustomPageImpl<NotificationResponseDTO> handleGetAllUserNotifications(@RequestParam("page") @NotNull Integer page,
                                                                                @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.notificationFacade.getAllUserNotifications(currUserId, pageSize, page);
+    return this.notificationFacade.getAllUserNotifications(authUserService.getCurrUserId(), pageSize, page);
   }
 
   /**
@@ -44,11 +44,9 @@ public class NotificationController {
    */
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<NotificationResponseDTO> handleGetSeenUserNotifications(HttpServletRequest request,
-                                                                                @RequestParam("page") @NotNull Integer page,
+  public CustomPageImpl<NotificationResponseDTO> handleGetSeenUserNotifications(@RequestParam("page") @NotNull Integer page,
                                                                                 @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.notificationFacade.getSeenUserNotifications(currUserId, pageSize, page);
+    return this.notificationFacade.getSeenUserNotifications(authUserService.getCurrUserId(), pageSize, page);
   }
 
   /**
@@ -56,10 +54,8 @@ public class NotificationController {
    */
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
-  public CustomPageImpl<NotificationResponseDTO> handleGetUnSeenUserNotifications(HttpServletRequest request,
-                                                                                  @RequestParam("page") @NotNull Integer page,
+  public CustomPageImpl<NotificationResponseDTO> handleGetUnSeenUserNotifications(@RequestParam("page") @NotNull Integer page,
                                                                                   @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.notificationFacade.getUnseenUserNotifications(currUserId, pageSize, page);
+    return this.notificationFacade.getUnseenUserNotifications(authUserService.getCurrUserId(), pageSize, page);
   }
 }

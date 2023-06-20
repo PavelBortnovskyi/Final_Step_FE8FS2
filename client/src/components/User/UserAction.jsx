@@ -9,8 +9,9 @@ import { useMode } from 'src/styles/_materialTheme';
 import { UserLikes } from 'src/pages/UserLikes';
 import PostList from '../Post/PostList';
 import { UserReplise } from 'src/pages/UserReplise';
+import { UserTweetPage } from 'src/pages/UserTweetPage';
 
-export function UserAction() {
+export function UserAction({ idUser }) {
   const theme = useMode();
   const [value, setValue] = React.useState('1');
 
@@ -53,7 +54,7 @@ export function UserAction() {
           </TabList>
         </Box>
         <TabPanel sx={{ padding: '0' }} value="1">
-          <PostList />
+          <UserTweetPage idUser={idUser} />
         </TabPanel>
         <TabPanel sx={{ padding: '0' }} value="2">
           <UserReplise />

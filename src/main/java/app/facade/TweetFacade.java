@@ -4,58 +4,59 @@ import app.dto.rs.TweetResponseDTO;
 import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.model.Tweet;
-import app.service.NotificationService;
+import app.model.UserModel;
+import app.service.AuthUserService;
+import app.service.ScheduleAlgoService;
 import app.service.TweetActionService;
 import app.service.TweetService;
-import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
+@Log4j2
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
-  @Autowired
-  private TweetService tweetService;
-  @Autowired
-  private TweetActionService tweetActionService;
-  @Autowired
-  private NotificationService notificationService;
+  private final TweetService tweetService;
+  private final TweetActionService tweetActionService;
+  private final AuthUserService authUserService;
+  private final ScheduleAlgoService scheduleAlgoService;
 
-  @PostConstruct
-  public void init() {
-    ModelMapper mm = super.getMm();
 
-//    Converter<Set<AttachmentImage>, Set<String>> imagesToURLs = sa -> sa.getSource().stream()
-//      .map(AttachmentImage::getImgUrl).collect(Collectors.toSet());
-//
-//    mm.typeMap(Tweet.class, TweetResponseDTO.class)
-//      .addMappings(mapper -> mapper.using(imagesToURLs).map(Tweet::getAttachmentImages, TweetResponseDTO::setAttachmentImages))
-//      .addMapping(src -> src.getParentTweet().getId(), TweetResponseDTO::setParentTweetId);
+  private TweetResponseDTO setCustomFields(TweetResponseDTO tweetResponseDTO, UserModel currUser) {
+    if (tweetResponseDTO == null) return null;
+    Tweet tweet = tweetService.getTweet(tweetResponseDTO.getId());
+    tweetResponseDTO
+      .setCountReplies(tweetService.getCountReplies(tweet))
+      .setCountQuoteTweets(tweetService.getCountQuoteTweets(tweet))
+      .setCountRetweets(tweetService.getCountRetweetTweets(tweet))
+      .setCountLikes(tweetActionService.getCountLikes(tweet))
+      .setCountBookmarks(tweetActionService.getCountBookmarks(tweet))
+      .setCurrUserLiked(tweetActionService.isUserActionTweet(currUser, tweet, TweetActionType.LIKE))
+      .setCurrUserBookmarked(tweetActionService.isUserActionTweet(currUser, tweet, TweetActionType.BOOKMARK))
+      .setCurrUserRetweeted(tweetService.isUserTweetedTweet(currUser, tweet, TweetType.RETWEET))
+      .setCurrUserCommented(tweetService.isUserTweetedTweet(currUser, tweet, TweetType.REPLY))
+      .setCurrUserQuoted(tweetService.isUserTweetedTweet(currUser, tweet, TweetType.QUOTE_TWEET));
+    setCustomFields(tweetResponseDTO.getParentTweet(), currUser);
+    return tweetResponseDTO;
   }
 
 
   @Override
   public TweetResponseDTO convertToDto(Tweet tweet) {
-    return super.convertToDto(tweet)
-      .setCountReplies(tweetService.getCountReplies(tweet))
-      .setCountQuoteTweets(tweetService.getCountQuoteTweets(tweet))
-      .setCountRetweets(tweetService.getCountRetweetTweets(tweet))
-      .setCountLikes(tweetActionService.getCountLikes(tweet))
-      .setCountBookmarks(tweetActionService.getCountBookmarks(tweet));
+    return setCustomFields(super.convertToDto(tweet), authUserService.getCurrUser());
   }
 
 
   public TweetResponseDTO createTweet(Long userId, String tweetBody, MultipartFile[] attachmentImages, TweetType tweetType, Long parentTweetId) {
-    return convertToDto(notificationService.sendNotification(tweetService
-      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId), userId, null));
+    return convertToDto(tweetService
+      .createTweet(userId, tweetBody, attachmentImages, tweetType, parentTweetId));
   }
 
 
@@ -70,8 +71,8 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
-    return convertToDto(notificationService.sendNotification(tweetActionService
-      .createTweetAction(userId, tweetId, tweetActionType).getTweet(), userId, tweetActionType));
+    return convertToDto(tweetActionService
+      .createTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
 
 
@@ -95,8 +96,14 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
     return tweetService.getAllTweets(pageable).map(this::convertToDto);
   }
 
+
   public Page<TweetResponseDTO> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
     return tweetService.getTweetsFromSubscriptions(userId, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getTopTweets(Pageable pageable) {
+    return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDto);
   }
 
 }

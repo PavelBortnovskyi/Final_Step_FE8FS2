@@ -5,10 +5,11 @@ import app.dto.rs.ChatResponseDTO;
 import app.dto.rs.MessageResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
+import app.service.AuthUserService;
 import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +26,19 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/v1/chat")
 @Validated
+@RequiredArgsConstructor
 public class ChatController {
-  @Autowired
-  private ChatFacade chatFacade;
+  private final ChatFacade chatFacade;
+
+  private final AuthUserService authUserService;
 
   /**
    * This endpoint waiting for valid url params and token to return created chat response
    */
   @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
   public @JsonView(Marker.ChatDetails.class) ResponseEntity<Set<ChatResponseDTO>> handleCreateChat(@RequestParam("interlocutorId")
-                                                                                                   @NotNull @Positive Long interlocutorId,
-                                                                                                   HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return ResponseEntity.ok(this.chatFacade.createChat(currUserId, interlocutorId));
+                                                                                                   @NotNull @Positive Long interlocutorId) {
+    return ResponseEntity.ok(this.chatFacade.createChat(authUserService.getCurrUserId(), interlocutorId));
   }
 
   /**
@@ -46,10 +47,8 @@ public class ChatController {
   @Validated({Marker.ChatDetails.class})
   @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleDeleteChat(@RequestBody @JsonView(Marker.ChatDetails.class)
-                                                 @PathVariable(name = "id") Long chatId,
-                                                 HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    if (!this.chatFacade.deleteChat(chatId, currUserId))
+                                                 @PathVariable(name = "id") Long chatId) {
+    if (!this.chatFacade.deleteChat(chatId, authUserService.getCurrUserId()))
       return ResponseEntity.ok("Chat id: " + chatId + " deleted");
     else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatId);
   }
@@ -76,10 +75,8 @@ public class ChatController {
   @Validated({Marker.ChatDetails.class})
   @DeleteMapping(path = "/{id}/user_remove", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleRemoveUserFromChat(@RequestParam("userId") Long userIdToRemove,
-                                                         @PathVariable(name = "id") Long chatId,
-                                                         HttpServletRequest request) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.removeUserFromChat(userIdToRemove, currUserId, chatId);
+                                                         @PathVariable(name = "id") Long chatId) {
+    return this.chatFacade.removeUserFromChat(userIdToRemove, authUserService.getCurrUserId(), chatId);
   }
 
   /**
@@ -91,8 +88,7 @@ public class ChatController {
   public CustomPageImpl<ChatResponseDTO> handleGetChatsForPreview(HttpServletRequest request,
                                                                   @RequestParam("page") @NotNull Integer page,
                                                                   @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.getChatsForPreview(currUserId, pageSize, page);
+    return this.chatFacade.getChatsForPreview(authUserService.getCurrUserId(), pageSize, page);
   }
 
   /**
@@ -101,12 +97,11 @@ public class ChatController {
    */
   @Validated({Marker.ChatDetails.class})
   @GetMapping(path = "/{id}/messages", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponseDTO> handleGetChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
+  public Page<MessageResponseDTO> handleGetChat(@PathVariable(name = "id") Long chatId,
                                                 @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                 @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                                 @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.getChatMessages(currUserId, chatId, pageSize, page);
+    return this.chatFacade.getChatMessages(authUserService.getCurrUserId(), chatId, pageSize, page);
   }
 
   /**
@@ -114,7 +109,7 @@ public class ChatController {
    */
   @Validated({Marker.ChatDetails.class})
   @GetMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponseDTO> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId, HttpServletRequest request,
+  public Page<MessageResponseDTO> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId,
                                                                 @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
                                                                 @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
                                                                 @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
@@ -122,8 +117,7 @@ public class ChatController {
     if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
     }
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.searchMessagesInChat(chatId, currUserId, pageSize, page, keyword);
+    return this.chatFacade.searchMessagesInChat(chatId, authUserService.getCurrUserId(), pageSize, page, keyword);
   }
 
   /**
@@ -137,7 +131,6 @@ public class ChatController {
     if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
     }
-    Long currUserId = (Long) request.getAttribute("userId");
-    return this.chatFacade.searchMessagesInChats(currUserId, pageSize, page, keyword);
+    return this.chatFacade.searchMessagesInChats(authUserService.getCurrUserId(), pageSize, page, keyword);
   }
 }

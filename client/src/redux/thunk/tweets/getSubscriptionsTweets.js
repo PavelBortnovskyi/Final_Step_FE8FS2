@@ -1,14 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { myAxios } from 'src/utils/axiosSetup';
 
-export const getAllTweets = createAsyncThunk(
-  'tweet/all_tweets',
+export const getSubscriptionsTweets = createAsyncThunk(
+  'tweet/getSubscriptionsTweets',
   async ({ page, pageSize }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(
-        `/tweet/tweets/${userId}?page=${page}&pageSize=${pageSize}`
+        `tweet/subscriptions?page=${page}&pageSize=${pageSize}`
       );
       console.log(data);
-      return data;
+      return data.content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

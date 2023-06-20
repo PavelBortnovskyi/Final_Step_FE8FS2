@@ -8,11 +8,11 @@ import CommentsList from 'src/components/Comments/CommentsList';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTweetByID, getTweetReplies } from 'src/redux/selectors/selectors';
-import { getTweetById } from 'src/redux/thunk/getTweetById';
+import { getTweetById } from 'src/redux/thunk/tweets/getTweetById';
 
 import Retweet from './Retweet';
 import { useMode } from 'src/styles/_materialTheme';
-import { getTweetReply } from 'src/redux/thunk/getTweetReply';
+import { getTweetReply } from 'src/redux/thunk/tweets/getTweetReply';
 
 function TweetPage() {
   const { id } = useParams();
@@ -59,6 +59,9 @@ function TweetPage() {
           display: 'flex',
           gap: '10px',
           alignItems: 'center',
+          '&:hover': {
+            cursor: 'pointer',
+          },
         }}
       >
         <ArrowBackIcon onClick={handleGoBack} />

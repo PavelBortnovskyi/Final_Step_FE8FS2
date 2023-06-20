@@ -5,6 +5,7 @@ import { UserInfo } from './UserInfo';
 import PostList from '../Post/PostList';
 
 export const User = ({
+  idUser,
   userButton,
   lincToFollowers,
   lincToFollowings,
@@ -20,6 +21,7 @@ export const User = ({
   countUserFollowers,
 }) => {
   const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -43,8 +45,7 @@ export const User = ({
         countUserFollowings={countUserFollowings}
         countUserFollowers={countUserFollowers}
       />
-      <UserAction />
-      {/* <PostList /> */}
+      <UserAction idUser={idUser} />
     </Box>
   );
 };

@@ -5,8 +5,8 @@ import app.dto.rs.UserResponseDTO;
 import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.model.UserModel;
 import app.service.UserService;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,13 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserFacade extends GeneralFacade<UserModel, UserRequestDTO, UserResponseDTO> {
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
+
 
   @PostConstruct
   public void init() {
@@ -31,9 +32,11 @@ public class UserFacade extends GeneralFacade<UserModel, UserRequestDTO, UserRes
       .addMapping(UserModel::getCountTweets, UserResponseDTO::setCountUserTweets);
   }
 
+
   public UserResponseDTO getUserById(Long userId) {
     return convertToDto(userService.getUser(userId));
   }
+
 
   public UserResponseDTO updateUser(Long userId, UserRequestDTO userRequestDTO) {
     userService.getUserByTagO(userRequestDTO.getUserTag())
@@ -44,11 +47,13 @@ public class UserFacade extends GeneralFacade<UserModel, UserRequestDTO, UserRes
     return save(mapToEntity(userRequestDTO, userService.getUser(userId)));
   }
 
+
   public Map<String, String> uploadAvatarImg(Long userId, MultipartFile file) {
     return new HashMap<>() {{
       put("avatar_url", userService.uploadAvatarImg(userId, file).getAvatarImgUrl());
     }};
   }
+
 
   public Map<String, String> uploadHeaderImg(Long userId, MultipartFile file) {
     return new HashMap<>() {{
@@ -56,25 +61,31 @@ public class UserFacade extends GeneralFacade<UserModel, UserRequestDTO, UserRes
     }};
   }
 
+
   public UserResponseDTO subscribe(Long userId, Long userIdToFollowing) {
     return convertToDto(userService.subscribe(userId, userIdToFollowing));
   }
+
 
   public UserResponseDTO unsubscribe(Long userId, Long userIdToUnFollowing) {
     return convertToDto(userService.unsubscribe(userId, userIdToUnFollowing));
   }
 
+
   public Page<UserResponseDTO> getFollowers(Long userId, Pageable pageable) {
     return userService.getFollowers(userId, pageable).map(this::convertToDto);
   }
+
 
   public Page<UserResponseDTO> getFollowings(Long userId, Pageable pageable) {
     return userService.getFollowings(userId, pageable).map(this::convertToDto);
   }
 
+
   public Page<UserResponseDTO> getOfferFollowings(Long userId, Pageable pageable) {
     return userService.getOfferFollowings(userId, pageable).map(this::convertToDto);
   }
+
 
   public Page<UserResponseDTO> findUser(Long userId, String searchString, Pageable pageable) {
     return userService.searchUsers(userId, searchString, pageable).map(this::convertToDto);

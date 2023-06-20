@@ -6,7 +6,7 @@ import InputAvatar from '../../UI/InputAvatar';
 import TweetButton from 'src/UI/TweetButton';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createTweet } from 'src/redux/thunk/createTweet.js';
+import { createTweet } from 'src/redux/thunk/tweets/createTweet.js';
 import { useMode } from 'src/styles/_materialTheme';
 
 function TweetBox({ placeholder, fnc, userAvatar }) {
