@@ -69,10 +69,10 @@ export const ChatSender = () => {
       // send event about new message to Socket server
       socketChat.publish({
         destination: '/api/v1/message',
-        // headers: {
-        //   Authorization: `Bearer ${accessToken}`,
-        //   Origin: 'client',
-        // },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Origin: 'client',
+        },
         body: JSON.stringify(message),
       });
 

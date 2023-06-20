@@ -18,7 +18,7 @@ export const App = () => {
 
   //****************** CONNECT TO SOCKET *********************/
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && accessToken) {
       try {
         // create connect to socket
         stompClientRef.current = clientSocket();
