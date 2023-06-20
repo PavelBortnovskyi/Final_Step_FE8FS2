@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createTweet } from '../thunk/tweets/createTweet.js';
+import { addReplay } from '../thunk/addReplay.js';
 
 const initialState = {
   tweetBody: '',
@@ -8,22 +8,22 @@ const initialState = {
   error: null,
 };
 
-export const tweetSlice = createSlice({
-  name: 'tweetCreate',
+export const replaySlice = createSlice({
+  name: 'tweet',
   initialState,
 
   extraReducers: (builder) => {
-    // create_tweet
-    builder.addCase(createTweet.pending, (state, action) => {
+    // create_replay
+    builder.addCase(addReplay.pending, (state, action) => {
       state.isLoading = true;
       state.error = '';
     });
-    builder.addCase(createTweet.fulfilled, (state, action) => {
+    builder.addCase(addReplay.fulfilled, (state, action) => {
       state.tweetBody = action.payload.tweetBody;
       state.attachmentImages = action.payload.attachmentImages;
       state.isLoading = false;
     });
-    builder.addCase(createTweet.rejected, (state, action) => {
+    builder.addCase(addReplay.rejected, (state, action) => {
       state.error = action.payload;
       state.error = action.payload?.info;
       state.isLoading = false;
@@ -31,4 +31,4 @@ export const tweetSlice = createSlice({
   },
 });
 
-export default tweetSlice.reducer;
+export default replaySlice.reducer;

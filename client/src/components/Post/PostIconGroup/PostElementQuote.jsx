@@ -1,26 +1,27 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addRetweet } from 'src/redux/thunk/addRetweet';
+import { addQuote } from 'src/redux/thunk/addQuote';
 
 
-function PostIconElement({ icon, quantity, color, id }) {
+export const PostElementQuote = ({icon, quantity, color, id}) => {
+
   const dispatch = useDispatch();
 
-  const handleRetweet = () => {
+  const handleQuote = () => {
     if (false) {
       // dispatch(deleteBookmark({ id }));
       console.log('delete');
 
     } else {
-      dispatch(addRetweet({ id }));
+      dispatch(addQuote({ id }));
       console.log('add');
     }
   };
 
   return (
     <Box
-    onClick={handleRetweet}
+    onClick={handleQuote}
       display="flex"
       sx={{
         gap: '10px',
@@ -36,7 +37,5 @@ function PostIconElement({ icon, quantity, color, id }) {
       {icon}
       {quantity}
     </Box>
-  );
+  )
 }
-
-export default PostIconElement;

@@ -4,6 +4,8 @@ import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 import { getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
+import { Link } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
 
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
   '&:hover': {
@@ -14,10 +16,11 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 
 export const SearchPeople = () => {
   const { isLoading, findUser } = useSelector(getUserData);
+  const theme = useTheme();
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)
-    return <Typography sx={{margin: "16px"}}>Try searching for people or messages</Typography>;
+    return <Typography sx={{ margin: "16px" }}>Try searching for people or messages</Typography>;
 
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
@@ -30,9 +33,9 @@ export const SearchPeople = () => {
     <>
       {!isResult ? (
         <Box >
-          <Typography variant="h5" sx={{margin: "16px 0"}}>no results</Typography>
+          <Typography variant="h5" sx={{ margin: "16px 0" }}>no results</Typography>
           <Typography variant="body2">The term you entered did not bring up any results</Typography>
-          
+
         </Box>
       ) : (
         <Box
@@ -44,28 +47,37 @@ export const SearchPeople = () => {
             width: '100%',
           }}
         >
+
           {findUser.content.map(
             ({ id, fullName, avatarImgUrl, verified, userTag }) => (
-              <BoxSearchPerson
+              <Link
+                to={`/user/${id}`}
+                style={{color: `${theme.palette.text.primary}`,}}
+                underline="none"
                 key={id}
-                sx={{ display: 'flex', gap: '12px', padding: '8px' }}
               >
-                <Avatar
-                  sx={{ width: 56, height: 56 }}
-                  alt={fullName}
-                  src={avatarImgUrl && 'img/avatar/empty-avatar.png'}
-                />
-                <UserNames
-                  fullName={fullName}
-                  verified={verified}
-                  userTag={userTag}
-                  text={
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit ...'
-                  }
-                />
-              </BoxSearchPerson>
+                <BoxSearchPerson
+
+                  sx={{ display: 'flex', gap: '12px', padding: '8px' }}
+                >
+                  <Avatar
+                    sx={{ width: 56, height: 56 }}
+                    alt={fullName}
+                    src={avatarImgUrl && 'img/avatar/empty-avatar.png'}
+                  />
+                  <UserNames
+                    fullName={fullName}
+                    verified={verified}
+                    userTag={userTag}
+                    text={
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ...'
+                    }
+                  />
+                </BoxSearchPerson>
+              </Link>
             )
           )}
+
         </Box>
       )}
     </>

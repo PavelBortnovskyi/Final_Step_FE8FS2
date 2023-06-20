@@ -27,7 +27,7 @@ export const Bookmarks = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getBookmarks({ page: 0, pageSize: 10 }));
+    dispatch(getBookmarks({ page: 0, pageSize: 120 }));
   }, [dispatch]);
 
 

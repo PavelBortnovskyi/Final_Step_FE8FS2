@@ -3,8 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addRetweet } from 'src/redux/thunk/addRetweet';
 
-
-function PostIconElement({ icon, quantity, color, id }) {
+export const PostIconElementRetweet = ({icon, quantity, color, id}) => {
   const dispatch = useDispatch();
 
   const handleRetweet = () => {
@@ -36,7 +35,5 @@ function PostIconElement({ icon, quantity, color, id }) {
       {icon}
       {quantity}
     </Box>
-  );
+  )
 }
-
-export default PostIconElement;

@@ -18,6 +18,7 @@ import subscriptionsTweets from 'src/redux/reducers/subscriptionsTweetsSlicer';
 import userLikes from 'src/redux/reducers/userLikesSlice';
 import userReplise from 'src/redux/reducers/userRepliseSlice';
 
+
 const rootReducer = {
   auth,
   settingsTheme,
@@ -37,6 +38,7 @@ const rootReducer = {
   subscriptionsTweets,
   userLikes,
   userReplise,
+  
 };
 
 export const store = configureStore({
