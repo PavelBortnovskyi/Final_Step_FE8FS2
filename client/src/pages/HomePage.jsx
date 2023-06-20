@@ -14,7 +14,7 @@ import {
 import TweetList from 'src/UI/TweetList';
 
 export const HomePage = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
 
   const isScreenSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { isAuthenticated } = useSelector(getAuthorizationData);

@@ -6,6 +6,7 @@ import { useMode } from 'src/styles/_materialTheme';
 import { LogoTwitter } from '../Sidebar/LogoTwitter';
 import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
 import { useSelector } from 'react-redux';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -16,17 +17,24 @@ const CustomTab = styled(Tab)((props) => ({
     backgroundColor: '#b3b3b32b',
   },
 }));
+const CustomTabNotLogin = styled(Tab)((props) => ({
+  fontWeight: '800',
+  width: '100%',
+  textTransform: 'capitalize',
+  '&:hover': {
+    cursor: 'pointer',
+    backgroundColor: '#b3b3b32b',
+  },
+}));
 
 function MainPage_header({ tabIndex, setTabIndex }) {
   const user = useSelector((state) => state.user.user) || '';
-
+  const { isAuthenticated } = useSelector(getAuthorizationData);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useMode();
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
-    // console.log('in Heder ', tabIndex);
-    // console.log('tab is', tab);
   };
 
   return (
@@ -52,7 +60,7 @@ function MainPage_header({ tabIndex, setTabIndex }) {
             fontWeight: '700',
           }}
         >
-          Home
+          {isAuthenticated ? 'Home' : ' Explore'}
         </Box>
       </NavLink>
       <Box
@@ -72,17 +80,18 @@ function MainPage_header({ tabIndex, setTabIndex }) {
 
         <LogoTwitter />
       </Box>
-
-      <Tabs value={tabIndex} onChange={handleTabChange}>
-        <CustomTab
-          label="For you"
-          sx={{ color: `${theme.palette.text.primary}` }}
-        />
-        <CustomTab
-          label="Following"
-          sx={{ color: `${theme.palette.text.primary}` }}
-        />
-      </Tabs>
+      {isAuthenticated && (
+        <Tabs value={tabIndex} onChange={handleTabChange}>
+          <CustomTab
+            label="For you"
+            sx={{ color: `${theme.palette.text.primary}` }}
+          />
+          <CustomTab
+            label="Following"
+            sx={{ color: `${theme.palette.text.primary}` }}
+          />
+        </Tabs>
+      )}
     </Box>
   );
 }
