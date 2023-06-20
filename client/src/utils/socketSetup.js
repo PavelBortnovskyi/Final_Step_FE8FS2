@@ -22,9 +22,9 @@ export const clientSocket = (onMessageReceived) => {
     const client = new Client({
       brokerURL: socketUrl,
       connectHeaders: headers,
-      debug: function (str) {
-        console.log(str);
-      },
+      // debug: function (str) {
+      //   console.log(str);
+      // },
     });
 
     // after activate connect
