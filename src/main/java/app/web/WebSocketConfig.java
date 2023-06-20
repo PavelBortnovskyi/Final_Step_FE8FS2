@@ -27,6 +27,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.LinkedMultiValueMap;
@@ -93,7 +94,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String origin = accessor.getFirstNativeHeader("Origin");
         //log.info("Origin:" + origin);
-        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")  && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
+        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080") && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
           //log.info("Command: " + accessor.getCommand());
 
           if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
@@ -111,7 +112,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
                 .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
                 .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-              SecurityContextHolder.getContext().setAuthentication(user);
+
+              SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+              securityContext.setAuthentication(user);
+              SecurityContextHolder.setContext(securityContext);
+              //SecurityContextHolder.getContext().setAuthentication(user);
               accessor.setUser(user);
 
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
