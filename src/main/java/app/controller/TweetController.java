@@ -25,7 +25,7 @@ import java.util.List;
 
 @Log4j2
 @Validated
-@CrossOrigin
+@CrossOrigin(originPatterns = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tweet")
