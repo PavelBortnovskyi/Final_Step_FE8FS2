@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
+@CrossOrigin(originPatterns = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
 @Log4j2
 @RestController
 @RequestMapping("/api/v1/auth")
