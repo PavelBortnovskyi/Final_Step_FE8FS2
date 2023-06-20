@@ -38,6 +38,7 @@ export const TweetList = ({ tweets }) => {
                 my: '10px',
               }}
             >
+            {console.log(tweet.attachmentImages)}
               <PostIconList
                 likes={
                   tweet.attachmentImages === undefined
@@ -63,6 +64,11 @@ export const TweetList = ({ tweets }) => {
                   tweet.attachmentImages === undefined
                     ? tweet.tweet.currUserBookmarked
                     : tweet.currUserBookmarked
+                }
+                bookmarks={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countBookmarks
+                    : tweet.countBookmarks
                 }
               />
             </Box>

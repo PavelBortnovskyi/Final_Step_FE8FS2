@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Typography, styled, useTheme } from '@mui/material'
+import { Avatar, Box, Tab, Tabs, Typography, styled, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NotificationsFollowed } from './NotificationsFollowed';
@@ -10,6 +10,7 @@ import { getNotifications } from 'src/redux/thunk/getNotifications';
 import { NotificationsReplying } from './NotificationsReplying';
 import { NotificationsEmpty } from './NotificationsEmpty';
 import { NotificationsQuote } from './NotificationsQuote';
+import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -25,6 +26,7 @@ const CustomTab = styled(Tab)((props) => ({
 
 
 export const NotificationsUser = () => {
+  const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -48,23 +50,41 @@ export const NotificationsUser = () => {
     setTabIndex(newTabIndex);
   };
 
-console.log(Notifications);
+  const [isOpen, setIsOpen] = useState(false);
+
+  console.log(Notifications);
   return (
     <Box sx={{ padding: '8px 0 0 0' }}>
       <Typography variant="h5"
-      sx={{
-        backdropFilter: 'blur(15px)',
-        width: '100%',
-        padding: '8px 0 8px 16px',
-        position: 'sticky',
-        top: '0',
-        zIndex: 13,
-      }}>
-        Notifications
+        sx={{
+          backdropFilter: 'blur(15px)',
+          width: '100%',
+          padding: '8px 0 8px 16px',
+          zIndex: 13,
+        }}>
+        <Box
+          sx={{
+            display: { xs: 'flex', sm: 'none' },
+            marginTop: '10px',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar
+            src={user.avatarImgUrl}
+            sx={{ marginRight: '5%', marginLeft: '10px', cursor: 'pointer' }}
+            onClick={() => setIsOpen(true)}
+          />
+          <SidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+          Notifications
+        </Box>
+
       </Typography>
       <Tabs value={tabIndex} onChange={handleTabChange}
         sx={{
           borderBottom: `1px solid ${theme.palette.border.main}`,
+          position: 'sticky',
+          top: '0',
+          backdropFilter: 'blur(15px)',
         }}>
         <CustomTab label="All" key='all' />
         <CustomTab label="Verified" key='Verified' />
@@ -82,19 +102,19 @@ console.log(Notifications);
         {
           tabIndex === 0 && Notifications && Notifications.map(notification => (
             (notification.notificationType === ''
-            && <NotificationsFollowed notification={notification} key={notification.id} />)
+              && <NotificationsFollowed notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'LIKE'
-            && <NotificationsLike notification={notification} key={notification.id} />)
+              && <NotificationsLike notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'QUOTE_TWEET'
-            && <NotificationsQuote notification={notification} key={notification.id} />)
+              && <NotificationsQuote notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'REPLY'
-            && <NotificationsReplying notification={notification} key={notification.id} />)
+              && <NotificationsReplying notification={notification} key={notification.id} />)
             ||
             (notification.notificationType === 'RETWEET'
-            && <NotificationsRetweet notification={notification} key={notification.id} />)
+              && <NotificationsRetweet notification={notification} key={notification.id} />)
           ))
         }
 
