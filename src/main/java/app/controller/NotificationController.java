@@ -3,7 +3,7 @@ package app.controller;
 import app.annotations.Marker;
 import app.dto.rs.NotificationResponseDTO;
 import app.facade.NotificationFacade;
-import app.service.CurrUserService;
+import app.service.AuthUserService;
 import app.utils.CustomPageImpl;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -27,7 +26,7 @@ public class NotificationController {
 
   private final NotificationFacade notificationFacade;
 
-  private final CurrUserService authUserService;
+  private final AuthUserService authUserService;
 
   /**
    * This endpoint waiting for valid url params to return all user notifications in page format

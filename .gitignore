@@ -15,9 +15,9 @@ target/
 *.xml
 *.class
 ### Spring ###
+application.yml
 application-local.yml
 application-remote.yml
-application.yml
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -67,4 +67,5 @@ bin/
 /client/npm-debug.log*
 /client/yarn-debug.log*
 /client/yarn-error.log*
+docker-compose*.yml
 ### React Client #########################################

@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
@@ -33,5 +34,5 @@ public class Message extends BaseEntityModel {
   private String body;
 
   @Column(name = "sent_at")
-  private LocalDateTime sent = LocalDateTime.now();
+  private Timestamp sent;
 }

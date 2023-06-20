@@ -5,16 +5,6 @@ import { Link } from 'react-router-dom';
 import { NotificationsBoxImg } from './NotificationsUI/NotificationsBoxImg';
 
 
-const CustomImg = styled(Box)(({ img }) => {
-  return ({
-    width: '48%',
-    backgroundImage: `url(${img})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  });
-})
-
 const StyledLink = styled(Link)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.border.main}`,
   padding: '12px 16px',

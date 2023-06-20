@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CurrUserService {
+public class AuthUserService {
 
   private final UserService userService;
 
-
   public JwtUserDetails getUserDetails() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication.getPrincipal() instanceof JwtUserDetails)
+    if (authentication != null && authentication.getPrincipal() instanceof JwtUserDetails)
     return (JwtUserDetails) authentication.getPrincipal();
     else return new JwtUserDetails(0L, "@Zero");
   }

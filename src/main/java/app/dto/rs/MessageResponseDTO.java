@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,5 +25,5 @@ public class MessageResponseDTO {
   private String body;
 
   @JsonView(Marker.ChatDetails.class)
-  private LocalDateTime sent;
+  private Timestamp sent;
 }

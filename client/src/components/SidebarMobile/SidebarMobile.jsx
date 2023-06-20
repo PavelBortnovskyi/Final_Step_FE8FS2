@@ -66,7 +66,7 @@ export const SidebarMobile = ({ isOpen, setIsOpen }) => {
           <LogoutButton />
           <ThemeSwitcher />
         </Box>
-        <List sx={{ padding: 0 }}>
+        {/* <List sx={{ padding: 0 }}>
           {
             selectElements.map(selectEl => (
               <DropdownFooterSelect
@@ -76,7 +76,7 @@ export const SidebarMobile = ({ isOpen, setIsOpen }) => {
               />
             ))
           }
-        </List>
+        </List> */}
       </Box>
     </SwipeableDrawer>
   )
