@@ -1,18 +1,19 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Container, IconButton, Tooltip, Typography } from '@mui/material';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 
-import { useTheme } from '@emotion/react';
-import { SearchMessages } from './Search/SearchMessages';
-import { ConversationList } from './ConversationList/ConversationList';
-import { useSelector } from 'react-redux';
+import { ChatSidebar } from './Chat/ChatSidebar';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { getAllChats } from 'src/redux/thunk/getAllChats';
 
 // ************ Messages ************
 export const Messages = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -24,8 +25,13 @@ export const Messages = () => {
     }
   }, [isAuthenticated, navigate]);
 
+  // set all chats to redux
+  useEffect(() => {
+    dispatch(getAllChats({ page: 0, pageSize: 5 }));
+  }, [dispatch]);
+
   return (
-    <Box>
+    <Box sx={{ paddingBottom: '40px' }}>
       <Container>
         {/* Title & action btn */}
         <Box
@@ -56,11 +62,9 @@ export const Messages = () => {
             </Tooltip>
           </Box>
         </Box>
-        {/* chat list */}
-        <ConversationList />
 
         {/* Search */}
-        <SearchMessages />
+        <ChatSidebar />
       </Container>
     </Box>
   );
