@@ -13,7 +13,6 @@ public class AuthUserService {
 
   private final UserService userService;
 
-
   public JwtUserDetails getUserDetails() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof JwtUserDetails)

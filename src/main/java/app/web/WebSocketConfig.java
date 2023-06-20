@@ -6,16 +6,19 @@ import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -24,6 +27,8 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -36,14 +41,13 @@ import java.util.Optional;
 
 @Log4j2
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-  @Autowired
-  private JwtTokenService jwtTokenService;
+  private final JwtTokenService jwtTokenService;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
@@ -85,11 +89,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-
         String origin = accessor.getFirstNativeHeader("Origin");
-
         //log.info("Origin:" + origin);
-
         if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080")  && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
           //log.info("Command: " + accessor.getCommand());
 
@@ -107,8 +108,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 })
                 .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
                 .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
-                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
+                .map((UsernamePasswordAuthenticationToken auth) -> {
+                  auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(((ServletServerHttpRequest) message.getHeaders().get(SimpMessageHeaderAccessor.NATIVE_HEADERS)).getServletRequest()));
+                  SecurityContextHolder.getContext().setAuthentication(auth);
+                  return SecurityContextHolder.getContext().getAuthentication();
+                }).orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
               accessor.setUser(user);
+
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
               //accessor.getSessionAttributes().put("userId", jwtUser.getId());
               accessor.getSessionAttributes()
@@ -125,7 +131,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       }
     });
   }
-
 
   //  @Override
 //  public void configureClientInboundChannel(ChannelRegistration registration) {
