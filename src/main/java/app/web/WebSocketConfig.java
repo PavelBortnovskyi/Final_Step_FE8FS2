@@ -4,6 +4,7 @@ import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
+import app.utils.SpringSecurityAuditorAware;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -52,6 +54,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final ObjectMapper objectMapper;
 
+  private final SpringSecurityAuditorAware auditorAware;
+
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
     registration.setMessageSizeLimit(128 * 1024);
@@ -66,11 +70,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**"); //TODO: need to change on deploy
+      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**").withSockJS(); //TODO: need to change on deploy
 
     registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("final-step-fe2fs8tw.herokuapp.com",
       "final-step-fe2fs8tw.herokuapp.com/**", "http://localhost:8080", "http://localhost:8080/**",
-      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**"); //TODO: need to change on deploy
+      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**").withSockJS(); //TODO: need to change on deploy
   }
 
   @Override
@@ -112,17 +116,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
                 .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
                 .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-
-              SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-              securityContext.setAuthentication(user);
-              SecurityContextHolder.setContext(securityContext);
-              //SecurityContextHolder.getContext().setAuthentication(user);
-              accessor.setUser(user);
-
-              //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();
-              //accessor.getSessionAttributes().put("userId", jwtUser.getId());
-              accessor.getSessionAttributes()
-                .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+              if (user != null) {
+                auditorAware.setCurrentAuditor(user.getName());
+                //SecurityContextHolder.getContext().setAuthentication(user);
+                accessor.setUser(user);
+                accessor.getSessionAttributes()
+                  .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+              }
               //log.info("Token:" + token);
               //log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
             } else {
