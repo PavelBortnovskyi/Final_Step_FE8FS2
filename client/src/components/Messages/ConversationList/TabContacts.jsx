@@ -6,7 +6,7 @@ import { getChats, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import { ContactGuest } from './ContactGuest';
 import { setGuest } from 'src/redux/reducers/chatSlice';
-import { arrToDate } from 'src/utils/messages/convertToDate';
+import { timestampToDate } from 'src/utils/messages/convertToDate';
 
 // ************ STYLE ************
 const BoxHeader = styled(Box)(({ theme }) => ({
@@ -46,8 +46,7 @@ export const TabContacts = () => {
 
           const setGuests = excludeGroup.map((guest) => {
             const messageBody = guest.messages[0]?.body;
-            // const messageSent = new Date(...guest.messages[0]?.sent);
-            const messageSent = arrToDate(guest.messages[0]?.sent);
+            const messageSent = timestampToDate(guest.messages[0]?.sent);
 
             const guestData =
               guest.initiatorUser?.id !== user.id

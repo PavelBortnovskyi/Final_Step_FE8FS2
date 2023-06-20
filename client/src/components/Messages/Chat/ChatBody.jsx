@@ -1,10 +1,10 @@
 import { styled, Box } from '@mui/material';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import { ChatBodyMessage } from './ChatBodyMessage';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getChats } from 'src/redux/selectors/selectors';
+import { setCurrentMessage } from 'src/redux/reducers/chatSlice';
 
 // ************ STYLE ************
 const Container = styled(Box)(({ theme }) => ({
@@ -21,18 +21,23 @@ const Container = styled(Box)(({ theme }) => ({
 
 // ************ ChatBody ************
 export const ChatBody = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
 
   // get guest data from redux
-  const { chatMessages } = useSelector(getChats);
+  const { chatMessages, currentMessage, currentChat } = useSelector(getChats);
 
-  // get chat data
+  // get chat data history
   useEffect(() => {
-    const getChatData = async () => {
+    const getChatData = () => {
       if (!chatMessages) return;
       try {
-        setMessages(chatMessages.content);
+        // clear messages
+        setMessages([]);
+        dispatch(setCurrentMessage(null));
+
+        // set messages from DB
+        setMessages([...chatMessages.content].reverse());
       } catch (error) {
         console.log(error);
       }
@@ -40,6 +45,18 @@ export const ChatBody = () => {
 
     getChatData();
   }, [chatMessages]);
+
+  // get current message
+  useEffect(() => {
+    if (!currentMessage) return;
+    try {
+      if (currentMessage.chatId === currentChat[0].chatId) {
+        setMessages((prev) => [...prev, currentMessage]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [currentChat, currentMessage]);
 
   // ************* SCROLL *************
   // setting browser-scroll to useRef() to automatically scroll when message is outside

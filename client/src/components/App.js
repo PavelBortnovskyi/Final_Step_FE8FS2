@@ -7,7 +7,7 @@ import { getUser } from 'src/redux/thunk/getUser';
 import { clientSocket } from 'src/utils/socketSetup';
 import { getTokens } from 'src/utils/tokens';
 
-import { setSocketChat } from 'src/redux/reducers/chatSlice';
+import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -20,8 +20,14 @@ export const App = () => {
   useEffect(() => {
     if (isAuthenticated && accessToken) {
       try {
+        // set received messages to redux
+        const onMessageReceived = (message) => {
+          console.log('Received message:', message.body);
+          dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
+
         // create connect to socket
-        stompClientRef.current = clientSocket();
+        stompClientRef.current = clientSocket(onMessageReceived);
         dispatch(setSocketChat(stompClientRef.current));
         //
       } catch (error) {

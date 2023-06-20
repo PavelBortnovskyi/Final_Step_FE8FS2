@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getGuest } from '../thunk/getGuest.js';
+// import { getGuest } from '../thunk/getGuest.js';
 import { getCurrentChat } from '../thunk/getCurrentChat.js';
 import { getAllChats } from '../thunk/getAllChats.js';
 import { getChatMessages } from '../thunk/getChatMessages.js';
@@ -9,6 +9,7 @@ const initialState = {
   guest: null,
   currentChat: null,
   chatMessages: null,
+  currentMessage: null,
   allChats: null,
   socketChat: null,
   isLoading: false,
@@ -23,13 +24,15 @@ export const chatSlice = createSlice({
     chatLogout(state, action) {
       state.guest = null;
       state.chatMessages = null;
+      state.currentMessage = null;
       state.allChats = null;
+      state.currentChat = null;
       state.socketChat = null;
     },
-
     chatCloseConnection(state, actions) {
       state.guest = null;
       state.chatMessages = null;
+      state.currentMessage = null;
       state.currentChat = null;
     },
     setSocketChat(state, action) {
@@ -37,6 +40,9 @@ export const chatSlice = createSlice({
     },
     setGuest(state, action) {
       state.guest = action.payload;
+    },
+    setCurrentMessage(state, action) {
+      state.currentMessage = action.payload;
     },
   },
 
@@ -102,6 +108,11 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { chatCloseConnection, setSocketChat, setGuest, chatLogout } =
-  chatSlice.actions;
+export const {
+  chatCloseConnection,
+  setSocketChat,
+  setGuest,
+  chatLogout,
+  setCurrentMessage,
+} = chatSlice.actions;
 export default chatSlice.reducer;

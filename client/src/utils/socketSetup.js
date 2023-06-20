@@ -8,7 +8,7 @@ export const socketNotificationsUrl =
   'wss://final-step-fe2fs8tw.herokuapp.com/notifications-ws';
 
 // socket connect
-export const clientSocket = () => {
+export const clientSocket = (onMessageReceived) => {
   const { accessToken } = getTokens();
 
   // create header
@@ -33,14 +33,14 @@ export const clientSocket = () => {
       client.subscribe('/topic/chats', onMessageReceived, headers);
     };
 
+    // // TODO:  create code for received messages
+    // const onMessageReceived = (message) => {
+    //   console.log('Received message:', message.body);
+    // };
+
     // error socket
     const errorCallback = (error) => {
       console.error('*** Error:', error);
-    };
-
-    // TODO:  create code for received messages
-    const onMessageReceived = (message) => {
-      console.log('Received message:', message.body);
     };
 
     client.onConnect = connectCallback;

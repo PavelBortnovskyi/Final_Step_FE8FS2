@@ -3,7 +3,7 @@ import TimeAgo from 'timeago-react';
 import { useSelector } from 'react-redux';
 
 import { getUserData } from 'src/redux/selectors/selectors';
-import { arrToDate } from 'src/utils/messages/convertToDate';
+import { timestampToDate } from 'src/utils/messages/convertToDate';
 
 const User = styled(Box)`
   background-color: #00b69d30;
@@ -42,7 +42,8 @@ const BoxTime = styled(Box)`
 export const ChatBodyMessage = ({ message }) => {
   const { user } = useSelector(getUserData);
 
-  const messageSent = arrToDate(message.sent);
+  // converted message.sent value
+  const messageSent = timestampToDate(message.sent);
 
   return (
     <>
