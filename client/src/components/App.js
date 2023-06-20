@@ -4,75 +4,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from 'src/layout/Layout';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
+import { clientSocket } from 'src/utils/socketSetup';
 import { getTokens } from 'src/utils/tokens';
-import { notAuthenticated } from 'src/redux/reducers/authSlice';
 
-import { useSocket } from 'src/utils/socketSetup';
-import { Stomp, Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
-// 2
 export const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const { accessToken } = getTokens();
 
-  // const stompClientRef = useRef(null);
+  const stompClientRef = useRef(null);
 
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
+  //****************** CONNECT TO SOCKET *********************/
+  useEffect(() => {
+    if (isAuthenticated && accessToken) {
+      try {
+        // set received messages to redux
+        const onMessageReceived = (message) => {
+          console.log('Received message:', message.body);
+          dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
 
-  // useEffect(() => {
-  //   const socket = new SockJS(
-  //     'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
-  //   );
-  //   const client = Stomp.over(() => socket);
+        // create connect to socket
+        stompClientRef.current = clientSocket(onMessageReceived);
+        dispatch(setSocketChat(stompClientRef.current));
+        //
+      } catch (error) {
+        console.error('Error activating STOMP connection:', error);
+      }
 
-  //   client.onConnect = (frame) => {
-  //     console.log('STOMP connection established:', frame);
-  //     // Подписка на канал с сообщениями
-  //     client.subscribe('/topic/chats', (message) => {
-  //       // Обработка полученных сообщений
-  //       const receivedMessage = JSON.parse(message.body);
-  //       console.log('Received message:', receivedMessage);
-  //     });
-  //   };
+      return () => {
+        try {
+          stompClientRef.current.deactivate();
+          //
+        } catch (error) {
+          console.error('Error deactivating STOMP connection:', error);
 
-  //   client.connect(
-  //     { Authorization: `Bearer ${accessToken}` },
-  //     () => {
-  //       client.onConnect();
-  //     },
-  //     (error) => {
-  //       console.error('STOMP connection error:', error);
-  //     }
-  //   );
-
-  //   // Отправка сообщения
-  //   const sendMessage = (message) => {
-  //     client.send('/api/v1/message', {}, JSON.stringify(message));
-  //   };
-
-  //   // Пример отправки сообщения
-  //   const message = {
-  //     chatId: 16,
-  //     userId: 4,
-  //     body: 'Hello, server!',
-  //   };
-  //   // sendMessage(message);
-
-  //   // Отключение от сервера сокетов
-  //   return () => {
-  //     client.onDisconnect();
-  //   };
-  // }, [accessToken]);
+          // TODO: work ??? If there is a connection error, try to reconnect.
+          if (error.message === 'Lost connection to server') {
+            console.log('Attempting to reconnect...');
+            stompClientRef.current.activate();
+          }
+        }
+      };
+    }
+  }, [dispatch, accessToken, isAuthenticated]);
+  //*********************************************************/
 
   useEffect(() => {
     if (accessToken) {
       dispatch(getUser());
     }
-  }, [accessToken, dispatch, isAuthenticated]);
+  }, [accessToken, dispatch]);
 
   return <Layout />;
 };
