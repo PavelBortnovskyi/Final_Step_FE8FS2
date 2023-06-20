@@ -5,6 +5,7 @@ import app.exceptions.authError.JwtAuthenticationException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.util.Pair;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Log4j2
 @Configuration
@@ -98,9 +100,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
             if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
               Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-                .flatMap(jwtTokenService::extractIdFromClaims)
-                .map(JwtUserDetails::new)
-                .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, "", jwtUserDetails.getAuthorities()))
+                .flatMap(claims -> {
+                  Long userId = jwtTokenService.extractIdFromClaims(claims).get();
+                  String username = jwtTokenService.extractUserNameFromClaims(claims).get();
+                  return Optional.of(Pair.of(userId, username));
+                })
+                .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
+                .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
                 .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
               accessor.setUser(user);
               //JwtUserDetails jwtUser = (JwtUserDetails) user.getDetails();

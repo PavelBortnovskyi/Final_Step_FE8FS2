@@ -12,5 +12,5 @@ import java.util.List;
 public interface RatingModelRepository extends JpaRepository<RatingModel, Long> {
   List<RatingModel> findAll();
 
-  Page<RatingModel> findAll(Pageable pageable);
+  Page<RatingModel> findAllByOrderByTweetRatingDesc(Pageable pageable);
 }

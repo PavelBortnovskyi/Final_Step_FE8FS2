@@ -5,10 +5,12 @@ import app.enums.TweetActionType;
 import app.enums.TweetType;
 import app.model.Tweet;
 import app.model.UserModel;
-import app.service.CurrUserService;
+import app.service.AuthUserService;
+import app.service.ScheduleAlgoService;
 import app.service.TweetActionService;
 import app.service.TweetService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -16,13 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   private final TweetService tweetService;
   private final TweetActionService tweetActionService;
-  private final CurrUserService currUserService;
+  private final AuthUserService authUserService;
+  private final ScheduleAlgoService scheduleAlgoService;
 
 
   private TweetResponseDTO setCustomFields(TweetResponseDTO tweetResponseDTO, UserModel currUser) {
@@ -46,7 +50,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   @Override
   public TweetResponseDTO convertToDto(Tweet tweet) {
-    return setCustomFields(super.convertToDto(tweet), currUserService.getCurrUser());
+    return setCustomFields(super.convertToDto(tweet), authUserService.getCurrUser());
   }
 
 
@@ -95,6 +99,11 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
   public Page<TweetResponseDTO> getTweetsFromSubscriptions(Long userId, Pageable pageable) {
     return tweetService.getTweetsFromSubscriptions(userId, pageable).map(this::convertToDto);
+  }
+
+
+  public Page<TweetResponseDTO> getTopTweets(Pageable pageable) {
+    return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDto);
   }
 
 }
