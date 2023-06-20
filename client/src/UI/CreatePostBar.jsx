@@ -26,9 +26,9 @@ function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
 
       <Emoji handleEmojiSelect={handleEmojiSelect} hover={hoverColor} />
 
-      <Schedule hover={hoverColor} />
+      {/* <Schedule hover={hoverColor} />
 
-      <Location hover={hoverColor} />
+      <Location hover={hoverColor} /> */}
     </Box>
   );
 }

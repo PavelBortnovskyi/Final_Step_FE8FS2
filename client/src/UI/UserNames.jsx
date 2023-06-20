@@ -8,19 +8,20 @@ import { Box, Typography, alpha, useTheme } from '@mui/material';
 
 function UserNames({
   fullName = '',
-  verified = false,
+  isVerified,
   userTag = '',
   postTime = '',
   text = null,
+  color,
 }) {
   const theme = useTheme();
   return (
     <Box
       display="flex"
       sx={{
+        color: color,
         alignItems: 'baseline',
         justifyContent: 'space-between',
-        marginBottom: '10px',
         flexDirection: 'column',
         width: '100%',
       }}
@@ -36,7 +37,7 @@ function UserNames({
       >
         <Typography variant="body1">{fullName}</Typography>
         <div>
-          {verified && (
+          {isVerified && (
             <VerifiedUserRoundedIcon
               sx={{ fontSize: '16px', color: '#1d9bf0' }}
             />

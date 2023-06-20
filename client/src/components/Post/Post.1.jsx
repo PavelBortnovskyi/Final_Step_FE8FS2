@@ -24,5 +24,4 @@ function Post({ tweet }) {
     </Box>
   );
 }
-
 export default Post;
