@@ -2,12 +2,8 @@ import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Post from './Post';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTweets } from 'src/redux/thunk/getTweets';
-import { getUserTweetsThunk } from 'src/redux/thunk/getUserTweets';
-import {
-  getFollowingTweets,
-  getUserTweets,
-} from 'src/redux/selectors/selectors';
+import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
+import { getAllTweets, getUserTweets } from 'src/redux/selectors/selectors';
 import { Link } from 'react-router-dom';
 import PostIconList from './PostIconGroup/PostIconList';
 import { useMode } from 'src/styles/_materialTheme';
@@ -61,6 +57,10 @@ function PostList({ id, tab }) {
                 reply={tweet.countReply}
                 retweet={tweet.countRetweets}
                 id={tweet.id}
+                isLiked={tweet.currUserLiked}
+                isRetweet={tweet.countRetweets}
+                isComment={tweet.countReplays}
+                isBookmark={tweet.countBookmarks}
               />
             </Box>
           </Box>

@@ -5,9 +5,7 @@ import Post from 'src/components/Post/Post';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import { useMode } from 'src/styles/_materialTheme';
 
-
 export const TweetList = ({ tweets }) => {
-  
   const theme = useMode();
 
   return (
@@ -15,7 +13,7 @@ export const TweetList = ({ tweets }) => {
       {tweets !== false &&
         tweets.map((tweet) => (
           <Box
-            key={tweet.attachmentImages === undefined ? tweet.tweet.id : tweet.id}
+            key={tweet.id}
             sx={{
               borderBottom: `1px solid ${theme.palette.border.main}`,
               transition: 'background-color 0.3s ease',
@@ -26,7 +24,11 @@ export const TweetList = ({ tweets }) => {
             }}
           >
             <Link to={`/tweet/${tweet.id}`}>
-              <Post tweet={tweet.attachmentImages === undefined ? tweet.tweet : tweet} />
+              <Post
+                tweet={
+                  tweet.attachmentImages === undefined ? tweet.tweet : tweet
+                }
+              />
             </Link>
             <Box
               sx={{
@@ -36,21 +38,44 @@ export const TweetList = ({ tweets }) => {
                 my: '10px',
               }}
             >
+            {console.log(tweet.attachmentImages)}
               <PostIconList
-                likes={tweet.attachmentImages === undefined ? tweet.tweet.countLikes : tweet.countLikes}
-                reply={tweet.attachmentImages === undefined ? tweet.tweet.countReply : tweet.countReply}
-                retweet={tweet.attachmentImages === undefined ? tweet.tweet.countRetweets : tweet.countRetweets}
-                id={tweet.attachmentImages === undefined ? tweet.tweet.id : tweet.id}
-                isBookmarks={tweet.attachmentImages === undefined ? tweet.tweet.currUserBookmarked : tweet.currUserBookmarked}
+                likes={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countLikes
+                    : tweet.countLikes
+                }
+                reply={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countReply
+                    : tweet.countReply
+                }
+                retweet={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countRetweets
+                    : tweet.countRetweets
+                }
+                id={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.id
+                    : tweet.id
+                }
+                isBookmarks={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.currUserBookmarked
+                    : tweet.currUserBookmarked
+                }
+                bookmarks={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countBookmarks
+                    : tweet.countBookmarks
+                }
               />
             </Box>
           </Box>
         ))}
     </Box>
-  )
-}
-
+  );
+};
 
 export default TweetList;
-
-

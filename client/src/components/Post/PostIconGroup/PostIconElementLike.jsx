@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { likePost } from 'src/redux/thunk/likeTweet';
-import { unLikePost } from 'src/redux/thunk/unlike';
+import { likePost } from 'src/redux/thunk/tweets/likeTweet';
+import { unLikePost } from 'src/redux/thunk/tweets/unlike';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -14,20 +14,15 @@ function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
   const handleLike = () => {
     if (isLiked) {
       dispatch(unLikePost({ id }));
-      console.log('unLiked');
-      // setIsLikedTweet(false);
     } else {
       dispatch(likePost({ id }));
-      console.log('Liked');
-      // setIsLikedTweet(true);
     }
   };
-
-  // const likedTweet = useSelector(getLikedTweet());
   return (
     <Box
       onClick={handleLike}
       display="flex"
+      color={isLiked ? '#f9197f' : ''}
       sx={{
         gap: '10px',
         '&:hover': {

@@ -1,5 +1,6 @@
 package app.service;
 
+import app.annotations.SendNotification;
 import app.enums.TweetActionType;
 import app.exceptions.TweetAction.TweetActionNotFoundException;
 import app.exceptions.tweetError.TweetPermissionException;
@@ -23,16 +24,14 @@ public class TweetActionService {
   private final TweetService tweetService;
   private final UserService userService;
 
+
   public TweetAction getTweetAction(UserModel user, Tweet tweet, TweetActionType actionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType)
       .orElseThrow(() -> new TweetActionNotFoundException(actionType, tweet.getId()));
   }
 
-//  public boolean isTweetActionPresent(UserModel user, Tweet tweet, TweetActionType actionType){
-//    return tweetActionRepository.getByUserAndTweetAndActionType(user, tweet, actionType).isPresent();
-//  }
-
   @Transactional
+  @SendNotification
   public TweetAction createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType)
       .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, userService.getUser(userId), tweetService.getTweet(tweetId))));
@@ -47,16 +46,23 @@ public class TweetActionService {
     return tweetAction;
   }
 
+
   public Integer getCountLikes(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.LIKE);
   }
+
 
   public Integer getCountBookmarks(Tweet tweet) {
     return tweetActionRepository.countAByTweetAndActionType(tweet, TweetActionType.BOOKMARK);
   }
 
+
   public Page<TweetAction> getActionsByUser(UserModel user, TweetActionType tweetActionType, Pageable pageable) {
     return tweetActionRepository.findAllByUserAndActionTypeOrderByCreatedAtDesc(user, tweetActionType, pageable);
   }
 
+
+  public boolean isUserActionTweet(UserModel currUser, Tweet tweet, TweetActionType tweetActionType) {
+    return tweetActionRepository.existsByUserAndTweetAndActionType(currUser, tweet, tweetActionType);
+  }
 }

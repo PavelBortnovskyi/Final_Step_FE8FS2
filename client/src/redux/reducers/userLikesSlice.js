@@ -1,32 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { getTweetById } from '../thunk/tweets/getTweetById.js';
+import { getUserLikes } from '../thunk/getUserLikes.js';
 
 const initialState = {
-  singleTweet: {},
+  userLikes: '',
   isLoading: false,
   error: '',
 };
 
-export const tweetByIdSlice = createSlice({
-  name: 'singleTweet',
+export const userLikesSlice = createSlice({
+  name: 'userLikes',
   initialState,
 
   extraReducers: (builder) => {
     builder
-      .addCase(getTweetById.pending, (state) => {
+      .addCase(getUserLikes.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getTweetById.fulfilled, (state, action) => {
-        state.tweet = action.payload;
+      .addCase(getUserLikes.fulfilled, (state, action) => {
+        state.userLikes = action.payload;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getTweetById.rejected, (state, action) => {
+      .addCase(getUserLikes.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
   },
 });
-export default tweetByIdSlice.reducer;
+export default userLikesSlice.reducer;
