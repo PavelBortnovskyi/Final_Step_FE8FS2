@@ -16,8 +16,12 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Log4j2
@@ -26,8 +30,6 @@ import java.util.Optional;
 public class NotificationService extends GeneralService<Notification> {
 
   private final NotificationModelRepository notificationRepository;
-
-  private final WebSocketStompClient stompClient;
 
   @Value("${socket.host}")
   private String socketUri;
@@ -85,6 +87,10 @@ public class NotificationService extends GeneralService<Notification> {
   }
 
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
+    SockJsClient sockJsClient = new SockJsClient(
+      Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient())));
+
+    WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
     StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
       @Override
       public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
@@ -92,20 +98,25 @@ public class NotificationService extends GeneralService<Notification> {
           .setInitiatorUserId(senderUserId)
           .setTweetId(tweet.getId());
 
-        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE))
+        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
           notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
             .setNotificationType(NotificationType.LIKE);
-
-        else notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-        ;
+        } else {
+          notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
+        }
 
         switch (tweet.getTweetType()) {
-          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+          case QUOTE_TWEET:
+            notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+            break;
+          case REPLY:
+            notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+            break;
+          case RETWEET:
+            notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+            break;
         }
-        ;
-        log.info(notificationRequestDTO.toString());
+        //log.info(notificationRequestDTO.toString());
         session.send("/api/v1/notifications/private", notificationRequestDTO);
       }
     };
