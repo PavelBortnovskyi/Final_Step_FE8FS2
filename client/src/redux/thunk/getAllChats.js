@@ -1,17 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 
-export const findUser = createAsyncThunk(
-  'messagesSlice/findUser',
-  async ({ search, size = 999, page = 0 }, { rejectWithValue }) => {
+export const getAllChats = createAsyncThunk(
+  'chat/getAllChats',
+  async ({ page = 0, pageSize = 999 }, { rejectWithValue }) => {
     try {
-      if (search.trim() === '') return { searchStr: search.trim() };
-
       const { data } = await myAxios.get(
-        `/user/search?search_string=${search.trim()}&size=${size}&page=${page}`
+        `/chat/all?page=${page}&pageSize=${pageSize}`
       );
-
-      return { ...data, searchStr: search.trim() };
+      return data;
+      //
     } catch (error) {
       // set message error from server
       const errorMessage = error.response.data || error.message;

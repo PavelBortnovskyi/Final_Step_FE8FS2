@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 
-import { getUserData } from 'src/redux/selectors/selectors';
+import { getMessages } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
 
@@ -16,8 +16,7 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 
 // ************ TabMessages ************
 export const TabMessages = () => {
-  // TODO: added findMessages of user instead of findUser
-  const { isLoading, findUser } = useSelector(getUserData);
+  const { isLoading, findUser } = useSelector(getMessages);
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)

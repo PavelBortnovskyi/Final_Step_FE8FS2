@@ -30,7 +30,8 @@ export const App = () => {
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws', // URL вашего сервера STOMP
+      brokerURL: 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws',
+      connectHeaders: headers,
       debug: function (str) {
         console.log(str);
       },
@@ -62,6 +63,8 @@ export const App = () => {
       client.deactivate();
     };
   }, [accessToken]);
+
+  //*********************************************************/
 
   useEffect(() => {
     if (accessToken) {

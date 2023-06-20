@@ -6,6 +6,7 @@ import tweets from 'src/redux/reducers/getTweetSlice';
 import singleTweet from 'src/redux/reducers/getTweetByIdSlice';
 import userTweets from 'src/redux/reducers/getUserTweetsSlice';
 import chat from 'src/redux/reducers/chatSlice';
+import messages from 'src/redux/reducers/messagesSlice';
 import followers from 'src/redux/reducers/followersSlice';
 import followings from 'src/redux/reducers/followingsSlice';
 import userBiId from 'src/redux/reducers/userBiIdSlice';
@@ -28,6 +29,7 @@ const rootReducer = {
   tweetReplies,
   likedTweet,
   chat,
+  messages,
   followers,
   followings,
   userBiId,

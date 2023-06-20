@@ -6,22 +6,22 @@ import {
   IconButton,
   styled,
   Container,
+  alpha,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTheme } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
 
-import { socketUrl } from 'src/utils/socketSetup';
-import { io } from 'socket.io-client';
-
 import { Loading } from 'src/UI/Loading';
-import { getGuestChat } from 'src/redux/selectors/selectors';
+import { getChats } from 'src/redux/selectors/selectors';
 import { chatCloseConnection } from 'src/redux/reducers/chatSlice';
 import { ChatBody } from './ChatBody';
 import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { ChatSender } from './ChatSender';
+import { getChatMessages } from 'src/redux/thunk/getChatMessages';
 
 // id:2
 // fullName:"User2 Vasilevich"
@@ -65,6 +65,20 @@ const GuestInfo = styled(Box)(({ theme }) => ({
   paddingBottom: '12px',
   borderBottom: `1px solid ${theme.palette.border.main}`,
 }));
+
+const WelcomeMessage = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
+  flexDirection: 'column',
+  margin: '10px 0 12px',
+  paddingTop: '12px',
+  borderTop: `1px solid ${theme.palette.border.main}`,
+  color: alpha(theme.palette.text.primary, 0.5),
+}));
+
 // ************ STYLE ************
 
 // ************ Chat ************
@@ -73,7 +87,7 @@ export const Chat = () => {
   const dispatch = useDispatch();
 
   // get guest data from redux
-  const { isLoading, guest, currentChat } = useSelector(getGuestChat);
+  const { isLoading, guest } = useSelector(getChats);
 
   // console.log('guest', guest);
   // console.log('currentChat', currentChat);
@@ -83,20 +97,18 @@ export const Chat = () => {
     dispatch(chatCloseConnection());
   };
 
-  // check data not empty
-  const isResult = guest ? true : false;
-
   // ************** CHAT FROM DB ***************
   // create chat
   useEffect(() => {
-    const createChat = async () => {
+    const createChat = () => {
       if (!guest) return;
 
       try {
-        // get chat id from redux (DB)
-        dispatch(getCurrentChat(guest.id));
-        //
-        console.log('chat create');
+        // get chat messages from DB
+        dispatch(getChatMessages({ chatId: guest.chatId, page: 0 }));
+
+        // get chat data
+        dispatch(getCurrentChat(guest.guestData.id));
         //
       } catch (error) {
         console.log(error);
@@ -105,18 +117,25 @@ export const Chat = () => {
 
     createChat();
   }, [dispatch, guest]);
+
   // ************** CHAT FROM DB ***************
 
   return (
     <Container sx={{ display: 'flex' }}>
       <ChatContainer>
-        {!isResult ? (
+        {!guest ? (
           <ChatHeader>
             <Typography variant="h6">Chat</Typography>
-            {isLoading && (
+
+            {isLoading ? (
               <BoxLoading>
                 <Loading size={34} />
               </BoxLoading>
+            ) : (
+              <WelcomeMessage>
+                Choose from your existing conversations, start a new one, or
+                just keep swimming.
+              </WelcomeMessage>
             )}
           </ChatHeader>
         ) : (
@@ -130,18 +149,20 @@ export const Chat = () => {
                     alignSelf: 'flex-start',
                   }}
                 >
-                  <ArrowCircleLeftOutlinedIcon sx={{ fontSize: 20 }} />
+                  <ArrowBackIcon sx={{ fontSize: 20 }} />
                 </IconButton>
               </Tooltip>
               <Avatar
                 sx={{ width: 56, height: 56, marginBottom: '8px' }}
-                alt={guest.fullName}
-                src={guest.avatarImgUrl && 'img/avatar/empty-avatar.png'}
+                alt={guest.guestData.fullName}
+                src={
+                  guest.guestData.avatarImgUrl || 'img/avatar/empty-avatar.png'
+                }
               />
               <Typography sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-                {guest.fullName}
+                {guest.guestData.fullName}
               </Typography>
-              <Typography>{guest.userTag}</Typography>
+              <Typography>{guest.guestData.userTag}</Typography>
             </GuestInfo>
 
             {/* Chat */}
