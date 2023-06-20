@@ -17,6 +17,7 @@ export const App = () => {
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const { accessToken } = getTokens();
 
+  // socket connection reference
   const stompClientRef = useRef(null);
 
   //****************** CONNECT TO SOCKET *********************/
