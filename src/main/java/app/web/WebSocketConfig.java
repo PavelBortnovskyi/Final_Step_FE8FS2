@@ -35,6 +35,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -109,7 +110,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
                 .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
                 .map((UsernamePasswordAuthenticationToken auth) -> {
-                  auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(((ServletServerHttpRequest) message.getHeaders().get(SimpMessageHeaderAccessor.NATIVE_HEADERS)).getServletRequest()));
+                  auth.setDetails(new WebAuthenticationDetailsSource()
+                    .buildDetails((HttpServletRequest) ((List<?>) accessor.getHeader(SimpMessageHeaderAccessor.NATIVE_HEADERS)).get(0)));
                   SecurityContextHolder.getContext().setAuthentication(auth);
                   return SecurityContextHolder.getContext().getAuthentication();
                 }).orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
