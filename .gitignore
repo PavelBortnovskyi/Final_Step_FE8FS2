@@ -15,9 +15,9 @@ target/
 *.xml
 *.class
 ### Spring ###
+application.yml
 application-local.yml
 application-remote.yml
-application.yml
 ### Eclipse ###
 .apt_generated
 .classpath
