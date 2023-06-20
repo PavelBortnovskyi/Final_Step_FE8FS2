@@ -5,6 +5,7 @@ import React from 'react'
 const CustomImg = styled(Box)(({ img }) => {
   return ({
     width: '48%',
+    borderRadius: '6px',
     backgroundImage: `url(${img})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',

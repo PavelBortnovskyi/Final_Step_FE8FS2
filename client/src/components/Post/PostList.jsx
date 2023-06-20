@@ -60,6 +60,7 @@ function PostList({ id, tab }) {
                 isLiked={tweet.currUserLiked}
                 isRetweet={tweet.countRetweets}
                 isComment={tweet.countReplays}
+                isBookmark={tweet.countBookmarks}
               />
             </Box>
           </Box>

@@ -20,6 +20,8 @@ function PostIconList({
   isLiked,
   isRetweet,
   isComment,
+  isBookmarks,
+  bookmarks
 }) {
   const location = useLocation();
   const theme = useMode();
@@ -60,8 +62,8 @@ function PostIconList({
       />
       <PostElementBookmarks
         icon={<BookmarkBorderIcon fontSize="small" />}
-        isBookmarks={false}
-        quantity="10"
+        quantity={bookmarks}
+        id={id}
         color="#1d9bf0"
       />
     </Box>
