@@ -52,7 +52,7 @@ public class WebSocketController {
 //      .map(id -> userFacade.getUserById(id).getUserTag())
 //      .forEach(userTag -> template.convertAndSendToUser(userTag, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
         chatFacade.getChatMemberIds(messageDTO.getChatId())
-      .forEach(id-> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
+      .forEach(id -> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
   }
 
   @Validated({Marker.Existed.class})

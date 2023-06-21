@@ -60,10 +60,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
   }
 
   public Set<Long> getChatMemberIds(Long chatId){
-    Chat chat = chatService.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
-    Set<Long> chatIds = this.chatService.getOne(chatId).getUsers().stream().map(UserModel::getId).collect(Collectors.toSet());
-    chatIds.add(chat.getInitiatorUser().getId());
-    return chatIds;
+    return chatService.getChatMemberIds(chatId);
   }
 
   /**

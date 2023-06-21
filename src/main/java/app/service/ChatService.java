@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -148,6 +149,13 @@ public class ChatService extends GeneralService<Chat> {
    */
   public Page<MessageResponseDTO> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
     return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
+  }
+
+  public Set<Long> getChatMemberIds(Long chatId){
+    Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
+    Set<Long> chatIds = chatRepository.findById(chatId).get().getUsers().stream().map(UserModel::getId).collect(Collectors.toSet());
+    chatIds.add(chat.getInitiatorUser().getId());
+    return chatIds;
   }
 
 //  public List<Page> getSearchResult(Long userId, Integer pageSize, Integer pageNumber, String keyword){
