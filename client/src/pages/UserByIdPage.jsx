@@ -5,7 +5,6 @@ import { ButtonSubscribe } from 'src/components/User/ButtonSubscribe';
 import { User } from 'src/components/User/User';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { useParams } from 'react-router-dom';
-import PostList from 'src/components/Post/PostList';
 import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
 
 export const UserBiIdPage = () => {
@@ -58,7 +57,6 @@ export const UserBiIdPage = () => {
           countUserFollowers={user.countUserFollowers}
         />
       </Box>
-      {/* <PostList id={userId} /> */}
     </>
   );
 };

@@ -12,7 +12,12 @@ function ModalCommentPage() {
   return (
     <Modal title="" isOpen={isOpen} setIsOpen={setIsOpen}>
       {!Array.isArray(post) && <TweetPost tweet={post} />}
-      <Reply id={post.id} isOpen={isOpen} setIsOpen={setIsOpen} type="replayModal"/>
+      <Reply
+        id={post.id}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        type="replayModal"
+      />
     </Modal>
   );
 }
