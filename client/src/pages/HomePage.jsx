@@ -23,10 +23,10 @@ export const HomePage = () => {
   useEffect(() => {
     if (tabIndex === 0) {
       dispatch(getAllTweetsThunk());
-      console.log('all');
+      // console.log('all');
     } else {
       dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
-      console.log('sub');
+      // console.log('sub');
     }
   }, [tabIndex]);
 
@@ -35,7 +35,7 @@ export const HomePage = () => {
 
   let subscriptions = useSelector(subscriptionsTweets);
   let subscriptionsArray = subscriptions.subscriptionsTweets;
-  console.log(subscriptionsArray);
+  // console.log(subscriptionsArray);
 
   return (
     <Box
