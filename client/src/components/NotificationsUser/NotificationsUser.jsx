@@ -43,7 +43,7 @@ export const NotificationsUser = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getNotifications({ page: 0, pageSize: 20 }));
+    dispatch(getNotifications({ page: 0, pageSize: 200 }));
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
@@ -52,7 +52,6 @@ export const NotificationsUser = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(Notifications);
   return (
     <Box sx={{ padding: '8px 0 0 0' }}>
       <Typography variant="h5"

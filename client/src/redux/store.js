@@ -18,6 +18,8 @@ import allTweets from 'src/redux/reducers/getAllTweetsSlicer';
 import subscriptionsTweets from 'src/redux/reducers/subscriptionsTweetsSlicer';
 import userLikes from 'src/redux/reducers/userLikesSlice';
 import userReplise from 'src/redux/reducers/userRepliseSlice';
+import quoteSlice from 'src/redux/reducers/quoteSlice';
+
 
 const rootReducer = {
   auth,
@@ -39,6 +41,7 @@ const rootReducer = {
   subscriptionsTweets,
   userLikes,
   userReplise,
+  quoteSlice,
 };
 
 export const store = configureStore({

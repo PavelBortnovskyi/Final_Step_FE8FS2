@@ -13,6 +13,7 @@ import TweetPage from 'src/pages/tweetPage/TweetPage';
 function TweetPost({ tweet }) {
   const dispatch = useDispatch();
   const theme = useMode();
+
   return (
     <>
       {tweet && (

@@ -11,6 +11,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import PostElementBookmarks from './PostElementBookmarks';
+import { PostIconElementRetweet } from './PostIconElementRetweet';
+import { PostElementQuote } from './PostElementQuote';
 
 function PostIconList({
   likes,
@@ -21,6 +23,7 @@ function PostIconList({
   isRetweet,
   isComment,
   isBookmarks,
+  quote,
   bookmarks,
 }) {
   const location = useLocation();
@@ -42,9 +45,11 @@ function PostIconList({
       >
         <PostIconElementComment quantity={reply} color="#72bcd4" id={id} />
       </NavLink>
-      <PostIconElement
+
+      <PostIconElementRetweet
         icon={<RepeatOutlinedIcon fontSize="small" />}
         quantity={retweet}
+        id={id}
         color="lightgreen"
       />
 
@@ -55,11 +60,18 @@ function PostIconList({
         id={id}
         isLiked={isLiked}
       />
-      <PostIconElement
-        icon={<PublishOutlinedIcon fontSize="small" />}
-        quantity={reply}
-        color="lightblue"
-      />
+      <NavLink
+        to="/modal/quote"
+        state={{ background: location }}
+        component={NavLink}
+      >
+        <PostElementQuote
+          icon={<PublishOutlinedIcon fontSize="small" />}
+          quantity={quote}
+          id={id}
+          color="lightblue"
+        />
+      </NavLink>
       <PostElementBookmarks
         icon={<BookmarkBorderIcon fontSize="small" />}
         quantity={bookmarks}

@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getAllTweetsThunk } from '../thunk/tweets/getAllTweetsThunk.js';
 import { likePost } from '../thunk/tweets/likeTweet.js';
 import { createTweet } from '../thunk/tweets/createTweet.js';
+import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
+import { addQuote } from '../thunk/tweets/addQuote.js';
 
 const initialState = {
   allTweets: [],
@@ -32,6 +34,18 @@ const getAllTweetsSlice = createSlice({
         const likedTweet = action.payload;
         state.allTweets = state.allTweets.map((tweet) =>
           tweet.id === likedTweet.id ? likedTweet : tweet
+        );
+      })
+      .addCase(addQuote.fulfilled, (state, action) => {
+        const quoteTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) =>
+          tweet.id === quoteTweet.id ? quoteTweet : tweet
+        );
+      })
+      .addCase(addBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) =>
+          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
       })
       .addCase(createTweet.fulfilled, (state, action) => {

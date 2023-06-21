@@ -27,7 +27,7 @@ export const Bookmarks = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getBookmarks({ page: 0, pageSize: 10 }));
+    dispatch(getBookmarks({ page: 0, pageSize: 20 }));
   }, [dispatch]);
 
 
@@ -67,7 +67,19 @@ export const Bookmarks = () => {
           </Box>
 
         </Box>
-        <MoreVertIcon
+        <Button variant="outlined" sx={{
+            cursor: 'pointer',
+            borderRadius: '30px',
+            height: '30px',
+            border: `1px solid ${theme.palette.border.main}`,
+            color: 'rgb(244, 33, 46)',
+            // width: '30px',
+            '&:hover': {
+              background: `${theme.palette.background.hover}`,
+              borderRadius: '30px',
+            }
+          }}>Delete all</Button>
+        {/* <MoreVertIcon
           onClick={deleteAllBookmarks}
           sx={{
             cursor: 'pointer',
@@ -77,7 +89,7 @@ export const Bookmarks = () => {
               background: `${theme.palette.background.hover}`,
               borderRadius: '50%',
             }
-          }} />
+          }} /> */}
       </Box>
 
       {Bookmarks ? (

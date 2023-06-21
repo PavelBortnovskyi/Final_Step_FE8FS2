@@ -11,6 +11,7 @@ import TweetPost from './tweet/TweetPost';
 export const TweetList = ({ tweets }) => {
   const dispatch = useDispatch();
   const theme = useMode();
+
   return (
     <Box sx={{ pb: '60px' }}>
       {tweets !== false &&
@@ -62,6 +63,11 @@ export const TweetList = ({ tweets }) => {
                   tweet.attachmentImages === undefined
                     ? tweet.tweet.id
                     : tweet.id
+                }
+                quote={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countQuoteTweets
+                    : tweet.countQuoteTweets
                 }
                 isBookmarks={
                   tweet.attachmentImages === undefined

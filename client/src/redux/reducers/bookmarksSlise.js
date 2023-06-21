@@ -1,40 +1,3 @@
-// import { createSlice } from '@reduxjs/toolkit';
-// import { getBookmarks } from '../thunk/thunkBookmarks/getBookmarks.js';
-
-// const initialState = {
-//   userBookmarks: [],
-//   isLoading: false,
-//   error: '',
-// };
-
-// export const getBookmarksSlise = createSlice({
-//   name: 'userBookmarks',
-//   initialState,
-
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(getBookmarks.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(getBookmarks.fulfilled, (state, action) => {
-//         state.userBookmarks = action.payload;
-//         state.isLoading = false;
-//         state.error = null;
-
-
-//       })
-//       .addCase(getBookmarks.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload;
-//       });
-//   },
-// });
-
-// export default getBookmarksSlise.reducer;
-
-// ----------33-------------33----------------33----------------33-------------33-----------------
-
 import { createSlice } from '@reduxjs/toolkit';
 import { getBookmarks } from '../thunk/thunkBookmarks/getBookmarks.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
@@ -70,7 +33,7 @@ export const bookmarksSlise = createSlice({
         state.error = null;
       })
       .addCase(addBookmark.fulfilled, (state, action) => {
-        state.userBookmarks = [...state.userBookmarks, action.payload];
+        state.userBookmarks = [action.payload, ...state.userBookmarks];
         state.isLoading = false;
 
       })
@@ -83,7 +46,11 @@ export const bookmarksSlise = createSlice({
         state.error = null;
       })
       .addCase(deleteBookmark.fulfilled, (state, action) => {
-        state.userBookmarks = state.userBookmarks.filter((bookmark) => bookmark.id !== action.payload.id);
+        // state.userBookmarks = state.userBookmarks.filter((bookmark) => bookmark.id !== action.payload.id);
+        const deletedBookmarkId = action.payload;
+        state.userBookmarks = state.userBookmarks.filter(
+          (bookmark) => bookmark.id !== deletedBookmarkId
+        );
         state.isLoading = false;
         state.error = null;
       })
