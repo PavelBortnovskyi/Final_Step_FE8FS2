@@ -6,6 +6,7 @@ import app.service.JwtTokenService;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -72,8 +73,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      //new AntPathRequestMatcher("/chat-ws", requestMethod),
-      //new AntPathRequestMatcher("/chat-ws/**", requestMethod)
+      new AntPathRequestMatcher("/chat-ws", HttpMethod.GET.name()),
+      new AntPathRequestMatcher("/chat-ws/**", HttpMethod.GET.name())
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
