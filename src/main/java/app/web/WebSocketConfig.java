@@ -25,6 +25,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -110,7 +111,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
               if (user != null) {
                 auditorAware.setCurrentAuditor(user.getName());
-                //SecurityContextHolder.getContext().setAuthentication(user);
+                SecurityContextHolder.getContext().setAuthentication(user);
                 accessor.setUser(user);
                 accessor.getSessionAttributes()
                   .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
