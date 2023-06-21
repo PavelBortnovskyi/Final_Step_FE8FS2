@@ -85,38 +85,39 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   }
 
   @Override
-  @Order(Ordered.HIGHEST_PRECEDENCE + 99)
   public void configureClientInboundChannel(ChannelRegistration registration) {
-    registration.interceptors(new ChannelInterceptor() {
-      @Override
-      @Order(Ordered.HIGHEST_PRECEDENCE + 99)
-      public Message<?> preSend(Message<?> message, MessageChannel channel) {
+    registration.interceptors(new WebSocketChannelInterceptor());
+  }
 
-        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        String origin = accessor.getFirstNativeHeader("Origin");
-        log.info("Origin:" + origin);
-        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080") && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
-          log.info("Command: " + accessor.getCommand());
+  @Order(Ordered.HIGHEST_PRECEDENCE + 99)
+  private class WebSocketChannelInterceptor implements ChannelInterceptor {
 
-          if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+    @Override
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+      StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+      String origin = accessor.getFirstNativeHeader("Origin");
+      log.info("Origin:" + origin);
+      if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080") && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
+        log.info("Command: " + accessor.getCommand());
 
-            String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
-              .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+        if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
 
-            if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-              processRequestWithToken(token, accessor);
-              log.info("Token:" + token);
-              log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-            } else {
-              throw new JwtAuthenticationException("Token is not valid");
-            }
+          String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
+            .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+
+          if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
+            processRequestWithToken(token, accessor);
+            log.info("Token:" + token);
+            log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+          } else {
+            throw new JwtAuthenticationException("Token is not valid");
           }
         }
-        //else throw new BadRequestException("Header Origin is null!");
-        //log.info("Assessor message " + accessor.getMessage());
-        return message;
       }
-    });
+      //else throw new BadRequestException("Header Origin is null!");
+      //log.info("Assessor message " + accessor.getMessage());
+      return message;
+    }
   }
 
   private void processRequestWithToken(String token, StompHeaderAccessor accessor) {
