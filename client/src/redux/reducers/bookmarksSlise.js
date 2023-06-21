@@ -46,7 +46,11 @@ export const bookmarksSlise = createSlice({
         state.error = null;
       })
       .addCase(deleteBookmark.fulfilled, (state, action) => {
-        state.userBookmarks = state.userBookmarks.filter((bookmark) => bookmark.id !== action.payload.id);
+        // state.userBookmarks = state.userBookmarks.filter((bookmark) => bookmark.id !== action.payload.id);
+        const deletedBookmarkId = action.payload;
+        state.userBookmarks = state.userBookmarks.filter(
+          (bookmark) => bookmark.id !== deletedBookmarkId
+        );
         state.isLoading = false;
         state.error = null;
       })

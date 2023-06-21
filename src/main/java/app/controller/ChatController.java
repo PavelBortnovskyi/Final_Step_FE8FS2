@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.Set;
 
-@CrossOrigin
+@CrossOrigin(originPatterns = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
 @Log4j2
 @RestController
 @RequestMapping("/api/v1/chat")

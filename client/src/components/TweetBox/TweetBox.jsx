@@ -8,9 +8,12 @@ import TweetButton from 'src/UI/TweetButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTweet } from 'src/redux/thunk/tweets/createTweet.js';
 import { useMode } from 'src/styles/_materialTheme';
+import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
+import { useNavigate } from 'react-router-dom';
 
-function TweetBox({ placeholder, fnc, userAvatar }) {
+function TweetBox({ placeholder, fnc, userAvatar, id=false, isOpen,  setIsOpen}) {
   const theme = useMode();
+  const navigate = useNavigate();
 
   const [postInputText, setPostInputText] = useState('');
   const [postImages, setPostImages] = useState([]);
@@ -36,11 +39,16 @@ function TweetBox({ placeholder, fnc, userAvatar }) {
   };
 
   const handleSubmit = () => {
-    dispatch(createTweet({ postInputText, postImages }));
+    if (id) {
+      dispatch(createTweetReply({ id, postInputText, postImages }));
+    } else {
+      dispatch(createTweet({ postInputText, postImages }));
+    }
+    setIsOpen(false);
     setPostInputText('');
     setPostImages([]);
   };
-
+  
   return (
     <Box>
       <form autoComplete="off">

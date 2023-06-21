@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 
-@CrossOrigin
+@CrossOrigin(originPatterns = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
 @Log4j2
 @RestController
 @RequiredArgsConstructor

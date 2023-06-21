@@ -7,7 +7,7 @@ import { getTweetById } from 'src/redux/thunk/tweets/getTweetById';
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { useMode } from 'src/styles/_materialTheme';
-import { addReplay } from 'src/redux/thunk/addReplay';
+import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
 
 function PostIconElementComment({ quantity, color, id }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,16 +20,16 @@ function PostIconElementComment({ quantity, color, id }) {
   }, [isModalOpen]);
 
 
-  const handleReplay = () => {
-    if (false) {
-      // dispatch(deleteBookmark({ id }));
-      console.log('delete');
+  // const handleReplay = () => {
+  //   if (false) {
+  //     // dispatch(deleteBookmark({ id }));
+  //     console.log('delete');
 
-    } else {
-      dispatch(addReplay({ id }));
-      console.log('add');
-    }
-  };
+  //   } else {
+  //     // dispatch(createTweetReply({ id, postInputText, postImages }));
+  //     console.log('add');
+  //   }
+  // };
 
   const tweet = useSelector(getTweetByID);
   const post = tweet.tweet;
@@ -38,7 +38,7 @@ function PostIconElementComment({ quantity, color, id }) {
     <Box
       onClick={() => {
         setIsModalOpen(!isModalOpen);
-        handleReplay();
+        // handleReplay();
       }}
       display="flex"
       sx={{

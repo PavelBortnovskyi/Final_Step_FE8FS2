@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 
-import { getUserData } from 'src/redux/selectors/selectors';
+import { getMessages, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
 import { Link } from 'react-router-dom';
@@ -40,7 +40,7 @@ export const SearchPeople = () => {
       ) : (
         <Box
           sx={{
-            marginTop: "16px",
+            marginTop: '16px',
             display: 'flex',
             gap: '8px',
             flexDirection: 'column',

@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TweetPost from 'src/UI/tweet/TweetPost';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import { Modal } from 'src/components/Modal/Modal';
 import { useSelector } from 'react-redux';
-import { getTweetByID } from 'src/redux/selectors/selectors';
+import { getTweetByID, getUserData } from 'src/redux/selectors/selectors';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ModalCommentPage() {
   const tweet = useSelector(getTweetByID);
   const post = tweet.tweet;
-  const user = useSelector((state) => state.user.user) || '';
+  const user = useSelector(getUserData || '');
+console.log(post);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <Modal title="">
+    <Modal title="" isOpen={isOpen} setIsOpen={setIsOpen}>
       {post && (
         <TweetPost
           showIconList={false}
@@ -27,7 +30,7 @@ function ModalCommentPage() {
           retweet={post.countRetweets}
         />
       )}
-      <TweetBox placeholder="Tweet your reply" />
+      <TweetBox placeholder="Tweet your reply" id={post.id} isOpen={isOpen} setIsOpen={setIsOpen}/>
     </Modal>
   );
 }

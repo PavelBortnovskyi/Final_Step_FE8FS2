@@ -1,5 +1,6 @@
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import { Box, Typography, alpha, useTheme } from '@mui/material';
+import TimeAgo from 'timeago-react';
 
 // this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
 // you have to add all necessary props
@@ -10,8 +11,8 @@ function UserNames({
   fullName = '',
   verified = false,
   userTag = '',
-  postTime = '',
-  text = null,
+  text = '',
+  postTime = null,
 }) {
   const theme = useTheme();
   return (
@@ -36,28 +37,43 @@ function UserNames({
       >
         <Typography variant="body1">{fullName}</Typography>
         <div>
-          {verified && (
+          {verified ? (
             <VerifiedUserRoundedIcon
               sx={{ fontSize: '16px', color: '#1d9bf0' }}
             />
+          ) : (
+            <Box>&#8901;</Box>
           )}
         </div>
         <Typography sx={{ fontSize: '14px' }}>{userTag}</Typography>
-        <Typography
-          color="#bdbdbd"
-          sx={{ fontSize: '14px', marginLeft: '12px' }}
-        >
-          {postTime}
-        </Typography>
       </Box>
+
       {!!text && (
         <Box
           sx={{
-            fontSize: '12px',
-            color: alpha(theme.palette.text.primary, 0.5),
+            display: 'flex',
+            gap: '4px',
+            alignItems: 'baseline',
+            whiteSpace: 'nowrap',
+            fontSize: '14px',
           }}
         >
-          {text}
+          <Typography
+            sx={{
+              color: alpha(theme.palette.text.primary, 0.5),
+              fontSize: '14px',
+            }}
+          >
+            <TimeAgo datetime={postTime} />
+          </Typography>
+          <Box>&#8901;</Box>
+          <Box
+            sx={{
+              color: alpha(theme.palette.text.primary, 0.5),
+            }}
+          >
+            {text}
+          </Box>
         </Box>
       )}
     </Box>

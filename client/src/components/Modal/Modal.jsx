@@ -11,9 +11,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Modal = (props) => {
   const theme = useTheme();
-
+  // get props for create modal view
+  const { title = 'title', children = 'body', actionsBtn = false, isOpen = false, setIsOpen } = props;
+  console.log(isOpen);
   // set state modal for transition close the modal when browser change back url
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,8 +31,8 @@ export const Modal = (props) => {
     !!location.state ? navigate(-1) : navigate('/');
   };
 
-  // get props for create modal view
-  const { title = 'title', children = 'body', actionsBtn = false } = props;
+  
+  
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
