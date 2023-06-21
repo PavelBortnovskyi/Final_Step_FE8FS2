@@ -1,9 +1,9 @@
 import React from 'react';
 import TweetPost from 'src/UI/tweet/TweetPost';
-import TweetBox from 'src/components/TweetBox/TweetBox';
 import { Modal } from 'src/components/Modal/Modal';
 import { useSelector } from 'react-redux';
 import { getSingleTweet } from 'src/redux/selectors/selectors';
+import Reply from './tweetPage/Reply';
 
 function ModalCommentPage() {
   const tweet = useSelector(getSingleTweet);
@@ -12,8 +12,8 @@ function ModalCommentPage() {
 
   return (
     <Modal title="">
-      {post && <TweetPost tweet={post} />}
-      <TweetBox placeholder="Tweet your reply" />
+      {!Array.isArray(post) && <TweetPost tweet={post} />}
+      <Reply />
     </Modal>
   );
 }

@@ -1,12 +1,13 @@
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import Post from './Post.1';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 import { getAllTweets, getUserTweets } from 'src/redux/selectors/selectors';
 import { Link } from 'react-router-dom';
 import PostIconList from './PostIconGroup/PostIconList';
 import { useMode } from 'src/styles/_materialTheme';
+import Post from './Post';
 
 function PostList({ id, tab }) {
   const dispatch = useDispatch();

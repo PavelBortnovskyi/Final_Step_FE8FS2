@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getSingleTweet } from 'src/redux/selectors/selectors';
-import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetById';
+import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { useMode } from 'src/styles/_materialTheme';
@@ -14,7 +14,8 @@ function PostIconElementComment({ quantity, color, id }) {
 
   useEffect(() => {
     if (isModalOpen) {
-      dispatch(getTweetByIdThunk(id));
+      dispatch(getTweetByIdThunk({ id }));
+      setIsModalOpen(!isModalOpen);
     }
   }, [isModalOpen]);
 

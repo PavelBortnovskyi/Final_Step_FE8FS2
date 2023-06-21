@@ -6,8 +6,9 @@ import { useMode } from 'src/styles/_materialTheme';
 import PostImages from './PostImages';
 
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
+import TweetPage from 'src/pages/tweetPage/TweetPage';
 
 function TweetPost({ tweet }) {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ function TweetPost({ tweet }) {
             </Box>
           </Link>
 
-          <Link to={`/tweet/${tweet.id}`}>
+          <NavLink to={`/tweet/${tweet.id}`}>
             <Box
               padding={1}
               sx={{
@@ -72,7 +73,7 @@ function TweetPost({ tweet }) {
                 quantity={tweet.attachmentImages.length}
               />
             </Box>
-          </Link>
+          </NavLink>
         </Box>
       )}
     </>
