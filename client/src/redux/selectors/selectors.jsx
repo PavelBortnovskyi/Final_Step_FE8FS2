@@ -19,6 +19,12 @@ export const getTweetReplies = (state) => state.tweetReplies;
 //get user tweets
 export const getUserTweets = (state) => state.userTweets;
 
+// get chats data
+export const getChats = (state) => state.chat;
+
+// get chats data
+export const getMessages = (state) => state.messages;
+
 //get all tweets
 export const getAllTweets = (state) => state.allTweets;
 
@@ -27,9 +33,6 @@ export const subscriptionsTweets = (state) => state.subscriptionsTweets;
 
 //get single liked tweet
 export const getLikedTweet = (state) => state.likedTweet;
-
-// get guest for chat
-export const getGuestChat = (state) => state.chat;
 
 // get followers
 export const getFollowers = (state) => state.followers;

@@ -7,6 +7,8 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import debounce from 'lodash.debounce';
 
 import { findUser } from 'src/redux/thunk/findUser';
+import { useEffect } from 'react';
+import { findMessage } from 'src/redux/thunk/findMessage';
 
 // ************ STYLE ************
 const Search = styled('div')(({ theme }) => ({
@@ -61,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // ************ STYLE ************
 
 // ************ SearchFieldMessages ************
-export const SearchFieldMessages = () => {
+export const SearchFieldMessages = ({ setIsVisibleResult }) => {
   const dispatch = useDispatch();
 
   // set link on search input
@@ -70,17 +72,25 @@ export const SearchFieldMessages = () => {
   // set search text
   const [searchText, setSearchText] = useState('');
 
+  // checking if searchText is not empty to set visible Tabs with result
+  useEffect(() => {
+    setIsVisibleResult(Boolean(searchText));
+  }, [searchText, setIsVisibleResult]);
+
   // clear search input
   const handleClear = () => {
     setSearchText('');
     dispatch(findUser({ search: '' }));
+    dispatch(findMessage({ search: '' }));
     inputRef.current.focus();
   };
 
   // set debounce on send request search string
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const sendSearchString = useCallback(
     debounce((searchString) => {
       dispatch(findUser({ search: searchString }));
+      dispatch(findMessage({ search: searchString }));
     }, 500),
     []
   );
@@ -88,6 +98,7 @@ export const SearchFieldMessages = () => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       dispatch(findUser({ search: searchText }));
+      dispatch(findMessage({ search: searchText }));
     }
   };
 

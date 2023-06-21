@@ -5,74 +5,80 @@ import { Layout } from 'src/layout/Layout';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
 import { getTokens } from 'src/utils/tokens';
-import { notAuthenticated } from 'src/redux/reducers/authSlice';
+import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
-import { useSocket } from 'src/utils/socketSetup';
-import { Stomp, Client } from '@stomp/stompjs';
+// import Stomp from 'stompjs';
+import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-// 2
 export const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const { accessToken } = getTokens();
 
-  // const stompClientRef = useRef(null);
+  // socket connection reference
+  const stompClientRef = useRef(null);
 
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
+  //****************** CONNECT TO SOCKET *********************/
+  useEffect(() => {
+    if (isAuthenticated && accessToken) {
+      try {
+        const headers = {
+          Authorization: `Bearer ${accessToken}`,
+          Origin: 'client',
+        };
 
-  // useEffect(() => {
-  //   const socket = new SockJS(
-  //     'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
-  //   );
-  //   const client = Stomp.over(() => socket);
+        // create connection to socket
+        const socket = new SockJS(
+          'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
+        );
 
-  //   client.onConnect = (frame) => {
-  //     console.log('STOMP connection established:', frame);
-  //     // Подписка на канал с сообщениями
-  //     client.subscribe('/topic/chats', (message) => {
-  //       // Обработка полученных сообщений
-  //       const receivedMessage = JSON.parse(message.body);
-  //       console.log('Received message:', receivedMessage);
-  //     });
-  //   };
+        // for -> import Stomp from 'stompjs' TODO: this old library ?
+        // stompClientRef.current = Stomp.over(socket);
 
-  //   client.connect(
-  //     { Authorization: `Bearer ${accessToken}` },
-  //     () => {
-  //       client.onConnect();
-  //     },
-  //     (error) => {
-  //       console.error('STOMP connection error:', error);
-  //     }
-  //   );
+        // connect
+        stompClientRef.current = Stomp.over(() => socket);
+        const stompClient = stompClientRef.current;
 
-  //   // Отправка сообщения
-  //   const sendMessage = (message) => {
-  //     client.send('/api/v1/message', {}, JSON.stringify(message));
-  //   };
+        // connect
+        stompClient.connect(headers, () => {
+          console.log('Connected to WebSocket server');
 
-  //   // Пример отправки сообщения
-  //   const message = {
-  //     chatId: 16,
-  //     userId: 4,
-  //     body: 'Hello, server!',
-  //   };
-  //   // sendMessage(message);
+          // set connect to redux
+          dispatch(setSocketChat(stompClient));
 
-  //   // Отключение от сервера сокетов
-  //   return () => {
-  //     client.onDisconnect();
-  //   };
-  // }, [accessToken]);
+          // chat chanel
+          stompClient.subscribe('/topic/chats', (message) => {
+            const receivedMessage = JSON.parse(message.body);
+            console.log('Received message:', receivedMessage);
+            dispatch(setCurrentMessage(receivedMessage));
+          });
+
+          // notification chanel
+          stompClient.subscribe('/topic/notifications', (message) => {
+            const receivedNotifications = JSON.parse(message.body);
+            console.log('Received notifications:', receivedNotifications);
+          });
+        });
+      } catch (error) {
+        console.error('Error activating STOMP connection:', error);
+      }
+
+      return () => {
+        if (stompClientRef.current && stompClientRef.current.connected) {
+          console.log('disconnect socket ->', stompClientRef.current.connected);
+          stompClientRef.current.disconnect();
+        }
+      };
+    }
+  }, [dispatch, accessToken, isAuthenticated]);
+  //*********************************************************/
 
   useEffect(() => {
     if (accessToken) {
       dispatch(getUser());
     }
-  }, [accessToken, dispatch, isAuthenticated]);
+  }, [accessToken, dispatch]);
 
   return <Layout />;
 };

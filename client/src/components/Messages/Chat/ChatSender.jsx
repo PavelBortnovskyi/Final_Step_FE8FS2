@@ -1,9 +1,10 @@
-import { Box, InputBase, alpha, styled } from '@mui/material';
+import { Alert, Box, InputBase, Snackbar, alpha, styled } from '@mui/material';
 import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import AttachFile from '@mui/icons-material/AttachFile';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getGuestChat } from 'src/redux/selectors/selectors';
+import { getChats, getUserData } from 'src/redux/selectors/selectors';
+import { getTokens } from 'src/utils/tokens';
 
 // ************ STYLE ************
 const Sender = styled('div')(({ theme }) => ({
@@ -44,28 +45,38 @@ const SenderInputBase = styled(InputBase)(({ theme }) => ({
 // ************ ChatSender ************
 export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
+  const [errorSocket, setErrorSocket] = useState('');
 
-  const { guest, currentChat, socketChat } = useSelector(getGuestChat);
+  const { guest, socketChat } = useSelector(getChats);
+  const { user } = useSelector(getUserData);
+
+  const { accessToken } = getTokens();
 
   // set send text
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
-      // TODO: need create send message
+      // chatId - chat message recipient
+      // userId - message author
       const message = {
-        userId: guest.id,
-        chatId: currentChat.chatId,
+        userId: user.id,
+        chatId: guest.chatId,
+        // body: JSON.stringify(messageText),
         body: messageText,
       };
 
       console.log(message);
-      console.log(socketChat);
-
-      // send message to DB
-      // await newMessage(message);
 
       // send event about new message to Socket server
-      socketChat.emit('/api/v1/message', message);
+      try {
+        socketChat.send('/api/v1/message', {}, JSON.stringify(message));
+      } catch (error) {
+        setErrorSocket('Error connecting to socket server', error);
+        const timer = setTimeout(() => {
+          setErrorSocket('');
+          clearTimeout(timer);
+        }, 5000);
+      }
 
       // clear sender input
       setMessageText('');
@@ -73,18 +84,25 @@ export const ChatSender = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Sender>
-        <EmojiIconWrapper>
-          <EmojiEmotionOutlinedIcon sx={{ cursor: 'pointer' }} />
-        </EmojiIconWrapper>
-        <SenderInputBase
-          value={messageText}
-          placeholder="Type your message"
-          onChange={(e) => setMessageText(e.target.value)}
-          onKeyPress={(e) => sendText(e)}
-        />
-      </Sender>
-    </Box>
+    <>
+      {errorSocket && (
+        <Snackbar open={true} autoHideDuration={5000}>
+          <Alert severity="error">{errorSocket}</Alert>
+        </Snackbar>
+      )}
+      <Box sx={{ flexGrow: 1 }}>
+        <Sender>
+          <EmojiIconWrapper>
+            <EmojiEmotionOutlinedIcon sx={{ cursor: 'pointer' }} />
+          </EmojiIconWrapper>
+          <SenderInputBase
+            value={messageText}
+            placeholder="Type your message"
+            onChange={(e) => setMessageText(e.target.value)}
+            onKeyPress={(e) => sendText(e)}
+          />
+        </Sender>
+      </Box>
+    </>
   );
 };
