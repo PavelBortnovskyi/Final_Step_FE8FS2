@@ -8,6 +8,7 @@ import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.BaseEntityModel;
 import app.model.Chat;
+import app.model.UserModel;
 import app.service.ChatService;
 import app.service.UserService;
 import app.utils.CustomPageImpl;
@@ -60,7 +61,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
 
   public Set<Long> getChatMemberIds(Long chatId){
     Chat chat = chatService.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
-    Set<Long> chatIds = this.chatService.getOne(chatId).getUsers().stream().map(user -> user.getId()).collect(Collectors.toSet());
+    Set<Long> chatIds = this.chatService.getOne(chatId).getUsers().stream().map(UserModel::getId).collect(Collectors.toSet());
     chatIds.add(chat.getInitiatorUser().getId());
     return chatIds;
   }
