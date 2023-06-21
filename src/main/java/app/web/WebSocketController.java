@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class WebSocketController {
 
   @Validated({Marker.New.class})
   @MessageMapping("/v1/message")
-  @SendTo("/topic/chats")
+  @SendToUser
   public void processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {

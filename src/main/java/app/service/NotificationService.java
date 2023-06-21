@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -35,6 +36,8 @@ import java.util.concurrent.ExecutionException;
 public class NotificationService extends GeneralService<Notification> {
 
   private final NotificationModelRepository notificationRepository;
+
+  private final SimpMessagingTemplate template;
 
   @Value("${socket.host}")
   private String socketUri;
