@@ -9,19 +9,20 @@ import TimeAgo from 'timeago-react';
 
 function UserNames({
   fullName = '',
-  verified = false,
+  isVerified,
   userTag = '',
-  text = '',
-  postTime = null,
+  postTime = '',
+  text = null,
+  color,
 }) {
   const theme = useTheme();
   return (
     <Box
       display="flex"
       sx={{
+        color: color,
         alignItems: 'baseline',
         justifyContent: 'space-between',
-        marginBottom: '10px',
         flexDirection: 'column',
         width: '100%',
       }}
@@ -37,12 +38,10 @@ function UserNames({
       >
         <Typography variant="body1">{fullName}</Typography>
         <div>
-          {verified ? (
+          {isVerified && (
             <VerifiedUserRoundedIcon
               sx={{ fontSize: '16px', color: '#1d9bf0' }}
             />
-          ) : (
-            <Box>&#8901;</Box>
           )}
         </div>
         <Typography sx={{ fontSize: '14px' }}>{userTag}</Typography>

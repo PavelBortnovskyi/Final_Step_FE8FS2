@@ -21,7 +21,7 @@ function PostIconList({
   isRetweet,
   isComment,
   isBookmarks,
-  bookmarks
+  bookmarks,
 }) {
   const location = useLocation();
   const theme = useMode();
