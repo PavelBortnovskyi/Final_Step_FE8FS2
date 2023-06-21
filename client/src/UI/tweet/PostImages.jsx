@@ -34,6 +34,7 @@ const TriplePhoto = styled(Box)({
 
 const QuadruplePhoto = styled(Box)({
   mt: '10px',
+  height: '515px',
   gap: '2px',
   overflow: 'hidden',
   borderRadius: '20px',
@@ -85,6 +86,18 @@ function PostImages({ images, quantity }) {
           },
         };
       } else if (index === 2) {
+        style = {
+          gridRow: '5 / span 4',
+          gridColumn: '5 / span 8',
+          backgroundImage: `url(${img})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          img: {
+            display: 'none',
+          },
+        };
+      } else if (index === 3) {
         style = {
           gridRow: '5 / span 4',
           gridColumn: '5 / span 8',

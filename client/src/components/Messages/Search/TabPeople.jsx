@@ -8,11 +8,9 @@ import {
 } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
-import { getGuest } from 'src/redux/thunk/getGuest';
-import { findUser } from 'src/redux/thunk/findUser';
 import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { useEffect } from 'react';
-import { chatCloseConnection, setGuest } from 'src/redux/reducers/chatSlice';
+import { setGuest } from 'src/redux/reducers/chatSlice';
 
 // ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({

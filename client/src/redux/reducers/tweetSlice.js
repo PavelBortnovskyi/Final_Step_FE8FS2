@@ -2,14 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createTweet } from '../thunk/tweets/createTweet.js';
 
 const initialState = {
-  text: '',
-  files: [],
+  tweetBody: '',
+  attachmentImages: [],
   isLoading: false,
   error: null,
 };
 
 export const tweetSlice = createSlice({
-  name: 'tweet',
+  name: 'tweetCreate',
   initialState,
 
   extraReducers: (builder) => {
@@ -19,8 +19,8 @@ export const tweetSlice = createSlice({
       state.error = '';
     });
     builder.addCase(createTweet.fulfilled, (state, action) => {
-      state.text = action.payload.text;
-      state.files = action.payload.files;
+      state.tweetBody = action.payload.tweetBody;
+      state.attachmentImages = action.payload.attachmentImages;
       state.isLoading = false;
     });
     builder.addCase(createTweet.rejected, (state, action) => {

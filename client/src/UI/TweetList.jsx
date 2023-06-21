@@ -1,15 +1,19 @@
-import { Box } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Post from 'src/components/Post/Post';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
+import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { useMode } from 'src/styles/_materialTheme';
+import TweetPost from './tweet/TweetPost';
 
 export const TweetList = ({ tweets }) => {
+  const dispatch = useDispatch();
   const theme = useMode();
 
   return (
-    <Box sx={{}}>
+    <Box sx={{ pb: '60px' }}>
       {tweets !== false &&
         tweets.map((tweet) => (
           <Box
@@ -18,18 +22,18 @@ export const TweetList = ({ tweets }) => {
               borderBottom: `1px solid ${theme.palette.border.main}`,
               transition: 'background-color 0.3s ease',
               '&:hover': {
-                backgroundColor: `${theme.palette.background.hover}`,
+                backgroundColor: ` ${theme.palette.background.hover}`,
                 cursor: 'pointer',
               },
             }}
           >
-            <Link to={`/tweet/${tweet.id}`}>
-              <Post
+            <Box>
+              <TweetPost
                 tweet={
                   tweet.attachmentImages === undefined ? tweet.tweet : tweet
                 }
               />
-            </Link>
+            </Box>
             <Box
               sx={{
                 width: '90%',
@@ -38,8 +42,8 @@ export const TweetList = ({ tweets }) => {
                 my: '10px',
               }}
             >
-            {console.log(tweet.attachmentImages)}
               <PostIconList
+                isLiked={tweet.currUserLiked}
                 likes={
                   tweet.attachmentImages === undefined
                     ? tweet.tweet.countLikes
@@ -47,8 +51,8 @@ export const TweetList = ({ tweets }) => {
                 }
                 reply={
                   tweet.attachmentImages === undefined
-                    ? tweet.tweet.countReply
-                    : tweet.countReply
+                    ? tweet.tweet.countReplies
+                    : tweet.countReplies
                 }
                 retweet={
                   tweet.attachmentImages === undefined
@@ -59,6 +63,11 @@ export const TweetList = ({ tweets }) => {
                   tweet.attachmentImages === undefined
                     ? tweet.tweet.id
                     : tweet.id
+                }
+                quote={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countQuoteTweets
+                    : tweet.countQuoteTweets
                 }
                 isBookmarks={
                   tweet.attachmentImages === undefined
