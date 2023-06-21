@@ -21,7 +21,6 @@ export const ChatSidebar = () => {
       {/* search tabs */}
       {isVisibleResult && <SearchTabs />}
 
-      {/* // TODO: set isVisibleResult */}
       {/* Contacts list */}
       {!isVisibleResult && <ConversationTabs />}
     </>

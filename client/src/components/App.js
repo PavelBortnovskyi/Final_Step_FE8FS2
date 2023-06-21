@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from 'src/layout/Layout';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
-import { clientSocket } from 'src/utils/socketSetup';
 import { getTokens } from 'src/utils/tokens';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
