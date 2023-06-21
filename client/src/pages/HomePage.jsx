@@ -34,7 +34,7 @@ export const HomePage = () => {
 
   let allTweets = useSelector(getAllTweets);
   let allTweetsArray = allTweets.allTweets;
-
+  console.log(allTweetsArray);
   let subscriptions = useSelector(subscriptionsTweets);
   let subscriptionsArray = subscriptions.subscriptionsTweets;
   console.log(subscriptionsArray);
