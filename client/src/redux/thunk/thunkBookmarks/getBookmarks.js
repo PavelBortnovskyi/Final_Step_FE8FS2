@@ -5,7 +5,6 @@ export const getBookmarks = createAsyncThunk(
   'tweet/bookmarks',
 
   async ({ page, pageSize }, thunkAPI) => {
-
     try {
       const { data } = await myAxios.get(
         `/tweet/bookmark?page=${page}&size=${pageSize}`
@@ -15,4 +14,4 @@ export const getBookmarks = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.message);
     }
   }
-)
+);

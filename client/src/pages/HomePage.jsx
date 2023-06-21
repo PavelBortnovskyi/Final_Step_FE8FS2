@@ -24,7 +24,7 @@ export const HomePage = () => {
       dispatch(getAllTweetsThunk());
     } else {
       dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
-      console.log('sub');
+      // console.log('sub');
     }
   }, [tabIndex]);
 

@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce';
 
 import { findUser } from 'src/redux/thunk/findUser';
 import { useEffect } from 'react';
+import { findMessage } from 'src/redux/thunk/findMessage';
 
 // ************ STYLE ************
 const Search = styled('div')(({ theme }) => ({
@@ -80,6 +81,7 @@ export const SearchFieldMessages = ({ setIsVisibleResult }) => {
   const handleClear = () => {
     setSearchText('');
     dispatch(findUser({ search: '' }));
+    dispatch(findMessage({ search: '' }));
     inputRef.current.focus();
   };
 
@@ -88,6 +90,7 @@ export const SearchFieldMessages = ({ setIsVisibleResult }) => {
   const sendSearchString = useCallback(
     debounce((searchString) => {
       dispatch(findUser({ search: searchString }));
+      dispatch(findMessage({ search: searchString }));
     }, 500),
     []
   );
@@ -95,6 +98,7 @@ export const SearchFieldMessages = ({ setIsVisibleResult }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       dispatch(findUser({ search: searchText }));
+      dispatch(findMessage({ search: searchText }));
     }
   };
 

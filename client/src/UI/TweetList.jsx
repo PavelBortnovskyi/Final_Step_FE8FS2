@@ -38,7 +38,6 @@ export const TweetList = ({ tweets }) => {
                 my: '10px',
               }}
             >
-            {console.log(tweet.attachmentImages)}
               <PostIconList
                 likes={
                   tweet.attachmentImages === undefined
