@@ -8,7 +8,7 @@ import { getTokens } from 'src/utils/tokens';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
 // import Stomp from 'stompjs';
-import { Stomp } from '@stomp/stompjs';
+import { Stomp, Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export const App = () => {
@@ -42,23 +42,31 @@ export const App = () => {
 
         // connect
         stompClient.connect(headers, () => {
-          console.log('Connected to WebSocket server');
+          // console.log('Connected to WebSocket server');
 
           // set connect to redux
           dispatch(setSocketChat(stompClient));
 
           // chat chanel
-          stompClient.subscribe('/topic/chats', (message) => {
-            const receivedMessage = JSON.parse(message.body);
-            console.log('Received message:', receivedMessage);
-            dispatch(setCurrentMessage(receivedMessage));
-          });
+          stompClient.subscribe(
+            '/topic/chats',
+            (message) => {
+              const receivedMessage = JSON.parse(message.body);
+              // console.log('Received message:', receivedMessage);
+              dispatch(setCurrentMessage(receivedMessage));
+            },
+            headers
+          );
 
           // notification chanel
-          stompClient.subscribe('/topic/notifications', (message) => {
-            const receivedNotifications = JSON.parse(message.body);
-            console.log('Received notifications:', receivedNotifications);
-          });
+          // stompClient.subscribe(
+          //   '/topic/notifications',
+          //   (message) => {
+          //     const receivedNotifications = JSON.parse(message.body);
+          //     console.log('Received notifications:', receivedNotifications);
+          //   },
+          //   headers
+          // );
         });
       } catch (error) {
         console.error('Error activating STOMP connection:', error);
@@ -66,7 +74,7 @@ export const App = () => {
 
       return () => {
         if (stompClientRef.current && stompClientRef.current.connected) {
-          console.log('disconnect socket ->', stompClientRef.current.connected);
+          // console.log('disconnect socket ->', stompClientRef.current.connected);
           stompClientRef.current.disconnect();
         }
       };

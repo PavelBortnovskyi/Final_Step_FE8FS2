@@ -5,13 +5,13 @@ import { getChatMessages } from './getChatMessages.js';
 // create chat in DB with id guest
 export const getCurrentChat = createAsyncThunk(
   'chat/getCurrentChat',
-  async (guestId, { rejectWithValue, dispatch }) => {
+  async ({ guestId, pageSize }, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await myAxios.post(
         `/chat/create?interlocutorId=${guestId}`
       );
 
-      dispatch(getChatMessages({ chatId: data[0].chatId }));
+      dispatch(getChatMessages({ chatId: data[0].chatId, pageSize: pageSize }));
 
       return data;
       //

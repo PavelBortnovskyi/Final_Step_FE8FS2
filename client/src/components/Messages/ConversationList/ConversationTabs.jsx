@@ -92,7 +92,6 @@ export const ConversationTabs = () => {
       </TabPanel>
       <TabPanel value={value} index={1}>
         {/* <TabChats /> */}
-        under construction
       </TabPanel>
     </Box>
   );

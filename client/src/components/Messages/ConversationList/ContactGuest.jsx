@@ -22,11 +22,7 @@ const BoxContactGuest = styled(Box)(({ theme }) => ({
 
 export const ContactGuest = ({ guest }) => {
   const dispatch = useDispatch();
-  const {
-    chatId,
-    guestData: { id, fullName, avatarImgUrl, userTag },
-    messages,
-  } = guest;
+  const { id, fullName, avatarImgUrl, userTag, messages } = guest;
 
   const handleClick = () => {
     // set guest from local data

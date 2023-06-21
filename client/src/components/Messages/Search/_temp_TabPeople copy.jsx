@@ -36,7 +36,7 @@ export const TabPeople = () => {
   // set Guest for chat
   const handleClick = (id) => {
     // get chat data
-    dispatch(getCurrentChat(id));
+    dispatch(getCurrentChat({ guestId: id, pageSize: 999 }));
   };
 
   // set chat

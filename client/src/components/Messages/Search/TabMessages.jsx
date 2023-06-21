@@ -1,21 +1,18 @@
-import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
+import { alpha, Box, styled, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  getChats,
-  getMessages,
-  getUserData,
-} from 'src/redux/selectors/selectors';
+import { getMessages, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
-import UserNames from 'src/UI/UserNames';
-import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { setGuest } from 'src/redux/reducers/chatSlice';
-import { findMessage } from './../../../redux/thunk/findMessage';
+import { timestampToDate } from 'src/utils/messages/convertToDate';
+import TimeAgo from 'timeago-react';
+import { myAxios } from 'src/utils/axiosSetup';
 
 // ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexDirection: 'column',
   gap: '12px',
   padding: '8px',
   borderBottom: ` 1px solid ${theme.palette.border.main}`,
@@ -25,6 +22,22 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
     cursor: 'pointer',
   },
 }));
+
+const BoxTime = styled(Box)`
+  font-size: 10px;
+  color: #9c9c9c;
+  margin-top: 6px;
+  border-top: 1px solid #f6f6f663;
+  font-style: italic;
+  min-width: 75px;
+`;
+
+const BoxMessages = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+`;
 // ************ STYLE ************
 
 // ************ TabMessages ************
@@ -32,56 +45,78 @@ export const TabMessages = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(getUserData);
   const { isLoading, findMessage } = useSelector(getMessages);
-  const { currentChat } = useSelector(getChats);
+
+  // converted findMessages array
+  const [convertedFindMessages, setConvertedFindMessages] = useState([]);
+  const [resultFindMessages, setResultFindMessages] = useState([]);
 
   // set Guest for chat
-  const handleClick = (id) => {
-    // get chat data
-    // dispatch(getCurrentChat(id));
+  const handleClick = ({ id, fullName, avatarImgUrl, userTag }) => {
+    const guest = {
+      id,
+      fullName,
+      avatarImgUrl,
+      userTag,
+    };
+    dispatch(setGuest(guest));
   };
 
   // set chat
   useEffect(() => {
     if (findMessage?.content) {
-      console.log(findMessage.content);
-
       //*********** Convert findMessage.content to obj for viewing
-      // Преобразование массива объектов в нужный формат
-      const result = findMessage.content.reduce((acc, obj) => {
-        // Ищем, есть ли уже чат с таким chatId в result
-        const existingChat = acc.find((chat) => chat.chatId === obj.chatId);
+      setConvertedFindMessages(
+        findMessage.content.reduce((tempArr, item) => {
+          // Ищем, есть ли уже чат с таким chatId в result
+          const existingChat = tempArr.find(
+            (chat) => chat.chatId === item.chatId
+          );
 
-        if (existingChat) {
-          if (!existingChat.usersId.includes(obj.userId)) {
-            existingChat.usersId.push(obj.userId);
+          if (existingChat) {
+            existingChat.messagesData.push({
+              messageId: item.messageId,
+              body: item.body,
+              sent: item.sent,
+            });
+          } else {
+            tempArr.push({
+              chatId: item.chatId,
+              // usersId: [item.userId],
+              messagesData: [
+                {
+                  messageId: item.messageId,
+                  body: item.body,
+                  sent: item.sent,
+                },
+              ],
+            });
           }
+          return tempArr;
+        }, [])
+      );
 
-          existingChat.messagesData.push({
-            messageId: obj.messageId,
-            body: obj.body,
-            sent: obj.sent,
-          });
-        } else {
-          acc.push({
-            chatId: obj.chatId,
-            usersId: [obj.userId],
-            messagesData: [
-              {
-                messageId: obj.messageId,
-                body: obj.body,
-                sent: obj.sent,
-              },
-            ],
-          });
-        }
-
-        return acc;
-      }, []);
       //**************************************
-
-      console.log('res:', result);
     }
-  }, [findMessage]);
+  }, [dispatch, findMessage]);
+
+  useEffect(() => {
+    if (convertedFindMessages.length) {
+      (async () => {
+        const temp = await Promise.all(
+          convertedFindMessages.map(async (item) => {
+            const { data } = await myAxios.get(`/chat/${item.chatId}`);
+
+            const guestData =
+              data.initiatorUser?.id !== user.id
+                ? data.initiatorUser
+                : data.users[0];
+            return { ...item, guest: guestData };
+          })
+        );
+        setResultFindMessages(temp);
+      })();
+    }
+  }, [convertedFindMessages, dispatch, user.id]);
 
   // return hello-string if searchStr is empty
   if ((!findMessage || findMessage.searchStr === '') && !isLoading)
@@ -91,7 +126,7 @@ export const TabMessages = () => {
   if (isLoading) return <Loading size={34} />;
 
   // check data not empty
-  const isResult = findMessage?.content?.length ? true : false;
+  const isResult = resultFindMessages?.length ? true : false;
 
   // return content after loading
   return (
@@ -103,24 +138,18 @@ export const TabMessages = () => {
         </Box>
       ) : (
         <Box>
-          test
-          {/* {findMessage.content
-            .filter((find) => find.id !== user.id)
-            .map(({ id, fullName, avatarImgUrl, userTag }) => (
-              <BoxSearchPerson key={id} onClick={() => handleClick(id)}>
-                <Avatar
-                  sx={{ width: 56, height: 56 }}
-                  alt={fullName}
-                  src={avatarImgUrl || 'img/avatar/empty-avatar.png'}
-                />
-                <UserNames
-                  fullName={fullName}
-                  userTag={userTag}
-                  // text={''}
-                  // postTime={''}
-                />
-              </BoxSearchPerson>
-            ))} */}
+          {resultFindMessages.map(({ chatId, guest, messagesData }) => (
+            <BoxSearchPerson key={chatId} onClick={() => handleClick(guest)}>
+              {messagesData.map((message, index) => (
+                <BoxMessages key={index}>
+                  <BoxTime>
+                    <TimeAgo datetime={timestampToDate(message.sent)} />
+                  </BoxTime>
+                  <Box>{message.body}</Box>
+                </BoxMessages>
+              ))}
+            </BoxSearchPerson>
+          ))}
         </Box>
       )}
     </>

@@ -54,8 +54,7 @@ export const TabContacts = () => {
                 : guest.users[0];
 
             return {
-              chatId: guest.chatId,
-              guestData,
+              ...guestData,
               messages: {
                 body: messageBody,
                 sent: messageSent,
@@ -90,7 +89,7 @@ export const TabContacts = () => {
       ) : (
         guestConversation.map((guest) => {
           return (
-            <Box key={guest.guestData.id}>
+            <Box key={guest.id}>
               <ContactGuest guest={guest} />
             </Box>
           );

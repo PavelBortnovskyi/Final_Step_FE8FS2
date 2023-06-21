@@ -1,15 +1,9 @@
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  getChats,
-  getMessages,
-  getUserData,
-} from 'src/redux/selectors/selectors';
+import { getMessages, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
-import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
-import { useEffect } from 'react';
 import { setGuest } from 'src/redux/reducers/chatSlice';
 
 // ************ STYLE ************
@@ -31,19 +25,18 @@ export const TabPeople = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(getUserData);
   const { isLoading, findUser } = useSelector(getMessages);
-  const { currentChat } = useSelector(getChats);
+  // const { currentChat } = useSelector(getChats);
 
   // set guest from local data
   const handleClick = ({ id, fullName, avatarImgUrl, userTag }) => {
     const guest = {
-      // chatId,
-      guestData: { id, fullName, avatarImgUrl, userTag },
+      id,
+      fullName,
+      avatarImgUrl,
+      userTag,
     };
     dispatch(setGuest(guest));
   };
-
-  // set chat
-  useEffect(() => {}, [currentChat, dispatch, user.id]);
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)

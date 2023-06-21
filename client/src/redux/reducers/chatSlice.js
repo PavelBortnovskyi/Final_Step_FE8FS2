@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getCurrentChat } from '../thunk/getCurrentChat.js';
 import { getAllChats } from '../thunk/getAllChats.js';
 import { getChatMessages } from '../thunk/getChatMessages.js';
+import { getIdChat } from '../thunk/getIdChat.js';
 
 const initialState = {
   guest: null,
@@ -11,6 +12,7 @@ const initialState = {
   chatMessages: null,
   currentMessage: null,
   allChats: null,
+  idChat: [],
   socketChat: null,
   isLoading: false,
   isLoadingCurrentData: false,
@@ -66,8 +68,8 @@ export const chatSlice = createSlice({
     // getCurrentChat
     builder.addCase(getCurrentChat.pending, (state, action) => {
       // state.guest = null;
-      state.isLoadingCurrentData = true;
       state.error = '';
+      state.isLoadingCurrentData = true;
     });
     builder.addCase(getCurrentChat.fulfilled, (state, action) => {
       state.currentChat = action.payload;
@@ -81,8 +83,8 @@ export const chatSlice = createSlice({
     // getAllChats
     builder.addCase(getAllChats.pending, (state, action) => {
       // state.guest = null;
-      state.isLoading = true;
       state.error = '';
+      state.isLoading = true;
     });
     builder.addCase(getAllChats.fulfilled, (state, action) => {
       state.allChats = action.payload;
@@ -95,8 +97,8 @@ export const chatSlice = createSlice({
 
     // getChatMessages
     builder.addCase(getChatMessages.pending, (state, action) => {
-      // state.isLoadingCurrentData = true;
       state.error = '';
+      // state.isLoadingCurrentData = true;
     });
     builder.addCase(getChatMessages.fulfilled, (state, action) => {
       state.chatMessages = action.payload;
@@ -105,6 +107,22 @@ export const chatSlice = createSlice({
     builder.addCase(getChatMessages.rejected, (state, action) => {
       state.error = action.payload?.info;
       state.isLoadingCurrentData = false;
+    });
+
+    // getIdChat
+    builder.addCase(getIdChat.pending, (state, action) => {
+      // state.idChat = null;
+      state.error = '';
+      // state.isLoadingCurrentData = true;
+    });
+    builder.addCase(getIdChat.fulfilled, (state, action) => {
+      state.idChat = [...state.idChat, action.payload];
+      // state.isLoadingCurrentData = false;
+    });
+    builder.addCase(getIdChat.rejected, (state, action) => {
+      state.idChat = null;
+      state.error = action.payload?.info;
+      // state.isLoadingCurrentData = false;
     });
   },
 });

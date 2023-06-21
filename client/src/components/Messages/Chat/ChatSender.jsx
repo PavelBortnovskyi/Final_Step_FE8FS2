@@ -47,7 +47,7 @@ export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
   const [errorSocket, setErrorSocket] = useState('');
 
-  const { guest, socketChat, currentChat } = useSelector(getChats);
+  const { socketChat, currentChat } = useSelector(getChats);
   const { user } = useSelector(getUserData);
 
   const { accessToken } = getTokens();
@@ -61,7 +61,6 @@ export const ChatSender = () => {
       const message = {
         userId: user.id,
         chatId: currentChat[0].chatId,
-        // body: JSON.stringify(messageText),
         body: messageText,
       };
 
@@ -69,7 +68,14 @@ export const ChatSender = () => {
 
       // send event about new message to Socket server
       try {
-        socketChat.send('/api/v1/message', {}, JSON.stringify(message));
+        socketChat.send(
+          '/api/v1/message',
+          {
+            Authorization: `Bearer ${accessToken}`,
+            Origin: 'client',
+          },
+          JSON.stringify(message)
+        );
       } catch (error) {
         setErrorSocket('Error connecting to socket server', error);
         const timer = setTimeout(() => {
