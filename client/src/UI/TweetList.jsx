@@ -13,7 +13,7 @@ export const TweetList = ({ tweets }) => {
   const theme = useMode();
 
   return (
-    <Box>
+    <Box sx={{ pb: '60px' }}>
       {tweets !== false &&
         tweets.map((tweet) => (
           <Box
@@ -51,8 +51,8 @@ export const TweetList = ({ tweets }) => {
                 }
                 reply={
                   tweet.attachmentImages === undefined
-                    ? tweet.tweet.countReply
-                    : tweet.countReply
+                    ? tweet.tweet.countReplies
+                    : tweet.countReplies
                 }
                 retweet={
                   tweet.attachmentImages === undefined

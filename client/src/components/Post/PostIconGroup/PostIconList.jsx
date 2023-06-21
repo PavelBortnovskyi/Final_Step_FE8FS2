@@ -43,10 +43,7 @@ function PostIconList({
         state={{ background: location }}
         component={NavLink}
       >
-        <PostIconElementComment
-          quantity={reply}
-          color="#72bcd4"
-          id={id} />
+        <PostIconElementComment quantity={reply} color="#72bcd4" id={id} />
       </NavLink>
 
       <PostIconElementRetweet
