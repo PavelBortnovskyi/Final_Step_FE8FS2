@@ -27,6 +27,7 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @Log4j2
 @Service
@@ -90,7 +91,7 @@ public class NotificationService extends GeneralService<Notification> {
     return this.notificationRepository.findById(id);
   }
 
-  public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
+  public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) throws ExecutionException, InterruptedException {
     SockJsClient sockJsClient = new SockJsClient(
       Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient())));
 
@@ -128,10 +129,10 @@ public class NotificationService extends GeneralService<Notification> {
         stompHeaders.setDestination("/api/v1/notifications");
         stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
 
-        session.send(stompHeaders, notificationRequestDTO);
+        session.send("/api/v1/notifications", notificationRequestDTO);
       }
     };
-    stompClient.connect(socketUri, sessionHandler);
+    StompSession stompSession = stompClient.connect(socketUri, sessionHandler).get(); // Устанавливаем соединение и получаем сессию
     log.info("Connected to socket: " + socketUri);
     return tweet;
   }

@@ -12,6 +12,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ExecutionException;
+
 @Log4j2
 @Aspect
 @Component
@@ -25,7 +27,7 @@ public class NotificationAspect {
   private final NotificationService notificationService;
 
   @AfterReturning(pointcut = "executeNotification()", returning = "returnValue")
-  public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) {
+  public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) throws ExecutionException, InterruptedException {
     String methodName = joinPoint.getSignature().getName();
 
     Object[] args = joinPoint.getArgs();
