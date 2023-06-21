@@ -93,7 +93,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(claims -> {
           Long userId = this.tokenService.extractIdFromClaims(claims).get();
-          String username = this.tokenService.extractUserNameFromClaims(claims).get();
+          String username = this.tokenService.extractUserEmailFromClaims(claims).get();
           return Optional.of(Pair.of(userId, username));
         })
         .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))

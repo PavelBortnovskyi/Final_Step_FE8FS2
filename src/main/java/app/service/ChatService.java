@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -158,7 +157,7 @@ public class ChatService extends GeneralService<Chat> {
     return chatIds;
   }
 
-  public Set<String> getChatMemberTags(Long chatId){
+  public Set<String> getChatMemberEmails(Long chatId){
     Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
     Set<String> chatIds = chatRepository.findById(chatId).get().getUsers().stream().map(UserModel::getEmail).collect(Collectors.toSet());
     chatIds.add(chat.getInitiatorUser().getEmail());

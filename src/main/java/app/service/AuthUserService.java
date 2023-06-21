@@ -17,7 +17,7 @@ public class AuthUserService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof JwtUserDetails)
     return (JwtUserDetails) authentication.getPrincipal();
-    else return new JwtUserDetails(0L, "@Zero");
+    else return new JwtUserDetails(0L, "Zero@mail.net");
   }
 
 

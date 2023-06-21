@@ -3,18 +3,15 @@ package app.web;
 import app.annotations.Marker;
 import app.dto.rq.MessageRequestDTO;
 import app.dto.rq.NotificationRequestDTO;
-import app.dto.rs.MessageResponseDTO;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.facade.UserFacade;
-import app.model.Chat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
@@ -48,8 +45,8 @@ public class WebSocketController {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
     this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO));
 
-    chatFacade.getChatMemberTags(messageDTO.getChatId())
-      .forEach(tag -> template.convertAndSendToUser(tag, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
+    chatFacade.getChatMemberEmails(messageDTO.getChatId())
+      .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
 //    chatFacade.getChatMemberIds(messageDTO.getChatId())
 //      .forEach(id -> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
   }

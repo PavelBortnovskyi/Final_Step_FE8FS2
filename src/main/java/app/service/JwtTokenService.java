@@ -190,7 +190,7 @@ public class JwtTokenService {
   /**
    * Method for extraction user email value from JWT Claims
    */
-  protected Optional<String> extractUserEmailFromClaims(Jws<Claims> claims) {
+  public Optional<String> extractUserEmailFromClaims(Jws<Claims> claims) {
     try {
       return Optional.ofNullable((String) claims.getBody().get("email"));
     } catch (Exception e) {

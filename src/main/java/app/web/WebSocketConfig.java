@@ -103,7 +103,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
                 .flatMap(claims -> {
                   Long userId = jwtTokenService.extractIdFromClaims(claims).get();
-                  String username = jwtTokenService.extractUserNameFromClaims(claims).get();
+                  String username = jwtTokenService.extractUserEmailFromClaims(claims).get();
                   return Optional.of(Pair.of(userId, username));
                 })
                 .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
