@@ -160,7 +160,7 @@ public class ChatService extends GeneralService<Chat> {
 
   public Set<String> getChatMemberTags(Long chatId){
     Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
-    Set<String> chatIds = chatRepository.findById(chatId).get().getUsers().stream().map(UserModel::getUserTag).collect(Collectors.toSet());
+    Set<String> chatIds = chatRepository.findById(chatId).get().getUsers().stream().map(UserModel::getEmail).collect(Collectors.toSet());
     chatIds.add(chat.getInitiatorUser().getUserTag());
     return chatIds;
   }
