@@ -11,10 +11,14 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
@@ -91,6 +95,7 @@ public class NotificationService extends GeneralService<Notification> {
       Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient())));
 
     WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
+
     StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
       @Override
       public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
@@ -116,11 +121,18 @@ public class NotificationService extends GeneralService<Notification> {
             notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
             break;
         }
-        //log.info(notificationRequestDTO.toString());
-        session.send("/api/v1/notifications/private", notificationRequestDTO);
+
+        log.info("Sending:" + notificationRequestDTO.toString());
+
+        StompHeaders stompHeaders = new StompHeaders();
+        stompHeaders.setDestination("/api/v1/notifications");
+        stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
+
+        session.send(stompHeaders, notificationRequestDTO);
       }
     };
     stompClient.connect(socketUri, sessionHandler);
+    log.info("Connected to socket: " + socketUri);
     return tweet;
   }
 }

@@ -6,6 +6,7 @@ import app.dto.rs.MessageResponseDTO;
 import app.exceptions.chatError.ChatNotFoundException;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
+import app.model.BaseEntityModel;
 import app.model.Chat;
 import app.service.ChatService;
 import app.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,6 +56,13 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
    */
   public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) {
     return this.chatService.removeUserFromChat(userToRemoveId, removeInitUserId, chatId);
+  }
+
+  public Set<Long> getChatMemberIds(Long chatId){
+    Chat chat = chatService.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
+    Set<Long> chatIds = this.chatService.getOne(chatId).getUsers().stream().map(user -> user.getId()).collect(Collectors.toSet());
+    chatIds.add(chat.getInitiatorUser().getId());
+    return chatIds;
   }
 
   /**
