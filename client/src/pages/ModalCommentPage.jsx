@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 function ModalCommentPage() {
   const tweet = useSelector(getTweetByID);
+  console.log(tweet);
   const post = tweet.tweet;
   const user = useSelector(getUserData || '');
 console.log(post);

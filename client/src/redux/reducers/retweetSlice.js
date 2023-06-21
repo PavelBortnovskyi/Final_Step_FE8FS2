@@ -18,7 +18,8 @@ export const retweetSlice = createSlice({
       state.error = null;
     })
     builder.addCase(addRetweet.fulfilled, (state, action) => {
-      state.retweetData = action.payload;
+      state.retweetData = [action.payload, ...state.retweetData];
+      // state.retweetData = action.payload;
       state.isLoading = false;
       state.error = null;
     })

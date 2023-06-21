@@ -11,7 +11,7 @@ import { useMode } from 'src/styles/_materialTheme';
 import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
 import { useNavigate } from 'react-router-dom';
 
-function TweetBox({ placeholder, fnc, userAvatar, id=false, isOpen,  setIsOpen}) {
+function TweetBox({ placeholder, fnc, userAvatar, id = false, isOpen,  setIsOpen}) {
   const theme = useMode();
   const navigate = useNavigate();
 
@@ -41,10 +41,10 @@ function TweetBox({ placeholder, fnc, userAvatar, id=false, isOpen,  setIsOpen})
   const handleSubmit = () => {
     if (id) {
       dispatch(createTweetReply({ id, postInputText, postImages }));
+      setIsOpen(false);
     } else {
       dispatch(createTweet({ postInputText, postImages }));
     }
-    setIsOpen(false);
     setPostInputText('');
     setPostImages([]);
   };
