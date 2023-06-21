@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "**", "*"})
+@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "*"}) //TODO: change on deploy
 @Log4j2
 @RestController
 @RequiredArgsConstructor
