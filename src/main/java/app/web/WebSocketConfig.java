@@ -40,6 +40,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
+@Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
