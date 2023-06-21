@@ -74,7 +74,6 @@ public class SecurityConfiguration {
       .successHandler(oAuth2SuccessLoginHandler)
       .and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-    //.exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
     //For h2 correct visualization
     httpSec.headers().frameOptions().disable();
@@ -84,7 +83,7 @@ public class SecurityConfiguration {
 
     //Filter for interception of JwtAuthenticationException from jwtAuthFilter
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
-    
+
 
     //CORS config
     // CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
