@@ -25,7 +25,6 @@ function TweetPage() {
     navigate(-1); // Navigates back to the previous page
   };
   useEffect(() => {
-    console.log('working');
     dispatch(getTweetByIdThunk({ id: id }));
   }, [id]);
 
@@ -34,7 +33,6 @@ function TweetPage() {
 
   useEffect(() => {
     dispatch(getTweetReply({ id: id, page: 0, pageSize: 10 }));
-    console.log('get replies');
   }, [id]);
 
   let dataReplies = useSelector(getTweetReplies);

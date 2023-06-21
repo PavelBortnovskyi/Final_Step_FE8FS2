@@ -21,7 +21,6 @@ export const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(isAuthenticated);
     if (isAuthenticated) {
       if (tabIndex === 0) {
         dispatch(getAllTweetsThunk());

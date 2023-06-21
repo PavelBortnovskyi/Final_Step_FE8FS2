@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TweetPost from 'src/UI/tweet/TweetPost';
 import { Modal } from 'src/components/Modal/Modal';
 import { useSelector } from 'react-redux';
@@ -8,12 +8,11 @@ import Reply from './tweetPage/Reply';
 function ModalCommentPage() {
   const tweet = useSelector(getSingleTweet);
   const post = tweet?.singleTweet || [];
-  const user = useSelector((state) => state.user.user) || '';
-
+  const [isOpen, setIsOpen] = useState(true);
   return (
-    <Modal title="">
+    <Modal title="" isOpen={isOpen} setIsOpen={setIsOpen}>
       {!Array.isArray(post) && <TweetPost tweet={post} />}
-      <Reply />
+      <Reply id={post.id} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Modal>
   );
 }

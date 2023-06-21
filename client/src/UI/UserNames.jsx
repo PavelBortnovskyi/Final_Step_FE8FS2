@@ -42,8 +42,6 @@ function UserNames({
             <VerifiedUserRoundedIcon
               sx={{ fontSize: '16px', color: '#1d9bf0' }}
             />
-          ) : (
-            <Box>&#8901;</Box>
           )}
         </div>
         <Typography sx={{ fontSize: '14px' }}>{userTag}</Typography>
