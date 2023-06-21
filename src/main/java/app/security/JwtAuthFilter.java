@@ -3,8 +3,6 @@ package app.security;
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.service.JwtTokenService;
-import app.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -88,7 +86,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     return false;
   }
 
-  private void processRequestWithToken(HttpServletRequest request, String token) throws ServletException, IOException {
+  private void processRequestWithToken(HttpServletRequest request, String token) {
     try {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(claims -> {
@@ -103,7 +101,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           SecurityContextHolder.getContext().setAuthentication(auth);
         });
     } catch (Exception e) {
-      throw new JwtAuthenticationException("Login failed with: " + e.getMessage());
+      throw new JwtAuthenticationException("Authentication failed with: " + e.getMessage());
     }
   }
 }

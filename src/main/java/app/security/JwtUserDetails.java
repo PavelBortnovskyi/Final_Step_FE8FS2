@@ -16,7 +16,8 @@ public class JwtUserDetails implements UserDetails, Serializable {
   private final String email;
 
   public JwtUserDetails(Long id, String email) {
-    this.id = id; this.email = email;
+    this.id = id;
+    this.email = email;
   }
 
   @Override
@@ -59,5 +60,6 @@ public class JwtUserDetails implements UserDetails, Serializable {
   public Long getId() {
     return this.id;
   }
+
 }
 

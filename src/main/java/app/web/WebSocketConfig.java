@@ -2,6 +2,7 @@ package app.web;
 
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
+import app.exceptions.httpError.BadRequestException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import app.utils.SpringSecurityAuditorAware;
@@ -26,12 +27,14 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -100,32 +103,40 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
             if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-              Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-                .flatMap(claims -> {
-                  Long userId = jwtTokenService.extractIdFromClaims(claims).get();
-                  String username = jwtTokenService.extractUserEmailFromClaims(claims).get();
-                  return Optional.of(Pair.of(userId, username));
-                })
-                .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
-                .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
-                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-              if (user != null) {
-                auditorAware.setCurrentAuditor(user.getName());
-                SecurityContextHolder.getContext().setAuthentication(user);
-                accessor.setUser(user);
-                accessor.getSessionAttributes()
-                  .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
-              }
-              log.info("Token:" + token);
-              log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-            } else {
-              throw new JwtAuthenticationException("Token is not valid");
+              processRequestWithToken(token, accessor);
             }
+            log.info("Token:" + token);
+            log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+          } else {
+            throw new JwtAuthenticationException("Token is not valid");
           }
         }
+        //else throw new BadRequestException("Header Origin is null!");
         //log.info("Assessor message " + accessor.getMessage());
         return message;
       }
     });
+  }
+
+  private void processRequestWithToken(String token, StompHeaderAccessor accessor) {
+    try {
+      this.jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
+        .flatMap(claims -> {
+          Long userId = this.jwtTokenService.extractIdFromClaims(claims).get();
+          String username = this.jwtTokenService.extractUserEmailFromClaims(claims).get();
+          return Optional.of(Pair.of(userId, username));
+        })
+        .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
+        .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
+        .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
+          auditorAware.setCurrentAuditor(auth.getName());
+          SecurityContextHolder.getContext().setAuthentication(auth);
+          accessor.setUser(auth);
+          accessor.getSessionAttributes()
+            .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+        });
+    } catch (Exception e) {
+      throw new JwtAuthenticationException("Websocket authentication failed with: " + e.getMessage());
+    }
   }
 }

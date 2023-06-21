@@ -109,18 +109,12 @@ public class NotificationService extends GeneralService<Notification> {
             .setNotificationType(NotificationType.LIKE);
         } else {
           notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-        }
 
-        switch (tweet.getTweetType()) {
-          case QUOTE_TWEET:
-            notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-            break;
-          case REPLY:
-            notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-            break;
-          case RETWEET:
-            notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
-            break;
+          switch (tweet.getTweetType()) {
+            case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+            case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+            case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+          }
         }
 
         log.info("Sending:" + notificationRequestDTO.toString());
@@ -128,11 +122,10 @@ public class NotificationService extends GeneralService<Notification> {
         StompHeaders stompHeaders = new StompHeaders();
         stompHeaders.setDestination("/api/v1/notifications");
         stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
-
         session.send("/api/v1/notifications", notificationRequestDTO);
       }
     };
-    StompSession stompSession = stompClient.connect(socketUri, sessionHandler).get(); // Устанавливаем соединение и получаем сессию
+    stompClient.connect(socketUri, sessionHandler);
     log.info("Connected to socket: " + socketUri);
     return tweet;
   }

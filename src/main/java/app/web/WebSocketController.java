@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
@@ -31,14 +32,13 @@ public class WebSocketController {
 
   private final ChatFacade chatFacade;
 
-  private final UserFacade userFacade;
-
   private final NotificationFacade notificationFacade;
 
   private final SimpMessagingTemplate template;
 
   @Validated({Marker.New.class})
   @MessageMapping("/v1/message")
+  @SendTo("/topic/chats")
   public void processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
@@ -53,6 +53,7 @@ public class WebSocketController {
 
   @Validated({Marker.Existed.class})
   @MessageMapping("/v1/message/edit")
+  @SendTo("/topic/chats")
   public void processChatMessageEdit(@Payload @Valid @JsonView({Marker.Existed.class})
                                      MessageRequestDTO messageDTO,
                                      SimpMessageHeaderAccessor accessor) {
