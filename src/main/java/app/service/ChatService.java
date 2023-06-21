@@ -158,6 +158,13 @@ public class ChatService extends GeneralService<Chat> {
     return chatIds;
   }
 
+  public Set<String> getChatMemberTags(Long chatId){
+    Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException(String.format("Chat with id: %d not found", chatId)));
+    Set<String> chatIds = chatRepository.findById(chatId).get().getUsers().stream().map(UserModel::getUserTag).collect(Collectors.toSet());
+    chatIds.add(chat.getInitiatorUser().getUserTag());
+    return chatIds;
+  }
+
 //  public List<Page> getSearchResult(Long userId, Integer pageSize, Integer pageNumber, String keyword){
 //    Page<Object[]> result = chatRepository.getSearchResults(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber));
 //    List<UserModelResponse> fullnameUsers = new ArrayList<>();

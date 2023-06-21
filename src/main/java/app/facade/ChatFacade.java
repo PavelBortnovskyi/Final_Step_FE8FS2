@@ -63,6 +63,9 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
     return chatService.getChatMemberIds(chatId);
   }
 
+  public Set<String> getChatMemberTags(Long chatId){
+    return chatService.getChatMemberTags(chatId);
+  }
   /**
    * Method returns page of user chat responses with last message to preview
    */
