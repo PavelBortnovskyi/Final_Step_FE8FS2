@@ -1,14 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { getSingleTweet } from 'src/redux/selectors/selectors';
+import { addQuote } from 'src/redux/thunk/tweets/addQuote';
 import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
 
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import { useMode } from 'src/styles/_materialTheme';
 
-function PostIconElementComment({ quantity, color, id }) {
+export const PostElementQuote = ({ icon, quantity, color, id }) => {
+  const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -19,9 +17,7 @@ function PostIconElementComment({ quantity, color, id }) {
     }
   }, [isModalOpen]);
 
-  const tweet = useSelector(getSingleTweet);
-  const post = tweet.singleTweet;
-  const theme = useMode();
+
   return (
     <Box
       onClick={() => setIsModalOpen(true)}
@@ -38,10 +34,8 @@ function PostIconElementComment({ quantity, color, id }) {
         },
       }}
     >
-      <ChatBubbleOutlineOutlinedIcon fontSize="small" />
+      {icon}
       {quantity}
     </Box>
-  );
+  )
 }
-
-export default PostIconElementComment;

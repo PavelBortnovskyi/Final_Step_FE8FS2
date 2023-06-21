@@ -1,5 +1,8 @@
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import { Box, Typography, alpha, useTheme } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import TimeAgo from 'timeago-react';
 
 // this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
@@ -9,21 +12,24 @@ import TimeAgo from 'timeago-react';
 
 function UserNames({
   fullName = '',
-  verified = false,
+  isVerified,
   userTag = '',
-  text = '',
-  postTime = null,
+  postTime = '',
+  text = null,
+  color,
+  id,
+  userId,
 }) {
+  const dispatch = useDispatch();
   const theme = useTheme();
   return (
     <Box
       display="flex"
       sx={{
+        color: color,
         alignItems: 'baseline',
         justifyContent: 'space-between',
-        marginBottom: '10px',
         flexDirection: 'column',
-        width: '100%',
       }}
     >
       <Box
@@ -35,14 +41,27 @@ function UserNames({
           width: '100%',
         }}
       >
-        <Typography variant="body1">{fullName}</Typography>
+        <Link
+          to={`/user/${id}`}
+          onClick={() => {
+            dispatch(getUserBiId(userId));
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{
+              color: `${theme.palette.text.primary}`,
+              '&:hover': { textDecoration: 'underline' },
+            }}
+          >
+            {fullName}
+          </Typography>
+        </Link>
         <div>
-          {verified ? (
+          {isVerified && (
             <VerifiedUserRoundedIcon
               sx={{ fontSize: '16px', color: '#1d9bf0' }}
             />
-          ) : (
-            <Box>&#8901;</Box>
           )}
         </div>
         <Typography sx={{ fontSize: '14px' }}>{userTag}</Typography>

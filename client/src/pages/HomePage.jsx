@@ -2,7 +2,6 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MainPage_header from 'src/components/MainPage_header/MainPage_header';
-import PostList from 'src/components/Post/PostList';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getAllTweetsThunk } from 'src/redux/thunk/tweets/getAllTweetsThunk';
@@ -21,12 +20,14 @@ export const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (tabIndex === 0) {
-      dispatch(getAllTweetsThunk());
-      // console.log('all');
+    if (isAuthenticated) {
+      if (tabIndex === 0) {
+        dispatch(getAllTweetsThunk());
+      } else {
+        dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
+      }
     } else {
-      dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
-      // console.log('sub');
+      dispatch(getAllTweetsThunk());
     }
   }, [tabIndex]);
 
@@ -35,7 +36,6 @@ export const HomePage = () => {
 
   let subscriptions = useSelector(subscriptionsTweets);
   let subscriptionsArray = subscriptions.subscriptionsTweets;
-  // console.log(subscriptionsArray);
 
   return (
     <Box

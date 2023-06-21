@@ -16,8 +16,8 @@ export const createTweet = createAsyncThunk(
       });
 
       const data = await myAxios.post('/tweet', formData);
-
-      return data;
+      console.log(data.data);
+      return data.data;
     } catch (error) {
       const errorMessage = error.response.data || error.message;
       return rejectWithValue(errorMessage);

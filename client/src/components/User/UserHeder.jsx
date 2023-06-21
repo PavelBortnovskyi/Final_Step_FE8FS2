@@ -1,8 +1,8 @@
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import { UserName } from './UserName';
 import { UserTweetsNumber } from './UserTweensNumber';
 import { Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { ArrowBack } from '@mui/icons-material';
 
 export function UserHeder({ fullName, tweetsCounter }) {
   const navigate = useNavigate();
@@ -25,28 +25,7 @@ export function UserHeder({ fullName, tweetsCounter }) {
         padding: '8px',
       }}
     >
-      <Button
-        onClick={handleBack}
-        sx={{
-          color: 'transparent !important',
-          '&:hover': {
-            backgroundColor: 'transparent !important',
-          },
-        }}
-      >
-        <ArrowBackOutlinedIcon
-          sx={{
-            fill: 'rgb(139, 152, 165)',
-            padding: '12px',
-            borderRadius: '50%',
-            boxSizing: 'content-box',
-
-            '&:hover': {
-              backgroundColor: '#b3b3b32b',
-            },
-          }}
-        />
-      </Button>
+      <ArrowBack />
 
       <Box>
         <UserName fullName={fullName} />

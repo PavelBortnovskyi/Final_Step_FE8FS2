@@ -20,7 +20,6 @@ function Post({ tweet }) {
         isLiked={tweet.currUserLiked}
         isRetweet={tweet.countRetweets}
         isComment={tweet.countReplays}
-
       />
     </Box>
   );
