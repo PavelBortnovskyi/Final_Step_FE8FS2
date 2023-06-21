@@ -36,7 +36,8 @@ function TweetPage() {
   }, [id]);
 
   let dataReplies = useSelector(getTweetReplies);
-  const tweetsReplies = dataReplies.tweetReplies?.content || [];
+  console.log(dataReplies);
+  const tweetsReplies = dataReplies.tweetReplies || [];
 
   return (
     <Box
@@ -89,8 +90,8 @@ function TweetPage() {
             }
             reply={
               post.attachmentImages === undefined
-                ? post.tweet.countReply
-                : post.countReply
+                ? post.tweet.countReplies
+                : post.countReplies
             }
             retweet={
               post.attachmentImages === undefined
@@ -111,11 +112,12 @@ function TweetPage() {
           />
         )}
       </Grid>
-      <Reply />
-      {tweetsReplies &&
-        tweetsReplies.map((post) => (
-          <TweetList key={post.id} tweets={tweetsReplies} />
-        ))}
+      <Reply id={post.id} type="reply" />
+      {tweetsReplies.length !== 0 ? (
+        <TweetList key={post.id} tweets={tweetsReplies} />
+      ) : (
+        false
+      )}
     </Box>
   );
 }

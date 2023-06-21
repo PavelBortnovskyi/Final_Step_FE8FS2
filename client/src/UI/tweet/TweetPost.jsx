@@ -32,27 +32,29 @@ function TweetPost({ tweet }) {
           }}
           display="flex"
         >
-          <Link
-            key={tweet.id}
-            to={`/user/${tweet.id}`}
-            onClick={() => {
-              dispatch(getUserBiId(tweet.user.id));
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <Link
+              key={tweet.id}
+              to={`/user/${tweet.id}`}
+              onClick={() => {
+                dispatch(getUserBiId(tweet.user.id));
+              }}
+            >
               <Box sx={{ pr: '10px', pl: { xs: '5px', sm: '15px' } }}>
                 <Avatar src={tweet.user.avatarImgUrl} />
               </Box>
-              <UserNames
-                isVerified={tweet.user.isVerified}
-                color={`${theme.palette.text.primary}`}
-                fullName={tweet.user.fullName}
-                verified={tweet.user.isVerified}
-                userTag={tweet.user.userTag}
-                postTime="10h"
-              />
-            </Box>
-          </Link>
+            </Link>
+            <UserNames
+              userId={tweet.user.id}
+              id={tweet.id}
+              isVerified={tweet.user.isVerified}
+              color={`${theme.palette.text.primary}`}
+              fullName={tweet.user.fullName}
+              verified={tweet.user.isVerified}
+              userTag={tweet.user.userTag}
+              postTime="10h"
+            />
+          </Box>
 
           <NavLink to={`/tweet/${tweet.id}`}>
             <Box

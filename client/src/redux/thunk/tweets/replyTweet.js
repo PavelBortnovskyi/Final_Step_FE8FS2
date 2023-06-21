@@ -14,7 +14,7 @@ export const createTweetReply = createAsyncThunk(
         formData.append(`attachmentImages`, image);
       });
       const data = await myAxios.post(`/tweet/${id}/reply`, formData);
-
+      console.log(data);
       return data;
     } catch (error) {
       const errorMessage = error.response.data || error.message;

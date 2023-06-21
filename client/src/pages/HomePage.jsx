@@ -37,6 +37,7 @@ export const HomePage = () => {
 
   let subscriptions = useSelector(subscriptionsTweets);
   let subscriptionsArray = subscriptions.subscriptionsTweets;
+  console.log(subscriptionsArray);
 
   return (
     <Box
