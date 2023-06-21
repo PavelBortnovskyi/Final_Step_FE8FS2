@@ -70,7 +70,7 @@ export const TabContacts = () => {
     };
 
     getAllGuests();
-  }, [allChats, user?.id]);
+  }, [allChats, user]);
 
   return (
     <Box>

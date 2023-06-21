@@ -47,7 +47,7 @@ export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
   const [errorSocket, setErrorSocket] = useState('');
 
-  const { guest, socketChat } = useSelector(getChats);
+  const { guest, socketChat, currentChat } = useSelector(getChats);
   const { user } = useSelector(getUserData);
 
   const { accessToken } = getTokens();
@@ -60,7 +60,7 @@ export const ChatSender = () => {
       // userId - message author
       const message = {
         userId: user.id,
-        chatId: guest.chatId,
+        chatId: currentChat[0].chatId,
         // body: JSON.stringify(messageText),
         body: messageText,
       };

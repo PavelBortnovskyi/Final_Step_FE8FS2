@@ -87,10 +87,7 @@ export const Chat = () => {
   const dispatch = useDispatch();
 
   // get guest data from redux
-  const { isLoading, guest } = useSelector(getChats);
-
-  // console.log('guest', guest);
-  // console.log('currentChat', currentChat);
+  const { guest } = useSelector(getChats);
 
   // close chat
   const handleCloseConnection = () => {
@@ -104,9 +101,6 @@ export const Chat = () => {
       if (!guest) return;
 
       try {
-        // get chat messages from DB
-        dispatch(getChatMessages({ chatId: guest.chatId, page: 0 }));
-
         // get chat data
         dispatch(getCurrentChat(guest.guestData.id));
         //
@@ -117,7 +111,6 @@ export const Chat = () => {
 
     createChat();
   }, [dispatch, guest]);
-
   // ************** CHAT FROM DB ***************
 
   return (
@@ -126,17 +119,10 @@ export const Chat = () => {
         {!guest ? (
           <ChatHeader>
             <Typography variant="h6">Chat</Typography>
-
-            {isLoading ? (
-              <BoxLoading>
-                <Loading size={34} />
-              </BoxLoading>
-            ) : (
-              <WelcomeMessage>
-                Choose from your existing conversations, start a new one, or
-                just keep swimming.
-              </WelcomeMessage>
-            )}
+            <WelcomeMessage>
+              Choose from your existing conversations, start a new one, or just
+              keep swimming.
+            </WelcomeMessage>
           </ChatHeader>
         ) : (
           <>

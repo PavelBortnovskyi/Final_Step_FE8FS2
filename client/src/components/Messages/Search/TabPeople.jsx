@@ -33,47 +33,17 @@ export const TabPeople = () => {
   const { isLoading, findUser } = useSelector(getMessages);
   const { currentChat } = useSelector(getChats);
 
-  // set Guest for chat
-  const handleClick = (id) => {
-    // get chat data
-    dispatch(getCurrentChat(id));
+  // set guest from local data
+  const handleClick = ({ id, fullName, avatarImgUrl, userTag }) => {
+    const guest = {
+      // chatId,
+      guestData: { id, fullName, avatarImgUrl, userTag },
+    };
+    dispatch(setGuest(guest));
   };
 
   // set chat
-  useEffect(() => {
-    // console.log('new chat?', currentChat?.length);
-
-    if (currentChat) {
-      // find only personal chats
-      const tempChatData = currentChat.find((chat) => chat.users.length === 1);
-
-      // create guest obj
-      if (tempChatData) {
-        //   const lastMessage = tempChatData.messages.length - 1;
-
-        //   // get last message
-        //   const messageBody = tempChatData.messages[lastMessage]?.body;
-        //   const messageSent = new Date(
-        //     ...tempChatData.messages[lastMessage]?.sent
-        //   );
-        const guestData =
-          tempChatData.initiatorUser?.id !== user.id
-            ? tempChatData.initiatorUser
-            : tempChatData.users[0];
-
-        const setGuestData = {
-          chatId: tempChatData.chatId,
-          guestData,
-          // messages: {
-          //   body: messageBody,
-          //   sent: messageSent,
-          // },
-        };
-
-        dispatch(setGuest(setGuestData));
-      }
-    }
-  }, [currentChat, dispatch, user.id]);
+  useEffect(() => {}, [currentChat, dispatch, user.id]);
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)
@@ -97,16 +67,16 @@ export const TabPeople = () => {
         <Box>
           {findUser.content
             .filter((find) => find.id !== user.id)
-            .map(({ id, fullName, avatarImgUrl, userTag }) => (
-              <BoxSearchPerson key={id} onClick={() => handleClick(id)}>
+            .map((user) => (
+              <BoxSearchPerson key={user.id} onClick={() => handleClick(user)}>
                 <Avatar
                   sx={{ width: 56, height: 56 }}
-                  alt={fullName}
-                  src={avatarImgUrl || 'img/avatar/empty-avatar.png'}
+                  alt={user.fullName}
+                  src={user.avatarImgUrl || 'img/avatar/empty-avatar.png'}
                 />
                 <UserNames
-                  fullName={fullName}
-                  userTag={userTag}
+                  fullName={user.fullName}
+                  userTag={user.userTag}
                   // text={''}
                   // postTime={''}
                 />

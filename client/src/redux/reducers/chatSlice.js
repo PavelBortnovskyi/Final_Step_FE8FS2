@@ -13,6 +13,7 @@ const initialState = {
   allChats: null,
   socketChat: null,
   isLoading: false,
+  isLoadingCurrentData: false,
   error: '',
 };
 
@@ -65,16 +66,16 @@ export const chatSlice = createSlice({
     // getCurrentChat
     builder.addCase(getCurrentChat.pending, (state, action) => {
       // state.guest = null;
-      state.isLoading = true;
+      state.isLoadingCurrentData = true;
       state.error = '';
     });
     builder.addCase(getCurrentChat.fulfilled, (state, action) => {
       state.currentChat = action.payload;
-      state.isLoading = false;
+      // state.isLoadingCurrentData = false;
     });
     builder.addCase(getCurrentChat.rejected, (state, action) => {
       state.error = action.payload?.info;
-      state.isLoading = false;
+      state.isLoadingCurrentData = false;
     });
 
     // getAllChats
@@ -94,16 +95,16 @@ export const chatSlice = createSlice({
 
     // getChatMessages
     builder.addCase(getChatMessages.pending, (state, action) => {
-      state.isLoading = true;
+      // state.isLoadingCurrentData = true;
       state.error = '';
     });
     builder.addCase(getChatMessages.fulfilled, (state, action) => {
       state.chatMessages = action.payload;
-      state.isLoading = false;
+      state.isLoadingCurrentData = false;
     });
     builder.addCase(getChatMessages.rejected, (state, action) => {
       state.error = action.payload?.info;
-      state.isLoading = false;
+      state.isLoadingCurrentData = false;
     });
   },
 });

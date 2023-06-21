@@ -11,7 +11,6 @@ import UserNames from 'src/UI/UserNames';
 import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { useEffect } from 'react';
 import { setGuest } from 'src/redux/reducers/chatSlice';
-import { findMessage } from './../../../redux/thunk/findMessage';
 
 // ************ STYLE ************
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
@@ -27,71 +26,53 @@ const BoxSearchPerson = styled(Box)(({ theme }) => ({
 }));
 // ************ STYLE ************
 
-// ************ TabMessages ************
-export const TabMessages = () => {
+// ************ TabPeople ************
+export const TabPeople = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(getUserData);
-  const { isLoading, findMessage } = useSelector(getMessages);
+  const { isLoading, findUser } = useSelector(getMessages);
   const { currentChat } = useSelector(getChats);
 
   // set Guest for chat
   const handleClick = (id) => {
     // get chat data
-    // dispatch(getCurrentChat(id));
+    dispatch(getCurrentChat(id));
   };
 
   // set chat
   useEffect(() => {
-    if (findMessage?.content) {
-      console.log(findMessage.content);
+    // console.log('new chat?', currentChat?.length);
 
-      //*********** Convert findMessage.content to obj for viewing
-      // Преобразование массива объектов в нужный формат
-      const result = findMessage.content.reduce((acc, obj) => {
-        // Ищем, есть ли уже чат с таким chatId в result
-        const existingChat = acc.find((chat) => chat.chatId === obj.chatId);
+    if (currentChat) {
+      // find only personal chats
+      const tempChatData = currentChat.find((chat) => chat.users.length === 1);
 
-        if (existingChat) {
-          if (!existingChat.usersId.includes(obj.userId)) {
-            existingChat.usersId.push(obj.userId);
-          }
+      // create guest obj
+      if (tempChatData) {
+        const guestData =
+          tempChatData.initiatorUser?.id !== user.id
+            ? tempChatData.initiatorUser
+            : tempChatData.users[0];
 
-          existingChat.messagesData.push({
-            messageId: obj.messageId,
-            body: obj.body,
-            sent: obj.sent,
-          });
-        } else {
-          acc.push({
-            chatId: obj.chatId,
-            usersId: [obj.userId],
-            messagesData: [
-              {
-                messageId: obj.messageId,
-                body: obj.body,
-                sent: obj.sent,
-              },
-            ],
-          });
-        }
+        const setGuestData = {
+          chatId: tempChatData.chatId,
+          guestData,
+        };
 
-        return acc;
-      }, []);
-      //**************************************
-
-      console.log('res:', result);
+        dispatch(setGuest(setGuestData));
+      }
     }
-  }, [findMessage]);
+  }, [currentChat, dispatch, user.id]);
 
   // return hello-string if searchStr is empty
-  if ((!findMessage || findMessage.searchStr === '') && !isLoading)
+  if ((!findUser || findUser.searchStr === '') && !isLoading)
     return <Typography>Try searching for people or messages</Typography>;
 
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
 
   // check data not empty
-  const isResult = findMessage?.content?.length ? true : false;
+  const isResult = findUser?.content?.length ? true : false;
 
   // return content after loading
   return (
@@ -103,8 +84,7 @@ export const TabMessages = () => {
         </Box>
       ) : (
         <Box>
-          test
-          {/* {findMessage.content
+          {findUser.content
             .filter((find) => find.id !== user.id)
             .map(({ id, fullName, avatarImgUrl, userTag }) => (
               <BoxSearchPerson key={id} onClick={() => handleClick(id)}>
@@ -120,7 +100,7 @@ export const TabMessages = () => {
                   // postTime={''}
                 />
               </BoxSearchPerson>
-            ))} */}
+            ))}
         </Box>
       )}
     </>
