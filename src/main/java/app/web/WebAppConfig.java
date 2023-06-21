@@ -18,22 +18,6 @@ public class WebAppConfig implements WebMvcConfigurer {
 
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-//    registry.addMapping("/chat-ws").allowedMethods("GET", "OPTIONS")
-//      .allowedHeaders("*").allowedOrigins("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-//        "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**");
-//
-//    registry.addMapping("/chat-ws/**").allowedMethods("GET", "OPTIONS")
-//      .allowedHeaders("*").allowedOrigins("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-//        "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**");
-//
-//    registry.addMapping("/notifications-ws").allowedMethods("GET", "OPTIONS")
-//      .allowedHeaders("*").allowedOrigins("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-//        "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**");
-//
-//    registry.addMapping("/notifications-ws/**").allowedMethods("GET", "OPTIONS")
-//      .allowedHeaders("*").allowedOrigins("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-//        "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**");
-
     registry.addMapping("/**")
       .allowedOrigins("*")
       .allowCredentials(false)
