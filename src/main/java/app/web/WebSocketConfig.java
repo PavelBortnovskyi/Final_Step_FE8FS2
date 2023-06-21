@@ -43,6 +43,7 @@ import java.util.Optional;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
+@Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final JwtTokenService jwtTokenService;
@@ -85,6 +86,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   }
 
   @Override
+  @Order(Ordered.HIGHEST_PRECEDENCE + 99)
   public void configureClientInboundChannel(ChannelRegistration registration) {
     registration.interceptors(new WebSocketChannelInterceptor());
   }
