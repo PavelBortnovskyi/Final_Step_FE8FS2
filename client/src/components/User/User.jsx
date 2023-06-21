@@ -2,7 +2,6 @@ import { Box, useTheme } from '@mui/material';
 import { UserAction } from './UserAction';
 import { UserHeder } from './UserHeder';
 import { UserInfo } from './UserInfo';
-import PostList from '../Post/PostList';
 
 export const User = ({
   idUser,
