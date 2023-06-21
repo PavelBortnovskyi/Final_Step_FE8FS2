@@ -104,11 +104,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
             if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
               processRequestWithToken(token, accessor);
+              log.info("Token:" + token);
+              log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+            } else {
+              throw new JwtAuthenticationException("Token is not valid");
             }
-            log.info("Token:" + token);
-            log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-          } else {
-            throw new JwtAuthenticationException("Token is not valid");
           }
         }
         //else throw new BadRequestException("Header Origin is null!");
