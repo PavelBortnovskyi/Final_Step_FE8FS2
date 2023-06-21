@@ -40,7 +40,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
-@Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
@@ -86,6 +85,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   }
 
   @Override
+  @Order(Ordered.HIGHEST_PRECEDENCE + 99)
   public void configureClientInboundChannel(ChannelRegistration registration) {
     registration.interceptors(new ChannelInterceptor() {
       @Override
