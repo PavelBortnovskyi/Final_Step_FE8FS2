@@ -7,6 +7,7 @@ import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
 import app.facade.UserFacade;
+import app.service.AuthUserService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,13 +38,15 @@ public class WebSocketController {
 
   private final SimpMessagingTemplate template;
 
+  private final AuthUserService authUserService;
+
   @Validated({Marker.New.class})
   @MessageMapping("/v1/message")
   public void processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
-    Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
-    this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO));
+   // Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
+    this.messageFacade.addMessageToChat(authUserService.getCurrUserId(), this.messageFacade.convertToEntity(messageDTO));
 
     chatFacade.getChatMemberEmails(messageDTO.getChatId())
       .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
