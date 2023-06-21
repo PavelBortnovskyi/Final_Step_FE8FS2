@@ -16,7 +16,8 @@ public class JwtUserDetails implements UserDetails, Serializable {
   private final String userTag;
 
   public JwtUserDetails(Long id, String userTag) {
-    this.id = id; this.userTag = userTag;
+    this.id = id;
+    this.userTag = userTag;
   }
 
   @Override

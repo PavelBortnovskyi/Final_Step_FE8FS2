@@ -3,8 +3,6 @@ package app.security;
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.service.JwtTokenService;
-import app.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -17,7 +17,7 @@ class SpringSecurityAuditorAware implements AuditorAware<String> {
   private AuthUserService authUserService;
 
   public Optional<String> getCurrentAuditor() {
-   return Optional.ofNullable(authUserService.getUserDetails().getUsername());
+    return Optional.ofNullable(authUserService.getUserDetails().getUsername());
   }
 
   public void setCurrentAuditor(String username) {
