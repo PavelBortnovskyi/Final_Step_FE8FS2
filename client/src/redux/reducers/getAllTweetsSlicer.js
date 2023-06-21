@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { getAllTweetsThunk } from '../thunk/tweets/getAllTweetsThunk.js';
 import { likePost } from '../thunk/tweets/likeTweet.js';
+import { createTweet } from '../thunk/tweets/createTweet.js';
 
 const initialState = {
   allTweets: [],
@@ -32,6 +33,10 @@ const getAllTweetsSlice = createSlice({
         state.allTweets = state.allTweets.map((tweet) =>
           tweet.id === likedTweet.id ? likedTweet : tweet
         );
+      })
+      .addCase(createTweet.fulfilled, (state, action) => {
+        const newTweet = action.payload;
+        state.allTweets = [newTweet, ...state.allTweets];
       });
   },
 });

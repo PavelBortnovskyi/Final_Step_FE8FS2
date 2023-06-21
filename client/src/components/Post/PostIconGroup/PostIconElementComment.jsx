@@ -2,8 +2,8 @@ import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getTweetByID } from 'src/redux/selectors/selectors';
-import { getTweetById } from 'src/redux/thunk/tweets/getTweetById';
+import { getSingleTweet } from 'src/redux/selectors/selectors';
+import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { useMode } from 'src/styles/_materialTheme';
@@ -14,12 +14,13 @@ function PostIconElementComment({ quantity, color, id }) {
 
   useEffect(() => {
     if (isModalOpen) {
-      dispatch(getTweetById(id));
+      dispatch(getTweetByIdThunk({ id }));
+      setIsModalOpen(!isModalOpen);
     }
   }, [isModalOpen]);
 
-  const tweet = useSelector(getTweetByID);
-  const post = tweet.tweet;
+  const tweet = useSelector(getSingleTweet);
+  const post = tweet.singleTweet;
   const theme = useMode();
   return (
     <Box

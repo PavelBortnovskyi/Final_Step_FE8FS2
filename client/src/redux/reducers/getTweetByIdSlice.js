@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getTweetById } from '../thunk/tweets/getTweetById.js';
+import { getTweetByIdThunk } from '../thunk/tweets/getTweetByIdThunk.js';
+import { likePost } from '../thunk/tweets/likeTweet.js';
 
 const initialState = {
-  singleTweet: {},
+  singleTweet: [],
   isLoading: false,
   error: '',
 };
@@ -14,18 +15,22 @@ export const tweetByIdSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(getTweetById.pending, (state) => {
+      .addCase(getTweetByIdThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getTweetById.fulfilled, (state, action) => {
-        state.tweet = action.payload;
+      .addCase(getTweetByIdThunk.fulfilled, (state, action) => {
+        state.singleTweet = action.payload;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getTweetById.rejected, (state, action) => {
+      .addCase(getTweetByIdThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(likePost.fulfilled, (state, action) => {
+        const likedTweet = action.payload;
+        state.singleTweet = likedTweet;
       });
   },
 });

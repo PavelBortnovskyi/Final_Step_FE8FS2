@@ -21,12 +21,14 @@ export const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (tabIndex === 0) {
-      dispatch(getAllTweetsThunk());
-      // console.log('all');
+    if (isAuthenticated) {
+      if (tabIndex === 0) {
+        dispatch(getAllTweetsThunk());
+      } else {
+        dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
+      }
     } else {
-      dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
-      // console.log('sub');
+      dispatch(getAllTweetsThunk());
     }
   }, [tabIndex]);
 
@@ -35,7 +37,6 @@ export const HomePage = () => {
 
   let subscriptions = useSelector(subscriptionsTweets);
   let subscriptionsArray = subscriptions.subscriptionsTweets;
-  // console.log(subscriptionsArray);
 
   return (
     <Box

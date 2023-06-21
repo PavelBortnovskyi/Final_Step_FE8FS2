@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import Post from '../Post/Post';
+import Post from '../Post/Post.1';
 import TweetPost from 'src/UI/tweet/TweetPost';
 
 function Comment({
