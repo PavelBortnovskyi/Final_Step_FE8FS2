@@ -4,17 +4,16 @@ import {
   Container,
   Grid,
   ListItemIcon,
-  useMediaQuery,
+  // useMediaQuery,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { Sidebar } from 'src/components/Sidebar/Sidebar';
-import { RightSection } from 'src/components/RightSection/RightSection';
 import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 import { MainRoutes } from 'src/routes/MainRoutes';
 import { ModalRoutes } from 'src/routes/ModalRoutes';
-import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolbar';
+// import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolbar';
 // import { Main } from 'src/components/Main/Main';
 // import { Modal } from 'src/components/Modal/Modal';
 
@@ -84,11 +83,6 @@ export const Layout = () => {
               display: { xs: 'none', md: 'block' },
             }}
           >
-            {/* temporarily commented out for chat testing */}
-            {/* did: <RightSection /> move in <RightRoutes /> */}
-            {/* <RightSection /> */}
-            {/* ******************** */}
-
             {/* for chat */}
             <RightRoutes />
           </Grid>
