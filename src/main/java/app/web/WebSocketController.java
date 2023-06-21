@@ -39,7 +39,6 @@ public class WebSocketController {
 
   @Validated({Marker.New.class})
   @MessageMapping("/v1/message")
-  @SendToUser
   public void processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
