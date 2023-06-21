@@ -122,7 +122,7 @@ public class NotificationService extends GeneralService<Notification> {
         StompHeaders stompHeaders = new StompHeaders();
         stompHeaders.setDestination("/api/v1/notifications");
         stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
-        session.send("/api/v1/notifications", notificationRequestDTO);
+        session.send(stompHeaders, notificationRequestDTO);
       }
     };
     stompClient.connect(socketUri, sessionHandler);
