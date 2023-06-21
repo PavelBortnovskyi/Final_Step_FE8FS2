@@ -52,7 +52,6 @@ export const NotificationsUser = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(Notifications);
   return (
     <Box sx={{ padding: '8px 0 0 0' }}>
       <Typography variant="h5"

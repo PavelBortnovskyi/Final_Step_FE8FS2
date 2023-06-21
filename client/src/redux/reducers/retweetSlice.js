@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addRetweet } from '../thunk/addRetweet.js';
+import { addRetweet } from '../thunk/tweets/addRetweet.js';
 
 const initialState = {
   retweetData: null,

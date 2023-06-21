@@ -1,26 +1,25 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { myAxios } from 'src/utils/axiosSetup.js';
+import { myAxios } from 'src/utils/axiosSetup';
 
-export const createTweet = createAsyncThunk(
-  'tweet',
+export const addQuote = createAsyncThunk(
+  'addQuote',
+
   async (tweet, { rejectWithValue }) => {
     try {
-      const { postInputText, postImages } = tweet;
-      console.log(postImages);
+      const { id, postInputText, postImages } = tweet;
 
       const formData = new FormData();
       formData.append('tweetBody', postInputText);
-      // formData.append('attachmentImages', postImages);
+      // formData.append('parentTweetId', id);
       postImages.forEach((image, index) => {
         formData.append(`attachmentImages`, image);
       });
+      const data = await myAxios.post(`/tweet/${id}/quote`, formData);
 
-      const data = await myAxios.post('/tweet', formData);
-      console.log(data.data);
-      return data.data;
+      return data;
     } catch (error) {
       const errorMessage = error.response.data || error.message;
       return rejectWithValue(errorMessage);
     }
   }
-);
+)

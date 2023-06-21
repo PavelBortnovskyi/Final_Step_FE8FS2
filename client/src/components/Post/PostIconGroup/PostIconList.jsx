@@ -23,7 +23,8 @@ function PostIconList({
   isRetweet,
   isComment,
   isBookmarks,
-  bookmarks
+  quote,
+  bookmarks,
 }) {
   const location = useLocation();
   const theme = useMode();
@@ -62,12 +63,18 @@ function PostIconList({
         id={id}
         isLiked={isLiked}
       />
-      <PostElementQuote
-        icon={<PublishOutlinedIcon fontSize="small" />}
-        quantity={reply}
-        id={id}
-        color="lightblue"
-      />
+      <NavLink
+        to="/modal/quote"
+        state={{ background: location }}
+        component={NavLink}
+      >
+        <PostElementQuote
+          icon={<PublishOutlinedIcon fontSize="small" />}
+          quantity={quote}
+          id={id}
+          color="lightblue"
+        />
+      </NavLink>
       <PostElementBookmarks
         icon={<BookmarkBorderIcon fontSize="small" />}
         quantity={bookmarks}

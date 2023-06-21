@@ -10,7 +10,7 @@ import messages from 'src/redux/reducers/messagesSlice';
 import followers from 'src/redux/reducers/followersSlice';
 import followings from 'src/redux/reducers/followingsSlice';
 import userBiId from 'src/redux/reducers/userBiIdSlice';
-import userBookmarks from 'src/redux/reducers/bookmarksSlise'
+import userBookmarks from 'src/redux/reducers/bookmarksSlise';
 import tweetReplies from 'src/redux/reducers/getTweetReplySlice';
 import likedTweet from 'src/redux/reducers/likedTweetSlice';
 import userNotifications from 'src/redux/reducers/getNotificationsSlice';
@@ -18,6 +18,7 @@ import allTweets from 'src/redux/reducers/getAllTweetsSlicer';
 import subscriptionsTweets from 'src/redux/reducers/subscriptionsTweetsSlicer';
 import userLikes from 'src/redux/reducers/userLikesSlice';
 import userReplise from 'src/redux/reducers/userRepliseSlice';
+import quoteSlice from 'src/redux/reducers/quoteSlice';
 
 
 const rootReducer = {
@@ -40,7 +41,7 @@ const rootReducer = {
   subscriptionsTweets,
   userLikes,
   userReplise,
-  
+  quoteSlice,
 };
 
 export const store = configureStore({

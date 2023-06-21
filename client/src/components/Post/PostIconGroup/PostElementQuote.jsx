@@ -1,29 +1,29 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addQuote } from 'src/redux/thunk/addQuote';
+import { Box, useTheme } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addQuote } from 'src/redux/thunk/tweets/addQuote';
+import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
 
 
-export const PostElementQuote = ({icon, quantity, color, id}) => {
-
+export const PostElementQuote = ({ icon, quantity, color, id }) => {
+  const theme = useTheme();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const handleQuote = () => {
-    if (false) {
-      // dispatch(deleteBookmark({ id }));
-      console.log('delete');
-
-    } else {
-      dispatch(addQuote({ id }));
-      console.log('add');
+  useEffect(() => {
+    if (isModalOpen) {
+      dispatch(getTweetByIdThunk({ id }));
+      setIsModalOpen(!isModalOpen);
     }
-  };
+  }, [isModalOpen]);
+
 
   return (
     <Box
-    onClick={handleQuote}
+      onClick={() => setIsModalOpen(true)}
       display="flex"
       sx={{
+        color: `${theme.palette.text.primary}`,
         gap: '10px',
         '&:hover': {
           color: { color },

@@ -20,11 +20,14 @@ export const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (tabIndex === 0) {
-      dispatch(getAllTweetsThunk());
+    if (isAuthenticated) {
+      if (tabIndex === 0) {
+        dispatch(getAllTweetsThunk());
+      } else {
+        dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
+      }
     } else {
-      dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
-      // console.log('sub');
+      dispatch(getAllTweetsThunk());
     }
   }, [tabIndex]);
 

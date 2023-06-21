@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addRetweet } from 'src/redux/thunk/addRetweet';
+import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
 
 export const PostIconElementRetweet = ({icon, quantity, color, id}) => {
   const dispatch = useDispatch();

@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addReplay } from '../thunk/addReplay.js';
+import { addQuote } from '../thunk/tweets/addQuote.js';
+
 
 const initialState = {
-  tweetBody: '',
-  attachmentImages: [],
+  // tweetBody: '',
+  // attachmentImages: [],
+  quoteTweet: [],
   isLoading: false,
   error: null,
 };
@@ -14,16 +16,17 @@ export const quoteSlice = createSlice({
 
   extraReducers: (builder) => {
     // create_replay
-    builder.addCase(addReplay.pending, (state, action) => {
+    builder.addCase(addQuote.pending, (state, action) => {
       state.isLoading = true;
       state.error = '';
     });
-    builder.addCase(addReplay.fulfilled, (state, action) => {
-      state.tweetBody = action.payload.tweetBody;
-      state.attachmentImages = action.payload.attachmentImages;
+    builder.addCase(addQuote.fulfilled, (state, action) => {
+      // state.tweetBody = action.payload.tweetBody;
+      // state.attachmentImages = action.payload.attachmentImages;
+      state.quoteTweet = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(addReplay.rejected, (state, action) => {
+    builder.addCase(addQuote.rejected, (state, action) => {
       state.error = action.payload;
       state.error = action.payload?.info;
       state.isLoading = false;
