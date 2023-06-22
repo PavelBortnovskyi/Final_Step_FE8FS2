@@ -31,7 +31,7 @@ public class TweetActionService {
   }
 
   @Transactional
-  //@SendNotification
+  @SendNotification
   public TweetAction createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
     return tweetActionRepository.getByUserAndTweetAndActionType(userService.getUser(userId), tweetService.getTweet(tweetId), tweetActionType)
       .orElseGet(() -> tweetActionRepository.save(new TweetAction(tweetActionType, userService.getUser(userId), tweetService.getTweet(tweetId))));
