@@ -90,21 +90,21 @@ export const FormRegistration = () => {
   };
 
   // default value for form
-  const initialValues = {
-    email: 'user7@gmail.com',
-    fullName: 'Giltam Furios',
-    userTag: 'giltam',
-    password: '11111111',
-    confirmPassword: '11111111',
-  };
   // const initialValues = {
-  //   email: '',
-  //   fullName: '',
-  //   userTag: '',
-  //   password: '',
-  // confirmPassword: '',
-  //   // birthDate: '',
+  //   email: 'user33@gmail.com',
+  //   fullName: 'Giltam Furios',
+  //   userTag: 'giltam33',
+  //   password: '11111111',
+  //   confirmPassword: '11111111',
   // };
+  const initialValues = {
+    email: '',
+    fullName: '',
+    userTag: '',
+    password: '',
+    confirmPassword: '',
+    // birthDate: '',
+  };
 
   return (
     <>

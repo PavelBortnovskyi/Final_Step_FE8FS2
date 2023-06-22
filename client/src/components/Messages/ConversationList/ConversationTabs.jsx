@@ -5,7 +5,6 @@ import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAlt
 import { useState } from 'react';
 
 import { TabContacts } from './TabContacts';
-import { TabChats } from './_temp_TabChats';
 
 // ************ STYLE ************
 const TabSearch = styled(Tab)(({ theme }) => ({
@@ -92,7 +91,6 @@ export const ConversationTabs = () => {
       </TabPanel>
       <TabPanel value={value} index={1}>
         {/* <TabChats /> */}
-        under construction
       </TabPanel>
     </Box>
   );
