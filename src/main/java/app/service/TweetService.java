@@ -30,7 +30,7 @@ public class TweetService extends GeneralService<Tweet> {
 
 
   @Transactional
-  @SendNotification
+  //@SendNotification
   public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
     if (files == null) files = new MultipartFile[0];
 
