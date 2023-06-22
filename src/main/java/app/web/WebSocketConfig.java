@@ -135,6 +135,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
           auditorAware.setCurrentAuditor(auth.getName());
           SecurityContextHolder.getContext().setAuthentication(auth);
           accessor.setUser(auth);
+          log.info("User: " + auth.getName() + " authorized");
           accessor.getSessionAttributes()
             .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
         });
