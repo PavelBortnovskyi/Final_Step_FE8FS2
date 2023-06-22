@@ -26,8 +26,6 @@ public class AuthController {
 
   private final AuthFacade authFacade;
 
-  private final ClientRegistrationRepository clientRegistrationRepository;
-
   /**
    * This endpoint waiting for valid loginDTO to check credentials and return new token pair(Access and Refresh)
    */

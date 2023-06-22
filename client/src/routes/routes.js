@@ -15,6 +15,7 @@ import { UserBiIdPage } from 'src/pages/UserByIdPage';
 import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 import ModalCommentPage from 'src/pages/ModalCommentPage';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
+import { ModalQuotePage } from 'src/pages/ModalQuotePage';
 
 export const mainRoutes = () => {
   return [
@@ -144,6 +145,10 @@ export const modalRoutes = () => {
     {
       path: '/modal/comment',
       element: <ModalCommentPage />,
+    },
+    {
+      path: '/modal/quote',
+      element: <ModalQuotePage />,
     },
   ];
 };

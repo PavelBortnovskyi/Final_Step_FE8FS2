@@ -1,17 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
-import { data } from '@emoji-mart/data';
+import { getChatMessages } from './getChatMessages.js';
 
 // create chat in DB with id guest
 export const getCurrentChat = createAsyncThunk(
   'chat/getCurrentChat',
-  async (guestId, { rejectWithValue }) => {
+  async ({ guestId, pageSize }, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await myAxios.post(
         `/chat/create?interlocutorId=${guestId}`
       );
 
-      // console.log(data);
+      dispatch(getChatMessages({ chatId: data[0].chatId, pageSize: pageSize }));
 
       return data;
       //

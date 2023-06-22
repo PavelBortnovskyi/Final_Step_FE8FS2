@@ -1,11 +1,12 @@
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import { Box, Typography, alpha, useTheme } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import TimeAgo from 'timeago-react';
 
 // this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
 // you have to add all necessary props
-
-// modify by Portnov Dmytro
 
 function UserNames({
   fullName = '',
@@ -14,7 +15,10 @@ function UserNames({
   postTime = '',
   text = null,
   color,
+  id,
+  userId,
 }) {
+  const dispatch = useDispatch();
   const theme = useTheme();
   return (
     <Box
@@ -24,7 +28,6 @@ function UserNames({
         alignItems: 'baseline',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        width: '100%',
       }}
     >
       <Box
@@ -36,7 +39,22 @@ function UserNames({
           width: '100%',
         }}
       >
-        <Typography variant="body1">{fullName}</Typography>
+        <Link
+          to={`/user/${id}`}
+          onClick={() => {
+            dispatch(getUserBiId(userId));
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{
+              color: `${theme.palette.text.primary}`,
+              '&:hover': { textDecoration: 'underline' },
+            }}
+          >
+            {fullName}
+          </Typography>
+        </Link>
         <div>
           {isVerified && (
             <VerifiedUserRoundedIcon

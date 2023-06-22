@@ -8,8 +8,11 @@ import { getTokens } from 'src/utils/tokens';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
 // import Stomp from 'stompjs';
-import { Stomp } from '@stomp/stompjs';
+import { Stomp, Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+
+// url socket server
+export const socketUrl = 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -19,55 +22,75 @@ export const App = () => {
   // socket connection reference
   const stompClientRef = useRef(null);
 
-  //****************** CONNECT TO SOCKET *********************/
+  //****************** CONNECT TO SOCKET without SockJS  *****************/
   useEffect(() => {
     if (isAuthenticated && accessToken) {
       try {
+        // create header
         const headers = {
           Authorization: `Bearer ${accessToken}`,
           Origin: 'client',
         };
 
-        // create connection to socket
-        const socket = new SockJS(
-          'https://final-step-fe2fs8tw.herokuapp.com/chat-ws'
-        );
-
-        // for -> import Stomp from 'stompjs' TODO: this old library ?
-        // stompClientRef.current = Stomp.over(socket);
-
-        // connect
-        stompClientRef.current = Stomp.over(() => socket);
+        // create connect to socket
+        stompClientRef.current = new Client({
+          brokerURL: socketUrl,
+          connectHeaders: headers,
+          // debug: function (str) {
+          //   console.log(str);
+          // },
+        });
         const stompClient = stompClientRef.current;
 
-        // connect
-        stompClient.connect(headers, () => {
-          console.log('Connected to WebSocket server');
-
-          // set connect to redux
+        // after activate connect
+        const connectCallback = () => {
+          // console.log('Connected to STOMP server');
+          stompClient.subscribe('/topic/chats', onMessageReceived, headers);
+          stompClient.subscribe(
+            '/topic/notifications',
+            (notification) => {
+              // console.log('notification: ', notification.body);
+            },
+            headers
+          );
           dispatch(setSocketChat(stompClient));
+        };
 
-          // chat chanel
-          stompClient.subscribe('/topic/chats', (message) => {
-            const receivedMessage = JSON.parse(message.body);
-            console.log('Received message:', receivedMessage);
-            dispatch(setCurrentMessage(receivedMessage));
-          });
+        // set received messages to redux
+        const onMessageReceived = (message) => {
+          // console.log('Received message:', message.body);
+          dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
 
-          // notification chanel
-          stompClient.subscribe('/topic/notifications', (message) => {
-            const receivedNotifications = JSON.parse(message.body);
-            console.log('Received notifications:', receivedNotifications);
-          });
-        });
+        // error socket
+        const errorCallback = (error) => {
+          console.error('*** Error:', error);
+        };
+
+        stompClient.onConnect = connectCallback;
+        stompClient.onStompError = errorCallback;
+
+        // activate connect
+        stompClient.activate();
+        //
+
+        //
       } catch (error) {
         console.error('Error activating STOMP connection:', error);
       }
 
       return () => {
-        if (stompClientRef.current && stompClientRef.current.connected) {
-          console.log('disconnect socket ->', stompClientRef.current.connected);
-          stompClientRef.current.disconnect();
+        try {
+          stompClientRef.current.deactivate();
+          //
+        } catch (error) {
+          console.error('Error deactivating STOMP connection:', error);
+
+          // TODO: work ??? If there is a connection error, try to reconnect.
+          if (error.message === 'Lost connection to server') {
+            console.log('Attempting to reconnect...');
+            stompClientRef.current.activate();
+          }
         }
       };
     }

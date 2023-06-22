@@ -2,7 +2,6 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MainPage_header from 'src/components/MainPage_header/MainPage_header';
-import PostList from 'src/components/Post/PostList';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getAllTweetsThunk } from 'src/redux/thunk/tweets/getAllTweetsThunk';
@@ -12,6 +11,7 @@ import {
   subscriptionsTweets,
 } from 'src/redux/selectors/selectors';
 import TweetList from 'src/UI/TweetList';
+import { getAllTweetsThunkNoAuth } from 'src/redux/thunk/tweets/getAllTweetsThunkNoAuth';
 
 export const HomePage = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -28,9 +28,11 @@ export const HomePage = () => {
         dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
       }
     } else {
-      dispatch(getAllTweetsThunk());
+      // get tweets without auth
+      dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 20 }));
+      // dispatch(getAllTweetsThunk());
     }
-  }, [tabIndex]);
+  }, [dispatch, isAuthenticated, tabIndex]);
 
   let allTweets = useSelector(getAllTweets);
   let allTweetsArray = allTweets.allTweets;
