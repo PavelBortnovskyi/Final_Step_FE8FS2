@@ -39,11 +39,7 @@ public class NotificationService extends GeneralService<Notification> {
 
   private final NotificationModelRepository notificationRepository;
 
-  private final SimpMessagingTemplate template;
-
-  private final ModelMapper modelMapper;
-
-  private final UserRepository userRepository;
+  private final WebSocketStompClient stompClient;
 
   @Value("${socket.host}")
   private String socketUri;
@@ -100,44 +96,30 @@ public class NotificationService extends GeneralService<Notification> {
     return this.notificationRepository.findById(id);
   }
 
-  public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) throws ExecutionException, InterruptedException {
-//    SockJsClient sockJsClient = new SockJsClient(
-//      Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient())));
-//
-//    WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
-//
-//    StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-//      @Override
-//      public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+  public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
+    StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
+      @Override
+      public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
           .setInitiatorUserId(senderUserId)
           .setTweetId(tweet.getId());
 
-        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
+        switch (tweet.getTweetType()) {
+          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+        }
+        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE))
           notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
             .setNotificationType(NotificationType.LIKE);
-        } else {
-          notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
 
-          switch (tweet.getTweetType()) {
-            case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-            case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-            case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
-          }
-        }
-        template.convertAndSendToUser(userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
-          "/topic/notifications", notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)));
+        else notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
 
-//        log.info("Sending:" + notificationRequestDTO.toString());
-//
-//        StompHeaders stompHeaders = new StompHeaders();
-//        stompHeaders.setDestination("/api/v1/notifications");
-//        stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
-//        session.send(stompHeaders, notificationRequestDTO);
-//      }
-//    };
-//    stompClient.connect(socketUri, sessionHandler);
-//    log.info("Connected to socket: " + socketUri);
+        log.info(notificationRequestDTO.toString());
+        session.send("/api/v1/notifications/private", notificationRequestDTO);
+      }
+    };
+    stompClient.connect(socketUri, sessionHandler);
     return tweet;
   }
 }
