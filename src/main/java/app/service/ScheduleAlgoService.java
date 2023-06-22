@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.util.*;
 
 @Component
@@ -38,20 +39,19 @@ public class ScheduleAlgoService {
 
     LinkedList<RatingModel> tweetsRatingSorted = new LinkedList<>();
 
-    for (Map.Entry<Long, Double> entry: tweetsRating.entrySet()) {
+    for (Map.Entry<Long, Double> entry : tweetsRating.entrySet()) {
       Long key = entry.getKey();
       Double value = entry.getValue();
       tweetsRatingSorted.add(new RatingModel(key, value));
     }
 
-        
+
     // создаем параметр сравнения и сортируем по рейтингу
     Comparator<RatingModel> ratingModelComparator = Comparator.comparingDouble(RatingModel::getTweetRating);
     Collections.sort(tweetsRatingSorted, ratingModelComparator);
 
     log.info(tweetsRatingSorted);
 
-    
 
     //записываем отсортированые твиты по рейтингу первые 50 или до 50
     List<RatingModel> savedRating;
@@ -71,7 +71,7 @@ public class ScheduleAlgoService {
   private double setRating(Tweet tweet) {
     double coef;
     // сколько лайков
-    coef =  tweetActionService.getCountLikes(tweet) * 0.02;
+    coef = tweetActionService.getCountLikes(tweet) * 0.02;
     // сколько прокоментировали
     coef += tweetService.getCountRetweetTweets(tweet) * 0.5;
 
