@@ -5,6 +5,8 @@ import { likePost } from '../thunk/tweets/likeTweet.js';
 import { createTweet } from '../thunk/tweets/createTweet.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
+import { getAllTweetsThunkNoAuth } from '../thunk/tweets/getAllTweetsThunkNoAuth.js';
+import { addRetweet } from '../thunk/tweets/addRetweet.js';
 
 const initialState = {
   allTweets: [],
@@ -17,6 +19,19 @@ const getAllTweetsSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      .addCase(getAllTweetsThunkNoAuth.pending, (state) => {
+        state.isLoading = true;
+        state.error = '';
+      })
+      .addCase(getAllTweetsThunkNoAuth.fulfilled, (state, action) => {
+        state.allTweets = action.payload;
+        state.isLoading = false;
+        state.error = '';
+      })
+      .addCase(getAllTweetsThunkNoAuth.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       .addCase(getAllTweetsThunk.pending, (state) => {
         state.isLoading = true;
         state.error = '';
@@ -29,6 +44,12 @@ const getAllTweetsSlice = createSlice({
       .addCase(getAllTweetsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        const retweetTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) =>
+          tweet.id === retweetTweet.id ? retweetTweet : tweet
+        );
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;

@@ -41,6 +41,13 @@ public class ChatController {
     return ResponseEntity.ok(this.chatFacade.createChat(authUserService.getCurrUserId(), interlocutorId));
   }
 
+  @Validated({Marker.ChatDetails.class})
+  @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<ChatResponseDTO> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
+                                                           @PathVariable(name = "id") Long chatId) {
+    return ResponseEntity.ok(chatFacade.getChatById(chatId));
+  }
+
   /**
    * This endpoint waiting for valid url params and token to delete chat (can be deleted only by chat initiator!)
    */
@@ -52,6 +59,7 @@ public class ChatController {
       return ResponseEntity.ok("Chat id: " + chatId + " deleted");
     else return ResponseEntity.badRequest().body("Can not delete chat id: " + chatId);
   }
+
 
   /**
    * This endpoint waiting for valid url params to add user to chat and return updated chat response
@@ -97,10 +105,10 @@ public class ChatController {
    */
   @Validated({Marker.ChatDetails.class})
   @GetMapping(path = "/{id}/messages", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Page<MessageResponseDTO> handleGetChat(@PathVariable(name = "id") Long chatId,
-                                                @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
-                                                @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
-                                                @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
+  public Page<MessageResponseDTO> handleGetChatMessages(@PathVariable(name = "id") Long chatId,
+                                                        @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
+                                                        @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                                        @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     return this.chatFacade.getChatMessages(authUserService.getCurrUserId(), chatId, pageSize, page);
   }
 

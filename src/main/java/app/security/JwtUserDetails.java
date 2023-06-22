@@ -13,10 +13,11 @@ public class JwtUserDetails implements UserDetails, Serializable {
 
   private final Long id;
 
-  private final String userTag;
+  private final String email;
 
-  public JwtUserDetails(Long id, String userTag) {
-    this.id = id; this.userTag = userTag;
+  public JwtUserDetails(Long id, String email) {
+    this.id = id;
+    this.email = email;
   }
 
   @Override
@@ -33,7 +34,7 @@ public class JwtUserDetails implements UserDetails, Serializable {
 
   @Override
   public String getUsername() {
-    return this.userTag;
+    return this.email;
   }
 
   @Override
@@ -59,5 +60,6 @@ public class JwtUserDetails implements UserDetails, Serializable {
   public Long getId() {
     return this.id;
   }
+
 }
 

@@ -19,10 +19,13 @@ import styles from 'src/styles/Forms.module.scss';
 
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
-    color: theme.palette.black.main,
+    color: theme.palette.text.primary,
 
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.border.second,
+    },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.primary.main,
+      borderColor: theme.palette.border.main,
     },
   },
 }));
@@ -68,7 +71,7 @@ export const FormLogin = () => {
 
   // default value for form
   const initialValues = {
-    email: 'user7@gmail.com',
+    email: 'user1@gmail.com',
     password: '11111111',
   };
   // const initialValues = {

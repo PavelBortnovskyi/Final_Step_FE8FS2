@@ -1,9 +1,15 @@
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getMessages, getUserData } from 'src/redux/selectors/selectors';
+import {
+  getChats,
+  getMessages,
+  getUserData,
+} from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
-import { MessagesUserNames } from 'src/UI/MessagesUserNames';
+import UserNames from 'src/UI/UserNames';
+import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
+import { useEffect } from 'react';
 import { setGuest } from 'src/redux/reducers/chatSlice';
 
 // ************ STYLE ************
@@ -25,18 +31,38 @@ export const TabPeople = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(getUserData);
   const { isLoading, findUser } = useSelector(getMessages);
-  // const { currentChat } = useSelector(getChats);
+  const { currentChat } = useSelector(getChats);
 
-  // set guest from local data
-  const handleClick = ({ id, fullName, avatarImgUrl, userTag }) => {
-    const guest = {
-      id,
-      fullName,
-      avatarImgUrl,
-      userTag,
-    };
-    dispatch(setGuest(guest));
+  // set Guest for chat
+  const handleClick = (id) => {
+    // get chat data
+    dispatch(getCurrentChat({ guestId: id, pageSize: 999 }));
   };
+
+  // set chat
+  useEffect(() => {
+    // console.log('new chat?', currentChat?.length);
+
+    if (currentChat) {
+      // find only personal chats
+      const tempChatData = currentChat.find((chat) => chat.users.length === 1);
+
+      // create guest obj
+      if (tempChatData) {
+        const guestData =
+          tempChatData.initiatorUser?.id !== user.id
+            ? tempChatData.initiatorUser
+            : tempChatData.users[0];
+
+        const setGuestData = {
+          chatId: tempChatData.chatId,
+          guestData,
+        };
+
+        dispatch(setGuest(setGuestData));
+      }
+    }
+  }, [currentChat, dispatch, user.id]);
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)
@@ -60,16 +86,16 @@ export const TabPeople = () => {
         <Box>
           {findUser.content
             .filter((find) => find.id !== user.id)
-            .map((user) => (
-              <BoxSearchPerson key={user.id} onClick={() => handleClick(user)}>
+            .map(({ id, fullName, avatarImgUrl, userTag }) => (
+              <BoxSearchPerson key={id} onClick={() => handleClick(id)}>
                 <Avatar
                   sx={{ width: 56, height: 56 }}
-                  alt={user.fullName}
-                  src={user.avatarImgUrl || 'img/avatar/empty-avatar.png'}
+                  alt={fullName}
+                  src={avatarImgUrl || 'img/avatar/empty-avatar.png'}
                 />
-                <MessagesUserNames
-                  fullName={user.fullName}
-                  userTag={user.userTag}
+                <UserNames
+                  fullName={fullName}
+                  userTag={userTag}
                   // text={''}
                   // postTime={''}
                 />

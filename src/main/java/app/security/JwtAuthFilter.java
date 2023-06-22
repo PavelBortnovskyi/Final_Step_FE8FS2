@@ -3,11 +3,10 @@ package app.security;
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.service.JwtTokenService;
-import app.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -73,11 +72,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/auth/password/reset", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/password/reset/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/login/oauth2/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/tweet/top", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
-      new AntPathRequestMatcher("/chat-ws", requestMethod),
-      new AntPathRequestMatcher("/chat-ws/**", requestMethod),
-      new AntPathRequestMatcher("/notifications-ws", requestMethod),
-      new AntPathRequestMatcher("/notifications-ws/**", requestMethod)
+      new AntPathRequestMatcher("/chat-ws", HttpMethod.GET.name()),
+      new AntPathRequestMatcher("/chat-ws/**", HttpMethod.GET.name())
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
@@ -88,12 +86,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     return false;
   }
 
-  private void processRequestWithToken(HttpServletRequest request, String token) throws ServletException, IOException {
+  private void processRequestWithToken(HttpServletRequest request, String token) {
     try {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(claims -> {
           Long userId = this.tokenService.extractIdFromClaims(claims).get();
-          String username = this.tokenService.extractUserNameFromClaims(claims).get();
+          String username = this.tokenService.extractUserEmailFromClaims(claims).get();
           return Optional.of(Pair.of(userId, username));
         })
         .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
@@ -103,7 +101,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           SecurityContextHolder.getContext().setAuthentication(auth);
         });
     } catch (Exception e) {
-      throw new JwtAuthenticationException("Login failed with: " + e.getMessage());
+      throw new JwtAuthenticationException("Authentication failed with: " + e.getMessage());
     }
   }
 }
