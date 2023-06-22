@@ -45,8 +45,8 @@ public class WebSocketController {
   public void processChatMessage(@Payload @Valid @JsonView({Marker.New.class})
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
-   // Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
-    this.messageFacade.addMessageToChat(authUserService.getCurrUserId(), this.messageFacade.convertToEntity(messageDTO));
+    Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
+    this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO));
 
     chatFacade.getChatMemberEmails(messageDTO.getChatId())
       .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
