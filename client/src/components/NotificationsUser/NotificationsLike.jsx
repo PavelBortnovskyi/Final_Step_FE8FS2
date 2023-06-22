@@ -24,8 +24,8 @@ export const NotificationsLike = ({ notification }) => {
   const TextPreview = Text.length >= 90 ? Text.slice(0, 90) + "..." : Text;
   const fullName = notification.initiator.fullName || '';
   const FirstName = fullName.length > 24 ? fullName.slice(0, 24) + "..." : fullName;
-  const Images = notification.tweet.attachmentImages;
-
+  const Images = notification.tweet.attachmentImages || [];
+  
   return (
 
     <StyledLink to={`/tweet/${notification.tweet.id}`} key={notification.tweet.id}>

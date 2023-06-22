@@ -6,6 +6,7 @@ import { createTweet } from '../thunk/tweets/createTweet.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
 import { getAllTweetsThunkNoAuth } from '../thunk/tweets/getAllTweetsThunkNoAuth.js';
+import { addRetweet } from '../thunk/tweets/addRetweet.js';
 
 const initialState = {
   allTweets: [],
@@ -43,6 +44,12 @@ const getAllTweetsSlice = createSlice({
       .addCase(getAllTweetsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        const retweetTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) =>
+          tweet.id === retweetTweet.id ? retweetTweet : tweet
+        );
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;

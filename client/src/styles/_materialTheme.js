@@ -29,6 +29,7 @@ export const themeSettings = (colorTheme) => {
           },
           border: {
             main: '#38444d',
+            second: '#38444d',
           },
           gray: {
             main: '#eff3f4',
@@ -48,9 +49,6 @@ export const themeSettings = (colorTheme) => {
           },
           logo: {
             main: '#FFF',
-          },
-          border: {
-            main: '#4d4d4d',
           },
         }
         : {
@@ -72,6 +70,7 @@ export const themeSettings = (colorTheme) => {
           },
           border: {
             main: '#fff',
+            second: '#38444d',
           },
           gray: {
             main: '#eff3f4',
@@ -91,9 +90,6 @@ export const themeSettings = (colorTheme) => {
           },
           logo: {
             main: 'rgb(30, 155, 240)',
-          },
-          border: {
-            main: '#dfdfdf',
           },
         }),
     },

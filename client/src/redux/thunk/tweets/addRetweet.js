@@ -10,6 +10,7 @@ export const addRetweet = createAsyncThunk(
       const { data } = await myAxios.post(
         `/tweet/${id}/retweet`
       );
+      console.log(id);
       console.log('retweet' + data);
       console.log(data);
       return data;

@@ -43,7 +43,7 @@ export const NotificationsUser = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getNotifications({ page: 0, pageSize: 200 }));
+    dispatch(getNotifications({ page: 0, pageSize: 300 }));
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
