@@ -21,12 +21,11 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 export const NotificationsRetweet = ({ notification }) => {
   const theme = useTheme();
-
-  const Text = notification.tweet.body || '';
+  const Text = notification.tweet.parentTweet.body || '';
   const TextPreview = Text.length > 90 ? Text.slice(0, 90) + "..." : Text;
   const fullName = notification.initiator.fullName || '';
   const FirstName = fullName.length > 24 ? fullName.slice(0, 24) + "..." : fullName;
-  const Images = notification.tweet.attachmentsImages || [];
+  const Images = notification.tweet.parentTweet.attachmentImages || [];
 
   return (
     <StyledLink to={`/tweet/${notification.tweet.id}`} key={notification.tweet.id}>

@@ -2,8 +2,7 @@ import React from 'react';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
-import PostIconElement from './PostIconElement';
+import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 import PostIconElementLike from './PostIconElementLike';
 import PostIconElementComment from './PostIconElementComment';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -43,7 +42,10 @@ function PostIconList({
         state={{ background: location }}
         component={NavLink}
       >
-        <PostIconElementComment quantity={reply} color="#72bcd4" id={id} />
+        <PostIconElementComment 
+        quantity={reply} 
+        color="#72bcd4" 
+        id={id} />
       </NavLink>
 
       <PostIconElementRetweet
@@ -66,7 +68,7 @@ function PostIconList({
         component={NavLink}
       >
         <PostElementQuote
-          icon={<PublishOutlinedIcon fontSize="small" />}
+          icon={<QuestionAnswerOutlinedIcon fontSize="small" />}
           quantity={quote}
           id={id}
           color="lightblue"
