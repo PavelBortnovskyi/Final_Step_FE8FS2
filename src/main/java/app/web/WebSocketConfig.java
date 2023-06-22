@@ -67,8 +67,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/**", //TODO: need to change on deploy
         "http://localhost:8080", "http://localhost:8080/**",
-        "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**", "*")
-      .withSockJS();
+        "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**");
       //.setInterceptors(customHandshakeInterceptor);
 
 //    registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("final-step-fe2fs8tw.herokuapp.com",
