@@ -76,7 +76,7 @@ public class WebSocketController {
   }
 
   @Validated({Marker.New.class})
-  @MessageMapping("/v1/notifications")
+  @MessageMapping("/v1/notifications/private")
   public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
                                          NotificationRequestDTO notificationRequestDTO,
                                          SimpMessageHeaderAccessor accessor) {

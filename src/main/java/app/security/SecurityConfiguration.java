@@ -86,7 +86,7 @@ public class SecurityConfiguration {
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
 
     //X-frame-Options for SockJS
-    httpSec.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+    //httpSec.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
 
     //CORS config
