@@ -4,6 +4,7 @@ import app.dto.rq.NotificationRequestDTO;
 import app.dto.rs.NotificationResponseDTO;
 import app.enums.NotificationType;
 import app.enums.TweetActionType;
+import app.enums.TweetType;
 import app.model.Notification;
 import app.model.Tweet;
 import app.repository.NotificationModelRepository;
@@ -86,24 +87,23 @@ public class NotificationService extends GeneralService<Notification> {
   }
 
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
+      NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
+        .setInitiatorUserId(senderUserId)
+        .setTweetId(tweet.getId());
 
-    NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
-      .setInitiatorUserId(senderUserId)
-      .setTweetId(tweet.getId());
-
-    if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
-      notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
-        .setNotificationType(NotificationType.LIKE);
-    } else {
-      notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-      switch (tweet.getTweetType()) {
-        case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-        case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-        case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+      if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
+        notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
+          .setNotificationType(NotificationType.LIKE);
+      } else if (!tweet.getTweetType().equals(TweetType.TWEET)){
+        notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
+        switch (tweet.getTweetType()) {
+          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+        }
       }
-    }
-    template.convertAndSendToUser(userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
-      "/topic/notifications", modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
+      template.convertAndSendToUser(userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
+        "/topic/notifications", modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
     return tweet;
   }
 }

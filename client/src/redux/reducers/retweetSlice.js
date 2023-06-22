@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 
 const initialState = {
-  retweetData: null,
+  retweetData: [],
   isLoading: false,
   error: null,
 };
@@ -18,8 +18,8 @@ export const retweetSlice = createSlice({
       state.error = null;
     })
     builder.addCase(addRetweet.fulfilled, (state, action) => {
-      state.retweetData = [action.payload, ...state.retweetData];
-      // state.retweetData = action.payload;
+      // state.retweetData = [action.payload, ...state.retweetData];
+      state.retweetData = action.payload;
       state.isLoading = false;
       state.error = null;
     })
