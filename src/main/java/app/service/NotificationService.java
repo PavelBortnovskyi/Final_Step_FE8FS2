@@ -87,7 +87,6 @@ public class NotificationService extends GeneralService<Notification> {
   }
 
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
-    if ((!tweet.getTweetType().equals(TweetType.TWEET))) {
       NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
         .setInitiatorUserId(senderUserId)
         .setTweetId(tweet.getId());
@@ -95,7 +94,7 @@ public class NotificationService extends GeneralService<Notification> {
       if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
         notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
           .setNotificationType(NotificationType.LIKE);
-      } else {
+      } else if (!tweet.getTweetType().equals(TweetType.TWEET)){
         notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
         switch (tweet.getTweetType()) {
           case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
@@ -105,7 +104,6 @@ public class NotificationService extends GeneralService<Notification> {
       }
       template.convertAndSendToUser(userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
         "/topic/notifications", modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
-    }
     return tweet;
   }
 }
