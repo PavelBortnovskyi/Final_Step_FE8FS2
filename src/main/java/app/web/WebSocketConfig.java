@@ -133,6 +133,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
         .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
           auditorAware.setCurrentAuditor(auth.getName());
+          auth.setAuthenticated(true);
           SecurityContextHolder.getContext().setAuthentication(auth);
           accessor.setUser(auth);
           log.info("User: " + auth.getName() + " authorized");
