@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -61,7 +62,7 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/test/**").permitAll()
       //.antMatchers("/chat-ws").permitAll()
-      .antMatchers("/chat-ws/info*").permitAll()
+      .antMatchers("/chat-ws/*").permitAll()
       //.antMatchers("/api/v1/message").permitAll()
       //.antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
@@ -83,6 +84,9 @@ public class SecurityConfiguration {
 
     //Filter for interception of JwtAuthenticationException from jwtAuthFilter
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
+
+    //X-frame-Options for SockJS
+    httpSec.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
 
     //CORS config

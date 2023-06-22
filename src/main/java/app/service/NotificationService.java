@@ -6,8 +6,10 @@ import app.enums.TweetActionType;
 import app.model.Notification;
 import app.model.Tweet;
 import app.repository.NotificationModelRepository;
+import app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +40,10 @@ public class NotificationService extends GeneralService<Notification> {
   private final NotificationModelRepository notificationRepository;
 
   private final SimpMessagingTemplate template;
+
+  private final ModelMapper modelMapper;
+
+  private final UserRepository userRepository;
 
   @Value("${socket.host}")
   private String socketUri;
@@ -95,14 +101,14 @@ public class NotificationService extends GeneralService<Notification> {
   }
 
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) throws ExecutionException, InterruptedException {
-    SockJsClient sockJsClient = new SockJsClient(
-      Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient())));
-
-    WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
-
-    StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-      @Override
-      public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+//    SockJsClient sockJsClient = new SockJsClient(
+//      Collections.singletonList(new WebSocketTransport(new StandardWebSocketClient())));
+//
+//    WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
+//
+//    StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
+//      @Override
+//      public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
           .setInitiatorUserId(senderUserId)
           .setTweetId(tweet.getId());
@@ -119,17 +125,19 @@ public class NotificationService extends GeneralService<Notification> {
             case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
           }
         }
+        template.convertAndSendToUser(userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
+          "/topic/notifications", notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)));
 
-        log.info("Sending:" + notificationRequestDTO.toString());
-
-        StompHeaders stompHeaders = new StompHeaders();
-        stompHeaders.setDestination("/api/v1/notifications");
-        stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
-        session.send(stompHeaders, notificationRequestDTO);
-      }
-    };
-    stompClient.connect(socketUri, sessionHandler);
-    log.info("Connected to socket: " + socketUri);
+//        log.info("Sending:" + notificationRequestDTO.toString());
+//
+//        StompHeaders stompHeaders = new StompHeaders();
+//        stompHeaders.setDestination("/api/v1/notifications");
+//        stompHeaders.set("Origin", socketUri.substring(0, socketUri.lastIndexOf("/chat-ws")));
+//        session.send(stompHeaders, notificationRequestDTO);
+//      }
+//    };
+//    stompClient.connect(socketUri, sessionHandler);
+//    log.info("Connected to socket: " + socketUri);
     return tweet;
   }
 }

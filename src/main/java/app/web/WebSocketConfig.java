@@ -2,7 +2,6 @@ package app.web;
 
 import app.enums.TokenType;
 import app.exceptions.authError.JwtAuthenticationException;
-import app.exceptions.httpError.BadRequestException;
 import app.security.JwtUserDetails;
 import app.service.JwtTokenService;
 import app.utils.SpringSecurityAuditorAware;
@@ -25,7 +24,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.MimeTypeUtils;
@@ -52,6 +50,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final SpringSecurityAuditorAware auditorAware;
 
+  //private final CustomHandshakeInterceptor customHandshakeInterceptor;
+
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
     registration.setMessageSizeLimit(128 * 1024);
@@ -65,9 +65,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/**",
-      "http://localhost:8080", "http://localhost:8080/**",
-      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**", "*").withSockJS(); //TODO: need to change on deploy
+    registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/**", //TODO: need to change on deploy
+        "http://localhost:8080", "http://localhost:8080/**",
+        "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**", "*")
+      .withSockJS();
+      //.setInterceptors(customHandshakeInterceptor);
 
 //    registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("final-step-fe2fs8tw.herokuapp.com",
 //      "final-step-fe2fs8tw.herokuapp.com/**", "http://localhost:8080", "http://localhost:8080/**",
@@ -108,7 +110,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
           if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-            processRequestWithToken(token, accessor);
+            processHttpRequestWithToken(token, accessor);
             log.info("Token:" + token);
             log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
           } else {
@@ -122,7 +124,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
   }
 
-  private void processRequestWithToken(String token, StompHeaderAccessor accessor) {
+  private void processHttpRequestWithToken(String token, StompHeaderAccessor accessor) {
     try {
       this.jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(claims -> {
