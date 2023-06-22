@@ -23,14 +23,6 @@ import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { ChatSender } from './ChatSender';
 import { getChatMessages } from 'src/redux/thunk/getChatMessages';
 
-// id:2
-// fullName:"User2 Vasilevich"
-// userTag:"@user2Tag"
-// avatarImgUrl:null
-// countUserFollowers:0
-// createdAt:"2023-05-29T09:36:03.870049"
-// verified:true
-
 // ************ STYLE ************
 const ChatContainer = styled(Box)`
   display: flex;
@@ -87,10 +79,7 @@ export const Chat = () => {
   const dispatch = useDispatch();
 
   // get guest data from redux
-  const { isLoading, guest } = useSelector(getChats);
-
-  // console.log('guest', guest);
-  // console.log('currentChat', currentChat);
+  const { guest } = useSelector(getChats);
 
   // close chat
   const handleCloseConnection = () => {
@@ -104,11 +93,8 @@ export const Chat = () => {
       if (!guest) return;
 
       try {
-        // get chat messages from DB
-        dispatch(getChatMessages({ chatId: guest.chatId, page: 0 }));
-
         // get chat data
-        dispatch(getCurrentChat(guest.guestData.id));
+        dispatch(getCurrentChat({ guestId: guest.id, pageSize: 999 }));
         //
       } catch (error) {
         console.log(error);
@@ -117,7 +103,6 @@ export const Chat = () => {
 
     createChat();
   }, [dispatch, guest]);
-
   // ************** CHAT FROM DB ***************
 
   return (
@@ -126,17 +111,10 @@ export const Chat = () => {
         {!guest ? (
           <ChatHeader>
             <Typography variant="h6">Chat</Typography>
-
-            {isLoading ? (
-              <BoxLoading>
-                <Loading size={34} />
-              </BoxLoading>
-            ) : (
-              <WelcomeMessage>
-                Choose from your existing conversations, start a new one, or
-                just keep swimming.
-              </WelcomeMessage>
-            )}
+            <WelcomeMessage>
+              Choose from your existing conversations, start a new one, or just
+              keep swimming.
+            </WelcomeMessage>
           </ChatHeader>
         ) : (
           <>
@@ -154,15 +132,13 @@ export const Chat = () => {
               </Tooltip>
               <Avatar
                 sx={{ width: 56, height: 56, marginBottom: '8px' }}
-                alt={guest.guestData.fullName}
-                src={
-                  guest.guestData.avatarImgUrl || 'img/avatar/empty-avatar.png'
-                }
+                alt={guest.fullName}
+                src={guest.avatarImgUrl || 'img/avatar/empty-avatar.png'}
               />
               <Typography sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-                {guest.guestData.fullName}
+                {guest.fullName}
               </Typography>
-              <Typography>{guest.guestData.userTag}</Typography>
+              <Typography>{guest.userTag}</Typography>
             </GuestInfo>
 
             {/* Chat */}

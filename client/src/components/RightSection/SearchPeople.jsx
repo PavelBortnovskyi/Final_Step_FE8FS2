@@ -20,7 +20,11 @@ export const SearchPeople = () => {
 
   // return hello-string if searchStr is empty
   if ((!findUser || findUser.searchStr === '') && !isLoading)
-    return <Typography sx={{ margin: "16px" }}>Try searching for people or messages</Typography>;
+    return (
+      <Typography sx={{ margin: '16px' }}>
+        Try searching for people or messages
+      </Typography>
+    );
 
   // return Loading component if isLoading=true
   if (isLoading) return <Loading size={34} />;
@@ -32,10 +36,13 @@ export const SearchPeople = () => {
   return (
     <>
       {!isResult ? (
-        <Box >
-          <Typography variant="h5" sx={{ margin: "16px 0" }}>no results</Typography>
-          <Typography variant="body2">The term you entered did not bring up any results</Typography>
-
+        <Box>
+          <Typography variant="h5" sx={{ margin: '16px 0' }}>
+            no results
+          </Typography>
+          <Typography variant="body2">
+            The term you entered did not bring up any results
+          </Typography>
         </Box>
       ) : (
         <Box
@@ -47,17 +54,15 @@ export const SearchPeople = () => {
             width: '100%',
           }}
         >
-
           {findUser.content.map(
             ({ id, fullName, avatarImgUrl, verified, userTag }) => (
               <Link
                 to={`/user/${id}`}
-                style={{color: `${theme.palette.text.primary}`,}}
+                style={{ color: `${theme.palette.text.primary}` }}
                 underline="none"
                 key={id}
               >
                 <BoxSearchPerson
-
                   sx={{ display: 'flex', gap: '12px', padding: '8px' }}
                 >
                   <Avatar
@@ -77,7 +82,6 @@ export const SearchPeople = () => {
               </Link>
             )
           )}
-
         </Box>
       )}
     </>

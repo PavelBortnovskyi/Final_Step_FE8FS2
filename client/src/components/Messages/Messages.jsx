@@ -27,7 +27,7 @@ export const Messages = () => {
 
   // set all chats to redux
   useEffect(() => {
-    dispatch(getAllChats({ page: 0, pageSize: 5 }));
+    dispatch(getAllChats({ page: 0 }));
   }, [dispatch]);
 
   return (

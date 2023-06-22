@@ -5,6 +5,7 @@ import { ChatBodyMessage } from './ChatBodyMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { getChats } from 'src/redux/selectors/selectors';
 import { setCurrentMessage } from 'src/redux/reducers/chatSlice';
+import { Loading } from 'src/UI/Loading';
 
 // ************ STYLE ************
 const Container = styled(Box)(({ theme }) => ({
@@ -17,6 +18,13 @@ const Container = styled(Box)(({ theme }) => ({
   padding: '0 6px 12px 0',
   gap: '8px',
 }));
+
+const BoxLoading = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 14px 0;
+`;
 // ************ STYLE ************
 
 // ************ ChatBody ************
@@ -25,7 +33,8 @@ export const ChatBody = () => {
   const [messages, setMessages] = useState([]);
 
   // get guest data from redux
-  const { chatMessages, currentMessage, currentChat } = useSelector(getChats);
+  const { isLoadingCurrentData, chatMessages, currentMessage, currentChat } =
+    useSelector(getChats);
 
   // get chat data history
   useEffect(() => {
@@ -44,7 +53,7 @@ export const ChatBody = () => {
     };
 
     getChatData();
-  }, [chatMessages]);
+  }, [chatMessages, dispatch]);
 
   // get current message
   useEffect(() => {
@@ -69,12 +78,20 @@ export const ChatBody = () => {
   // ************* SCROLL *************
   return (
     <Container>
-      {messages &&
-        messages.map((message) => (
-          <Box ref={scrollRef} key={message.messageId}>
-            <ChatBodyMessage message={message} />
-          </Box>
-        ))}
+      {isLoadingCurrentData ? (
+        <BoxLoading>
+          <Loading size={34} />
+        </BoxLoading>
+      ) : (
+        <>
+          {messages &&
+            messages.map((message) => (
+              <Box ref={scrollRef} key={message.messageId}>
+                <ChatBodyMessage message={message} />
+              </Box>
+            ))}
+        </>
+      )}
     </Container>
   );
 };

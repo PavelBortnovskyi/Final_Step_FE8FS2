@@ -1,33 +1,29 @@
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import { Box, Typography, alpha, useTheme } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import TimeAgo from 'timeago-react';
 
 // this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
 // you have to add all necessary props
 
-function UserNames({
+// modify by Portnov Dmytro
+
+export const MessagesUserNames = ({
   fullName = '',
-  isVerified,
+  verified = false,
   userTag = '',
-  postTime = '',
-  text = null,
-  color,
-  id,
-  userId,
-}) {
-  const dispatch = useDispatch();
+  text = '',
+  postTime = null,
+}) => {
   const theme = useTheme();
   return (
     <Box
       display="flex"
       sx={{
-        color: color,
         alignItems: 'baseline',
         justifyContent: 'space-between',
+        marginBottom: '10px',
         flexDirection: 'column',
+        width: '100%',
       }}
     >
       <Box
@@ -39,27 +35,14 @@ function UserNames({
           width: '100%',
         }}
       >
-        <Link
-          to={`/user/${id}`}
-          onClick={() => {
-            dispatch(getUserBiId(userId));
-          }}
-        >
-          <Typography
-            variant="body1"
-            sx={{
-              color: `${theme.palette.text.primary}`,
-              '&:hover': { textDecoration: 'underline' },
-            }}
-          >
-            {fullName}
-          </Typography>
-        </Link>
+        <Typography variant="body1">{fullName}</Typography>
         <div>
-          {isVerified && (
+          {verified ? (
             <VerifiedUserRoundedIcon
               sx={{ fontSize: '16px', color: '#1d9bf0' }}
             />
+          ) : (
+            <Box>&#8901;</Box>
           )}
         </div>
         <Typography sx={{ fontSize: '14px' }}>{userTag}</Typography>
@@ -95,6 +78,4 @@ function UserNames({
       )}
     </Box>
   );
-}
-
-export default UserNames;
+};

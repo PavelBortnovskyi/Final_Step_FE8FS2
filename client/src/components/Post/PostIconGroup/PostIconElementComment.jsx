@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getSingleTweet } from 'src/redux/selectors/selectors';
-import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
+import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk.js';
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { useMode } from 'src/styles/_materialTheme';

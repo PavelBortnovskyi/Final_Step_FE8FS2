@@ -47,7 +47,7 @@ export const ChatSender = () => {
   const [messageText, setMessageText] = useState('');
   const [errorSocket, setErrorSocket] = useState('');
 
-  const { guest, socketChat } = useSelector(getChats);
+  const { socketChat, currentChat } = useSelector(getChats);
   const { user } = useSelector(getUserData);
 
   const { accessToken } = getTokens();
@@ -60,16 +60,36 @@ export const ChatSender = () => {
       // userId - message author
       const message = {
         userId: user.id,
-        chatId: guest.chatId,
-        // body: JSON.stringify(messageText),
+        chatId: currentChat[0].chatId,
         body: messageText,
       };
 
-      console.log(message);
+      // console.log(message);
 
       // send event about new message to Socket server
       try {
-        socketChat.send('/api/v1/message', {}, JSON.stringify(message));
+        //********* Connect with SockJS (http://final-step ....) */
+        // socketChat.send(
+        //   '/api/v1/message',
+        //   {
+        //     Authorization: `Bearer ${accessToken}`,
+        //     Origin: 'client',
+        //   },
+        //   JSON.stringify(message)
+        // );
+        //**********/
+
+        //********* Connect without SockJS (wss://final-step ....) */
+        socketChat.publish({
+          destination: '/api/v1/message',
+          body: JSON.stringify(message),
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Origin: 'client',
+          },
+        });
+        //**********/
+        //
       } catch (error) {
         setErrorSocket('Error connecting to socket server', error);
         const timer = setTimeout(() => {
@@ -77,6 +97,7 @@ export const ChatSender = () => {
           clearTimeout(timer);
         }, 5000);
       }
+      //******************************************************* */
 
       // clear sender input
       setMessageText('');

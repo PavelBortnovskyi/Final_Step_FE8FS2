@@ -6,6 +6,7 @@ import app.exceptions.httpError.BadRequestException;
 import app.exceptions.validation.Violation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
@@ -25,13 +26,12 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 @ControllerAdvice
+@RequiredArgsConstructor
 public class WebSocketExceptionHandler {
-
-  @Autowired
-  private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
   @ExceptionHandler(BadRequestException.class)
-  public void handleException(Exception ex, WebSocketSession session) throws IOException {
+  public void handleException(Exception ex, WebSocketSession session){
     log.info(ex.getMessage());
     this.sendErrorInfo(session, "400", ex.getMessage());
   }
@@ -54,8 +54,10 @@ public class WebSocketExceptionHandler {
     this.sendErrorInfo(session, "401", ex.getMessage());
   }
 
-  private void sendErrorInfo(WebSocketSession session, String code, String message) throws IOException {
-    String errorInfoJson = objectMapper.writeValueAsString(new SocketErrorInfo(code, message));
-    session.sendMessage(new TextMessage(errorInfoJson));
+  private void sendErrorInfo(WebSocketSession session, String code, String message) {
+    try {
+      String errorInfoJson = objectMapper.writeValueAsString(new SocketErrorInfo(code, message));
+      session.sendMessage(new TextMessage(errorInfoJson));
+    } catch (IOException e) {log.info("Websocket IOExcepion " + e.getMessage());};
   }
 }

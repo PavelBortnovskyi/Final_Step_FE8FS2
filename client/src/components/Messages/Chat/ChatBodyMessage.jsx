@@ -42,23 +42,20 @@ const BoxTime = styled(Box)`
 export const ChatBodyMessage = ({ message }) => {
   const { user } = useSelector(getUserData);
 
-  // converted message.sent value
-  const messageSent = timestampToDate(message.sent);
-
   return (
     <>
       {user.id === message.userId ? (
         <User>
           <Box>{message.body}</Box>
           <BoxTime>
-            <TimeAgo datetime={messageSent} />
+            <TimeAgo datetime={timestampToDate(message.sent)} />
           </BoxTime>
         </User>
       ) : (
         <Guest>
           <Box>{message.body}</Box>
           <BoxTime>
-            <TimeAgo datetime={messageSent} />
+            <TimeAgo datetime={timestampToDate(message.sent)} />
           </BoxTime>
         </Guest>
       )}
