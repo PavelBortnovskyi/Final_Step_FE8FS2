@@ -21,7 +21,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 export const NotificationsRetweet = ({ notification }) => {
   const theme = useTheme();
-
+console.log(notification);
   const Text = notification.tweet.body || '';
   const TextPreview = Text.length > 90 ? Text.slice(0, 90) + "..." : Text;
   const fullName = notification.initiator.fullName || '';
