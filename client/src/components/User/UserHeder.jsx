@@ -2,7 +2,7 @@ import { UserName } from './UserName';
 import { UserTweetsNumber } from './UserTweensNumber';
 import { Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack } from '../../UI/ArrowBack';
 
 export function UserHeder({ fullName, tweetsCounter }) {
   const navigate = useNavigate();
