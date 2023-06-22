@@ -25,14 +25,12 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -103,13 +101,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080") && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
         log.info("Command: " + accessor.getCommand());
 
-        if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+        if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE) || accessor.getCommand().equals(StompCommand.SEND)) {
 
           String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
             .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
           if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-            processHttpRequestWithToken(token, accessor);
+            processWebSocketRequestWithToken(token, accessor);
             log.info("Token:" + token);
             log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
           } else {
@@ -123,7 +121,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
   }
 
-  private void processHttpRequestWithToken(String token, StompHeaderAccessor accessor) {
+  private void processWebSocketRequestWithToken(String token, StompHeaderAccessor accessor) {
     try {
       this.jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(claims -> {
