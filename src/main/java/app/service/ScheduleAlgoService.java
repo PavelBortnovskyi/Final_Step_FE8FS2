@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dto.rs.TweetResponseDTONEmini;
 import app.model.RatingModel;
 import app.model.Tweet;
 import app.repository.RatingModelRepository;
@@ -66,7 +67,6 @@ public class ScheduleAlgoService {
   }
 
   public Page<Tweet> getTopTweets(Pageable pageable) {
-    ratingModelRepository.findAllByOrderByTweetRatingDesc(pageable).forEach(t -> log.info(t.getTweetID()));
     return ratingModelRepository.findAllByOrderByTweetRatingDesc(pageable).map(t -> tweetService.getTweet(t.getTweetID()));
   }
 

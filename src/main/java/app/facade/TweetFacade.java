@@ -101,9 +101,13 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
     return tweetService.getTweetsFromSubscriptions(userId, pageable).map(this::convertToDto);
   }
 
+  public TweetResponseDTO convertToDtoClear(Tweet tweet) {
+    return setCustomFields(super.convertToDto(tweet), null);
+  }
+
 
   public Page<TweetResponseDTO> getTopTweets(Pageable pageable) {
-    return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDto);
+    return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDtoClear);
   }
 
 }
