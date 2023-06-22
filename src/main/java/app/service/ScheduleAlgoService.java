@@ -46,11 +46,12 @@ public class ScheduleAlgoService {
     }
 
 
+
+
     // создаем параметр сравнения и сортируем по рейтингу
     Comparator<RatingModel> ratingModelComparator = Comparator.comparingDouble(RatingModel::getTweetRating);
     Collections.sort(tweetsRatingSorted, ratingModelComparator);
 
-    log.info(tweetsRatingSorted);
 
 
     //записываем отсортированые твиты по рейтингу первые 50 или до 50
@@ -65,6 +66,7 @@ public class ScheduleAlgoService {
   }
 
   public Page<Tweet> getTopTweets(Pageable pageable) {
+    ratingModelRepository.findAllByOrderByTweetRatingDesc(pageable).forEach(t -> log.info(t.getTweetID()));
     return ratingModelRepository.findAllByOrderByTweetRatingDesc(pageable).map(t -> tweetService.getTweet(t.getTweetID()));
   }
 
