@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dto.rq.NotificationRequestDTO;
+import app.dto.rs.NotificationResponseDTO;
 import app.enums.NotificationType;
 import app.enums.TweetActionType;
 import app.model.Notification;
@@ -39,7 +40,11 @@ public class NotificationService extends GeneralService<Notification> {
 
   private final NotificationModelRepository notificationRepository;
 
-  private final WebSocketStompClient stompClient;
+  private final UserRepository userRepository;
+
+  private final SimpMessagingTemplate template;
+
+  private final ModelMapper modelMapper;
 
   @Value("${socket.host}")
   private String socketUri;
@@ -97,29 +102,24 @@ public class NotificationService extends GeneralService<Notification> {
   }
 
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
-    StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-      @Override
-      public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-        NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
-          .setInitiatorUserId(senderUserId)
-          .setTweetId(tweet.getId());
 
-        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
-          notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
-            .setNotificationType(NotificationType.LIKE);
-        } else {
-          notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-          switch (tweet.getTweetType()) {
-            case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-            case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-            case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
-          }
-        }
-        log.info(notificationRequestDTO.toString());
-        session.send("/api/v1/notifications/private", notificationRequestDTO);
+    NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
+      .setInitiatorUserId(senderUserId)
+      .setTweetId(tweet.getId());
+
+    if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
+      notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
+        .setNotificationType(NotificationType.LIKE);
+    } else {
+      notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
+      switch (tweet.getTweetType()) {
+        case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+        case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+        case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
       }
-    };
-    stompClient.connect(socketUri, sessionHandler);
+    }
+    template.convertAndSendToUser(userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
+      "/topic/notifications", modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
     return tweet;
   }
 }
