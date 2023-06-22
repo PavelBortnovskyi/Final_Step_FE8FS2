@@ -104,17 +104,17 @@ public class NotificationService extends GeneralService<Notification> {
           .setInitiatorUserId(senderUserId)
           .setTweetId(tweet.getId());
 
-        switch (tweet.getTweetType()) {
-          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
-        }
-        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE))
+        if (tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
           notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
             .setNotificationType(NotificationType.LIKE);
-
-        else notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-
+        } else {
+          notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
+          switch (tweet.getTweetType()) {
+            case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+            case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+            case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+          }
+        }
         log.info(notificationRequestDTO.toString());
         session.send("/api/v1/notifications/private", notificationRequestDTO);
       }
