@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getMessages, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
-import UserNames from 'src/UI/UserNames';
+import { MessagesUserNames } from 'src/UI/MessagesUserNames';
 import { setGuest } from 'src/redux/reducers/chatSlice';
 
 // ************ STYLE ************
@@ -67,7 +67,7 @@ export const TabPeople = () => {
                   alt={user.fullName}
                   src={user.avatarImgUrl || 'img/avatar/empty-avatar.png'}
                 />
-                <UserNames
+                <MessagesUserNames
                   fullName={user.fullName}
                   userTag={user.userTag}
                   // text={''}

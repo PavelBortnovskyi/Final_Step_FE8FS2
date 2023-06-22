@@ -68,14 +68,28 @@ export const ChatSender = () => {
 
       // send event about new message to Socket server
       try {
-        socketChat.send(
-          '/api/v1/message',
-          {
+        //********* Connect with SockJS (http://final-step ....) */
+        // socketChat.send(
+        //   '/api/v1/message',
+        //   {
+        //     Authorization: `Bearer ${accessToken}`,
+        //     Origin: 'client',
+        //   },
+        //   JSON.stringify(message)
+        // );
+        //**********/
+
+        //********* Connect without SockJS (wss://final-step ....) */
+        socketChat.publish({
+          destination: '/api/v1/message',
+          body: JSON.stringify(message),
+          headers: {
             Authorization: `Bearer ${accessToken}`,
             Origin: 'client',
           },
-          JSON.stringify(message)
-        );
+        });
+        //**********/
+        //
       } catch (error) {
         setErrorSocket('Error connecting to socket server', error);
         const timer = setTimeout(() => {
@@ -83,6 +97,7 @@ export const ChatSender = () => {
           clearTimeout(timer);
         }, 5000);
       }
+      //******************************************************* */
 
       // clear sender input
       setMessageText('');

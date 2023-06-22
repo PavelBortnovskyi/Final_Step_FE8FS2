@@ -11,6 +11,7 @@ import {
   subscriptionsTweets,
 } from 'src/redux/selectors/selectors';
 import TweetList from 'src/UI/TweetList';
+import { getAllTweetsThunkNoAuth } from 'src/redux/thunk/tweets/getAllTweetsThunkNoAuth';
 
 export const HomePage = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -27,9 +28,11 @@ export const HomePage = () => {
         dispatch(getSubscriptionsTweets({ page: 0, pageSize: 10 }));
       }
     } else {
+      // get tweets without auth
+      // dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 999 }));
       dispatch(getAllTweetsThunk());
     }
-  }, [tabIndex]);
+  }, [dispatch, isAuthenticated, tabIndex]);
 
   let allTweets = useSelector(getAllTweets);
   let allTweetsArray = allTweets.allTweets;

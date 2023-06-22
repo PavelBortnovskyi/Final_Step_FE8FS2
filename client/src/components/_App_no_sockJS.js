@@ -36,20 +36,20 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
+          debug: function (str) {
+            console.log(str);
+          },
         });
         const stompClient = stompClientRef.current;
 
         // after activate connect
         const connectCallback = () => {
-          // console.log('Connected to STOMP server');
+          console.log('Connected to STOMP server');
           stompClient.subscribe('/topic/chats', onMessageReceived, headers);
           stompClient.subscribe(
             '/topic/notifications',
             (notification) => {
-              // console.log('notification: ', notification.body);
+              console.log('notification: ', notification.body);
             },
             headers
           );
@@ -58,7 +58,7 @@ export const App = () => {
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
+          console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 

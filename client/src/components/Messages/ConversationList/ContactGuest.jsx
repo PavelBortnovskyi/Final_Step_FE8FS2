@@ -2,7 +2,7 @@ import { Avatar, Box, alpha, styled } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import UserNames from 'src/UI/UserNames';
+import { MessagesUserNames } from 'src/UI/MessagesUserNames';
 import { setGuest } from 'src/redux/reducers/chatSlice';
 import { getGuest } from 'src/redux/thunk/getGuest';
 
@@ -42,7 +42,7 @@ export const ContactGuest = ({ guest }) => {
         alt={fullName}
         src={avatarImgUrl || 'img/avatar/empty-avatar.png'}
       />
-      <UserNames
+      <MessagesUserNames
         fullName={fullName}
         userTag={userTag}
         text={truncatedText}

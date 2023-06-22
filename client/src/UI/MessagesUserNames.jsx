@@ -7,13 +7,13 @@ import TimeAgo from 'timeago-react';
 
 // modify by Portnov Dmytro
 
-function UserNames({
+export const MessagesUserNames = ({
   fullName = '',
   verified = false,
   userTag = '',
   text = '',
   postTime = null,
-}) {
+}) => {
   const theme = useTheme();
   return (
     <Box
@@ -78,6 +78,4 @@ function UserNames({
       )}
     </Box>
   );
-}
-
-export default UserNames;
+};

@@ -8,8 +8,6 @@ import TimeAgo from 'timeago-react';
 // this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
 // you have to add all necessary props
 
-// modify by Portnov Dmytro
-
 function UserNames({
   fullName = '',
   isVerified,
