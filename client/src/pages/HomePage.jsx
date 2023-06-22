@@ -29,8 +29,8 @@ export const HomePage = () => {
       }
     } else {
       // get tweets without auth
-      // dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 999 }));
-      dispatch(getAllTweetsThunk());
+      dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 20 }));
+      // dispatch(getAllTweetsThunk());
     }
   }, [dispatch, isAuthenticated, tabIndex]);
 

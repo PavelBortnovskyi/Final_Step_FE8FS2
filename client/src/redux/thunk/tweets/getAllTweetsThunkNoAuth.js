@@ -3,7 +3,7 @@ import { myAxios } from 'src/utils/axiosSetup';
 
 export const getAllTweetsThunkNoAuth = createAsyncThunk(
   'tweet/allTweetsNoAuth',
-  async ({ page = 0, size = 999 }, thunkAPI) => {
+  async ({ page = 0, size = 20 }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(
         `/tweet/top?page=${page}&size=${size}`

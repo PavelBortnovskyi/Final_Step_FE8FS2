@@ -64,7 +64,7 @@ export const ChatSender = () => {
         body: messageText,
       };
 
-      console.log(message);
+      // console.log(message);
 
       // send event about new message to Socket server
       try {
