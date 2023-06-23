@@ -88,17 +88,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     return false;
   }
 
-  @Bean
-  public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomizer() {
-    return (factory) -> {
-      factory.addContextCustomizers((context) -> {
-        WsServerContainer container = (WsServerContainer) context.getServletContext()
-          .getAttribute("javax.websocket.server.ServerContainer");
-        container.setDefaultMaxSessionIdleTimeout(10000);
-        container.setAsyncSendTimeout(10000);
-      });
-    };
-  }
+//  @Bean
+//  public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomizer() {
+//    return (factory) -> {
+//      factory.addContextCustomizers((context) -> {
+//        WsServerContainer container = (WsServerContainer) context.getServletContext()
+//          .getAttribute("javax.websocket.server.ServerContainer");
+//        container.setDefaultMaxSessionIdleTimeout(10000);
+//        container.setAsyncSendTimeout(10000);
+//      });
+//    };
+//  }
 
   @Override
   @Order(Ordered.HIGHEST_PRECEDENCE + 99)
