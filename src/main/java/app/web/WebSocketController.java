@@ -77,17 +77,17 @@ public class WebSocketController {
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }
 
-  @Validated({Marker.New.class})
-  @MessageMapping("/v1/notifications/private")
-  public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
-                                         NotificationRequestDTO notificationRequestDTO,
-                                         SimpMessageHeaderAccessor accessor) {
-    //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-    log.info(notificationRequestDTO.toString());
-    if (this.notificationFacade.processNotification(notificationRequestDTO))
-      this.template.convertAndSendToUser(notificationRequestDTO.getReceiverUserId().toString(),
-        "/topic/notifications", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
-  }
+//  @Validated({Marker.New.class})
+//  @MessageMapping("/v1/notifications/private")
+//  public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
+//                                         NotificationRequestDTO notificationRequestDTO,
+//                                         SimpMessageHeaderAccessor accessor) {
+//    //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+//    log.info(notificationRequestDTO.toString());
+//    if (this.notificationFacade.processNotification(notificationRequestDTO))
+//      this.template.convertAndSendToUser(notificationRequestDTO.getReceiverUserId().toString(),
+//        "/topic/notifications", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
+//  }
 
   @MessageMapping("/v1/notifications/mark")
   public void markReadNotification(@Payload @Valid @JsonView({Marker.Existed.class})
