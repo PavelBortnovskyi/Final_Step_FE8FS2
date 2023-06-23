@@ -38,6 +38,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Log4j2
 @Configuration
@@ -51,8 +52,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   private final ObjectMapper objectMapper;
 
   private final SpringSecurityAuditorAware auditorAware;
-
-  //private final CustomHandshakeInterceptor customHandshakeInterceptor;
 
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
@@ -68,13 +67,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/**", //TODO: need to change on deploy
-        "http://localhost:8080", "http://localhost:8080/**",
-        "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**");
-      //.setInterceptors(customHandshakeInterceptor);
-
-//    registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("final-step-fe2fs8tw.herokuapp.com",
-//      "final-step-fe2fs8tw.herokuapp.com/**", "http://localhost:8080", "http://localhost:8080/**",
-//      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**").withSockJS(); //TODO: need to change on deploy
+      "http://localhost:8080", "http://localhost:8080/**",
+      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**");
   }
 
   @Override
@@ -88,18 +82,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     return false;
   }
 
-//  @Bean
-//  public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomizer() {
-//    return (factory) -> {
-//      factory.addContextCustomizers((context) -> {
-//        WsServerContainer container = (WsServerContainer) context.getServletContext()
-//          .getAttribute("javax.websocket.server.ServerContainer");
-//        container.setDefaultMaxSessionIdleTimeout(10000);
-//        container.setAsyncSendTimeout(10000);
-//      });
-//    };
-//  }
-
   @Override
   @Order(Ordered.HIGHEST_PRECEDENCE + 99)
   public void configureClientInboundChannel(ChannelRegistration registration) {
@@ -112,27 +94,31 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
       StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-      String origin = accessor.getFirstNativeHeader("Origin");
-      log.info("Origin:" + origin);
-      if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080") && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
-        log.info("Command: " + accessor.getCommand());
+      String destination = accessor.getDestination();
+      log.info("Destination:" + destination);
+      log.info("Command: " + accessor.getCommand());
+      String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
+        .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
-        if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE) || accessor.getCommand().equals(StompCommand.SEND)) {
+      if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
+        if (Stream.of(StompCommand.CONNECT, StompCommand.SUBSCRIBE, StompCommand.SEND)
+          .anyMatch(command -> command.equals(accessor.getCommand()))) {
 
-          String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
-            .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+          if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+            String userName = jwtTokenService.extractUserNameFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get();
 
-          if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-            processWebSocketRequestWithToken(token, accessor);
-            log.info("Token:" + token);
-            log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-          } else {
-            throw new JwtAuthenticationException("Token is not valid");
+            if (!(destination.equals("/topic/сhats/" + userName)) || destination.equals("/topic/notifications/" + userName)) {
+              log.info("Attempt to subscribe to other user channel: " + destination);
+              throw new JwtAuthenticationException("Attempt to subscribe to other user channel: " + destination);
+            }
           }
+          processWebSocketRequestWithToken(token, accessor);
+          log.info("Token:" + token);
+          log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+        } else {
+          throw new JwtAuthenticationException("Token is not valid");
         }
       }
-      //else throw new BadRequestException("Header Origin is null!");
-      //log.info("Assessor message " + accessor.getMessage());
       return message;
     }
   }
