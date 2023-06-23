@@ -97,13 +97,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       String destination = accessor.getDestination();
       log.info("Destination:" + destination);
       log.info("Command: " + accessor.getCommand());
-      String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
-        .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
-      if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-        if (Stream.of(StompCommand.CONNECT, StompCommand.SUBSCRIBE, StompCommand.SEND)
-          .anyMatch(command -> command.equals(accessor.getCommand()))) {
-
+      if (Stream.of(StompCommand.CONNECT, StompCommand.SUBSCRIBE, StompCommand.SEND)
+        .anyMatch(command -> command.equals(accessor.getCommand()))) {
+        String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
+          .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+        if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
 //          if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
 //            String userName = jwtTokenService.extractUserNameFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get();
 //
@@ -115,9 +114,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
           processWebSocketRequestWithToken(token, accessor);
           log.info("Token:" + token);
           log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-        } else {
-          throw new JwtAuthenticationException("Token is not valid");
-        }
+        } else throw new JwtAuthenticationException("Token invalid");
       }
       return message;
     }
