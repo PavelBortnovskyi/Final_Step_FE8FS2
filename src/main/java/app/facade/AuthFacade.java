@@ -72,6 +72,7 @@ public class AuthFacade {
       throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
 
     //Tag duplicate checking
+    signUpDTO.setUserTag("@" + signUpDTO.getUserTag());
     if (this.userService.isUserTagPresentInDB(signUpDTO.getUserTag()))
       throw new UserAlreadyRegisteredException("tag: " + signUpDTO.getUserTag());
 
