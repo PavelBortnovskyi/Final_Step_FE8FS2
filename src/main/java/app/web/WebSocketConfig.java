@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.websocket.server.WsServerContainer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -82,6 +86,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     converter.setContentTypeResolver(resolver);
     messageConverters.add(converter);
     return false;
+  }
+
+  @Bean
+  public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomizer() {
+    return (factory) -> {
+      factory.addContextCustomizers((context) -> {
+        WsServerContainer container = (WsServerContainer) context.getServletContext()
+          .getAttribute("javax.websocket.server.ServerContainer");
+        container.setDefaultMaxSessionIdleTimeout(10000);
+        container.setAsyncSendTimeout(10000);
+      });
+    };
   }
 
   @Override
