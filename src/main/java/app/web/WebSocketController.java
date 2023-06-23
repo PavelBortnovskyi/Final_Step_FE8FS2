@@ -51,7 +51,7 @@ public class WebSocketController {
 //    template.convertAndSend("/topic/chats", this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
 
     chatFacade.getChatMemberEmails(messageDTO.getChatId())
-      .forEach(email -> template.convertAndSendToUser(email, "/topic/chats/" + userFacade.getUserById(currUserId).getEmail() + "/message", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
+      .forEach(email -> template.convertAndSendToUser(email, "/topic/chats/" + email + "/message", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
 //    chatFacade.getChatMemberIds(messageDTO.getChatId())
 //      .forEach(id -> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
   }
