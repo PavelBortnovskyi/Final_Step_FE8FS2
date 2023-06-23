@@ -44,6 +44,10 @@ export const TweetList = ({ tweets }) => {
             >
               <PostIconList
                 isLiked={tweet.currUserLiked}
+                isQuoted={tweet.currUserQuoted}
+                // isBookmarks={tweet.currUserBookmarked}
+                isComment={tweet.currUserCommented}
+                isRetweet={tweet.currUserRetweeted}
                 likes={
                   tweet.attachmentImages === undefined
                     ? tweet.tweet.countLikes

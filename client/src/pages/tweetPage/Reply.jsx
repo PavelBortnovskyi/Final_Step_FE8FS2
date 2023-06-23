@@ -11,7 +11,7 @@ function Reply({ isOpen, setIsOpen, id, type }) {
   const dispatch = useDispatch();
 
   const handleSubmit = (postInputText, postImages) => {
-    if (type === 'replay') {
+    if (type === 'reply') {
       dispatch(createTweetReply({ id, postInputText, postImages }));
     } else if (type === 'quoteModal') {
       dispatch(addQuote({ id, postInputText, postImages }));
