@@ -28,6 +28,6 @@ public class AuthUserService {
 
 
   public UserModel getCurrUser() {
-    return userService.getUser(getCurrUserId());
+    return getCurrUserId() != 0 ? userService.getUser(getCurrUserId()) : null ;
   }
 }
