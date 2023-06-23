@@ -46,10 +46,10 @@ public class WebSocketController {
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
-    template.convertAndSend("/topic/chats", this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
+//    template.convertAndSend("/topic/chats", this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
 
-//    chatFacade.getChatMemberEmails(messageDTO.getChatId())
-//      .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
+    chatFacade.getChatMemberEmails(messageDTO.getChatId())
+      .forEach(email -> template.convertAndSendToUser(email, "/message", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
 //    chatFacade.getChatMemberIds(messageDTO.getChatId())
 //      .forEach(id -> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
   }
