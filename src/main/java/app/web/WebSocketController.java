@@ -3,6 +3,7 @@ package app.web;
 import app.annotations.Marker;
 import app.dto.rq.MessageRequestDTO;
 import app.dto.rq.NotificationRequestDTO;
+import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
@@ -34,6 +35,8 @@ public class WebSocketController {
 
   private final ChatFacade chatFacade;
 
+  private final UserFacade userFacade;
+
   private final NotificationFacade notificationFacade;
 
   private final SimpMessagingTemplate template;
@@ -46,12 +49,10 @@ public class WebSocketController {
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
-    template.convertAndSend("/topic/chats", this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
-
-//    chatFacade.getChatMemberEmails(messageDTO.getChatId())
-//      .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
-//    chatFacade.getChatMemberIds(messageDTO.getChatId())
-//      .forEach(id -> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
+    if (currUserId.equals(messageDTO.getUserId()))
+    chatFacade.getChatMemberEmails(messageDTO.getChatId())
+      .forEach(email -> template.convertAndSend("/topic/chats/" + email, this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO))));
+    else throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d", messageDTO.getUserId(), currUserId));
   }
 
   @Validated({Marker.Existed.class})
@@ -75,17 +76,17 @@ public class WebSocketController {
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }
 
-  @Validated({Marker.New.class})
-  @MessageMapping("/v1/notifications/private")
-  public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
-                                         NotificationRequestDTO notificationRequestDTO,
-                                         SimpMessageHeaderAccessor accessor) {
-    //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-    log.info(notificationRequestDTO.toString());
-    if (this.notificationFacade.processNotification(notificationRequestDTO))
-      this.template.convertAndSendToUser(notificationRequestDTO.getReceiverUserId().toString(),
-        "/topic/notifications", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
-  }
+//  @Validated({Marker.New.class})
+//  @MessageMapping("/v1/notifications/private")
+//  public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
+//                                         NotificationRequestDTO notificationRequestDTO,
+//                                         SimpMessageHeaderAccessor accessor) {
+//    //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+//    log.info(notificationRequestDTO.toString());
+//    if (this.notificationFacade.processNotification(notificationRequestDTO))
+//      this.template.convertAndSendToUser(notificationRequestDTO.getReceiverUserId().toString(),
+//        "/topic/notifications", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
+//  }
 
   @MessageMapping("/v1/notifications/mark")
   public void markReadNotification(@Payload @Valid @JsonView({Marker.Existed.class})
