@@ -16,7 +16,7 @@ public interface ChatModelRepository extends RepositoryInterface<Chat> {
   Page<Chat> getChatList(@Param("id") Long userId, Pageable pageable);
 
   @Query("SELECT c FROM Chat c WHERE (c.initiatorUser.id = :userId OR c.initiatorUser.id = :interlocutorId) " +
-    "AND (:userId MEMBER OF c.users OR :interlocutorId MEMBER OF c.users)")
+    "AND (:userId MEMBER OF c.users OR :interlocutorId MEMBER OF c.users) OR (:userId MEMBER OF c.users AND :interlocutorId MEMBER OF c.users)")
   Optional<Set<Chat>> getChatByUsersIds(@Param("userId") Long initiatorUserId, @Param("interlocutorId") Long interlocutorId);
 
   @Query("SELECT c, m FROM Chat c JOIN c.messages m WHERE (c.initiatorUser.id = :userId OR :userId MEMBER OF c.users) " +
