@@ -3,6 +3,7 @@ package app.web;
 import app.annotations.Marker;
 import app.dto.rq.MessageRequestDTO;
 import app.dto.rq.NotificationRequestDTO;
+import app.dto.rs.MessageResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
@@ -24,7 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "*"}) //TODO: change on deploy
+@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "*"})
+//TODO: change on deploy
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -49,10 +51,13 @@ public class WebSocketController {
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
-    if (currUserId.equals(messageDTO.getUserId()))
-    chatFacade.getChatMemberEmails(messageDTO.getChatId())
-      .forEach(email -> template.convertAndSend("/topic/chats/" + email, this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO))));
-    else throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d", messageDTO.getUserId(), currUserId));
+
+    if (currUserId.equals(messageDTO.getUserId())) {
+      MessageResponseDTO finalFreshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
+      chatFacade.getChatMemberEmails(messageDTO.getChatId())
+        .forEach(email -> template.convertAndSend("/topic/chats/" + email, finalFreshMessage));
+    } else
+      throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d", messageDTO.getUserId(), currUserId));
   }
 
   @Validated({Marker.Existed.class})
