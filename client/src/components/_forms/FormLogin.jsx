@@ -15,8 +15,6 @@ import {
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
-import styles from 'src/styles/Forms.module.scss';
-
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     color: theme.palette.primary.main,
@@ -94,7 +92,18 @@ export const FormLogin = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched, values, handleChange, handleBlur }) => (
-          <Form className={styles.FormBody} autoComplete="off">
+          <Form
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              gap: '18px',
+              margin: '20px',
+              width: '300px',
+              maxWidth: '300px',
+            }}
+            autoComplete="off"
+          >
             {/* email */}
             <TextFieldWhite
               fullWidth
@@ -121,11 +130,9 @@ export const FormLogin = () => {
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
             />
-            <div className={styles.actions}>
-              <Button variant="outlined" color="black" type="submit">
-                Log in
-              </Button>
-            </div>
+            <Button variant="outlined" color="black" type="submit">
+              Log in
+            </Button>
           </Form>
         )}
       </Formik>

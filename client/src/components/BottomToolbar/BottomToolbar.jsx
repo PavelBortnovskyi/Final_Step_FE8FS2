@@ -22,28 +22,28 @@ export const BottomToolbar = () => {
             md={4}
             sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
           >
-            <Button variant="outlined" color="transparent">
-              <Link
-                component={NavLink}
-                to="/modal/login"
-                state={{ background: location }}
-                color="inherit"
-                underline="none"
-              >
+            <Link
+              component={NavLink}
+              to="/modal/login"
+              state={{ background: location }}
+              color="inherit"
+              underline="none"
+            >
+              <Button variant="outlined" color="transparent">
                 Log in
-              </Link>
-            </Button>
-            <Button variant="outlined" color="gray">
-              <Link
-                component={NavLink}
-                to="/modal/registration"
-                state={{ background: location }}
-                color="inherit"
-                underline="none"
-              >
+              </Button>
+            </Link>
+            <Link
+              component={NavLink}
+              to="/modal/registration"
+              state={{ background: location }}
+              color="inherit"
+              underline="none"
+            >
+              <Button variant="outlined" color="gray">
                 Sign up
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </Toolbar>
