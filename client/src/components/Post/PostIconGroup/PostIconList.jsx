@@ -2,7 +2,7 @@ import React from 'react';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import PostIconElementLike from './PostIconElementLike';
 import PostIconElementComment from './PostIconElementComment';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -22,6 +22,7 @@ function PostIconList({
   isRetweet,
   isComment,
   isBookmarks,
+  isQuoted,
   quote,
   bookmarks,
 }) {
@@ -42,15 +43,13 @@ function PostIconList({
         state={{ background: location }}
         component={NavLink}
       >
-        <PostIconElementComment 
-        quantity={reply} 
-        color="#72bcd4" 
-        id={id} />
+        <PostIconElementComment quantity={reply} color="#72bcd4" id={id} />
       </NavLink>
 
       <PostIconElementRetweet
         icon={<RepeatOutlinedIcon fontSize="small" />}
         quantity={retweet}
+        isRetweet={isRetweet}
         id={id}
         color="lightgreen"
       />
@@ -68,13 +67,15 @@ function PostIconList({
         component={NavLink}
       >
         <PostElementQuote
-          icon={<QuestionAnswerOutlinedIcon fontSize="small" />}
+          isQuoted={isQuoted}
+          icon={<BorderColorOutlinedIcon fontSize="small" />}
           quantity={quote}
           id={id}
-          color="lightblue"
+          color="#8D3256"
         />
       </NavLink>
       <PostElementBookmarks
+        isBookmarks={isBookmarks}
         icon={<BookmarkBorderIcon fontSize="small" />}
         quantity={bookmarks}
         id={id}

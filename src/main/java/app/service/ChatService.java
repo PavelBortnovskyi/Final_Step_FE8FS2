@@ -45,7 +45,7 @@ public class ChatService extends GeneralService<Chat> {
     Set<Chat> chats = this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
       .orElse(new HashSet<>());
 
-    if (chats.isEmpty()) {
+    if (chats.isEmpty() || chats.stream().filter(chat -> chat.getUsers().size() < 2).findFirst().isEmpty()) {
       Chat newChat = this.chatRepository.save(new Chat(initiator, new ArrayList<>(), new HashSet<>() {{
         add(interlocutor);
       }}));

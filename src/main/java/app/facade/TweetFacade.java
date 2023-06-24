@@ -29,7 +29,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   private final ScheduleAlgoService scheduleAlgoService;
 
 
-  private TweetResponseDTO setCustomFields(TweetResponseDTO tweetResponseDTO, UserModel currUser) {
+  public TweetResponseDTO setCustomFields(TweetResponseDTO tweetResponseDTO, UserModel currUser) {
     if (tweetResponseDTO == null) return null;
     Tweet tweet = tweetService.getTweet(tweetResponseDTO.getId());
     tweetResponseDTO

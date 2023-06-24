@@ -5,30 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addBookmark } from 'src/redux/thunk/thunkBookmarks/addBookmark';
 import { deleteBookmark } from 'src/redux/thunk/thunkBookmarks/deleteBookmark';
 
-function PostElementBookmarks({  icon, quantity, color, id }) {
+function PostElementBookmarks({ icon, quantity, color, id, isBookmarks }) {
   const dispatch = useDispatch();
-  const userBookmarks = useSelector((state) => state.userBookmarks);
-
-  const isBookmark = userBookmarks.userBookmarks.some((bookmark) => {
-    const idToCheck = bookmark.tweet?.id || bookmark.id;
-    return idToCheck === id;
-  });
 
   const handleBookmarks = () => {
-    if (isBookmark) {
+    if (isBookmarks) {
       dispatch(deleteBookmark({ id }));
       console.log('delete');
-      
     } else {
       dispatch(addBookmark({ id }));
       console.log('add');
     }
   };
-  
+
   return (
     <Box
-    onClick={handleBookmarks}
+      onClick={handleBookmarks}
       display="flex"
+      color={isBookmarks ? `${color}` : ''}
       sx={{
         gap: '10px',
         '&:hover': {
@@ -40,7 +34,7 @@ function PostElementBookmarks({  icon, quantity, color, id }) {
         },
       }}
     >
-      {isBookmark ? <BookmarkBorderIcon sx={{ color: '#1d9bf0' }} /> : icon}
+      {isBookmarks ? <BookmarkBorderIcon sx={{ color: '#1d9bf0' }} /> : icon}
       {quantity}
     </Box>
   );

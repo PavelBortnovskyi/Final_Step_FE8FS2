@@ -20,6 +20,5 @@ export const UserLikes = () => {
 
   const likes = userLikes.content;
   const theme = useMode();
-
   return likes && <TweetList tweets={likes} />;
 };

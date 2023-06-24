@@ -13,10 +13,11 @@ public class AuthUserService {
 
   private final UserService userService;
 
+
   public JwtUserDetails getUserDetails() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof JwtUserDetails)
-    return (JwtUserDetails) authentication.getPrincipal();
+      return (JwtUserDetails) authentication.getPrincipal();
     else return new JwtUserDetails(0L, "Zero@mail.net");
   }
 
@@ -27,6 +28,6 @@ public class AuthUserService {
 
 
   public UserModel getCurrUser() {
-    return userService.getUser(getCurrUserId());
+    return getCurrUserId() != 0 ? userService.getUser(getCurrUserId()) : null ;
   }
 }

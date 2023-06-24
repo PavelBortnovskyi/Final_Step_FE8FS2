@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,9 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
   @Query("SELECT t FROM Tweet t ORDER BY t.createdAt DESC")
   List<Tweet> listLast50Tweets(Pageable pageable);
+
+  @Query("SELECT t FROM Tweet t WHERE t.createdAt >= :oneHourAgo")
+  List<Tweet> listLastTweetsPerOneHour(LocalDateTime oneHourAgo);
 
   // ------------------------------------------------------------------------------------------------------------------
 

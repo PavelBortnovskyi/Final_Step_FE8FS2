@@ -3,6 +3,8 @@ package app.web;
 import app.annotations.Marker;
 import app.dto.rq.MessageRequestDTO;
 import app.dto.rq.NotificationRequestDTO;
+import app.dto.rs.MessageResponseDTO;
+import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
@@ -23,7 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "*"}) //TODO: change on deploy
+@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "*"})
+//TODO: change on deploy
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +36,8 @@ public class WebSocketController {
   private final MessageFacade messageFacade;
 
   private final ChatFacade chatFacade;
+
+  private final UserFacade userFacade;
 
   private final NotificationFacade notificationFacade;
 
@@ -46,12 +51,13 @@ public class WebSocketController {
                                  MessageRequestDTO messageDTO,
                                  SimpMessageHeaderAccessor accessor) {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
-    template.convertAndSend("/topic/chats", this.messageFacade.addMessageToChat(currUserId, this.messageFacade.convertToEntity(messageDTO)));
 
-//    chatFacade.getChatMemberEmails(messageDTO.getChatId())
-//      .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
-//    chatFacade.getChatMemberIds(messageDTO.getChatId())
-//      .forEach(id -> template.convertAndSendToUser(id.toString(), "/topic/chats", this.messageFacade.convertToDto(this.messageFacade.convertToEntity(messageDTO))));
+    if (currUserId.equals(messageDTO.getUserId())) {
+      MessageResponseDTO finalFreshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
+      chatFacade.getChatMemberEmails(messageDTO.getChatId())
+        .forEach(email -> template.convertAndSend("/topic/chats/" + email, finalFreshMessage));
+    } else
+      throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d", messageDTO.getUserId(), currUserId));
   }
 
   @Validated({Marker.Existed.class})
@@ -75,17 +81,17 @@ public class WebSocketController {
       this.template.convertAndSend("/topic/chats", new DeleteMessageNotification(messageDTO.getId()));
   }
 
-  @Validated({Marker.New.class})
-  @MessageMapping("/v1/notifications/private")
-  public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
-                                         NotificationRequestDTO notificationRequestDTO,
-                                         SimpMessageHeaderAccessor accessor) {
-    //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-    log.info(notificationRequestDTO.toString());
-    if (this.notificationFacade.processNotification(notificationRequestDTO))
-      this.template.convertAndSendToUser(notificationRequestDTO.getReceiverUserId().toString(),
-        "/topic/notifications", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
-  }
+//  @Validated({Marker.New.class})
+//  @MessageMapping("/v1/notifications/private")
+//  public void processPrivateNotification(@Payload @Valid @JsonView({Marker.New.class})
+//                                         NotificationRequestDTO notificationRequestDTO,
+//                                         SimpMessageHeaderAccessor accessor) {
+//    //Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
+//    log.info(notificationRequestDTO.toString());
+//    if (this.notificationFacade.processNotification(notificationRequestDTO))
+//      this.template.convertAndSendToUser(notificationRequestDTO.getReceiverUserId().toString(),
+//        "/topic/notifications", this.notificationFacade.convertToDto(this.notificationFacade.convertToEntity(notificationRequestDTO)));
+//  }
 
   @MessageMapping("/v1/notifications/mark")
   public void markReadNotification(@Payload @Valid @JsonView({Marker.Existed.class})

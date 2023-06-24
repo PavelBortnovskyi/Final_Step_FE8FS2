@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Repository
 public interface NotificationModelRepository extends RepositoryInterface<Notification> {
@@ -25,4 +26,7 @@ public interface NotificationModelRepository extends RepositoryInterface<Notific
   @Modifying
   @Query("UPDATE Notification n SET n.isRead = :status WHERE n.id = :id")
   void setReadStatus(@Param("id") Long notificationId, @Param("status") boolean status);
+
+  @Query("SELECT n FROM Notification n WHERE n.initiatorUser.id = :initiatorId AND n.tweet.id = :tweetId")
+  Optional<Notification> getLikeNotification(@Param("initiatorId") Long userId, @Param("tweetId") Long tweetId);
 }

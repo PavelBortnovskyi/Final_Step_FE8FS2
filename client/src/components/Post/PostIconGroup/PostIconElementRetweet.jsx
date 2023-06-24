@@ -2,15 +2,21 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
+import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 
-export const PostIconElementRetweet = ({icon, quantity, color, id}) => {
+export const PostIconElementRetweet = ({
+  icon,
+  quantity,
+  color,
+  id,
+  isRetweet,
+}) => {
   const dispatch = useDispatch();
 
   const handleRetweet = () => {
-    if (false) {
+    if (isRetweet) {
       // dispatch(deleteBookmark({ id }));
       console.log('delete');
-
     } else {
       dispatch(addRetweet({ id }));
       console.log('add');
@@ -19,8 +25,9 @@ export const PostIconElementRetweet = ({icon, quantity, color, id}) => {
 
   return (
     <Box
-    onClick={handleRetweet}
+      onClick={handleRetweet}
       display="flex"
+      color={isRetweet ? `${color}` : ''}
       sx={{
         gap: '10px',
         '&:hover': {
@@ -32,8 +39,8 @@ export const PostIconElementRetweet = ({icon, quantity, color, id}) => {
         },
       }}
     >
-      {icon}
+      {isRetweet ? <RepeatOutlinedIcon color={color} /> : icon}
       {quantity}
     </Box>
-  )
-}
+  );
+};
