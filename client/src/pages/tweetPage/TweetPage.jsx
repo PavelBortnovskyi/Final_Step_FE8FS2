@@ -28,15 +28,14 @@ function TweetPage() {
     dispatch(getTweetByIdThunk({ id: id }));
   }, [id]);
 
-  const tweet = useSelector(getSingleTweet);
-  const post = tweet?.singleTweet;
-
+  const post = useSelector(getSingleTweet);
+  const tweet = post?.singleTweet;
+  console.log(tweet);
   useEffect(() => {
     dispatch(getTweetReply({ id: id, page: 0, pageSize: 10 }));
   }, [id]);
 
   let dataReplies = useSelector(getTweetReplies);
-  console.log(dataReplies);
   const tweetsReplies = dataReplies.tweetReplies || [];
 
   return (
@@ -70,7 +69,7 @@ function TweetPage() {
         </Typography>
       </Box>
 
-      {!Array.isArray(post) && <TweetPost tweet={post} />}
+      {!Array.isArray(tweet) && <TweetPost tweet={tweet} />}
       <Grid
         container
         alignItems="center"
@@ -80,41 +79,52 @@ function TweetPage() {
           pb: '20px',
         }}
       >
-        {!Array.isArray(post) && (
+        {!Array.isArray(tweet) && (
           <PostIconList
-            isLiked={post.currUserLiked}
+            isLiked={tweet.currUserLiked}
+            isQuoted={tweet.currUserQuoted}
+            // isBookmarks={tweet.currUserBookmarked}
+            isComment={tweet.currUserCommented}
+            isRetweet={tweet.currUserRetweeted}
             likes={
-              post.attachmentImages === undefined
-                ? post.tweet.countLikes
-                : post.countLikes
+              tweet.attachmentImages === undefined
+                ? tweet.tweet.countLikes
+                : tweet.countLikes
             }
             reply={
-              post.attachmentImages === undefined
-                ? post.tweet.countReplies
-                : post.countReplies
+              tweet.attachmentImages === undefined
+                ? tweet.tweet.countReplies
+                : tweet.countReplies
             }
             retweet={
-              post.attachmentImages === undefined
-                ? post.tweet.countRetweets
-                : post.countRetweets
+              tweet.attachmentImages === undefined
+                ? tweet.tweet.countRetweets
+                : tweet.countRetweets
             }
-            id={post.attachmentImages === undefined ? post.tweet.id : post.id}
+            id={
+              tweet.attachmentImages === undefined ? tweet.tweet.id : tweet.id
+            }
+            quote={
+              tweet.attachmentImages === undefined
+                ? tweet.tweet.countQuoteTweets
+                : tweet.countQuoteTweets
+            }
             isBookmarks={
-              post.attachmentImages === undefined
-                ? post.tweet.currUserBookmarked
-                : post.currUserBookmarked
+              tweet.attachmentImages === undefined
+                ? tweet.tweet.currUserBookmarked
+                : tweet.currUserBookmarked
             }
             bookmarks={
-              post.attachmentImages === undefined
-                ? post.tweet.countBookmarks
-                : post.countBookmarks
+              tweet.attachmentImages === undefined
+                ? tweet.tweet.countBookmarks
+                : tweet.countBookmarks
             }
           />
         )}
       </Grid>
-      <Reply id={post.id} type="reply" />
+      <Reply id={tweet.id} type="reply" />
       {tweetsReplies.length !== 0 ? (
-        <TweetList key={post.id} tweets={tweetsReplies} />
+        <TweetList key={tweet.id} tweets={tweetsReplies} />
       ) : (
         false
       )}
