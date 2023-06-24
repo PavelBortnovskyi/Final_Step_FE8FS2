@@ -77,11 +77,11 @@ public class UserModel extends BaseEntityModel {
   private List<Message> messages = new ArrayList<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
-  @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "initiatorUser", fetch = FetchType.EAGER)
   private Set<Chat> chat = new HashSet<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)
-  @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<Chat> chats = new HashSet<>();
 
   @LazyCollection(value = LazyCollectionOption.EXTRA)

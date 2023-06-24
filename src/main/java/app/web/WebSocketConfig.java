@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.websocket.server.WsServerContainer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -24,7 +28,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -34,11 +38,13 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Log4j2
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
+@Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final JwtTokenService jwtTokenService;
@@ -60,12 +66,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app",
-      "http://localhost:3000/**", "https://final-step-fe-8-fs-2.vercel.app/**").withSockJS(); //TODO: need to change on deploy
-
-//    registry.addEndpoint("/notifications-ws").setAllowedOriginPatterns("final-step-fe2fs8tw.herokuapp.com",
-//      "final-step-fe2fs8tw.herokuapp.com/**", "http://localhost:8080", "http://localhost:8080/**",
-//      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**").withSockJS(); //TODO: need to change on deploy
+    registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/**", //TODO: need to change on deploy
+      "http://localhost:8080", "http://localhost:8080/**",
+      "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**");
   }
 
   @Override
@@ -80,84 +83,63 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   }
 
   @Override
+  @Order(Ordered.HIGHEST_PRECEDENCE + 99)
   public void configureClientInboundChannel(ChannelRegistration registration) {
-    registration.interceptors(new ChannelInterceptor() {
-      @Override
-      @Order(Ordered.HIGHEST_PRECEDENCE + 99)
-      public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
-        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        String origin = accessor.getFirstNativeHeader("Origin");
-        //log.info("Origin:" + origin);
-        if (accessor.getCommand() != null && origin != null && !origin.startsWith("http://localhost:8080") && !origin.startsWith("https://final-step-fe2fs8tw.herokuapp.com")) {
-          //log.info("Command: " + accessor.getCommand());
-
-          if (accessor.getCommand().equals(StompCommand.CONNECT) || accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
-
-            String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
-              .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
-
-            if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-              Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-                .flatMap(claims -> {
-                  Long userId = jwtTokenService.extractIdFromClaims(claims).get();
-                  String username = jwtTokenService.extractUserNameFromClaims(claims).get();
-                  return Optional.of(Pair.of(userId, username));
-                })
-                .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
-                .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
-                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-              if (user != null) {
-                auditorAware.setCurrentAuditor(user.getName());
-                //SecurityContextHolder.getContext().setAuthentication(user);
-                accessor.setUser(user);
-                accessor.getSessionAttributes()
-                  .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
-              }
-              //log.info("Token:" + token);
-              //log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
-            } else {
-              throw new JwtAuthenticationException("Token is not valid");
-            }
-          }
-        }
-        //log.info("Assessor message " + accessor.getMessage());
-        return message;
-      }
-    });
+    registration.interceptors(new WebSocketChannelInterceptor());
   }
 
-  //  @Override
-//  public void configureClientInboundChannel(ChannelRegistration registration) {
-//    registration.interceptors(new ChannelInterceptor() {
-//      @Override
-//      @Order(Ordered.HIGHEST_PRECEDENCE + 99)
-//      public Message<?> preSend(Message<?> message, MessageChannel channel) {
+  @Order(Ordered.HIGHEST_PRECEDENCE + 99)
+  private class WebSocketChannelInterceptor implements ChannelInterceptor {
+
+    @Override
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+      StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+      String destination = accessor.getDestination();
+      log.info("Destination:" + destination);
+      log.info("Command: " + accessor.getCommand());
+
+      if (Stream.of(StompCommand.CONNECT, StompCommand.SUBSCRIBE, StompCommand.SEND)
+        .anyMatch(command -> command.equals(accessor.getCommand()))) {
+        String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
+          .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+        if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
+//          if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+//            String userName = jwtTokenService.extractUserNameFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get();
 //
-//        StompHeaderAccessor accessor =
-//          MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-//
-//        if (accessor != null && accessor.getCommand() != null) {
-//          if (StompCommand.CONNECT.equals(accessor.getCommand()) ||
-//            StompCommand.SEND.equals(accessor.getCommand()) ||
-//            StompCommand.SUBSCRIBE.equals(accessor.getCommand())) {
-//
-//            String token = jwtTokenService.extractTokenFromHeader(accessor.getFirstNativeHeader("Authorization"))
-//              .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
-//
-//            if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
-//              Authentication user = jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
-//                .flatMap(jwtTokenService::extractIdFromClaims)
-//                .map(JwtUserDetails::new)
-//                .map(jwtUserDetails -> new UsernamePasswordAuthenticationToken(jwtUserDetails, "", jwtUserDetails.getAuthorities()))
-//                .orElseThrow(() -> new JwtAuthenticationException("Authentication failed"));
-//              accessor.setUser(user);
-//            } else {
-//              throw new JwtAuthenticationException("Token is not valid");
+//            if (!(destination.equals("/topic/сhats/" + userName)) || destination.equals("/topic/notifications/" + userName)) {
+//              log.info("Attempt to subscribe to other user channel: " + destination);
+//              throw new JwtAuthenticationException("Attempt to subscribe to other user channel: " + destination);
 //            }
 //          }
-//        }
-//        return message;
-//      }
-//    });
+          processWebSocketRequestWithToken(token, accessor);
+          log.info("Token:" + token);
+          log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
+        } else throw new JwtAuthenticationException("Token invalid");
+      }
+      return message;
+    }
+  }
+
+  private void processWebSocketRequestWithToken(String token, StompHeaderAccessor accessor) {
+    try {
+      this.jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS)
+        .flatMap(claims -> {
+          Long userId = this.jwtTokenService.extractIdFromClaims(claims).get();
+          String username = this.jwtTokenService.extractUserEmailFromClaims(claims).get();
+          return Optional.of(Pair.of(userId, username));
+        })
+        .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
+        .map(ud -> new UsernamePasswordAuthenticationToken(ud, "", ud.getAuthorities()))
+        .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
+          auditorAware.setCurrentAuditor(auth.getName());
+          SecurityContextHolder.getContext().setAuthentication(auth);
+          accessor.setUser(auth);
+          log.info("User: " + auth.getName() + " authorized");
+          accessor.getSessionAttributes()
+            .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+        });
+    } catch (Exception e) {
+      throw new JwtAuthenticationException("Websocket authentication failed with: " + e.getMessage());
+    }
+  }
 }

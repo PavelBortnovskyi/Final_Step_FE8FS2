@@ -35,6 +35,11 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
     return this.chatService.createChat(userId, interlocutorId).stream().map(this::convertToDto).collect(Collectors.toSet());
   }
 
+  public ChatResponseDTO getChatById(Long chatId){
+    return chatService.findById(chatId).map(this::convertToDto)
+      .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
+  }
+
   /**
    * Method deletes chat (can be performed only by chat initiator!)
    */
@@ -56,6 +61,13 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
     return this.chatService.removeUserFromChat(userToRemoveId, removeInitUserId, chatId);
   }
 
+  public Set<Long> getChatMemberIds(Long chatId){
+    return chatService.getChatMemberIds(chatId);
+  }
+
+  public Set<String> getChatMemberEmails(Long chatId){
+    return chatService.getChatMemberEmails(chatId);
+  }
   /**
    * Method returns page of user chat responses with last message to preview
    */

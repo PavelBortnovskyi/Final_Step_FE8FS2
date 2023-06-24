@@ -10,9 +10,9 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.util.concurrent.ExecutionException;
 
 @Log4j2
 @Aspect
@@ -24,12 +24,10 @@ public class NotificationAspect {
   public void executeNotification() {
   }
 
-  private final WebSocketStompClient stompClient;
-
   private final NotificationService notificationService;
 
   @AfterReturning(pointcut = "executeNotification()", returning = "returnValue")
-  public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) {
+  public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) throws ExecutionException, InterruptedException {
     String methodName = joinPoint.getSignature().getName();
 
     Object[] args = joinPoint.getArgs();

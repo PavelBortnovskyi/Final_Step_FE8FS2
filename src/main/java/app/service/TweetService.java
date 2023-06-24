@@ -9,7 +9,6 @@ import app.model.UserModel;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,9 @@ public class TweetService extends GeneralService<Tweet> {
   private final CloudinaryService cloudinaryService;
   private final AttachmentImagesService attachmentImagesService;
 
+
   @Transactional
-  @SendNotification
+  //@SendNotification
   public Tweet createTweet(Long userId, String tweetBody, MultipartFile[] files, TweetType tweetType, Long parentTweetId) {
     if (files == null) files = new MultipartFile[0];
 
@@ -99,6 +99,7 @@ public class TweetService extends GeneralService<Tweet> {
     return tweetRepository
       .findAllByUser_FollowersContainingAndTweetTypeNotOrderByCreatedAtDesc(userService.getUser(userId), TweetType.REPLY, pageable);
   }
+
 
   public boolean isUserTweetedTweet(UserModel currUser, Tweet tweet, TweetType tweetType) {
     return tweetRepository.existsByUserAndParentTweetAndTweetType(currUser, tweet, tweetType);

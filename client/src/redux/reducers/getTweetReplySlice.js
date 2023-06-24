@@ -3,6 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getTweetReply } from '../thunk/tweets/getTweetReply.js';
 import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 import { likePost } from '../thunk/tweets/likeTweet.js';
+import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
+import { addQuote } from '../thunk/tweets/addQuote.js';
+import { addRetweet } from '../thunk/tweets/addRetweet.js';
+import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 
 const initialState = {
   tweetReplies: [],
@@ -33,10 +37,34 @@ export const tweetRepliesSlice = createSlice({
         state.tweetReplies = [action.payload.data, ...state.tweetReplies];
         state.isLoading = false;
       })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        const retweetTweet = action.payload.parentTweet;
+        state.tweetReplies = state.tweetReplies.map((tweet) =>
+          tweet.id === retweetTweet.id ? retweetTweet : tweet
+        );
+      })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
         state.tweetReplies = state.tweetReplies.map((tweet) =>
           tweet.id === likedTweet.id ? likedTweet : tweet
+        );
+      })
+      .addCase(addQuote.fulfilled, (state, action) => {
+        const quoteTweet = action.payload;
+        state.tweetReplies = state.tweetReplies.map((tweet) =>
+          tweet.id === quoteTweet.id ? quoteTweet : tweet
+        );
+      })
+      .addCase(addBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.tweetReplies = state.tweetReplies.map((tweet) =>
+          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
+        );
+      })
+      .addCase(deleteBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.tweetReplies = state.tweetReplies.map((tweet) =>
+          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
       });
   },

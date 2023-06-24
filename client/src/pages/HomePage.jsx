@@ -12,9 +12,10 @@ import {
 } from 'src/redux/selectors/selectors';
 import TweetList from 'src/UI/TweetList';
 import { getAllTweetsThunkNoAuth } from 'src/redux/thunk/tweets/getAllTweetsThunkNoAuth';
+import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 
 export const HomePage = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
 
   const isScreenSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { isAuthenticated } = useSelector(getAuthorizationData);
@@ -30,15 +31,20 @@ export const HomePage = () => {
     } else {
       // get tweets without auth
       dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 20 }));
-      // dispatch(getAllTweetsThunk());
     }
   }, [dispatch, isAuthenticated, tabIndex]);
 
   let allTweets = useSelector(getAllTweets);
+  let allTweetsLoading = allTweets.isLoading;
   let allTweetsArray = allTweets.allTweets;
 
   let subscriptions = useSelector(subscriptionsTweets);
+  let subscriptionsLoading = subscriptions.isLoading;
+
   let subscriptionsArray = subscriptions.subscriptionsTweets;
+  let tweetsNoAuthState = useSelector((state) => state.tweetsNoAuth);
+  let tweetsNoAuthLoading = tweetsNoAuthState.isLoading;
+  let tweetsNoAuthArray = tweetsNoAuthState.tweetsNoAuth;
 
   return (
     <Box
@@ -48,9 +54,15 @@ export const HomePage = () => {
     >
       <MainPage_header tabIndex={tabIndex} setTabIndex={setTabIndex} />
       {!isScreenSmall && isAuthenticated ? <TweetBox /> : null}
-      <TweetList
-        tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}
-      />
+      {isAuthenticated ? (
+        <TweetList
+          tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}
+        />
+      ) : (
+        <TweetList tweets={tweetsNoAuthArray} />
+      )}
+      {tweetsNoAuthLoading || (subscriptionsLoading && <LoaderSkeleton />)}
+      {allTweetsLoading && <LoaderSkeleton />}
     </Box>
   );
 };
