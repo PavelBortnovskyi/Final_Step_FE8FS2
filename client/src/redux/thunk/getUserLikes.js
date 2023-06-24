@@ -5,7 +5,6 @@ export const getUserLikes = createAsyncThunk(
   'user/likes',
   async (id, { rejectWithValue }) => {
     const userId = id ? `/${id}` : '';
-    console.log(userId);
     try {
       // request to server if we have token in localStorage it will inject src/utils/axiosSetup into request
       const { data } = await myAxios.get(`/tweet/like/user${userId}`);
