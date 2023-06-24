@@ -22,9 +22,7 @@ export const UserReplise = ({ replise }) => {
     if (paren?.parentTweet === null) {
       return (
         paren && (
-          <Box
-          //  paddingBottom={'16px'}
-          >
+          <Box>
             <TweetReplise
               paren={paren}
               userAvatar={parentAvatar}
@@ -44,9 +42,7 @@ export const UserReplise = ({ replise }) => {
     } else if (paren?.parentTweet !== null) {
       return (
         paren.parentTweet && (
-          <Box
-          // paddingBottom={'16px'}
-          >
+          <Box>
             {renderParentReplise(paren.parentTweet)}
             <TweetReplise
               paren={paren}
@@ -76,11 +72,8 @@ export const UserReplise = ({ replise }) => {
             display={'flex'}
             flexDirection={'row'}
             gap={'8px'}
-            // marginTop={'12px'}
-            // marginRight={'16px'}
             borderBottom={`1px solid ${theme.palette.border.main}`}
             width={'100%'}
-            // padding={'8px 8px 8px 0px'}
           >
             <Box sx={{ width: '100%' }}>{renderParentReplise(replis)}</Box>
           </Box>

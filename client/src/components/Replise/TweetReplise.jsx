@@ -36,11 +36,6 @@ export const TweetReplise = ({
       display={'flex'}
       gap={'8px'}
       sx={{
-        // flexDirection: 'column',
-        // width: '100%',
-        // pt: '16px',
-        // pr: '5px',
-        // color: `${theme.palette.text.primary}`,
         transition: 'background-color 0.3s ease',
         '&:hover': {
           backgroundColor: ` ${theme.palette.background.hover}`,
