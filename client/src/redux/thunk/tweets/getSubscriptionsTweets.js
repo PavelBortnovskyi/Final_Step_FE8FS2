@@ -8,7 +8,6 @@ export const getSubscriptionsTweets = createAsyncThunk(
       const { data } = await myAxios.get(
         `tweet/subscriptions?page=${page}&pageSize=${pageSize}`
       );
-      console.log(data);
       return data.content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

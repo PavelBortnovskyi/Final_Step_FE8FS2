@@ -3,6 +3,8 @@ package app.facade;
 import app.dto.rs.TweetActionResponseDTO;
 import app.enums.TweetActionType;
 import app.model.TweetAction;
+import app.model.UserModel;
+import app.service.AuthUserService;
 import app.service.TweetActionService;
 import app.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +20,14 @@ public class TweetActionFacade extends GeneralFacade<TweetAction, Void, TweetAct
 
   private final UserService userService;
   private final TweetActionService tweetActionService;
+  private final AuthUserService authUserService;
+  private final TweetFacade tweetFacade;
 
 
-  public Page<TweetActionResponseDTO> getTweetActionsByUser(Long userId, TweetActionType tweetAction, Pageable pageable) {
-    return tweetActionService.getActionsByUser(userService.getUser(userId), tweetAction, pageable).map(this::convertToDto);
+  public Page<TweetActionResponseDTO> getTweetActionsByUser(Long userId, TweetActionType tweetActionType, Pageable pageable) {
+    UserModel currentUser = authUserService.getCurrUser();
+    return tweetActionService.getActionsByUser(userService.getUser(userId), tweetActionType, pageable).map(this::convertToDto)
+      .map(tweetAction -> tweetAction.setTweet(tweetFacade.setCustomFields(tweetAction.getTweet(), currentUser)));
   }
 
 }

@@ -7,6 +7,7 @@ import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
 import { getAllTweetsThunkNoAuth } from '../thunk/tweets/getAllTweetsThunkNoAuth.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
+import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 
 const initialState = {
   allTweets: [],
@@ -72,6 +73,12 @@ const getAllTweetsSlice = createSlice({
       .addCase(createTweet.fulfilled, (state, action) => {
         const newTweet = action.payload;
         state.allTweets = [newTweet, ...state.allTweets];
+      })
+      .addCase(deleteBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) =>
+          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
+        );
       });
   },
 });

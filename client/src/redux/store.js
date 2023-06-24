@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import auth from 'src/redux/reducers/authSlice';
 import settingsTheme from 'src/redux/reducers/themeSlice';
 import user from 'src/redux/reducers/userSlice';
-import tweets from 'src/redux/reducers/getTweetSlice';
 import singleTweet from 'src/redux/reducers/getTweetByIdSlice';
 import userTweets from 'src/redux/reducers/getUserTweetsSlice';
 import chat from 'src/redux/reducers/chatSlice';
@@ -19,13 +18,12 @@ import subscriptionsTweets from 'src/redux/reducers/subscriptionsTweetsSlicer';
 import userLikes from 'src/redux/reducers/userLikesSlice';
 import userReplise from 'src/redux/reducers/userRepliseSlice';
 import quoteSlice from 'src/redux/reducers/quoteSlice';
-
+import tweetsNoAuth from 'src/redux/reducers/getTweetsNoAuthSlicer';
 
 const rootReducer = {
   auth,
   settingsTheme,
   user,
-  tweets,
   singleTweet,
   userTweets,
   tweetReplies,
@@ -42,6 +40,7 @@ const rootReducer = {
   userLikes,
   userReplise,
   quoteSlice,
+  tweetsNoAuth,
 };
 
 export const store = configureStore({
