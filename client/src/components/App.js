@@ -29,8 +29,6 @@ export const App = () => {
   //****************** CONNECT TO SOCKET without SockJS  *****************/
   useEffect(() => {
     if (isAuthenticated && accessToken && user) {
-      console.log(user.email);
-
       try {
         // create header
         const headers = {
