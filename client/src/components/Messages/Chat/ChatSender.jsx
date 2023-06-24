@@ -1,8 +1,10 @@
-import { Alert, Box, InputBase, Snackbar, alpha, styled } from '@mui/material';
-import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
-import AttachFile from '@mui/icons-material/AttachFile';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Alert, Box, InputBase, Snackbar, alpha, styled } from '@mui/material';
+
+import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import AttachFile from '@mui/icons-material/AttachFile';
 import { getChats, getUserData } from 'src/redux/selectors/selectors';
 import { getTokens } from 'src/utils/tokens';
 
@@ -23,39 +25,71 @@ const Sender = styled('div')(({ theme }) => ({
 }));
 
 const EmojiIconWrapper = styled('div')(({ theme }) => ({
-  padding: '8px',
+  padding: '2px',
   height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
+  // margin: '0 4px 0 10px',
+  // pointerEvents: 'none',
+  cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 }));
 
+const EmojiEmotionOutlinedIconStyles = styled(EmojiEmotionOutlinedIcon)(
+  ({ theme }) => ({
+    color: alpha(theme.palette.text.primary, 0.4),
+    fontSize: '32px',
+  })
+);
+
+const SendIconWrapper = styled('div')(({ theme }) => ({
+  padding: '6px',
+  margin: '0 4px 0 0px',
+  // height: '100%',
+  borderRadius: '50%',
+  backgroundColor: alpha(theme.palette.text.primary, 0.2),
+  // pointerEvents: 'none',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const ReplyAllIconStyles = styled(ReplyAllIcon)(({ theme }) => ({
+  color: alpha(theme.palette.text.primary, 0.2),
+  fontSize: '18px',
+  transform: 'rotateZ(90deg)',
+}));
+
 const SenderInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
+  flex: '1 0 auto',
   '& .MuiInputBase-input': {
-    padding: '6px 0 10px 10px',
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    padding: '6px 8px 6px 4px',
+    // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     width: '100%',
   },
 }));
+
 // ************ STYLE ************
 
 // ************ ChatSender ************
 export const ChatSender = () => {
+  // link textInput for Enter btn
+  const textInputRef = useRef(null);
+  //
   const [messageText, setMessageText] = useState('');
   const [errorSocket, setErrorSocket] = useState('');
 
-  const { socketChat, currentChat } = useSelector(getChats);
   const { user } = useSelector(getUserData);
+  const { socketChat, currentChat } = useSelector(getChats);
 
   const { accessToken } = getTokens();
 
   // set send text
   const sendText = async (e) => {
     const code = e.keyCode || e.which;
-    if (code === 13) {
+    if (code === 13 && messageText !== '') {
       // chatId - chat message recipient
       // userId - message author
       const message = {
@@ -104,6 +138,17 @@ export const ChatSender = () => {
     }
   };
 
+  // send text on Enter btn
+  const handleSendMessageOnEnter = () => {
+    const event = {
+      target: textInputRef.current,
+      key: 'Enter',
+      keyCode: 13,
+      which: 13,
+    };
+    sendText(event);
+  };
+
   return (
     <>
       {errorSocket && (
@@ -114,14 +159,18 @@ export const ChatSender = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Sender>
           <EmojiIconWrapper>
-            <EmojiEmotionOutlinedIcon sx={{ cursor: 'pointer' }} />
+            <EmojiEmotionOutlinedIconStyles />
           </EmojiIconWrapper>
           <SenderInputBase
+            ref={textInputRef}
             value={messageText}
             placeholder="Type your message"
             onChange={(e) => setMessageText(e.target.value)}
             onKeyPress={(e) => sendText(e)}
           />
+          <SendIconWrapper onClick={handleSendMessageOnEnter}>
+            <ReplyAllIconStyles />
+          </SendIconWrapper>
         </Sender>
       </Box>
     </>

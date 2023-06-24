@@ -49,14 +49,17 @@ export const App = () => {
         // after activate connect
         const connectCallback = () => {
           console.log('Connected to STOMP server');
+          //
           // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
-          // stompClient.subscribe(
-          //   '/topic/notifications',
-          //   (notification) => {
-          //     console.log('notification: ', notification.body);
-          //   },
-          //   headers
-          // );
+
+          stompClient.subscribe(
+            '/topic/notifications',
+            (notification) => {
+              console.log('notification: ', notification.body);
+            },
+            headers
+          );
+
           stompClient.subscribe(
             `/topic/chats/${user.email}`,
             onMessageReceived,
@@ -91,6 +94,7 @@ export const App = () => {
       return () => {
         try {
           stompClientRef.current.deactivate();
+          console.log('disconnect');
           //
         } catch (error) {
           console.error('Error deactivating STOMP connection:', error);
