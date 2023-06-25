@@ -11,6 +11,7 @@ const initialState = {
   currentChat: null,
   chatMessages: null,
   currentMessage: null,
+  newMessageNotification: [],
   allChats: null,
   idChat: [],
   socketChat: null,
@@ -46,6 +47,21 @@ export const chatSlice = createSlice({
     },
     setCurrentMessage(state, action) {
       state.currentMessage = action.payload;
+
+      // set newMessageNotification about new message
+      if (
+        action.payload &&
+        action.payload.chatId !== state.currentChat[0].chatId &&
+        !state.newMessageNotification.includes(action.payload.userId)
+      ) {
+        state.newMessageNotification = [
+          ...state.newMessageNotification,
+          action.payload.userId,
+        ];
+      }
+    },
+    setNewMessageNotification(state, action) {
+      state.newMessageNotification = action.payload;
     },
   },
 
@@ -133,5 +149,6 @@ export const {
   setGuest,
   chatLogout,
   setCurrentMessage,
+  setNewMessageNotification,
 } = chatSlice.actions;
 export default chatSlice.reducer;
