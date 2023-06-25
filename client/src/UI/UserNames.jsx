@@ -17,7 +17,6 @@ function UserNames({
 }) {
   const dispatch = useDispatch();
   const theme = useTheme();
-  console.log(postTime);
   return (
     <Box
       display="flex"
