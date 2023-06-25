@@ -13,13 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface NotificationModelRepository extends RepositoryInterface<Notification> {
-  @Query("SELECT n FROM Notification n WHERE n.receiverUser.id = :id")
+  @Query("SELECT n FROM Notification n WHERE n.receiverUser.id = :id ORDER BY n.createdAt DESC")
   Page<Notification> getUserNotificationsList(@Param("id") Long userId, Pageable pageable);
 
-  @Query("SELECT n FROM Notification n WHERE n.receiverUser.id = :id AND n.isRead = false")
+  @Query("SELECT n FROM Notification n WHERE n.receiverUser.id = :id AND n.isRead = false ORDER BY n.createdAt DESC")
   Page<Notification> getUserUnreadNotificationsList(@Param("id") Long userId, Pageable pageable);
 
-  @Query("SELECT n FROM Notification n WHERE n.receiverUser.id = :id AND n.isRead = true")
+  @Query("SELECT n FROM Notification n WHERE n.receiverUser.id = :id AND n.isRead = true ORDER BY n.createdAt DESC")
   Page<Notification> getUserSeenNotificationsList(@Param("id") Long userId, Pageable pageable);
 
   @Transactional
