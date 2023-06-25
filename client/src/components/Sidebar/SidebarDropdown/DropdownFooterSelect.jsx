@@ -70,8 +70,6 @@ export const DropdownFooterSelect = ({ mainLabel, selects }) => {
           <em>{mainLabel}</em>
         </MenuItem>
 
-
-
         {selects && selects.map((selectEl) => (
           <Link
             to={selectEl.route}
