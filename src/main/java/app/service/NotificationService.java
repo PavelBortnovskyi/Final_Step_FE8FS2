@@ -87,29 +87,29 @@ public class NotificationService extends GeneralService<Notification> {
   }
 
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) {
-    NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
-      .setInitiatorUserId(senderUserId)
-      .setTweetId(tweet.getId());
+      NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
+        .setInitiatorUserId(senderUserId)
+        .setTweetId(tweet.getId());
 
-    if (!tweet.getUser().getId().equals(senderUserId) &&
-      notificationRepository.getLikeNotification(senderUserId, tweet.getId()).isEmpty()
-      && tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
-      notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
-        .setNotificationType(NotificationType.LIKE);
-    }
-
-    if (tweetActionType == null && !tweet.getTweetType().equals(TweetType.TWEET)) {
-      notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-      switch (tweet.getTweetType()) {
-        case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-        case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-        case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+      if (!tweet.getUser().getId().equals(senderUserId) && notificationRepository.getLikeNotification(senderUserId, tweet.getId()).isEmpty()
+        && tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
+        notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
+          .setNotificationType(NotificationType.LIKE);
       }
-    }
-    if (notificationRequestDTO.getReceiverUserId() != null) {
-      template.convertAndSend("/topic/notifications" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
-        modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
-    }
+
+      if (tweetActionType == null && !tweet.getTweetType().equals(TweetType.TWEET)
+        && tweet.getParentTweet() != null && !tweet.getParentTweet().getUser().getId().equals(senderUserId)) {
+        notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
+        switch (tweet.getTweetType()) {
+          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
+        }
+      }
+      if (notificationRequestDTO.getReceiverUserId() != null) {
+        template.convertAndSend("/topic/notifications" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
+          modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
+      }
     return tweet;
   }
 }
