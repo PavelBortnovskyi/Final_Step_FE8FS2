@@ -42,12 +42,11 @@ const BoxContainerStyled = styled(Box)((props) => ({
 export const Sidebar = ({ isAuthenticated }) => {
   const location = useLocation();
 
-
   const filteredMainSidebarElements = isAuthenticated
     ? mainSidebarElements.filter((button) => button.label !== 'Settings')
     : mainSidebarElements.filter(
-      (button) => button.label === 'Explore' || button.label === 'Settings'
-    );
+        (button) => button.label === 'Explore' || button.label === 'Settings'
+      );
 
   return (
     <DrawerStyled variant="permanent" anchor="left">
@@ -101,9 +100,7 @@ export const Sidebar = ({ isAuthenticated }) => {
           )}
         </Box>
 
-        {isAuthenticated && (
-          <SidebarFooter />
-        )}
+        {isAuthenticated && <SidebarFooter />}
       </BoxContainerStyled>
 
       {/* }  */}

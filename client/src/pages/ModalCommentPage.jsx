@@ -4,6 +4,7 @@ import { Modal } from 'src/components/Modal/Modal';
 import { useSelector } from 'react-redux';
 import { getSingleTweet } from 'src/redux/selectors/selectors';
 import Reply from './tweetPage/Reply';
+import { Box } from '@mui/material';
 
 function ModalCommentPage() {
   const tweet = useSelector(getSingleTweet);

@@ -104,11 +104,13 @@ export const Layout = () => {
             zIndex: '10',
           }}
         >
-          <Box sx={{
-            position: 'absolute',
-            top: '-84px',
-            right: '28px',
-          }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '-84px',
+              right: '28px',
+            }}
+          >
             <Link
               to="/modal/tweet"
               state={{ background: location }}

@@ -1,15 +1,10 @@
-import { Avatar, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Post from 'src/components/Post/Post';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
-import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { useMode } from 'src/styles/_materialTheme';
 import TweetPost from './tweet/TweetPost';
 
 export const TweetList = ({ tweets }) => {
-  const dispatch = useDispatch();
   const theme = useMode();
 
   return (
@@ -36,16 +31,14 @@ export const TweetList = ({ tweets }) => {
             </Box>
             <Box
               sx={{
-                width: '90%',
-                ml: '65px',
-                pr: '10px',
+                display: 'flex',
+                justifyContent: 'center',
                 my: '10px',
               }}
             >
               <PostIconList
                 isLiked={tweet.currUserLiked}
                 isQuoted={tweet.currUserQuoted}
-                // isBookmarks={tweet.currUserBookmarked}
                 isComment={tweet.currUserCommented}
                 isRetweet={tweet.currUserRetweeted}
                 likes={

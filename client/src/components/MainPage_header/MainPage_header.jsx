@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Avatar, Tab, Tabs, styled } from '@mui/material';
-import { useMode } from 'src/styles/_materialTheme';
+import { Avatar, Tab, Tabs, styled, useTheme } from '@mui/material';
 import { LogoTwitter } from '../Sidebar/LogoTwitter';
 import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
 import { useSelector } from 'react-redux';
@@ -22,7 +21,7 @@ function MainPage_header({ tabIndex, setTabIndex }) {
   const user = useSelector((state) => state.user.user) || '';
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const [isOpen, setIsOpen] = useState(false);
-  const theme = useMode();
+  const theme = useTheme();
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);

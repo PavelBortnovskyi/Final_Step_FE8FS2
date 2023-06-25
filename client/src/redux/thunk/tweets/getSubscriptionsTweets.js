@@ -1,5 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
+import {
+  setPage,
+  setTotalPages,
+  setTotalElements,
+} from '../../reducers/pagination/paginationSlice.js';
 
 export const getSubscriptionsTweets = createAsyncThunk(
   'tweet/getSubscriptionsTweets',
@@ -8,7 +13,15 @@ export const getSubscriptionsTweets = createAsyncThunk(
       const { data } = await myAxios.get(
         `tweet/subscriptions?page=${page}&pageSize=${pageSize}`
       );
-      return data.content;
+
+      const { content, totalPages, totalElements } = data;
+
+      thunkAPI.dispatch(setPage(page));
+      thunkAPI.dispatch(setTotalPages(totalPages));
+      thunkAPI.dispatch(setTotalElements(totalElements));
+
+      console.log(data);
+      return content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

@@ -8,6 +8,14 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material';
+
+const DialogStyled = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paper': {
+    backgroundColor: 'transparent',
+  },
+}));
+
 
 export const Modal = (props) => {
   const theme = useTheme();
@@ -40,10 +48,10 @@ export const Modal = (props) => {
 
   return (
     <>
-      <Dialog open={isOpen} onClose={handleClose}>
+      <DialogStyled open={isOpen} onClose={handleClose}>
         <DialogTitle
           sx={{
-            backgroundColor: `${theme.palette.background.default}`,
+            backgroundColor: `${theme.palette.background.modalHeader}`,
             color: `${theme.palette.text.primary}`,
             display: 'flex',
             justifyContent: 'space-between',
@@ -60,14 +68,14 @@ export const Modal = (props) => {
         <DialogContent
           dividers
           sx={{
-            backgroundColor: `${theme.palette.background.default}`,
+            backgroundColor: `${theme.palette.background.modal}`,
             color: `${theme.palette.black.main}`,
           }}
         >
           {children}
         </DialogContent>
         {actionsBtn && <DialogActions dividers>{actionsBtn}</DialogActions>}
-      </Dialog>
+      </DialogStyled>
     </>
   );
 };

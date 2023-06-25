@@ -5,8 +5,7 @@ export const getAllTweetsThunk = createAsyncThunk(
   'tweet/allTweets',
   async (thunkAPI) => {
     try {
-      const { data } = await myAxios.get(`tweet/`);
-
+      const { data } = await myAxios.get(`/tweet`);
       return data.content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -19,6 +19,7 @@ import userLikes from 'src/redux/reducers/userLikesSlice';
 import userReplise from 'src/redux/reducers/userRepliseSlice';
 import quoteSlice from 'src/redux/reducers/quoteSlice';
 import tweetsNoAuth from 'src/redux/reducers/getTweetsNoAuthSlicer';
+import paginationReducer from 'src/redux/reducers/pagination/paginationSlice.js';
 
 const rootReducer = {
   auth,
@@ -41,6 +42,7 @@ const rootReducer = {
   userReplise,
   quoteSlice,
   tweetsNoAuth,
+  pagination: paginationReducer,
 };
 
 export const store = configureStore({
