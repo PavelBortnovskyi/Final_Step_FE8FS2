@@ -20,7 +20,7 @@ const getNotificationsSlice = createSlice({
         state.error = null;
       })
       .addCase(getNotifications.fulfilled, (state, action) => {
-        state.userNotifications = action.payload;
+        state.userNotifications = action.payload.content;
         state.isLoading = false;
         state.error = null;
       })
