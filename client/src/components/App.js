@@ -70,7 +70,7 @@ export const App = () => {
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          console.log('Received message:', message.body);
+          // console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 
@@ -94,7 +94,7 @@ export const App = () => {
       return () => {
         try {
           stompClientRef.current.deactivate();
-          console.log('disconnect');
+          console.log('*** disconnect');
           //
         } catch (error) {
           console.error('Error deactivating STOMP connection:', error);
@@ -112,7 +112,7 @@ export const App = () => {
 
   useEffect(() => {
     if (accessToken) {
-      console.log('App auth, token:', isAuthenticated, accessToken);
+      // console.log('App auth, token:', isAuthenticated, accessToken);
       dispatch(getUser());
     }
   }, [dispatch, accessToken, isAuthenticated]);
