@@ -35,6 +35,7 @@ export const getSubscriptionsTweets = createAsyncThunk(
       thunkAPI.dispatch(setTotalPages(totalPages));
       thunkAPI.dispatch(setTotalElements(totalElements));
       console.log(data);
+      console.log(data);
       return content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

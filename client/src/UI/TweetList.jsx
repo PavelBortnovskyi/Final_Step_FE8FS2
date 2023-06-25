@@ -31,16 +31,14 @@ export const TweetList = ({ tweets }) => {
             </Box>
             <Box
               sx={{
-                width: '90%',
-                ml: '65px',
-                pr: '10px',
+                display: 'flex',
+                justifyContent: 'center',
                 my: '10px',
               }}
             >
               <PostIconList
                 isLiked={tweet.currUserLiked}
                 isQuoted={tweet.currUserQuoted}
-                // isBookmarks={tweet.currUserBookmarked}
                 isComment={tweet.currUserCommented}
                 isRetweet={tweet.currUserRetweeted}
                 likes={

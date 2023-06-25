@@ -5,14 +5,11 @@ import { Link } from 'react-router-dom';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import TimeAgo from 'timeago-react';
 
-// this component will be looks like "Jocellyn Flores 'Verified icon' @Artem Shevchuk · 4h"
-// you have to add all necessary props
-
 function UserNames({
   fullName = '',
   isVerified,
   userTag = '',
-  postTime = '',
+  postTime,
   text = null,
   color,
   id,
@@ -20,6 +17,7 @@ function UserNames({
 }) {
   const dispatch = useDispatch();
   const theme = useTheme();
+  console.log(postTime);
   return (
     <Box
       display="flex"

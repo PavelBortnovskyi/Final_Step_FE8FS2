@@ -8,7 +8,6 @@ import PostImages from './PostImages';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
-import TweetPage from 'src/pages/tweetPage/TweetPage';
 
 function TweetPost({ tweet }) {
   const dispatch = useDispatch();
@@ -53,7 +52,7 @@ function TweetPost({ tweet }) {
               fullName={tweet.user.fullName}
               verified={tweet.user.isVerified}
               userTag={tweet.user.userTag}
-              postTime="10h"
+              postTime={tweet.createdAt}
             />
           </Box>
 
@@ -61,9 +60,8 @@ function TweetPost({ tweet }) {
             <Box
               padding={1}
               sx={{
-                ml: '50px',
+                ml: { sm: '20px', md: '40px', xl: '64px' },
                 color: `${theme.palette.text.primary}`,
-                width: '90%',
               }}
             >
               <Typography variant="body" sx={{ fontSize: '15px', mb: '20px' }}>
