@@ -3,10 +3,12 @@ import SentimentSatisfiedAltOutlinedIcon from '@mui/icons-material/SentimentSati
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { Box } from '@mui/material';
+import { useTheme } from '@emotion/react';
 
 function Emoji({ handleEmojiSelect, hover }) {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const node = useRef();
+  const theme = useTheme();
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -41,7 +43,14 @@ function Emoji({ handleEmojiSelect, hover }) {
         onClick={() => setIsPickerVisible(!isPickerVisible)}
       />
       {isPickerVisible && (
-        <Box sx={{ position: 'absolute' }} id="emojiModal">
+        <Box
+          sx={{
+            position: 'absolute',
+            left: '-100px',
+            zIndex: '15',
+          }}
+          id="emojiModal"
+        >
           <Picker
             onEmojiSelect={(e) => {
               handleEmojiSelect(e.native);

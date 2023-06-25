@@ -7,6 +7,7 @@ import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
+import { createTweet } from '../thunk/tweets/createTweet.js';
 
 const initialState = {
   userTweets: [],
@@ -40,7 +41,10 @@ export const getUserTweetsSlice = createSlice({
         );
       })
       .addCase(createTweetReply.fulfilled, (state, action) => {
-        state.userTweets = [action.payload.data, ...state.userTweets];
+        state.userTweets = [
+          action.payload.data.parentTweet,
+          ...state.userTweets,
+        ];
         state.isLoading = false;
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
@@ -66,6 +70,10 @@ export const getUserTweetsSlice = createSlice({
         state.userTweets = state.userTweets.map((tweet) =>
           tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
+      })
+      .addCase(createTweet.fulfilled, (state, action) => {
+        const newTweet = action.payload;
+        state.userTweets = [newTweet, ...state.userTweets];
       });
   },
 });
