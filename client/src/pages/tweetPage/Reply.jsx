@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import { addQuote } from 'src/redux/thunk/tweets/addQuote';
+import { createTweet } from 'src/redux/thunk/tweets/createTweet';
 
 function Reply({ isOpen, setIsOpen, id, type }) {
   const navigate = useNavigate();
@@ -19,6 +20,10 @@ function Reply({ isOpen, setIsOpen, id, type }) {
       !!location.state ? navigate(-1) : navigate('/');
     } else if (type === 'replayModal') {
       dispatch(createTweetReply({ id, postInputText, postImages }));
+      setIsOpen(false);
+      !!location.state ? navigate(-1) : navigate('/');
+    } else if (type === 'createTweet') {
+      dispatch(createTweet({ postInputText, postImages }));
       setIsOpen(false);
       !!location.state ? navigate(-1) : navigate('/');
     }
