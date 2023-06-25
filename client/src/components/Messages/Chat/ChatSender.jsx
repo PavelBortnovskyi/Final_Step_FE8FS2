@@ -1,15 +1,25 @@
 import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Alert, Box, InputBase, Snackbar, alpha, styled } from '@mui/material';
-
+import {
+  Alert,
+  Box,
+  InputBase,
+  Snackbar,
+  alpha,
+  styled,
+  useTheme,
+} from '@mui/material';
 import EmojiEmotionOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
-import AttachFile from '@mui/icons-material/AttachFile';
-import { getChats, getUserData } from 'src/redux/selectors/selectors';
+
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+
+import { getChats, getTheme, getUserData } from 'src/redux/selectors/selectors';
 import { getTokens } from 'src/utils/tokens';
 
 // ************ STYLE ************
-const Sender = styled('div')(({ theme }) => ({
+const Sender = styled(Box)(({ theme }) => ({
   position: 'relative',
   backgroundColor: alpha(theme.palette.text.primary, 0.05),
   border: `1px solid ${theme.palette.border.main}`,
@@ -24,16 +34,19 @@ const Sender = styled('div')(({ theme }) => ({
   width: '100%',
 }));
 
-const EmojiIconWrapper = styled('div')(({ theme }) => ({
+const EmojiIconWrapper = styled(Box)(({ theme }) => ({
   padding: '2px',
   height: '100%',
-  // margin: '0 4px 0 10px',
-  // pointerEvents: 'none',
+  position: 'relative',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 }));
+
+const PickerWrapper = styled(Box)`
+  position: relative;
+`;
 
 const EmojiEmotionOutlinedIconStyles = styled(EmojiEmotionOutlinedIcon)(
   ({ theme }) => ({
@@ -42,12 +55,12 @@ const EmojiEmotionOutlinedIconStyles = styled(EmojiEmotionOutlinedIcon)(
   })
 );
 
-const SendIconWrapper = styled('div')(({ theme }) => ({
+const SendIconWrapper = styled(Box)(({ theme }) => ({
   padding: '6px',
   margin: '0 4px 0 0px',
   // height: '100%',
   borderRadius: '50%',
-  backgroundColor: alpha(theme.palette.text.primary, 0.2),
+  backgroundColor: alpha(theme.palette.primary.main, 0.8),
   // pointerEvents: 'none',
   cursor: 'pointer',
   display: 'flex',
@@ -56,7 +69,8 @@ const SendIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const ReplyAllIconStyles = styled(ReplyAllIcon)(({ theme }) => ({
-  color: alpha(theme.palette.text.primary, 0.2),
+  // color: alpha(theme.palette.primary.main, 0.2),
+  color: '#fff',
   fontSize: '18px',
   transform: 'rotateZ(90deg)',
 }));
@@ -71,13 +85,35 @@ const SenderInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const BoxPicker = styled(Box)(({ theme }) => ({
+  // flexGrow: '1',
+  // display: 'flex',
+  position: 'absolute',
+  bottom: '4px',
+  left: '0px',
+  right: '0px',
+  '& > div': {
+    width: '100%',
+
+    '& > em-emoji-picker': {
+      width: '100%',
+    },
+  },
+}));
+
 // ************ STYLE ************
 
 // ************ ChatSender ************
 export const ChatSender = () => {
   // link textInput for Enter btn
   const textInputRef = useRef(null);
-  //
+
+  // get theme color
+  const { colorTheme } = useSelector(getTheme);
+
+  // emoji Picker visible state
+  const [openPicker, setOpenPicker] = useState(false);
+
   const [messageText, setMessageText] = useState('');
   const [errorSocket, setErrorSocket] = useState('');
 
@@ -151,15 +187,38 @@ export const ChatSender = () => {
 
   return (
     <>
-      {errorSocket && (
-        <Snackbar open={true} autoHideDuration={5000}>
+      {
+        <Snackbar open={!!errorSocket} autoHideDuration={5000}>
           <Alert severity="error">{errorSocket}</Alert>
         </Snackbar>
-      )}
+      }
       <Box sx={{ flexGrow: 1 }}>
+        <PickerWrapper>
+          <BoxPicker
+            sx={{
+              display: openPicker ? 'flex' : 'none',
+            }}
+          >
+            <Picker
+              theme={colorTheme}
+              data={data}
+              previewPosition="none"
+              onClickOutside={() => {
+                openPicker && setOpenPicker(false);
+              }}
+              onEmojiSelect={(e) => {
+                setMessageText((prev) => prev + e.native);
+              }}
+              dynamicWidth={true}
+              // perLine="4"
+            />
+          </BoxPicker>
+        </PickerWrapper>
         <Sender>
           <EmojiIconWrapper>
-            <EmojiEmotionOutlinedIconStyles />
+            <EmojiEmotionOutlinedIconStyles
+              onClick={() => setOpenPicker(!openPicker)}
+            />
           </EmojiIconWrapper>
           <SenderInputBase
             ref={textInputRef}

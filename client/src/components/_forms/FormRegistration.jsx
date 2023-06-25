@@ -22,14 +22,20 @@ import { getAuthorizationData } from 'src/redux/selectors/selectors';
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     color: theme.palette.text.primary,
+    backgroundColor: `${theme.palette.background.modal}`,
 
     '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.border.second,
+      borderColor: theme.palette.border.main,
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.palette.primary.main,
     },
   },
+}));
+
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  padding: '10px',
+  borderRadius: '40px',
 }));
 
 // for check email
@@ -123,6 +129,7 @@ export const FormRegistration = () => {
         initialValues={initialValues}
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
+        autoComplete="off"
       >
         {({ errors, touched, values, handleChange, handleBlur }) => (
           <Form
@@ -225,9 +232,9 @@ export const FormRegistration = () => {
               />
             </LocalizationProvider> */}
 
-            <Button variant="outlined" color="black" type="submit">
+            <ButtonStyled variant="outlined" type="submit">
               Sign up
-            </Button>
+            </ButtonStyled>
           </Form>
         )}
       </Formik>

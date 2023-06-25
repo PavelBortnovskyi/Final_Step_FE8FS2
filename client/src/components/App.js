@@ -40,9 +40,9 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          debug: function (str) {
-            console.log(str);
-          },
+          // debug: function (str) {
+          //   console.log(str);
+          // },
         });
         const stompClient = stompClientRef.current;
 
@@ -112,9 +112,10 @@ export const App = () => {
 
   useEffect(() => {
     if (accessToken) {
+      console.log('App auth, token:', isAuthenticated, accessToken);
       dispatch(getUser());
     }
-  }, [accessToken, dispatch]);
+  }, [dispatch, accessToken, isAuthenticated]);
 
   return <Layout />;
 };
