@@ -19,19 +19,23 @@ import {
 import { registerUser } from 'src/redux/thunk/registerUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
-import styles from 'src/styles/Forms.module.scss';
-
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     color: theme.palette.text.primary,
+    backgroundColor: `${theme.palette.background.modal}`,
 
     '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.border.second,
+      borderColor: theme.palette.border.main,
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.palette.primary.main,
     },
   },
+}));
+
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  padding: '10px',
+  borderRadius: '40px',
 }));
 
 // for check email
@@ -125,9 +129,21 @@ export const FormRegistration = () => {
         initialValues={initialValues}
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
+        autoComplete="off"
       >
         {({ errors, touched, values, handleChange, handleBlur }) => (
-          <Form className={styles.FormBody} autoComplete="off">
+          <Form
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              gap: '18px',
+              margin: '20px',
+              width: '300px',
+              maxWidth: '300px',
+            }}
+            autoComplete="off"
+          >
             {/* email */}
             <TextFieldWhite
               fullWidth
@@ -216,11 +232,9 @@ export const FormRegistration = () => {
               />
             </LocalizationProvider> */}
 
-            <div className={styles.actions}>
-              <Button variant="outlined" color="black" type="submit">
-                Sign up
-              </Button>
-            </div>
+            <ButtonStyled variant="outlined" type="submit">
+              Sign up
+            </ButtonStyled>
           </Form>
         )}
       </Formik>

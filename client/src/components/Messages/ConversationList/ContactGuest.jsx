@@ -1,13 +1,18 @@
 import { Avatar, Box, alpha, styled } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import MailIcon from '@mui/icons-material/Mail';
 
 import { MessagesUserNames } from 'src/UI/MessagesUserNames';
-import { setGuest } from 'src/redux/reducers/chatSlice';
-import { getGuest } from 'src/redux/thunk/getGuest';
+import {
+  setGuest,
+  setNewMessageNotification,
+} from 'src/redux/reducers/chatSlice';
+import { getChats } from 'src/redux/selectors/selectors';
 
 // ************ STYLE ************
 const BoxContactGuest = styled(Box)(({ theme }) => ({
+  position: 'relative',
   display: 'flex',
   gap: '12px',
   padding: '8px',
@@ -18,15 +23,47 @@ const BoxContactGuest = styled(Box)(({ theme }) => ({
     cursor: 'pointer',
   },
 }));
+
+const NewMessageBox = styled(Box)`
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  z-index: 1;
+
+  & svg {
+    font-size: 20px;
+    color: #1e9bf0;
+  }
+`;
 // ************ STYLE ************
 
 export const ContactGuest = ({ guest }) => {
   const dispatch = useDispatch();
   const { id, fullName, avatarImgUrl, userTag, messages } = guest;
 
+  // notification of new message
+  const { newMessageNotification } = useSelector(getChats);
+  const [newMessage, setNewMessage] = useState(false);
+
+  useEffect(() => {
+    if (newMessageNotification.includes(id)) {
+      setNewMessage(true);
+    } else {
+      setNewMessage(false);
+    }
+  }, [id, newMessageNotification]);
+
   const handleClick = () => {
     // set guest from local data
     dispatch(setGuest(guest));
+
+    // clear notification
+    if (newMessageNotification.includes(id)) {
+      const updatedNotification = newMessageNotification.filter(
+        (item) => item !== id
+      );
+      dispatch(setNewMessageNotification(updatedNotification));
+    }
   };
 
   // message character limit
@@ -37,6 +74,11 @@ export const ContactGuest = ({ guest }) => {
 
   return (
     <BoxContactGuest onClick={() => handleClick()}>
+      {newMessage && (
+        <NewMessageBox>
+          <MailIcon />
+        </NewMessageBox>
+      )}
       <Avatar
         sx={{ width: 56, height: 56 }}
         alt={fullName}
