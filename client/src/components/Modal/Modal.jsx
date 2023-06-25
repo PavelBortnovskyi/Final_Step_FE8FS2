@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
 export const Modal = (props) => {
   const theme = useTheme();
 

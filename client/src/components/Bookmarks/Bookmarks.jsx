@@ -9,16 +9,19 @@ import TweetList from 'src/UI/TweetList';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { deleteBookmark } from 'src/redux/thunk/thunkBookmarks/deleteBookmark';
 import { ArrowBack } from 'src/UI/ArrowBack';
+import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 
 export const Bookmarks = () => {
   const theme = useTheme();
+  const { isAuthenticated } = useSelector(getAuthorizationData);
   const user = useSelector((state) => state.user.user) || "";
-  const userBookmarks = useSelector(state => state.userBookmarks.userBookmarks);
-  const Bookmarks = userBookmarks || [];
+  const userBookmarks = useSelector(state => state.userBookmarks);
+  const bookmarksIsLoading = userBookmarks.isLoading;
+  const Bookmarks = userBookmarks.userBookmarks || [];
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(getAuthorizationData);
-  console.log(Bookmarks);
+
+
   // send user to home if not authorization
   useEffect(() => {
     if (!isAuthenticated) {
@@ -35,13 +38,9 @@ export const Bookmarks = () => {
   const deleteAllBookmarks = () => {
     Bookmarks.map(bookmark => {
       const id = bookmark.tweet.id;
-      console.log(bookmark);
-      // console.log(idBookmark);
       dispatch(deleteBookmark({ id }));
     })
   }
-
-
 
   return (
     <Box sx={{ paddingTop: '4px' }}>
@@ -59,15 +58,18 @@ export const Bookmarks = () => {
         zIndex: 13,
         borderBottom: `1px solid ${theme.palette.border.main}`
       }}>
-        <Box sx={{display: 'flex'}}>
-          <ArrowBack/>
+        <Box sx={{ display: 'flex' }}>
+          <ArrowBack />
           <Box>
             <Typography variant="h5">Bookmarks</Typography>
             <UserNick userTag={user.userTag} />
           </Box>
 
         </Box>
-        <Button variant="outlined" sx={{
+        <Button
+          onClick={deleteAllBookmarks}
+          variant="outlined"
+          sx={{
             cursor: 'pointer',
             borderRadius: '30px',
             height: '30px',
@@ -92,7 +94,9 @@ export const Bookmarks = () => {
           }} /> */}
       </Box>
 
-      {Bookmarks ? (
+      {bookmarksIsLoading && <LoaderSkeleton />}
+
+      {Bookmarks.lenght ? (
         <TweetList tweets={Bookmarks} />
       ) : (
         <Box

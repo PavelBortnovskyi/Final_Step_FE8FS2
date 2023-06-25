@@ -13,7 +13,7 @@ const Image = styled('img')({
 function LoaderSkeleton() {
   return (
     <>
-      <Box sx={{ padding: '20px' }}>
+      <Box sx={{ padding: '20px', width:'100%',}}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box sx={{ margin: 1 }}>
             <Skeleton variant="circular">
@@ -31,7 +31,7 @@ function LoaderSkeleton() {
           <Skeleton height="40px" width="100%"></Skeleton>
         </Box>
       </Box>
-      <Box sx={{ padding: '20px' }}>
+      <Box sx={{ padding: '20px', width:'100%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box sx={{ margin: 1 }}>
             <Skeleton variant="circular">
@@ -49,7 +49,7 @@ function LoaderSkeleton() {
           <Skeleton height="40px" width="100%"></Skeleton>
         </Box>
       </Box>
-      <Box sx={{ padding: '20px' }}>
+      <Box sx={{ padding: '20px', width:'100%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box sx={{ margin: 1 }}>
             <Skeleton variant="circular">
