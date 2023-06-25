@@ -1,3 +1,6 @@
+// no active
+
+////////////////////////////////////////////////////////////////////
 import { Box, Typography, useTheme } from '@mui/material';
 import { UserPageAvatar } from '../User/UserPageAvatar';
 import PostImages from 'src/UI/tweet/PostImages';
