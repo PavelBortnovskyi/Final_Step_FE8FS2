@@ -6,21 +6,6 @@ import {
   setTotalElements,
 } from '../../reducers/pagination/paginationSlice.js';
 
-// export const getSubscriptionsTweets = createAsyncThunk(
-//   'tweet/getSubscriptionsTweets',
-//   async ({ page, pageSize }, thunkAPI) => {
-//     try {
-//       const { data } = await myAxios.get(
-//         `tweet/subscriptions?page=${page}&pageSize=${pageSize}`
-//       );
-//       console.log(data);
-//       return data.content;
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 export const getSubscriptionsTweets = createAsyncThunk(
   'tweet/getSubscriptionsTweets',
   async ({ page, pageSize }, thunkAPI) => {
@@ -34,6 +19,7 @@ export const getSubscriptionsTweets = createAsyncThunk(
       thunkAPI.dispatch(setPage(page));
       thunkAPI.dispatch(setTotalPages(totalPages));
       thunkAPI.dispatch(setTotalElements(totalElements));
+
       console.log(data);
       return content;
     } catch (error) {
