@@ -2,7 +2,10 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from 'src/layout/Layout';
-import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import {
+  getAuthorizationData,
+  getUserData,
+} from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
 import { getTokens } from 'src/utils/tokens';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
@@ -17,6 +20,7 @@ export const socketUrl = 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws';
 export const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
+  const { user } = useSelector(getUserData);
   const { accessToken } = getTokens();
 
   // socket connection reference
@@ -24,7 +28,7 @@ export const App = () => {
 
   //****************** CONNECT TO SOCKET without SockJS  *****************/
   useEffect(() => {
-    if (isAuthenticated && accessToken) {
+    if (isAuthenticated && accessToken && user) {
       try {
         // create header
         const headers = {
@@ -44,13 +48,21 @@ export const App = () => {
 
         // after activate connect
         const connectCallback = () => {
-          // console.log('Connected to STOMP server');
-          stompClient.subscribe('/topic/chats', onMessageReceived, headers);
+          console.log('Connected to STOMP server');
+          //
+          // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
+
           stompClient.subscribe(
             '/topic/notifications',
             (notification) => {
-              // console.log('notification: ', notification.body);
+              console.log('notification: ', notification.body);
             },
+            headers
+          );
+
+          stompClient.subscribe(
+            `/topic/chats/${user.email}`,
+            onMessageReceived,
             headers
           );
           dispatch(setSocketChat(stompClient));
@@ -82,6 +94,7 @@ export const App = () => {
       return () => {
         try {
           stompClientRef.current.deactivate();
+          console.log('*** disconnect');
           //
         } catch (error) {
           console.error('Error deactivating STOMP connection:', error);
@@ -94,14 +107,15 @@ export const App = () => {
         }
       };
     }
-  }, [dispatch, accessToken, isAuthenticated]);
+  }, [dispatch, accessToken, isAuthenticated, user]);
   //*********************************************************/
 
   useEffect(() => {
     if (accessToken) {
+      // console.log('App auth, token:', isAuthenticated, accessToken);
       dispatch(getUser());
     }
-  }, [accessToken, dispatch]);
+  }, [dispatch, accessToken, isAuthenticated]);
 
   return <Layout />;
 };

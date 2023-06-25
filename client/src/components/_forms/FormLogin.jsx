@@ -15,24 +15,32 @@ import {
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
-import styles from 'src/styles/Forms.module.scss';
-
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     color: theme.palette.text.primary,
 
     '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.border.second,
+      borderColor: theme.palette.border.main,
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.border.main,
+      borderColor: theme.palette.primary.main,
     },
   },
 }));
 
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  padding: '10px',
+  borderRadius: '40px',
+}));
+
+// for check email
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
 // structure data for form
 const SignupSchema = Yup.object().shape({
-  email: Yup.string().email('invalid email address').required('required field'),
+  email: Yup.string()
+    .matches(emailRegex, 'invalid email address')
+    .required('required field'),
   password: Yup.string()
     .min(8, 'must be more than 8 characters')
     .required('required field'),
@@ -97,7 +105,18 @@ export const FormLogin = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched, values, handleChange, handleBlur }) => (
-          <Form className={styles.FormBody} autoComplete="off">
+          <Form
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              gap: '18px',
+              margin: '20px',
+              width: '300px',
+              maxWidth: '300px',
+            }}
+            autoComplete="off"
+          >
             {/* email */}
             <TextFieldWhite
               fullWidth
@@ -124,11 +143,9 @@ export const FormLogin = () => {
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
             />
-            <div className={styles.actions}>
-              <Button variant="outlined" color="black" type="submit">
-                Log in
-              </Button>
-            </div>
+            <ButtonStyled variant="outlined" type="submit">
+              Log in
+            </ButtonStyled>
           </Form>
         )}
       </Formik>

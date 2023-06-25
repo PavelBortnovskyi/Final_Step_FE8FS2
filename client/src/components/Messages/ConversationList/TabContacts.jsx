@@ -40,6 +40,8 @@ export const TabContacts = () => {
     const getAllGuests = () => {
       try {
         if (allChats) {
+          // console.log('all', allChats);
+
           const excludeGroup = allChats.content.filter(
             (chat) => chat.users.length === 1
           );
