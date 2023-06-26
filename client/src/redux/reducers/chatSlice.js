@@ -51,6 +51,7 @@ export const chatSlice = createSlice({
       // set newMessageNotification about new message
       if (
         action.payload &&
+        state.currentChat &&
         action.payload.chatId !== state.currentChat[0].chatId &&
         !state.newMessageNotification.includes(action.payload.userId)
       ) {

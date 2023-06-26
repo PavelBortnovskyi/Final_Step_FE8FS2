@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from 'src/layout/Layout';
@@ -21,18 +21,27 @@ export const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const { user } = useSelector(getUserData);
+
   const { accessToken } = getTokens();
+
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setToken(accessToken);
+  }, [accessToken, token]);
 
   // socket connection reference
   const stompClientRef = useRef(null);
 
   //****************** CONNECT TO SOCKET without SockJS  *****************/
   useEffect(() => {
-    if (isAuthenticated && accessToken && user) {
+    // const { accessToken } = getTokens();
+
+    if (isAuthenticated && token && user) {
       try {
         // create header
         const headers = {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
           Origin: 'client',
         };
 
@@ -40,9 +49,9 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
+          debug: function (str) {
+            console.log(str);
+          },
         });
         const stompClient = stompClientRef.current;
 
@@ -53,9 +62,9 @@ export const App = () => {
           // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
 
           stompClient.subscribe(
-            '/topic/notifications',
+            `/topic/notifications/${user.email}`,
             (notification) => {
-              console.log('notification: ', notification.body);
+              console.log('*** notification: ', notification.body);
             },
             headers
           );
@@ -65,18 +74,27 @@ export const App = () => {
             onMessageReceived,
             headers
           );
+
+          //  user/topic/chats-${username}
+          // stompClient.subscribe(
+          //   `/user/topic/chats-${user.email}`,
+          //   onMessageReceived,
+          //   headers
+          // );
+
           dispatch(setSocketChat(stompClient));
         };
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
+          console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 
         // error socket
         const errorCallback = (error) => {
           console.error('*** Error:', error);
+          setToken('');
         };
 
         stompClient.onConnect = connectCallback;
@@ -107,15 +125,15 @@ export const App = () => {
         }
       };
     }
-  }, [dispatch, accessToken, isAuthenticated, user]);
+  }, [dispatch, token, isAuthenticated, user]);
   //*********************************************************/
 
   useEffect(() => {
-    if (accessToken) {
-      // console.log('App auth, token:', isAuthenticated, accessToken);
+    if (token) {
+      console.log('App auth, token:', isAuthenticated, token);
       dispatch(getUser());
     }
-  }, [dispatch, accessToken, isAuthenticated]);
+  }, [dispatch, token, isAuthenticated]);
 
   return <Layout />;
 };
