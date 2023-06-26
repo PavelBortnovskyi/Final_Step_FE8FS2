@@ -24,8 +24,6 @@ const CustomTab = styled(Tab)((props) => ({
 }));
 
 
-
-
 export const NotificationsUser = () => {
   const user = useSelector((state) => state.user.user) || '';
   const dispatch = useDispatch();
