@@ -44,7 +44,7 @@ export const TweetReplise = ({
       }}
     >
       <Link
-        to={`/user/${tweetId}`}
+        to={`/user/${userId}`}
         onClick={() => {
           dispatch(getUserBiId(userId));
         }}
