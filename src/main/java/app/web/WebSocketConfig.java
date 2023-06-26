@@ -121,7 +121,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             if (!((destination.equals("/topic/сhats/" + userEmail)) || (destination.equals("/topic/notifications/" + userEmail)))) {
               log.info("Chat subscription check: " + destination.equals("/topic/сhats/" + userEmail));
               log.info("Notification subscription check: " + destination.equals("/topic/notifications/" + userEmail));
-              log.info("/topic/notifications/" + userEmail + " vs " + destination);
               log.info(userEmail + " attempts to subscribe to other user channel: " + destination);
               throw new JwtAuthenticationException("Attempt to subscribe to other user channel: " + destination);
             }
