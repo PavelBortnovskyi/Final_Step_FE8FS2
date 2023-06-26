@@ -118,9 +118,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
           if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
             String userEmail = jwtTokenService.extractUserEmailFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get();
 
-            if (!((destination.equals("/topic/сhats/" + userEmail)) || (destination.equals("/topic/notifications/" + userEmail)))) {
-              log.info("Chat subscription check: " + destination.equals("/topic/сhats/" + userEmail));
-              log.info("Notification subscription check: " + destination.equals("/topic/notifications/" + userEmail));
+            if (!((destination.equals("/topic/chats/" + userEmail)) || (destination.equals("/topic/notifications/" + userEmail)))) {
+              log.info("Chat subscription check: " + destination.equals("/topic/chats/" + userEmail) + ": " + destination + " vs " + "/topic/chats/" + userEmail);
+              log.info("Notification subscription check: " + destination.equals("/topic/notifications/" + userEmail) + ": " + destination + " vs " + "/topic/notifications/" + userEmail);
               log.info(userEmail + " attempts to subscribe to other user channel: " + destination);
               throw new JwtAuthenticationException("Attempt to subscribe to other user channel: " + destination);
             }
