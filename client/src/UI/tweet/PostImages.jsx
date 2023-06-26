@@ -9,6 +9,7 @@ const SinglePhoto = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   borderRadius: '20px',
+  loading: 'lazy',
 });
 
 const DoublePhoto = styled(Box)({
@@ -18,6 +19,10 @@ const DoublePhoto = styled(Box)({
   borderRadius: '20px',
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
+  img: {
+    height: '290px',
+    loading: 'lazy',
+  },
 });
 
 const TriplePhoto = styled(Box)({
@@ -26,13 +31,15 @@ const TriplePhoto = styled(Box)({
   overflow: 'hidden',
   borderRadius: '20px',
   maxHeight: '290px',
-  maxWidth: '515px',
+  width: '515px',
   display: 'grid',
   gridTemplateColumns: 'repeat(8, 1fr)',
   gridTemplateRows: 'repeat(8, 1fr)',
+  loading: 'lazy',
 });
 
 const QuadruplePhoto = styled(Box)({
+  ml: { sm: '20px', md: '20px', xl: '64px' },
   mt: '10px',
   height: '515px',
   gap: '2px',
@@ -40,12 +47,15 @@ const QuadruplePhoto = styled(Box)({
   borderRadius: '20px',
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
-  gridTemplateRows: '1fr 1fr',
+  gridTemplateRows: '250px 250px',
+  img: {
+    height: '290px',
+    loading: 'lazy',
+  },
 });
 
 function PostImages({ images, quantity }) {
   let PhotoComponent;
-
   switch (quantity) {
     case 1:
       PhotoComponent = SinglePhoto;
@@ -77,37 +87,11 @@ function PostImages({ images, quantity }) {
         style = {
           gridRow: '1 / span 4',
           gridColumn: '5 / span 8',
-          backgroundImage: `url(${img})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          img: {
-            display: 'none',
-          },
         };
       } else if (index === 2) {
         style = {
           gridRow: '5 / span 4',
           gridColumn: '5 / span 8',
-          backgroundImage: `url(${img})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          img: {
-            display: 'none',
-          },
-        };
-      } else if (index === 3) {
-        style = {
-          gridRow: '5 / span 4',
-          gridColumn: '5 / span 8',
-          backgroundImage: `url(${img})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          img: {
-            display: 'none',
-          },
         };
       }
     }
@@ -126,6 +110,7 @@ function PostImages({ images, quantity }) {
                 }}
               >
                 <CardMedia
+                  loading="lazy"
                   key={img.imgUrl}
                   component="img"
                   height="auto"

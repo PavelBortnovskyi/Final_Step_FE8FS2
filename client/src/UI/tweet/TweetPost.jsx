@@ -9,12 +9,9 @@ import { Link, NavLink } from 'react-router-dom';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { SelectDeleteTweet } from './SelectDeleteTweet';
 
-
-
 function TweetPost({ tweet }) {
   const dispatch = useDispatch();
   const theme = useMode();
-
 
   return (
     <>
@@ -35,9 +32,13 @@ function TweetPost({ tweet }) {
           }}
           display="flex"
         >
-
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Box sx={{ display: 'flex', alignItems: 'end', height: '100%' }}>
               <Link
                 key={tweet.id}
@@ -62,7 +63,7 @@ function TweetPost({ tweet }) {
               />
             </Box>
 
-            <SelectDeleteTweet id={tweet.id}/>
+            <SelectDeleteTweet id={tweet.id} />
           </Box>
 
           <NavLink to={`/tweet/${tweet.id}`}>

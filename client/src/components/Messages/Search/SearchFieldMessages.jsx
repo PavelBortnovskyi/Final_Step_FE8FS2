@@ -119,7 +119,7 @@ export const SearchFieldMessages = ({ setIsVisibleResult }) => {
           value={searchText}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Search Direct Messages"
+          placeholder="Search by users or messages"
           inputProps={{ 'aria-label': 'search' }}
         />
         <Box
