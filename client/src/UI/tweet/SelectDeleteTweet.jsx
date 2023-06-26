@@ -9,19 +9,17 @@ export const SelectDeleteTweet = ({ id }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const [age, setAge] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
-
 
   const deleteTweetUser = () => {
     dispatch(deleteTweet({ id }));
     setAnchorEl(null);
   }
 
-  const handleChange = (event) => {
-    console.log('handleChange', event.target.value);
-    setAge(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   console.log('handleChange', event.target.value);
+  //   setAge(event.target.value);
+  // };
 
   const handleClick = (event) => {
     console.log('handleClick', event.currentTarget);
