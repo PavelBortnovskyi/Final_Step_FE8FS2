@@ -69,7 +69,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/user/");
+    registry.enableSimpleBroker("/topic/chats", "/topic/notifications");
       //.setHeartbeatValue(new long[] {10000, 10000})
       //.setTaskScheduler(messageBrokerTaskScheduler);
     registry.setApplicationDestinationPrefixes("/api");
@@ -113,6 +113,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         .anyMatch(command -> command.equals(accessor.getCommand()))) {
         String token = jwtTokenService.extractTokenFromHeader(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")))
           .orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+        log.info("Token before validation: " + token);
         if (jwtTokenService.validateToken(token, TokenType.ACCESS)) {
 //          if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
 //            String userName = jwtTokenService.extractUserNameFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get();
@@ -122,8 +123,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //              throw new JwtAuthenticationException("Attempt to subscribe to other user channel: " + destination);
 //            }
 //          }
+          log.info("Token after validation: " + token);
           processWebSocketRequestWithToken(token, accessor);
-          log.info("Token:" + token);
           log.info("UserId: " + jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get().toString());
         } else throw new JwtAuthenticationException("Token invalid");
       }

@@ -55,7 +55,7 @@ public class WebSocketController {
     if (currUserId.equals(messageDTO.getUserId())) {
       MessageResponseDTO finalFreshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
-        .forEach(email -> template.convertAndSendToUser(email, "/topic/chats", finalFreshMessage));
+        .forEach(email -> template.convertAndSend("/topic/chats/" + email, finalFreshMessage));
     } else
       throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d", messageDTO.getUserId(), currUserId));
   }
