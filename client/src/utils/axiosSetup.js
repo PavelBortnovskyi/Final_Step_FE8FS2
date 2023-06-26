@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getTokens, setAuthToken, setRefreshToken } from 'src/utils/tokens';
+import { notAuthenticated } from 'src/redux/reducers/authSlice.js';
 
 // TODO: myAxios нужно импортировать вместо - axios из библиотеки
 // Server default URL
@@ -18,16 +19,20 @@ myAxios.interceptors.response.use(
     const originalRequest = error.config;
 
     // if refresh token is empty
-    if (!refreshToken) return;
+    // if (!refreshToken) return;
 
     if (originalRequest._retry) {
       setAuthToken();
       setRefreshToken();
     } else if (error.response.status === 401) {
-      originalRequest._retry = true;
-
       // if 401 error from /auth/refresh
-      if (originalRequest.url === '/auth/refresh') return;
+      // if (
+      //   originalRequest.url === '/auth/refresh' &&
+      //   error.response.status === 401
+      // )
+      //   return;
+
+      originalRequest._retry = true;
 
       return await myAxios
         .get('/auth/refresh', {

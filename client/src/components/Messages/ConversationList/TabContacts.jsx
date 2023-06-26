@@ -92,7 +92,7 @@ export const TabContacts = () => {
         guestConversation.map((guest) => {
           return (
             <Box key={guest.id}>
-              <ContactGuest guest={guest} />
+              <ContactGuest guestData={guest} />
             </Box>
           );
         })
