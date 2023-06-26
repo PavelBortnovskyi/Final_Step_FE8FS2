@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
+import { deleteTweet } from 'src/redux/thunk/tweets/deleteTweet';
 
 export const PostIconElementRetweet = ({
   icon,
@@ -14,11 +15,14 @@ export const PostIconElementRetweet = ({
   const dispatch = useDispatch();
 
   const handleRetweet = () => {
+    console.log(isRetweet);
     if (isRetweet) {
-      // dispatch(deleteBookmark({ id }));
+      dispatch(deleteTweet({ id }));
       console.log('delete');
+      console.log(id);
     } else {
       dispatch(addRetweet({ id }));
+      console.log(id);
       console.log('add');
     }
   };

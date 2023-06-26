@@ -10,11 +10,9 @@ function PostIconElement({ icon, quantity, color, id }) {
   const handleRetweet = () => {
     if (false) {
       // dispatch(deleteBookmark({ id }));
-      console.log('delete');
 
     } else {
       dispatch(addRetweet({ id }));
-      console.log('add');
     }
   };
 
