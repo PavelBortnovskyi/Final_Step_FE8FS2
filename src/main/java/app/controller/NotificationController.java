@@ -35,7 +35,7 @@ public class NotificationController {
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public CustomPageImpl<NotificationResponseDTO> handleGetAllUserNotifications(@RequestParam("page") @NotNull Integer page,
-                                                                               @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+                                                                               @RequestParam("size") @NotNull @Positive Integer pageSize) {
     return this.notificationFacade.getAllUserNotifications(authUserService.getCurrUserId(), pageSize, page);
   }
 
@@ -45,7 +45,7 @@ public class NotificationController {
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/seen", produces = MediaType.APPLICATION_JSON_VALUE)
   public CustomPageImpl<NotificationResponseDTO> handleGetSeenUserNotifications(@RequestParam("page") @NotNull Integer page,
-                                                                                @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+                                                                                @RequestParam("size") @NotNull @Positive Integer pageSize) {
     return this.notificationFacade.getSeenUserNotifications(authUserService.getCurrUserId(), pageSize, page);
   }
 
@@ -55,7 +55,7 @@ public class NotificationController {
   @JsonView({Marker.Preview.class})
   @GetMapping(path = "/unseen", produces = MediaType.APPLICATION_JSON_VALUE)
   public CustomPageImpl<NotificationResponseDTO> handleGetUnSeenUserNotifications(@RequestParam("page") @NotNull Integer page,
-                                                                                  @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+                                                                                  @RequestParam("size") @NotNull @Positive Integer pageSize) {
     return this.notificationFacade.getUnseenUserNotifications(authUserService.getCurrUserId(), pageSize, page);
   }
 }
