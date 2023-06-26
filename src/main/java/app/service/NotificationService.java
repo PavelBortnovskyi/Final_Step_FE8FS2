@@ -107,7 +107,7 @@ public class NotificationService extends GeneralService<Notification> {
         }
       }
       if (notificationRequestDTO.getReceiverUserId() != null) {
-        template.convertAndSend("/topic/notifications" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
+        template.convertAndSend("/topic/notifications/" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
           modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
       }
     return tweet;
