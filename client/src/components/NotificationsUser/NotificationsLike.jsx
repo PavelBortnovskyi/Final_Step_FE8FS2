@@ -37,8 +37,6 @@ export const NotificationsLike = ({ notification }) => {
   const FirstName = fullName.length > 24 ? fullName.slice(0, 24) + "..." : fullName;
   const Images = notification.tweet.attachmentImages || [];
 
-
-  console.log(notification);
   return (
     <StyledBox>
       <Box sx={{

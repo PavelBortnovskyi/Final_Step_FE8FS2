@@ -22,12 +22,10 @@ export const SelectDeleteTweet = ({ id }) => {
   // };
 
   const handleClick = (event) => {
-    console.log('handleClick', event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    console.log('handleClose');
     setAnchorEl(null);
   };
 
