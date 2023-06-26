@@ -79,8 +79,8 @@ export const FormLogin = () => {
 
   // default value for form
   const initialValues = {
-    email: 'user1@gmail.com',
-    password: '11111111',
+    email: 'uniqChat@chat.ua',
+    password: '12345678',
   };
   // const initialValues = {
   //   email: '',

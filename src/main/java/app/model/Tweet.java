@@ -34,6 +34,9 @@ public class Tweet extends BaseEntityModel {
   @JoinColumn(name = "parent_tweet")
   private Tweet parentTweet;
 
+  @OneToMany(mappedBy = "parentTweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  private Set<Tweet> childTweet = new HashSet<>();
+
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
   //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> tweetActions = new HashSet<>();
