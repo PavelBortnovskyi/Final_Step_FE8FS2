@@ -95,7 +95,7 @@ public class ChatController {
   @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public CustomPageImpl<ChatResponseDTO> handleGetChatsForPreview(HttpServletRequest request,
                                                                   @RequestParam("page") @NotNull Integer page,
-                                                                  @RequestParam("pageSize") @NotNull @Positive Integer pageSize) {
+                                                                  @RequestParam("size") @NotNull @Positive Integer pageSize) {
     return this.chatFacade.getChatsForPreview(authUserService.getCurrUserId(), pageSize, page);
   }
 
@@ -107,7 +107,7 @@ public class ChatController {
   @GetMapping(path = "/{id}/messages", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponseDTO> handleGetChatMessages(@PathVariable(name = "id") Long chatId,
                                                         @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
-                                                        @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                                        @RequestParam("size") @NotNull(groups = Marker.ChatDetails.class)
                                                         @Positive(groups = Marker.ChatDetails.class) Integer pageSize) {
     return this.chatFacade.getChatMessages(authUserService.getCurrUserId(), chatId, pageSize, page);
   }
@@ -119,7 +119,7 @@ public class ChatController {
   @GetMapping(path = "/{id}/messages/search", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponseDTO> handleGetSearchResultFromChat(@PathVariable(name = "id") Long chatId,
                                                                 @RequestParam("page") @NotNull(groups = Marker.ChatDetails.class) Integer page,
-                                                                @RequestParam("pageSize") @NotNull(groups = Marker.ChatDetails.class)
+                                                                @RequestParam("size") @NotNull(groups = Marker.ChatDetails.class)
                                                                 @Positive(groups = Marker.ChatDetails.class) Integer pageSize,
                                                                 @RequestParam("keyword") String keyword) {
     if (keyword.isEmpty() || keyword.isBlank()) {
@@ -134,7 +134,7 @@ public class ChatController {
   @GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
   public Page<MessageResponseDTO> handleGetSearchResultFromChats(HttpServletRequest request,
                                                                  @RequestParam("page") @NotNull Integer page,
-                                                                 @RequestParam("pageSize") @NotNull @Positive Integer pageSize,
+                                                                 @RequestParam("size") @NotNull @Positive Integer pageSize,
                                                                  @RequestParam("keyword") String keyword) {
     if (keyword.isEmpty() || keyword.isBlank()) {
       throw new BadRequestException("Keyword cannot be empty");
