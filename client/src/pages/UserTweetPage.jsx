@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import TweetList from 'src/UI/TweetList';
+import { UserAllTypeTweets } from 'src/components/User/UserAllTypeTweets/UserAllTypeTweets';
 
 import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 
@@ -11,15 +12,17 @@ export const UserTweetPage = ({ idUser }) => {
   const user = idUser ? idUser : id;
   const dispatch = useDispatch();
   const userTweets = useSelector((state) => state.userTweets.userTweets) || [];
-  const tweets = userTweets.content;
+
   useEffect(() => {
     dispatch(getUserTweetsThunk({ userId: user, page: 0, pageSize: 100 }));
   }, [user, dispatch]);
   console.log(userTweets);
+
   return (
     userTweets && (
       <Box>
-        <TweetList tweets={userTweets} />
+        {/* <TweetList tweets={userTweets} /> */}
+        <UserAllTypeTweets tweets={userTweets} />
       </Box>
     )
   );

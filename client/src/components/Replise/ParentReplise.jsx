@@ -1,6 +1,3 @@
-// no active
-
-////////////////////////////////////////////////////////////////////
 import { Box, Typography, useTheme } from '@mui/material';
 import { UserPageAvatar } from '../User/UserPageAvatar';
 import PostImages from 'src/UI/tweet/PostImages';
@@ -27,6 +24,7 @@ export const ParentReplise = ({
         border: `1px solid ${theme.palette.border.main}`,
         padding: '4px',
         borderRadius: '20px',
+        marginRight: '16px',
       }}
     >
       <Box display={'flex'} gap={'4px'} alignItems={'center'}>
@@ -37,12 +35,14 @@ export const ParentReplise = ({
         <Typography color={'rgb(139, 152, 165)'}> {date}</Typography>
       </Box>
 
-      <Box display={'flex'}>
-        <Box width={'100px'}>
-          <PostImages images={images} quantity={images.length} />
+      <Box
+      //  display={'flex'}
+      >
+        <Box width={'100px'} padding={'0 12px'}>
+          <Typography>{body}</Typography>
         </Box>
 
-        <Typography>{body}</Typography>
+        <PostImages images={images} quantity={images.length} />
       </Box>
     </Box>
   );
