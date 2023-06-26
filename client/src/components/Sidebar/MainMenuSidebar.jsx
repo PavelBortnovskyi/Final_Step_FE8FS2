@@ -1,4 +1,5 @@
 import {
+  Box,
   Link,
   ListItem,
   ListItemButton,
@@ -7,8 +8,11 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+
+import { getChats } from 'src/redux/selectors/selectors';
 
 const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
   height: '48px',
@@ -17,11 +21,11 @@ const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
   alignItems: 'center',
   padding: '0 4px',
   '&:hover': {
-backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   '& > span': {
     display: 'none',
-  }
+  },
 }));
 
 const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
@@ -36,6 +40,11 @@ export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
   const linkRef = useRef(null);
   const [isSwappedIcon, setIsSwappedIcon] = useState(false);
+
+  // TODO: notification of new message
+  // const { newMessageNotification } = useSelector(getChats);
+  // const [isNewMessage, setIsNewMessage] = useState(false);
+  //************************************/
 
   const handleMouseDown = (ev) => {
     setIsSwappedIcon(true);
@@ -58,6 +67,16 @@ export const MainMenuSidebar = ({ navElement }) => {
     }
   };
 
+  // TODO: checking if the user has a new chat message // polus
+  // useEffect(() => {
+  //   if (navElement.newMessageNotification && newMessageNotification.length) {
+  //     setIsNewMessage(true);
+  //   } else {
+  //     setIsNewMessage(false);
+  //   }
+  // }, [navElement.newMessageNotification, newMessageNotification]);
+  //*****************************************/
+
   return (
     <Link
       to={navElement.route}
@@ -70,28 +89,31 @@ export const MainMenuSidebar = ({ navElement }) => {
       onKeyUp={handleKeyUp}
       ref={linkRef}
     >
-      <ListItem key={navElement.id} disablePadding sx={{
-        width: '100%',
-        borderRadius: '100px',
-        '&:hover': {
-          backgroundColor: `${theme.palette.background.hover}`,
-          borderRadius: { xs: '50%', lg: '30px' },
-        }
-      }}>
+      <ListItem
+        key={navElement.id}
+        disablePadding
+        sx={{
+          width: '100%',
+          borderRadius: '100px',
+          '&:hover': {
+            backgroundColor: `${theme.palette.background.hover}`,
+            borderRadius: { xs: '50%', lg: '30px' },
+          },
+        }}
+      >
         <ListItemButtonStyled>
-          <ListItemIconStyled>
-            {
-              isSwappedIcon ?
-                <navElement.iconActive sx={{ fontSize: 30 }} />
-                :
-                <navElement.icon sx={{ fontSize: 30 }} />
-            }
+          {/* {isNewMessage && <Box>fe</Box>} */}
 
+          <ListItemIconStyled>
+            {isSwappedIcon ? (
+              <navElement.iconActive sx={{ fontSize: 30 }} />
+            ) : (
+              <navElement.icon sx={{ fontSize: 30 }} />
+            )}
           </ListItemIconStyled>
 
           <ListItemText
-            primaryTypographyProps={{ fontSize: '18px', fontWeight: "bold" }}
-            
+            primaryTypographyProps={{ fontSize: '18px', fontWeight: 'bold' }}
             sx={{
               color: `${theme.palette.text.primary}`,
               minWidth: '130px',

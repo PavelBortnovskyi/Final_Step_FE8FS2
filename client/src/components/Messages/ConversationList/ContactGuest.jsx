@@ -26,7 +26,7 @@ const BoxContactGuest = styled(Box)(({ theme }) => ({
 
 const NewMessageBox = styled(Box)`
   position: absolute;
-  left: 2px;
+  left: 4px;
   top: 2px;
   z-index: 1;
 
@@ -37,13 +37,26 @@ const NewMessageBox = styled(Box)`
 `;
 // ************ STYLE ************
 
-export const ContactGuest = ({ guest }) => {
+export const ContactGuest = ({ guestData }) => {
   const dispatch = useDispatch();
-  const { id, fullName, avatarImgUrl, userTag, messages } = guest;
+  const { id, fullName, avatarImgUrl, userTag, messages } = guestData;
 
   // notification of new message
-  const { newMessageNotification } = useSelector(getChats);
+  const { newMessageNotification, currentChat, currentMessage, guest } =
+    useSelector(getChats);
   const [newMessage, setNewMessage] = useState(false);
+
+  useEffect(() => {
+    if (
+      guest &&
+      currentChat &&
+      currentMessage &&
+      currentChat[0].chatId === currentMessage.chatId
+    ) {
+      const newArr = newMessageNotification.filter((item) => item !== guest.id);
+      dispatch(setNewMessageNotification(newArr));
+    }
+  }, [dispatch, currentChat, currentMessage, guest]);
 
   useEffect(() => {
     if (newMessageNotification.includes(id)) {
@@ -55,7 +68,7 @@ export const ContactGuest = ({ guest }) => {
 
   const handleClick = () => {
     // set guest from local data
-    dispatch(setGuest(guest));
+    dispatch(setGuest(guestData));
 
     // clear notification
     if (newMessageNotification.includes(id)) {
