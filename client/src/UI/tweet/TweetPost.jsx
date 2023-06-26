@@ -60,7 +60,7 @@ function TweetPost({ tweet }) {
             <Box sx={{ display: 'flex', alignItems: 'end', height: '100%' }}>
               <Link
                 key={tweet.id}
-                to={`/user/${tweet.id}`}
+                to={`/user/${tweet.user.id}`}
                 onClick={() => {
                   dispatch(getUserBiId(tweet.user.id));
                 }}
@@ -70,7 +70,7 @@ function TweetPost({ tweet }) {
                 </Box>
               </Link>
               <UserNames
-                userId={tweet.user.id}
+                userId={tweet.id}
                 id={tweet.id}
                 isVerified={tweet.user.isVerified}
                 color={`${theme.palette.text.primary}`}

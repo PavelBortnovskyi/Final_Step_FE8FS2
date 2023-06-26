@@ -67,7 +67,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
               reply={userTweet.countReply}
               retweet={userTweet.countRetweets}
               id={userTweet.id}
-              isLiked={userTweet.currUserLiked}
+              isLiked={userTweet.parentTweet.currUserLiked}
               isRetweet={userTweet.countRetweets}
               isComment={userTweet.countReplays}
               isBookmark={userTweet.countBookmarks}

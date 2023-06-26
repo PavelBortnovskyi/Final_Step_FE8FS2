@@ -27,87 +27,87 @@ export const App = () => {
   const stompClientRef = useRef(null);
 
   //****************** CONNECT TO SOCKET without SockJS  *****************/
-  useEffect(() => {
-    if (isAuthenticated && accessToken && user) {
-      try {
-        // create header
-        const headers = {
-          Authorization: `Bearer ${accessToken}`,
-          Origin: 'client',
-        };
+  // useEffect(() => {
+  //   if (isAuthenticated && accessToken && user) {
+  //     try {
+  //       // create header
+  //       const headers = {
+  //         Authorization: `Bearer ${accessToken}`,
+  //         Origin: 'client',
+  //       };
 
-        // create connect to socket
-        stompClientRef.current = new Client({
-          brokerURL: socketUrl,
-          connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
-        });
-        const stompClient = stompClientRef.current;
+  //       // create connect to socket
+  //       stompClientRef.current = new Client({
+  //         brokerURL: socketUrl,
+  //         connectHeaders: headers,
+  //         // debug: function (str) {
+  //         //   console.log(str);
+  //         // },
+  //       });
+  //       const stompClient = stompClientRef.current;
 
-        // after activate connect
-        const connectCallback = () => {
-          console.log('Connected to STOMP server');
-          //
-          // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
+  //       // after activate connect
+  //       const connectCallback = () => {
+  //         console.log('Connected to STOMP server');
+  //         //
+  //         // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
 
-          stompClient.subscribe(
-            '/topic/notifications',
-            (notification) => {
-              console.log('notification: ', notification.body);
-            },
-            headers
-          );
+  //         stompClient.subscribe(
+  //           '/topic/notifications',
+  //           (notification) => {
+  //             console.log('notification: ', notification.body);
+  //           },
+  //           headers
+  //         );
 
-          stompClient.subscribe(
-            `/topic/chats/${user.email}`,
-            onMessageReceived,
-            headers
-          );
-          dispatch(setSocketChat(stompClient));
-        };
+  //         stompClient.subscribe(
+  //           `/topic/chats/${user.email}`,
+  //           onMessageReceived,
+  //           headers
+  //         );
+  //         dispatch(setSocketChat(stompClient));
+  //       };
 
-        // set received messages to redux
-        const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
-          dispatch(setCurrentMessage(JSON.parse(message.body)));
-        };
+  //       // set received messages to redux
+  //       const onMessageReceived = (message) => {
+  //         // console.log('Received message:', message.body);
+  //         dispatch(setCurrentMessage(JSON.parse(message.body)));
+  //       };
 
-        // error socket
-        const errorCallback = (error) => {
-          console.error('*** Error:', error);
-        };
+  //       // error socket
+  //       const errorCallback = (error) => {
+  //         console.error('*** Error:', error);
+  //       };
 
-        stompClient.onConnect = connectCallback;
-        stompClient.onStompError = errorCallback;
+  //       stompClient.onConnect = connectCallback;
+  //       stompClient.onStompError = errorCallback;
 
-        // activate connect
-        stompClient.activate();
-        //
+  //       // activate connect
+  //       stompClient.activate();
+  //       //
 
-        //
-      } catch (error) {
-        console.error('Error activating STOMP connection:', error);
-      }
+  //       //
+  //     } catch (error) {
+  //       console.error('Error activating STOMP connection:', error);
+  //     }
 
-      return () => {
-        try {
-          stompClientRef.current.deactivate();
-          console.log('*** disconnect');
-          //
-        } catch (error) {
-          console.error('Error deactivating STOMP connection:', error);
+  //     return () => {
+  //       try {
+  //         stompClientRef.current.deactivate();
+  //         console.log('*** disconnect');
+  //         //
+  //       } catch (error) {
+  //         console.error('Error deactivating STOMP connection:', error);
 
-          // TODO: work ??? If there is a connection error, try to reconnect.
-          if (error.message === 'Lost connection to server') {
-            console.log('Attempting to reconnect...');
-            stompClientRef.current.activate();
-          }
-        }
-      };
-    }
-  }, [dispatch, accessToken, isAuthenticated, user]);
+  //         // TODO: work ??? If there is a connection error, try to reconnect.
+  //         if (error.message === 'Lost connection to server') {
+  //           console.log('Attempting to reconnect...');
+  //           stompClientRef.current.activate();
+  //         }
+  //       }
+  //     };
+  //   }
+  // }, [dispatch, accessToken, isAuthenticated, user]);
   //*********************************************************/
 
   useEffect(() => {

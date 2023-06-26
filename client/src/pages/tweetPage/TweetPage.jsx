@@ -30,7 +30,6 @@ function TweetPage() {
 
   const post = useSelector(getSingleTweet);
   const tweet = post?.singleTweet;
-  console.log(tweet);
   useEffect(() => {
     dispatch(getTweetReply({ id: id, page: 0, pageSize: 10 }));
   }, [id]);
