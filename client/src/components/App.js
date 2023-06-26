@@ -24,12 +24,6 @@ export const App = () => {
 
   const { accessToken } = getTokens();
 
-  const [token, setToken] = useState(null);
-
-  useEffect(() => {
-    setToken(accessToken);
-  }, [accessToken, token]);
-
   // socket connection reference
   const stompClientRef = useRef(null);
 
@@ -37,11 +31,11 @@ export const App = () => {
   useEffect(() => {
     // const { accessToken } = getTokens();
 
-    if (isAuthenticated && token && user) {
+    if (isAuthenticated && accessToken && user) {
       try {
         // create header
         const headers = {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
           Origin: 'client',
         };
 
@@ -49,9 +43,9 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          debug: function (str) {
-            console.log(str);
-          },
+          // debug: function (str) {
+          //   console.log(str);
+          // },
         });
         const stompClient = stompClientRef.current;
 
@@ -87,14 +81,16 @@ export const App = () => {
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          console.log('Received message:', message.body);
+          // console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 
         // error socket
         const errorCallback = (error) => {
-          console.error('*** Error:', error);
-          setToken('');
+          console.error('*** Error:', error.headers.message);
+          if (error.headers.message.includes('UNAUTHORIZED')) {
+            console.error('*** Error: token is wrong');
+          }
         };
 
         stompClient.onConnect = connectCallback;
@@ -125,15 +121,15 @@ export const App = () => {
         }
       };
     }
-  }, [dispatch, token, isAuthenticated, user]);
+  }, [dispatch, accessToken, isAuthenticated, user]);
   //*********************************************************/
 
   useEffect(() => {
-    if (token) {
-      console.log('App auth, token:', isAuthenticated, token);
+    if (accessToken && !user) {
+      // console.log('App auth, token:', isAuthenticated, accessToken);
       dispatch(getUser());
     }
-  }, [dispatch, token, isAuthenticated]);
+  }, [dispatch, accessToken, user]);
 
   return <Layout />;
 };
