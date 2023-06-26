@@ -36,8 +36,7 @@ export const NotificationsUser = () => {
   const userNotifications = useSelector(state => state.userNotifications);
   const Notifications = userNotifications.userNotifications;
   const IsLoadingNotifications = userNotifications.isLoading;
-  console.log(userNotifications);
-  console.log(Notifications);
+
 
   // send user to home if not authorization
   useEffect(() => {
