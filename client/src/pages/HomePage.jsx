@@ -31,7 +31,7 @@ export const HomePage = () => {
       if (tabIndex === 0) {
         dispatch(getAllTweetsThunk());
       } else {
-        dispatch(getSubscriptionsTweets({ page: page, pageSize: 10 }));
+        dispatch(getSubscriptionsTweets({ page: page, pageSize: 1 }));
       }
     } else {
       dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 20 }));

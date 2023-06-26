@@ -34,16 +34,16 @@ public class Tweet extends BaseEntityModel {
   @JoinColumn(name = "parent_tweet")
   private Tweet parentTweet;
 
-  @OneToMany(mappedBy = "tweet")
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
+  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> tweetActions = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet")
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
+  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
   @Override

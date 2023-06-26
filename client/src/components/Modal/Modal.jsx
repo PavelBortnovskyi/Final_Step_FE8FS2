@@ -16,6 +16,7 @@ const DialogStyled = styled(Dialog)(({ theme }) => ({
   },
 }));
 
+
 export const Modal = (props) => {
   const theme = useTheme();
 

@@ -11,6 +11,7 @@ import { NotificationsReplying } from './NotificationsReplying';
 import { NotificationsEmpty } from './NotificationsEmpty';
 import { NotificationsQuote } from './NotificationsQuote';
 import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
+import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -32,8 +33,11 @@ export const NotificationsUser = () => {
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const [tabIndex, setTabIndex] = useState(0);
   const theme = useTheme();
-  const userNotifications = useSelector(state => state.userNotifications.userNotifications);
-  const Notifications = userNotifications.content;
+  const userNotifications = useSelector(state => state.userNotifications);
+  const Notifications = userNotifications.userNotifications;
+  const IsLoadingNotifications = userNotifications.isLoading;
+  console.log(userNotifications);
+  console.log(Notifications);
 
   // send user to home if not authorization
   useEffect(() => {
@@ -43,7 +47,7 @@ export const NotificationsUser = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    dispatch(getNotifications({ page: 0, pageSize: 300 }));
+    dispatch(getNotifications({ page: 0, pageSize: 100 }));
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
@@ -96,7 +100,8 @@ export const NotificationsUser = () => {
         alignItems: 'center',
 
       }}>
-        <NotificationsEmpty userNotifications={userNotifications} tabIndex={tabIndex} />
+      {IsLoadingNotifications && <LoaderSkeleton />}
+        <NotificationsEmpty userNotifications={Notifications} tabIndex={tabIndex} />
 
         {
           tabIndex === 0 && Notifications && Notifications.map(notification => (
