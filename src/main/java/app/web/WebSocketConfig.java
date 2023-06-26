@@ -10,10 +10,12 @@ import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.tomcat.websocket.server.WsServerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
@@ -27,6 +29,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MimeTypeUtils;
@@ -53,6 +56,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   private final SpringSecurityAuditorAware auditorAware;
 
+  private TaskScheduler messageBrokerTaskScheduler;
+  @Autowired
+  public void setMessageBrokerTaskScheduler(@Lazy TaskScheduler taskScheduler) {
+    this.messageBrokerTaskScheduler = taskScheduler;
+  }
+
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
     registration.setMessageSizeLimit(128 * 1024);
@@ -60,7 +69,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/topic/chats", "/topic/notifications");
+    registry.enableSimpleBroker("/user")
+      .setHeartbeatValue(new long[] {10000, 10000})
+      .setTaskScheduler(messageBrokerTaskScheduler);
     registry.setApplicationDestinationPrefixes("/api");
   }
 
