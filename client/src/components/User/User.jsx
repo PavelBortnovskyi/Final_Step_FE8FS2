@@ -25,8 +25,6 @@ export const User = ({
   countUserFollowings,
   countUserFollowers,
 }) => {
-  console.log(idUser);
-
   const theme = useTheme();
   let containerRef = useRef(null);
   const dispatch = useDispatch();
