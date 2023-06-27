@@ -12,7 +12,8 @@ import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
 // import Stomp from 'stompjs';
 import { Stomp, Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+// import SockJS from 'sockjs-client';
+import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
 // url socket server
 export const socketUrl = 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws';
@@ -50,15 +51,15 @@ export const App = () => {
         // after activate connect
         const connectCallback = () => {
           console.log('Connected to STOMP server');
-          //
+
+          // notification chanel
           stompClient.subscribe(
             `/topic/notifications/${user.email}`,
-            (notification) => {
-              console.log('*** notification: ', notification.body);
-            },
+            onNotificationReceived,
             headers
           );
 
+          // chat chanel
           stompClient.subscribe(
             `/topic/chats/${user.email}`,
             onMessageReceived,
@@ -72,6 +73,7 @@ export const App = () => {
           //   headers
           // );
 
+          // set socket connection to redux
           dispatch(setSocketChat(stompClient));
         };
 
@@ -79,6 +81,12 @@ export const App = () => {
         const onMessageReceived = (message) => {
           console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
+
+        // set notification to redux
+        const onNotificationReceived = (notification) => {
+          console.log('Received notification:', notification.body);
+          dispatch(setSocketNotification(JSON.parse(notification.body)));
         };
 
         // error socket

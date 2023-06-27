@@ -1,10 +1,9 @@
-
 import { createSlice } from '@reduxjs/toolkit';
 import { getNotifications } from '../thunk/getNotifications.js';
 
-
 const initialState = {
   userNotifications: [],
+  socketNotification: null,
   isLoading: false,
   error: '',
 };
@@ -12,6 +11,12 @@ const initialState = {
 const getNotificationsSlice = createSlice({
   name: 'userNotifications',
   initialState,
+
+  reducers: {
+    setSocketNotification(state, action) {
+      state.socketNotification = action.payload;
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -31,4 +36,5 @@ const getNotificationsSlice = createSlice({
   },
 });
 
+export const { setSocketNotification } = getNotificationsSlice.actions;
 export default getNotificationsSlice.reducer;
