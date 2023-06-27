@@ -19,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +94,9 @@ public class NotificationService extends GeneralService<Notification> {
     return this.notificationRepository.findById(id);
   }
 
+  /**
+   * Method sends notificationResponseDto to tweet author in websocket topic/notification/username
+   */
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) throws JsonProcessingException {
       NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
         .setInitiatorUserId(senderUserId)
@@ -114,10 +118,12 @@ public class NotificationService extends GeneralService<Notification> {
         }
       }
       if (notificationRequestDTO.getReceiverUserId() != null) {
-        ObjectWriter writer = objectMapper.writerWithView(Marker.Preview.class);
-        String notificationJson = writer.writeValueAsString(modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
+        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+        objectMapper.setConfig(objectMapper.getSerializationConfig().withView(Marker.Preview.class));
+        converter.setObjectMapper(objectMapper);
+        template.setMessageConverter(converter);
         template.convertAndSend( "/topic/notifications/" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
-          notificationJson);
+          modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
       }
     return tweet;
   }
