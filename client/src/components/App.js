@@ -29,8 +29,6 @@ export const App = () => {
 
   //****************** CONNECT TO SOCKET without SockJS  *****************/
   useEffect(() => {
-    // const { accessToken } = getTokens();
-
     if (isAuthenticated && accessToken && user) {
       try {
         // create header
@@ -43,9 +41,9 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
+          debug: function (str) {
+            console.log(str);
+          },
         });
         const stompClient = stompClientRef.current;
 
@@ -53,8 +51,6 @@ export const App = () => {
         const connectCallback = () => {
           console.log('Connected to STOMP server');
           //
-          // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
-
           stompClient.subscribe(
             `/topic/notifications/${user.email}`,
             (notification) => {
@@ -81,7 +77,7 @@ export const App = () => {
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
+          console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 
@@ -98,8 +94,6 @@ export const App = () => {
 
         // activate connect
         stompClient.activate();
-        //
-
         //
       } catch (error) {
         console.error('Error activating STOMP connection:', error);
