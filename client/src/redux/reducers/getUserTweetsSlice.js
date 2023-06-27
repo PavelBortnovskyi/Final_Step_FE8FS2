@@ -25,8 +25,14 @@ export const getUserTweetsSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
+
       .addCase(getUserTweetsThunk.fulfilled, (state, action) => {
-        state.userTweets = action.payload;
+        const newTweets = action.payload.filter(
+          (newTweet) =>
+            !state.userTweets.some((tweet) => tweet.id === newTweet.id)
+        );
+
+        state.userTweets = [...state.userTweets, ...newTweets];
         state.isLoading = false;
         state.error = null;
       })

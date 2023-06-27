@@ -13,6 +13,7 @@ import Reply from './Reply';
 import { useMode } from 'src/styles/_materialTheme';
 import { getTweetReply } from 'src/redux/thunk/tweets/getTweetReply';
 import TweetList from 'src/UI/TweetList';
+import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 
 function TweetPage() {
   const theme = useMode();
@@ -29,6 +30,8 @@ function TweetPage() {
   }, [id]);
 
   const post = useSelector(getSingleTweet);
+  const postLoading = post.isLoading;
+
   const tweet = post?.singleTweet;
   useEffect(() => {
     dispatch(getTweetReply({ id: id, page: 0, pageSize: 10 }));
@@ -67,65 +70,73 @@ function TweetPage() {
           Tweet
         </Typography>
       </Box>
-
-      {!Array.isArray(tweet) && <TweetPost tweet={tweet} />}
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        sx={{
-          borderBottom: `1px solid ${theme.palette.border.main}`,
-          pb: '20px',
-        }}
-      >
-        {!Array.isArray(tweet) && (
-          <PostIconList
-            isLiked={tweet.currUserLiked}
-            isQuoted={tweet.currUserQuoted}
-            // isBookmarks={tweet.currUserBookmarked}
-            isComment={tweet.currUserCommented}
-            isRetweet={tweet.currUserRetweeted}
-            likes={
-              tweet.attachmentImages === undefined
-                ? tweet.tweet.countLikes
-                : tweet.countLikes
-            }
-            reply={
-              tweet.attachmentImages === undefined
-                ? tweet.tweet.countReplies
-                : tweet.countReplies
-            }
-            retweet={
-              tweet.attachmentImages === undefined
-                ? tweet.tweet.countRetweets
-                : tweet.countRetweets
-            }
-            id={
-              tweet.attachmentImages === undefined ? tweet.tweet.id : tweet.id
-            }
-            quote={
-              tweet.attachmentImages === undefined
-                ? tweet.tweet.countQuoteTweets
-                : tweet.countQuoteTweets
-            }
-            isBookmarks={
-              tweet.attachmentImages === undefined
-                ? tweet.tweet.currUserBookmarked
-                : tweet.currUserBookmarked
-            }
-            bookmarks={
-              tweet.attachmentImages === undefined
-                ? tweet.tweet.countBookmarks
-                : tweet.countBookmarks
-            }
-          />
-        )}
-      </Grid>
-      <Reply id={tweet.id} type="reply" />
-      {tweetsReplies.length !== 0 ? (
-        <TweetList key={tweet.id} tweets={tweetsReplies} />
+      {postLoading ? (
+        <LoaderSkeleton quantity={1} />
       ) : (
-        false
+        <>
+          {' '}
+          {!Array.isArray(tweet) && <TweetPost tweet={tweet} />}
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="center"
+            sx={{
+              borderBottom: `1px solid ${theme.palette.border.main}`,
+              pb: '20px',
+            }}
+          >
+            {!Array.isArray(tweet) && (
+              <PostIconList
+                isLiked={tweet.currUserLiked}
+                isQuoted={tweet.currUserQuoted}
+                // isBookmarks={tweet.currUserBookmarked}
+                isComment={tweet.currUserCommented}
+                isRetweet={tweet.currUserRetweeted}
+                likes={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countLikes
+                    : tweet.countLikes
+                }
+                reply={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countReplies
+                    : tweet.countReplies
+                }
+                retweet={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countRetweets
+                    : tweet.countRetweets
+                }
+                id={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.id
+                    : tweet.id
+                }
+                quote={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countQuoteTweets
+                    : tweet.countQuoteTweets
+                }
+                isBookmarks={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.currUserBookmarked
+                    : tweet.currUserBookmarked
+                }
+                bookmarks={
+                  tweet.attachmentImages === undefined
+                    ? tweet.tweet.countBookmarks
+                    : tweet.countBookmarks
+                }
+              />
+            )}
+          </Grid>
+          <Reply id={tweet.id} type="reply" />
+          {tweetsReplies.length !== 0 ? (
+            <TweetList key={tweet.id} tweets={tweetsReplies} />
+          ) : (
+            false
+          )}
+        </>
       )}
     </Box>
   );

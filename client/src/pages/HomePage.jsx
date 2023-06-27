@@ -62,7 +62,7 @@ export const HomePage = () => {
     const options = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.1,
+      threshold: 1,
     };
 
     const observer = new IntersectionObserver(handleIntersection, options);
@@ -88,11 +88,7 @@ export const HomePage = () => {
         pb: '10px',
       }}
     >
-      <MainPageHeader
-        id="header"
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-      />
+      <MainPageHeader tabIndex={tabIndex} setTabIndex={setTabIndex} />
       {!isScreenSmall && isAuthenticated ? <TweetBox /> : null}
 
       {isAuthenticated ? (
@@ -104,52 +100,15 @@ export const HomePage = () => {
       )}
 
       {subscriptionsLoading || tweetsNoAuthLoading || allTweetsLoading ? (
-        <LoaderSkeleton />
+        <LoaderSkeleton quantity={10} />
       ) : (
         <Box
           ref={containerRef}
           sx={{
             height: '100px',
-            position: 'sticky',
-            bottom: '0',
           }}
         ></Box>
       )}
-
-      {/* {isAuthenticated ? (
-        subscriptionsLoading ? (
-          <LoaderSkeleton />
-        ) : (
-          <Box
-          ref={containerRef}
-          sx={{
-            height: '100px',
-            position: 'sticky',
-            bottom: '0',
-          }}
-        ></Box>
-        )
-      ) : (
-        <UserAllTypeTweets tweets={tweetsNoAuthArray} />
-      )}
-      {tweetsNoAuthLoading || (subscriptionsLoading && <LoaderSkeleton />)}
-      {allTweetsLoading ? (
-        <LoaderSkeleton />
-      ) : (
-        <Box
-          ref={containerRef}
-          sx={{
-            height: '100px',
-            position: 'sticky',
-            bottom: '0',
-          }}
-        ></Box>
-      )} */}
     </Box>
   );
 };
-{
-  /* <UserAllTypeTweets
-tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}
-/> */
-}

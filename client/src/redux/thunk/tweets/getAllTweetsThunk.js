@@ -10,7 +10,7 @@ export const getAllTweetsThunk = createAsyncThunk(
   'tweet/allTweets',
   async ({ page, size }, thunkAPI) => {
     try {
-      const { data } = await myAxios.get(`/tweet?page=${page}&size=${size}`);
+      const { data } = await myAxios.get(`/tweet/?page=${page}&size=${size}`);
       const { content, totalPages, totalElements } = data;
 
       thunkAPI.dispatch(setPage(page));

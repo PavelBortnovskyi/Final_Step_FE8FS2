@@ -10,65 +10,28 @@ const Image = styled('img')({
   width: '100%',
 });
 
-function LoaderSkeleton() {
-  return (
-    <>
-      <Box sx={{ padding: '20px', width:'100%',}}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ margin: 1 }}>
-            <Skeleton variant="circular">
-              <Avatar />
-            </Skeleton>
-          </Box>
-          <Box sx={{ width: '40%' }}>
-            <Skeleton width="100%"></Skeleton>
-          </Box>
+function LoaderSkeleton({ quantity = 3 }) {
+  const skeletonchiki = Array.from({ length: quantity }, (...index) => (
+    <Box sx={{ padding: '20px', width: '100%' }} key={index}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ margin: 1 }}>
+          <Skeleton variant="circular">
+            <Avatar />
+          </Skeleton>
         </Box>
-        <Skeleton variant="rectangular" width="100%">
-          <div style={{ paddingTop: '57%' }} />
-        </Skeleton>
-        <Box>
-          <Skeleton height="40px" width="100%"></Skeleton>
+        <Box sx={{ width: '40%' }}>
+          <Skeleton width="100%"></Skeleton>
         </Box>
       </Box>
-      <Box sx={{ padding: '20px', width:'100%' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ margin: 1 }}>
-            <Skeleton variant="circular">
-              <Avatar />
-            </Skeleton>
-          </Box>
-          <Box sx={{ width: '40%' }}>
-            <Skeleton width="100%"></Skeleton>
-          </Box>
-        </Box>
-        <Skeleton variant="rectangular" width="100%">
-          <div style={{ paddingTop: '57%' }} />
-        </Skeleton>
-        <Box>
-          <Skeleton height="40px" width="100%"></Skeleton>
-        </Box>
+      <Skeleton variant="rectangular" width="100%">
+        <div style={{ paddingTop: '57%' }} />
+      </Skeleton>
+      <Box>
+        <Skeleton height="40px" width="100%"></Skeleton>
       </Box>
-      <Box sx={{ padding: '20px', width:'100%' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ margin: 1 }}>
-            <Skeleton variant="circular">
-              <Avatar />
-            </Skeleton>
-          </Box>
-          <Box sx={{ width: '40%' }}>
-            <Skeleton width="100%"></Skeleton>
-          </Box>
-        </Box>
-        <Skeleton variant="rectangular" width="100%">
-          <div style={{ paddingTop: '57%' }} />
-        </Skeleton>
-        <Box>
-          <Skeleton height="40px" width="100%"></Skeleton>
-        </Box>
-      </Box>
-    </>
-  );
+    </Box>
+  ));
+  return <>{skeletonchiki}</>;
 }
 
 export default LoaderSkeleton;
