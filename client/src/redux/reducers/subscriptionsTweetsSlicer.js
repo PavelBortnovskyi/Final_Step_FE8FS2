@@ -7,6 +7,7 @@ import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   subscriptionsTweets: [],
@@ -51,6 +52,12 @@ export const getUserTweetsSlice = createSlice({
         const retweetTweet = action.payload.parentTweet;
         state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === retweetTweet.id ? retweetTweet : tweet
+        );
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweet = action.payload;
+        state.subscriptionsTweets = state.subscriptionsTweets.filter(
+          (tweet) => tweet.id !== deleteTweet.id
         );
       })
 

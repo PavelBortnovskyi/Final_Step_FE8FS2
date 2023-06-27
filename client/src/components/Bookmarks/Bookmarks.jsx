@@ -81,22 +81,11 @@ export const Bookmarks = () => {
               borderRadius: '30px',
             }
           }}>Delete all</Button>
-        {/* <MoreVertIcon
-          onClick={deleteAllBookmarks}
-          sx={{
-            cursor: 'pointer',
-            height: '30px',
-            width: '30px',
-            '&:hover': {
-              background: `${theme.palette.background.hover}`,
-              borderRadius: '50%',
-            }
-          }} /> */}
       </Box>
 
       {bookmarksIsLoading && <LoaderSkeleton />}
 
-      {Bookmarks.lenght ? (
+      {Bookmarks.length ? (
         <TweetList tweets={Bookmarks} />
       ) : (
         <Box

@@ -5,9 +5,8 @@ import app.exceptions.httpError.UnAuthorizedException;
 import app.exceptions.validation.ValidationErrorResponse;
 import app.exceptions.validation.Violation;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.util.UrlUtils;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 @RestControllerAdvice
-@Order(Ordered.LOWEST_PRECEDENCE)
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(UnAuthorizedException.class)
@@ -38,6 +36,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(BadRequestException.class)
+  @MessageExceptionHandler(BadRequestException.class)
   public ErrorInfo handleBadRequestException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
@@ -46,6 +45,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   // -------- SPRING ---------
 
   @ExceptionHandler({AuthenticationException.class})
+  @MessageExceptionHandler(AuthenticationException.class)
   @ResponseBody
   public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -55,6 +55,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ResponseBody
   @ExceptionHandler(ConstraintViolationException.class)
+  @MessageExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
     final List<Violation> violations = e.getConstraintViolations().stream()
@@ -69,6 +70,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
+  @MessageExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
   public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {

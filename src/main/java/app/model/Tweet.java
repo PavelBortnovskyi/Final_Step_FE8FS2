@@ -30,20 +30,23 @@ public class Tweet extends BaseEntityModel {
   @JoinColumn(name = "user_id")
   private UserModel user;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "parent_tweet")
   private Tweet parentTweet;
 
-  @OneToMany(mappedBy = "tweet")
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(mappedBy = "parentTweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  private Set<Tweet> childTweet = new HashSet<>();
+
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
+  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> tweetActions = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet")
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
+  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
   @Override
