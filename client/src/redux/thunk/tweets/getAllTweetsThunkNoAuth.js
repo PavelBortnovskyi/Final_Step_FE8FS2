@@ -6,6 +6,7 @@ export const getAllTweetsThunkNoAuth = createAsyncThunk(
   async ({ page = 0, size = 20 }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(`tweet/top?page=${page}&size=${size}`);
+
       return data.content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
