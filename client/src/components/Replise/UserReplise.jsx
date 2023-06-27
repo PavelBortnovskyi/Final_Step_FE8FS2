@@ -18,7 +18,6 @@ export const UserReplise = ({ replise }) => {
     const parentUserTag = paren?.user.userTag;
     const parentCreatedAt = paren?.createdAt;
     const parentBody = paren?.body;
-    console.log(paren);
     if (paren?.parentTweet === null) {
       return (
         paren && (
