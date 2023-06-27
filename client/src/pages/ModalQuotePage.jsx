@@ -8,7 +8,7 @@ import { getSingleTweet } from 'src/redux/selectors/selectors';
 export const ModalQuotePage = () => {
   
   const tweet = useSelector(getSingleTweet);
-    console.log(tweet);
+    
     const post = tweet?.singleTweet || [];
     const [isOpen, setIsOpen] = useState(true);
     return (
