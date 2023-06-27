@@ -20,27 +20,21 @@ const getAllTweetsSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(getAllTweetsThunkNoAuth.pending, (state) => {
-        state.isLoading = true;
-        state.error = '';
-      })
-      .addCase(getAllTweetsThunkNoAuth.fulfilled, (state, action) => {
-        state.allTweets = action.payload;
-        state.isLoading = false;
-        state.error = '';
-      })
-      .addCase(getAllTweetsThunkNoAuth.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
+
       .addCase(getAllTweetsThunk.pending, (state) => {
         state.isLoading = true;
         state.error = '';
       })
+
       .addCase(getAllTweetsThunk.fulfilled, (state, action) => {
-        state.allTweets = action.payload;
+        const newTweets = action.payload.filter(
+          (newTweet) =>
+            !state.allTweets.some((tweet) => tweet.id === newTweet.id)
+        );
+
+        state.allTweets = [...state.allTweets, ...newTweets];
         state.isLoading = false;
-        state.error = '';
+        state.error = null;
       })
       .addCase(getAllTweetsThunk.rejected, (state, action) => {
         state.isLoading = false;

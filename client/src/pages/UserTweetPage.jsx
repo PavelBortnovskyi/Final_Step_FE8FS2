@@ -13,10 +13,9 @@ export const UserTweetPage = ({ idUser }) => {
   const dispatch = useDispatch();
   const userTweets = useSelector((state) => state.userTweets.userTweets) || [];
 
-  useEffect(() => {
-    dispatch(getUserTweetsThunk({ userId: user, page: 0, pageSize: 100 }));
-  }, [user, dispatch]);
-  console.log(userTweets);
+  // useEffect(() => {
+  //   dispatch(getUserTweetsThunk({ userId: user, page: 0, size: 10 }));
+  // }, [user, dispatch]);
 
   return (
     userTweets && (
