@@ -42,6 +42,7 @@ export const UserBiIdPage = () => {
         }}
       >
         <User
+          idUser={id}
           lincToFollowers={lincToFollowers}
           lincToFollowings={lincToFollowings}
           userButton={subscribe}
