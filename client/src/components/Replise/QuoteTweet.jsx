@@ -7,6 +7,7 @@ import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
 
 export const QuoteTweet = ({
+  linkTo,
   parentTweetId,
   userId,
   userAvatar,
@@ -50,7 +51,7 @@ export const QuoteTweet = ({
       </Box>
 
       <Link
-        to={`/tweet/${parentTweetId}`}
+        to={`/tweet/${linkTo}`}
         onClick={() => {
           dispatch(getTweetByIdThunk(parentTweetId));
         }}

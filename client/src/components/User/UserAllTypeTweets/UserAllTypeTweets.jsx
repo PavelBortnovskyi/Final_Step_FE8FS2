@@ -1,6 +1,6 @@
 //UserAllTypeTweets
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -9,11 +9,21 @@ import TweetPost from 'src/UI/tweet/TweetPost';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import { QuoteTweet } from 'src/components/Replise/QuoteTweet';
 import { useMode } from 'src/styles/_materialTheme';
+import RepeatIcon from '@mui/icons-material/Repeat';
 
 import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 
 export const UserAllTypeTweets = ({ tweets }) => {
   const theme = useMode();
+
+  // let parentTweetId
+  function findeParentTweetId(userTweet) {
+    if (userTweet.parentTweet !== null) {
+      return findeParentTweetId(userTweet.parentTweet);
+    } else if (userTweet.parentTweet === null) {
+      return userTweet.id;
+    }
+  }
 
   function parentRetweet(userTweet) {
     if (userTweet.parentTweet !== null) {
@@ -24,7 +34,6 @@ export const UserAllTypeTweets = ({ tweets }) => {
           borderBottom={`1px solid ${theme.palette.border.main}`}
           paddingBottom={'8px'}
         >
-          retweet
           <TweetPost tweet={userTweet} />
           <Box display={'flex'} justifyContent={'center'}>
             <PostIconList
@@ -89,6 +98,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
               createdAt={userTweet.parentTweet.createdAt}
               body={userTweet.parentTweet.body}
               images={userTweet.parentTweet.attachmentImages}
+              linkTo={findeParentTweetId(userTweet)}
             />
           </Box>
           <Box display={'flex'} justifyContent={'center'}>
@@ -106,7 +116,22 @@ export const UserAllTypeTweets = ({ tweets }) => {
         </Box>
       );
     } else if (userTweet.tweetType === 'RETWEET') {
-      return parentRetweet(userTweet);
+      return (
+        <Box>
+          <Box
+            display={'flex'}
+            alignItems={'center'}
+            color={'rgb(139, 152, 165)'}
+            paddingLeft={'10%'}
+          >
+            <RepeatIcon
+              sx={{ color: 'rgb(139, 152, 165)', fontSize: 18, width: '26px' }}
+            />
+            <Typography>{userTweet.user.userTag} Retweeted</Typography>
+          </Box>
+          {parentRetweet(userTweet)}
+        </Box>
+      );
     }
   }
 
