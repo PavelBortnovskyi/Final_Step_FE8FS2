@@ -38,15 +38,12 @@ public class Tweet extends BaseEntityModel {
   private Set<Tweet> childTweet = new HashSet<>();
 
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
-  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> tweetActions = new HashSet<>();
 
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE)
-  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
   @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-  //@OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
   @Override

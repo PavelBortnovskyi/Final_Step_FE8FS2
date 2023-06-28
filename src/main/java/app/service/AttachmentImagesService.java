@@ -13,13 +13,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AttachmentImagesService extends GeneralService<AttachmentImage> {
 
-  //add
-  //delete
-  public AttachmentImage createAttachmentImage(String url, Tweet tweet) {
-    AttachmentImage attachmentImage = new AttachmentImage(tweet, url);
-    save(attachmentImage);
-    return attachmentImage;
-  }
 
   public Set<AttachmentImage> saveAttachmentImages(HashSet<String> urls, Tweet tweet) {
     return urls.stream().map(url -> save(new AttachmentImage(tweet, url))).collect(Collectors.toSet());
