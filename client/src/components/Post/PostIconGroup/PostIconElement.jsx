@@ -7,14 +7,14 @@ import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
 function PostIconElement({ icon, quantity, color, id }) {
   const dispatch = useDispatch();
 
-  const handleRetweet = () => {
-    if (false) {
-      // dispatch(deleteBookmark({ id }));
+  // const handleRetweet = () => {
+  //   if (false) {
+  //     // dispatch(deleteBookmark({ id }));
 
-    } else {
-      dispatch(addRetweet({ id }));
-    }
-  };
+  //   } else {
+  //     dispatch(addRetweet({ id }));
+  //   }
+  // };
 
   return (
     <Box

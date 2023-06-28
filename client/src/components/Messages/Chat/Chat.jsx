@@ -9,19 +9,16 @@ import {
   alpha,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTheme } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-import { useRef, useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { Loading } from 'src/UI/Loading';
 import { getChats } from 'src/redux/selectors/selectors';
 import { chatCloseConnection } from 'src/redux/reducers/chatSlice';
 import { ChatBody } from './ChatBody';
 import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { ChatSender } from './ChatSender';
-import { getChatMessages } from 'src/redux/thunk/getChatMessages';
 
 // ************ STYLE ************
 const ChatContainer = styled(Box)`
@@ -94,7 +91,7 @@ export const Chat = () => {
 
       try {
         // get chat data
-        dispatch(getCurrentChat({ guestId: guest.id, pageSize: 999 }));
+        dispatch(getCurrentChat({ guestId: guest.id, size: 999 }));
         //
       } catch (error) {
         console.log(error);

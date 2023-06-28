@@ -2,18 +2,15 @@ package app.facade;
 
 import app.dto.rq.NotificationRequestDTO;
 import app.dto.rs.NotificationResponseDTO;
-import app.dto.rs.UserResponseDTO;
 import app.exceptions.httpError.BadRequestException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.Notification;
-import app.model.UserModel;
 import app.service.NotificationService;
 import app.service.UserService;
 import app.utils.CustomPageImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
@@ -21,14 +18,6 @@ public class NotificationFacade extends GeneralFacade<Notification, Notification
   private final NotificationService notificationService;
 
   private final UserService userService;
-
-  @PostConstruct
-  public void init() {
-    super.getMm().typeMap(UserModel.class, UserResponseDTO.class)
-      .addMapping(UserModel::getCountFollowers, UserResponseDTO::setCountUserFollowers)
-      .addMapping(UserModel::getCountFollowings, UserResponseDTO::setCountUserFollowings)
-      .addMapping(UserModel::getCountTweets, UserResponseDTO::setCountUserTweets);
-  }
 
   /**
    * Method returns user notification responses in page format

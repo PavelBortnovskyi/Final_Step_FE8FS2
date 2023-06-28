@@ -63,7 +63,7 @@ function TweetPost({ tweet }) {
               />
             </Box>
 
-            <SelectDeleteTweet id={tweet.id} />
+            <SelectDeleteTweet id={tweet.id} tweet={tweet}/>
           </Box>
 
           <NavLink to={`/tweet/${tweet.id}`}>

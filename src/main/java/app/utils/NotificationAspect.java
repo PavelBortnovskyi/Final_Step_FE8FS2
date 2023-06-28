@@ -4,6 +4,7 @@ import app.enums.TweetActionType;
 import app.model.Tweet;
 import app.model.TweetAction;
 import app.service.NotificationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -27,7 +28,7 @@ public class NotificationAspect {
   private final NotificationService notificationService;
 
   @AfterReturning(pointcut = "executeNotification()", returning = "returnValue")
-  public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) throws ExecutionException, InterruptedException {
+  public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) throws ExecutionException, InterruptedException, JsonProcessingException {
     String methodName = joinPoint.getSignature().getName();
 
     Object[] args = joinPoint.getArgs();
