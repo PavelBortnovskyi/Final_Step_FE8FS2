@@ -59,7 +59,7 @@ function UserNames({
             />
           )}
         </div>
-        <Typography sx={{ fontSize: '14px' }}>@{userTag}</Typography>
+        <Typography sx={{ fontSize: '14px' }}>{userTag}</Typography>
       </Box>
 
       {!!text && (
