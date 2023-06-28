@@ -1,7 +1,7 @@
-import { Box, Pagination, useMediaQuery } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import MainPage_header from 'src/components/MainPage_header/MainPage_header';
+import MainPageHeader from 'src/components/MainPage_header/MainPage_header';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getAllTweetsThunk } from 'src/redux/thunk/tweets/getAllTweetsThunk';
@@ -10,102 +10,105 @@ import {
   getAllTweets,
   subscriptionsTweets,
 } from 'src/redux/selectors/selectors';
-import TweetList from 'src/UI/TweetList';
 import { getAllTweetsThunkNoAuth } from 'src/redux/thunk/tweets/getAllTweetsThunkNoAuth';
 import LoaderSkeleton from 'src/UI/LoaderSkeleton';
-import { Link } from 'react-router-dom';
+import { UserAllTypeTweets } from 'src/components/User/UserAllTypeTweets/UserAllTypeTweets';
 
 export const HomePage = () => {
   const currentPage = useSelector((state) => state.pagination.currentPage);
   const totalPages = useSelector((state) => state.pagination.totalPages);
-  const containerRef = useRef(null);
-
+  let containerRef = useRef(null);
   const [tabIndex, setTabIndex] = useState(1);
   const [page, setPage] = useState(currentPage);
   const isScreenSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const dispatch = useDispatch();
 
+  const subscriptions = useSelector(subscriptionsTweets);
+  const subscriptionsLoading = subscriptions.isLoading;
+  const subscriptionsArray = subscriptions.subscriptionsTweets;
+
+  const allTweetsState = useSelector(getAllTweets);
+  const allTweetsLoading = allTweetsState.isLoading;
+  const allTweetsArray = allTweetsState.allTweets;
+
   useEffect(() => {
     if (isAuthenticated) {
       if (tabIndex === 0) {
-        dispatch(getAllTweetsThunk());
+        dispatch(getAllTweetsThunk({ page: page, size: 10 }));
       } else {
-        dispatch(getSubscriptionsTweets({ page: page, pageSize: 1 }));
+        dispatch(getSubscriptionsTweets({ page: page, size: 10 }));
       }
     } else {
-      dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 20 }));
+      dispatch(getAllTweetsThunkNoAuth({ page: page, size: 20 }));
     }
   }, [dispatch, isAuthenticated, tabIndex, page]);
 
-  let allTweets = useSelector(getAllTweets);
-  let allTweetsLoading = allTweets.isLoading;
-  let allTweetsArray = allTweets.allTweets;
-
-  let subscriptions = useSelector(subscriptionsTweets);
-  let subscriptionsLoading = subscriptions.isLoading;
-
-  let subscriptionsArray = subscriptions.subscriptionsTweets;
-  let tweetsNoAuthState = useSelector((state) => state.tweetsNoAuth);
-  let tweetsNoAuthLoading = tweetsNoAuthState.isLoading;
-  let tweetsNoAuthArray = tweetsNoAuthState.tweetsNoAuth;
-
-  // const handleScroll = () => {
-  //   const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-  //   console.log('working');
-  //   if (scrollTop + clientHeight >= scrollHeight - 20) {
-  //     dispatch(
-  //       getSubscriptionsTweets({
-  //         page: currentPage + 1,
-  //         pageSize: 10,
-  //         loadMore: true,
-  //       })
-  //     );
-  //   }
-  // };
-
-  const scrollUp = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const loadMore = () => {
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
+
+  const handleIntersection = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && page < totalPages) {
+        loadMore();
+      }
+    });
+  };
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, [containerRef, subscriptionsLoading, allTweetsLoading]);
+
+  const tweetsNoAuthState = useSelector((state) => state.tweetsNoAuth);
+  const tweetsNoAuthLoading = tweetsNoAuthState.isLoading;
+  const tweetsNoAuthArray = tweetsNoAuthState.tweetsNoAuth;
 
   return (
     <Box
       sx={{
         borderTop: '0px',
-        overflowY: 'scroll',
         pb: '10px',
       }}
-      ref={containerRef}
     >
-      <MainPage_header
-        id="header"
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-      />
+      <MainPageHeader tabIndex={tabIndex} setTabIndex={setTabIndex} />
       {!isScreenSmall && isAuthenticated ? <TweetBox /> : null}
 
       {isAuthenticated ? (
-        subscriptionsLoading ? (
-          <LoaderSkeleton />
-        ) : (
-          <TweetList
-            tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}
-          />
-        )
+        <UserAllTypeTweets
+          tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}
+        />
       ) : (
-        <TweetList tweets={tweetsNoAuthArray} />
+        <UserAllTypeTweets tweets={tweetsNoAuthArray} />
       )}
-      {tweetsNoAuthLoading || (subscriptionsLoading && <LoaderSkeleton />)}
-      {allTweetsLoading && <LoaderSkeleton />}
-      <Link to="#top" onClick={scrollUp}>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Pagination
-            count={totalPages}
-            color="primary"
-            onChange={(e) => setPage(e.target.textContent - 1)}
-          />
-        </Box>
-      </Link>
+
+      {subscriptionsLoading || tweetsNoAuthLoading || allTweetsLoading ? (
+        <LoaderSkeleton quantity={10} />
+      ) : (
+        <Box
+          ref={containerRef}
+          sx={{
+            height: '100px',
+          }}
+        ></Box>
+      )}
     </Box>
   );
 };
