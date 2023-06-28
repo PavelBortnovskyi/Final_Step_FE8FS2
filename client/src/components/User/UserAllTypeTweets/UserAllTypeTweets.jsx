@@ -24,6 +24,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
       return userTweet.id;
     }
   }
+  console.log();
 
   function parentRetweet(userTweet) {
     if (userTweet.parentTweet !== null) {
@@ -37,6 +38,47 @@ export const UserAllTypeTweets = ({ tweets }) => {
           <TweetPost tweet={userTweet} />
           <Box display={'flex'} justifyContent={'center'}>
             <PostIconList
+              isLiked={userTweet.currUserLiked}
+              isQuoted={userTweet.currUserQuoted}
+              isComment={userTweet.currUserCommented}
+              isRetweet={userTweet.currUserRetweeted}
+              likes={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countLikes
+                  : userTweet.countLikes
+              }
+              reply={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countReplies
+                  : userTweet.countReplies
+              }
+              retweet={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countRetweets
+                  : userTweet.countRetweets
+              }
+              id={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.id
+                  : userTweet.id
+              }
+              quote={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countQuoteTweets
+                  : userTweet.countQuoteTweets
+              }
+              isBookmarks={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.currUserBookmarked
+                  : userTweet.currUserBookmarked
+              }
+              bookmarks={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countBookmarks
+                  : userTweet.countBookmarks
+              }
+            />
+            {/* <PostIconList
               likes={userTweet.countLikes}
               reply={userTweet.countReply}
               retweet={userTweet.countRetweets}
@@ -45,7 +87,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
               isRetweet={userTweet.countRetweets}
               isComment={userTweet.countReplays}
               isBookmark={userTweet.countBookmarks}
-            />
+            /> */}
           </Box>
         </Box>
       );
@@ -63,14 +105,45 @@ export const UserAllTypeTweets = ({ tweets }) => {
           <TweetPost tweet={userTweet} />
           <Box display={'flex'} justifyContent={'center'}>
             <PostIconList
-              likes={userTweet.countLikes}
-              reply={userTweet.countReply}
-              retweet={userTweet.countRetweets}
-              id={userTweet.id}
               isLiked={userTweet.currUserLiked}
-              isRetweet={userTweet.countRetweets}
-              isComment={userTweet.countReplays}
-              isBookmark={userTweet.countBookmarks}
+              isQuoted={userTweet.currUserQuoted}
+              isComment={userTweet.currUserCommented}
+              isRetweet={userTweet.currUserRetweeted}
+              likes={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countLikes
+                  : userTweet.countLikes
+              }
+              reply={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countReplies
+                  : userTweet.countReplies
+              }
+              retweet={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countRetweets
+                  : userTweet.countRetweets
+              }
+              id={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.id
+                  : userTweet.id
+              }
+              quote={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countQuoteTweets
+                  : userTweet.countQuoteTweets
+              }
+              isBookmarks={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.currUserBookmarked
+                  : userTweet.currUserBookmarked
+              }
+              bookmarks={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countBookmarks
+                  : userTweet.countBookmarks
+              }
             />
           </Box>
         </Box>
@@ -103,14 +176,45 @@ export const UserAllTypeTweets = ({ tweets }) => {
           </Box>
           <Box display={'flex'} justifyContent={'center'}>
             <PostIconList
-              likes={userTweet.countLikes}
-              reply={userTweet.countReply}
-              retweet={userTweet.countRetweets}
-              id={userTweet.id}
-              isLiked={userTweet.parentTweet.currUserLiked}
-              isRetweet={userTweet.countRetweets}
-              isComment={userTweet.countReplays}
-              isBookmark={userTweet.countBookmarks}
+              isLiked={userTweet.currUserLiked}
+              isQuoted={userTweet.currUserQuoted}
+              isComment={userTweet.currUserCommented}
+              isRetweet={userTweet.currUserRetweeted}
+              likes={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countLikes
+                  : userTweet.countLikes
+              }
+              reply={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countReplies
+                  : userTweet.countReplies
+              }
+              retweet={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countRetweets
+                  : userTweet.countRetweets
+              }
+              id={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.id
+                  : userTweet.id
+              }
+              quote={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countQuoteTweets
+                  : userTweet.countQuoteTweets
+              }
+              isBookmarks={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.currUserBookmarked
+                  : userTweet.currUserBookmarked
+              }
+              bookmarks={
+                userTweet.attachmentImages === undefined
+                  ? userTweet.tweet.countBookmarks
+                  : userTweet.countBookmarks
+              }
             />
           </Box>
         </Box>
