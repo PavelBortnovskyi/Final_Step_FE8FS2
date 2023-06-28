@@ -8,13 +8,18 @@ import { UserLikes } from 'src/pages/UserLikes';
 import { UserReplisePage } from 'src/pages/UserReplisePage';
 import { UserTweetPage } from 'src/pages/UserTweetPage';
 
-export function UserAction({ idUser }) {
+export function UserAction({ idUser, setTabIndex }) {
   const theme = useMode();
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event, newValue) => {
+    setTabIndex(newValue);
     setValue(newValue);
   };
+
+  // const handleTabChange = (event, newTabIndex) => {
+  //   setTabIndex(newTabIndex);
+  // };
   return (
     <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}` }}>
       <TabContext value={value}>

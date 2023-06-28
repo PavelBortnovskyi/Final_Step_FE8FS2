@@ -26,7 +26,15 @@ export const getUserTweetsSlice = createSlice({
         state.error = null;
       })
       .addCase(getSubscriptionsTweets.fulfilled, (state, action) => {
-        state.subscriptionsTweets = action.payload;
+        const newTweets = action.payload.filter(
+          (newTweet) =>
+            !state.subscriptionsTweets.some((tweet) => tweet.id === newTweet.id)
+        );
+
+        state.subscriptionsTweets = [
+          ...state.subscriptionsTweets,
+          ...newTweets,
+        ];
         state.isLoading = false;
         state.error = null;
       })

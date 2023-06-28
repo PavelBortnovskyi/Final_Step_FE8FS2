@@ -8,10 +8,10 @@ import {
 
 export const getSubscriptionsTweets = createAsyncThunk(
   'tweet/getSubscriptionsTweets',
-  async ({ page, pageSize }, thunkAPI) => {
+  async ({ page, size }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(
-        `tweet/subscriptions?page=${page}&pageSize=${pageSize}`
+        `tweet/subscriptions?page=${page}&size=${size}`
       );
 
       const { content, totalPages, totalElements } = data;
@@ -19,8 +19,6 @@ export const getSubscriptionsTweets = createAsyncThunk(
       thunkAPI.dispatch(setPage(page));
       thunkAPI.dispatch(setTotalPages(totalPages));
       thunkAPI.dispatch(setTotalElements(totalElements));
-
-      console.log(data);
       return content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -4,6 +4,8 @@ import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
 import TweetBox from 'src/components/TweetBox/TweetBox';
 import { addQuote } from 'src/redux/thunk/tweets/addQuote';
 import { createTweet } from 'src/redux/thunk/tweets/createTweet';
+import { Box } from '@mui/material';
+import { useState } from 'react';
 
 function Reply({ isOpen, setIsOpen, id, type }) {
   const navigate = useNavigate();
@@ -30,11 +32,14 @@ function Reply({ isOpen, setIsOpen, id, type }) {
   };
 
   return (
-    <TweetBox
-      placeholder="Tweet your reply"
-      fnc={handleSubmit}
-      userAvatar={user.avatarImgUrl}
-    />
+    <Box sx={{ mt: '100px' }}>
+      <TweetBox
+        placeholder="Tweet your reply"
+        fnc={handleSubmit}
+        userAvatar={user.avatarImgUrl}
+        isPicker={true}
+      />
+    </Box>
   );
 }
 
