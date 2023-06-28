@@ -10,12 +10,17 @@ import {
 } from '@mui/material';
 import { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLoaderData, useLocation } from 'react-router-dom';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import WifiIcon from '@mui/icons-material/Wifi';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+import ErrorIcon from '@mui/icons-material/Error';
 
 import { getChats } from 'src/redux/selectors/selectors';
 
 const ListItemButtonStyled = styled(ListItemButton)(({ theme }) => ({
   height: '48px',
+  position: 'relative',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -36,14 +41,25 @@ const ListItemIconStyled = styled(ListItemIcon)(({ theme }) => ({
   color: `${theme.palette.text.primary}`,
 }));
 
+const IconNotificationWrap = styled(Box)`
+  position: absolute;
+  left: 0px;
+  top: 4px;
+
+  & svg {
+    font-size: 20px;
+  }
+`;
+
 export const MainMenuSidebar = ({ navElement }) => {
   const theme = useTheme();
   const linkRef = useRef(null);
   const [isSwappedIcon, setIsSwappedIcon] = useState(false);
 
   // TODO: notification of new message
-  // const { newMessageNotification } = useSelector(getChats);
-  // const [isNewMessage, setIsNewMessage] = useState(false);
+  const { newMessageNotification } = useSelector(getChats);
+  const [isNewMessage, setIsNewMessage] = useState(false);
+  const location = useLocation();
   //************************************/
 
   const handleMouseDown = (ev) => {
@@ -67,14 +83,24 @@ export const MainMenuSidebar = ({ navElement }) => {
     }
   };
 
-  // TODO: checking if the user has a new chat message // polus
-  // useEffect(() => {
-  //   if (navElement.newMessageNotification && newMessageNotification.length) {
-  //     setIsNewMessage(true);
-  //   } else {
-  //     setIsNewMessage(false);
-  //   }
-  // }, [navElement.newMessageNotification, newMessageNotification]);
+  //*******************************************/
+  // checking if the user has a new chat message
+  useEffect(() => {
+    if (
+      navElement.newMessageNotification &&
+      newMessageNotification.length &&
+      location.pathname !== `/${navElement.route}`
+    ) {
+      setIsNewMessage(true);
+    } else {
+      setIsNewMessage(false);
+    }
+  }, [
+    location.pathname,
+    navElement.newMessageNotification,
+    navElement.route,
+    newMessageNotification,
+  ]);
   //*****************************************/
 
   return (
@@ -102,7 +128,11 @@ export const MainMenuSidebar = ({ navElement }) => {
         }}
       >
         <ListItemButtonStyled>
-          {/* {isNewMessage && <Box>fe</Box>} */}
+          {isNewMessage && (
+            <IconNotificationWrap>
+              <ErrorIcon />
+            </IconNotificationWrap>
+          )}
 
           <ListItemIconStyled>
             {isSwappedIcon ? (
