@@ -12,7 +12,8 @@ import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 
 // import Stomp from 'stompjs';
 import { Stomp, Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+// import SockJS from 'sockjs-client';
+import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
 // url socket server
 export const socketUrl = 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws';
@@ -29,8 +30,6 @@ export const App = () => {
 
   //****************** CONNECT TO SOCKET without SockJS  *****************/
   useEffect(() => {
-    // const { accessToken } = getTokens();
-
     if (isAuthenticated && accessToken && user) {
       try {
         // create header
@@ -52,17 +51,15 @@ export const App = () => {
         // after activate connect
         const connectCallback = () => {
           console.log('Connected to STOMP server');
-          //
-          // stompClient.subscribe('/topic/chats', onMessageReceived, headers);
 
+          // notification chanel
           stompClient.subscribe(
             `/topic/notifications/${user.email}`,
-            (notification) => {
-              console.log('*** notification: ', notification.body);
-            },
+            onNotificationReceived,
             headers
           );
 
+          // chat chanel
           stompClient.subscribe(
             `/topic/chats/${user.email}`,
             onMessageReceived,
@@ -76,6 +73,7 @@ export const App = () => {
           //   headers
           // );
 
+          // set socket connection to redux
           dispatch(setSocketChat(stompClient));
         };
 
@@ -83,6 +81,12 @@ export const App = () => {
         const onMessageReceived = (message) => {
           // console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
+
+        // set notification to redux
+        const onNotificationReceived = (notification) => {
+          // console.log('Received notification:', notification.body);
+          dispatch(setSocketNotification(JSON.parse(notification.body)));
         };
 
         // error socket
@@ -98,8 +102,6 @@ export const App = () => {
 
         // activate connect
         stompClient.activate();
-        //
-
         //
       } catch (error) {
         console.error('Error activating STOMP connection:', error);

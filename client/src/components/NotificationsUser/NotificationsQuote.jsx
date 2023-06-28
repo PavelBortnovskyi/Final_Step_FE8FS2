@@ -1,25 +1,47 @@
 import React from 'react'
 import { Avatar, Box, Typography, styled } from '@mui/material'
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { NotificationsBoxImg } from './NotificationsUI/NotificationsBoxImg';
+import { getUserBiId } from 'src/redux/thunk/getUserBiId';
+import { useDispatch } from 'react-redux';
 
 
-const StyledLink = styled(Link)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.border.main}`,
   padding: '12px 16px',
   width: '100%',
   '&:hover': {
     background: `${theme.palette.background.hover}`,
   },
-  '&:hover > *:last-child': {
-    textDecoration: 'underline',
-  },
 }));
+
+
+const LinkStyle = styled(Link)(({ theme }) => ({
+  fontWeight: '700',
+  fontSize: '1rem',
+  color: `${theme.palette.text.primary}`,
+  textTransform: 'capitalize',
+  '&:hover': {
+    textDecoration: 'underline',
+  }
+}))
+
+const NavLinkStyle = styled(NavLink)(({ theme }) => ({
+  marginLeft: '56px',
+  width: '100%',
+  padding: '16px',
+  border: `1px solid ${theme.palette.border.main}`,
+  borderRadius: '30px',
+  '&:hover': {
+    backgroundColor: `rgba(29, 155, 240, 0.15)`,
+  }
+}))
 
 
 export const NotificationsQuote = ({ notification }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const TextInitiator = notification.tweet.body || '';
   const TextPreviewInitiator = TextInitiator.length > 90 ? TextInitiator.slice(0, 90) + "..." : TextInitiator;
@@ -34,9 +56,9 @@ export const NotificationsQuote = ({ notification }) => {
   const ImagesInitiator = notification.tweet.attachmentImages || [];
   const ImagesUser = notification.tweet.parentTweet.attachmentImages || [];
 
+  console.log(notification);
   return (
-    <StyledLink to={`/tweet/${notification.tweet.id}`} key={notification.tweet.id}>
-
+    <StyledBox>
       <Box sx={{
         width: '100%',
       }}>
@@ -46,25 +68,48 @@ export const NotificationsQuote = ({ notification }) => {
           alignItems: 'center',
           paddingBottom: '6px',
         }}>
-          <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '40px', height: '40px' }} />
-          <Typography variant='body1' sx={{ paddingLeft: '16px', color: `${theme.palette.text.primary}` }}>
-            <strong style={{ textTransform: 'capitalize' }}>
+          <Link
+            key={notification.tweet.id}
+            to={`/user/${notification.tweet.id}`}
+            onClick={() => {
+              dispatch(getUserBiId(notification.initiator.id));
+            }}
+          >
+            <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '40px', height: '40px' }} />
+          </Link>
+
+          <Box sx={{ display: 'flex', alignItems: 'end', paddingLeft: '16px' }}>
+            <LinkStyle
+              key={notification.tweet.id}
+              to={`/user/${notification.tweet.id}`}
+              onClick={() => {
+                dispatch(getUserBiId(notification.initiator.id));
+              }}
+            >
               {FirstNameInitiator}
-            </strong>
-            <span style={{ paddingLeft: '4px' }}>Quote your Tweet</span>
-          </Typography>
+            </LinkStyle>
+            <Typography variant='subtitle2' sx={{ color: `${theme.palette.text.primary}`, paddingLeft: '6px' }}>
+              quote your Tweet
+            </Typography>
+          </Box>
         </Box>
 
-        <Box sx={{ paddingLeft: '56px' }}>
-          <Typography variant='body2'
-            sx={{
-              color: `${theme.palette.text.secondary}`,
-            }}>
-            {TextPreviewInitiator}
-          </Typography>
-        </Box>
 
-        <NotificationsBoxImg Images={ImagesInitiator} pl='56'/>
+        {/* my tweet */}
+        <NavLink to={`/tweet/${notification.tweet.id}`}>
+          <Box sx={{
+            paddingLeft: '56px',
+          }}>
+            <Typography variant='body2'
+              sx={{
+                color: `${theme.palette.text.secondary}`,
+              }}>
+              {TextPreviewInitiator}
+            </Typography>
+          </Box>
+
+          <NotificationsBoxImg Images={ImagesInitiator} pl='56' />
+        </NavLink>
       </Box>
 
 
@@ -82,26 +127,33 @@ export const NotificationsQuote = ({ notification }) => {
               color: `${theme.palette.text.primary}`,
             }}
           >
-            <Box sx={{
-              marginLeft: '56px',
-              width: '100%',
-              p: '16px',
-              border: `1px solid ${theme.palette.border.main}`,
-              borderRadius: '30px'
-            }}>
-
+            <NavLinkStyle to={`/tweet/${notification.tweet.parentTweet.id}`}>
               <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
               }}>
-                <Avatar src={notification.tweet.parentTweet.user.avatarImgUrl} />
-                <Typography variant='body1' sx={{ paddingLeft: '16px', color: `${theme.palette.text.primary}` }}>
-                  <strong style={{ textTransform: 'capitalize' }}>
-                    {FirstNameUser}
-                  </strong>
-                </Typography>
-              </Box>
+                <Link
+                  key={notification.tweet.id}
+                  to={`/user/${notification.tweet.id}`}
+                  onClick={() => {
+                    dispatch(getUserBiId(notification.tweet.parentTweet.user.id));
+                  }}
+                >
+                  <Avatar src={notification.tweet.parentTweet.user.avatarImgUrl} />
+                </Link>
 
+                <Box sx={{ display: 'flex', alignItems: 'end', paddingLeft: '16px' }}>
+                  <LinkStyle
+                    key={notification.tweet.id}
+                    to={`/user/${notification.tweet.id}`}
+                    onClick={() => {
+                      dispatch(getUserBiId(notification.tweet.parentTweet.user.id));
+                    }}
+                  >
+                    {FirstNameUser}
+                  </LinkStyle>
+                </Box>
+              </Box>
 
               <Box sx={{ paddingLeft: '56px' }}>
                 <Typography variant='body2'
@@ -110,12 +162,12 @@ export const NotificationsQuote = ({ notification }) => {
                   }}>
                   {TextPreviewUser}
                 </Typography>
+                <NotificationsBoxImg Images={ImagesUser} />
               </Box>
-
-              <NotificationsBoxImg Images={ImagesUser} pl='56'/>
-            </Box>
+            </NavLinkStyle>
           </Box>
         )}
-    </StyledLink>
+    </StyledBox>
   )
 }
+

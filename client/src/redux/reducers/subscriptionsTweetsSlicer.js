@@ -7,6 +7,7 @@ import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   subscriptionsTweets: [],
@@ -25,7 +26,15 @@ export const getUserTweetsSlice = createSlice({
         state.error = null;
       })
       .addCase(getSubscriptionsTweets.fulfilled, (state, action) => {
-        state.subscriptionsTweets = action.payload;
+        const newTweets = action.payload.filter(
+          (newTweet) =>
+            !state.subscriptionsTweets.some((tweet) => tweet.id === newTweet.id)
+        );
+
+        state.subscriptionsTweets = [
+          ...state.subscriptionsTweets,
+          ...newTweets,
+        ];
         state.isLoading = false;
         state.error = null;
       })
@@ -43,6 +52,12 @@ export const getUserTweetsSlice = createSlice({
         const retweetTweet = action.payload.parentTweet;
         state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === retweetTweet.id ? retweetTweet : tweet
+        );
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweet = action.payload;
+        state.subscriptionsTweets = state.subscriptionsTweets.filter(
+          (tweet) => tweet.id !== deleteTweet.id
         );
       })
 

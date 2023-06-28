@@ -7,7 +7,7 @@ import Location from './CreatePostBar/BarItem/Location';
 import { Box } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 
-function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
+function CreatePostBar({ handleFileSelect, handleEmojiSelect, isPicker }) {
   const theme = useMode();
 
   const hoverColor = `${theme.palette.background.hover}`;
@@ -24,7 +24,11 @@ function CreatePostBar({ handleFileSelect, handleEmojiSelect }) {
 
       <Gif hover={hoverColor} />
 
-      <Emoji handleEmojiSelect={handleEmojiSelect} hover={hoverColor} />
+      <Emoji
+        isPicker={isPicker}
+        handleEmojiSelect={handleEmojiSelect}
+        hover={hoverColor}
+      />
 
       {/* <Schedule hover={hoverColor} />
 

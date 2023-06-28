@@ -1,30 +1,12 @@
-import {
-  Box,
-  Avatar,
-  Typography,
-  CardMedia,
-  FormControl,
-  MenuItem,
-  Select,
-  FormHelperText,
-  InputAdornment,
-  ListItemIcon,
-  IconButton,
-  Menu,
-  ListItemText,
-} from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Avatar, Typography, } from '@mui/material';
+import React from 'react';
 import UserNames from '../UserNames';
 import TranslatedText from '../TranslatedText/TranslatedText';
 import { useMode } from 'src/styles/_materialTheme';
 import PostImages from './PostImages';
-
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
-import TweetPage from 'src/pages/tweetPage/TweetPage';
-
-import { deleteTweet } from 'src/redux/thunk/tweets/deleteTweet';
 import { SelectDeleteTweet } from './SelectDeleteTweet';
 
 function TweetPost({ tweet }) {
@@ -60,7 +42,7 @@ function TweetPost({ tweet }) {
             <Box sx={{ display: 'flex', alignItems: 'end', height: '100%' }}>
               <Link
                 key={tweet.id}
-                to={`/user/${tweet.id}`}
+                to={`/user/${tweet.user.id}`}
                 onClick={() => {
                   dispatch(getUserBiId(tweet.user.id));
                 }}
@@ -70,7 +52,7 @@ function TweetPost({ tweet }) {
                 </Box>
               </Link>
               <UserNames
-                userId={tweet.user.id}
+                userId={tweet.id}
                 id={tweet.id}
                 isVerified={tweet.user.isVerified}
                 color={`${theme.palette.text.primary}`}
@@ -81,7 +63,7 @@ function TweetPost({ tweet }) {
               />
             </Box>
 
-            <SelectDeleteTweet id={tweet.id} />
+            <SelectDeleteTweet id={tweet.id} tweet={tweet}/>
           </Box>
 
           <NavLink to={`/tweet/${tweet.id}`}>

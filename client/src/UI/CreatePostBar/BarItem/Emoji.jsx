@@ -5,7 +5,7 @@ import data from '@emoji-mart/data';
 import { Box } from '@mui/material';
 import { useTheme } from '@emotion/react';
 
-function Emoji({ handleEmojiSelect, hover }) {
+function Emoji({ handleEmojiSelect, hover, isPicker }) {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const node = useRef();
   const theme = useTheme();
@@ -46,6 +46,7 @@ function Emoji({ handleEmojiSelect, hover }) {
         <Box
           sx={{
             position: 'absolute',
+            top: `${isPicker ? '-450px' : '45px'} `,
             left: '-100px',
             zIndex: '15',
           }}

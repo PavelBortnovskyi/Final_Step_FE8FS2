@@ -8,7 +8,7 @@ export const getNotifications = createAsyncThunk(
   async ({ page, pageSize }, thunkAPI) => {
     try {
       const { data } = await myAxios.get(
-        `notification/all/?page=${page}&pageSize=${pageSize}`
+        `notification/all/?page=${page}&size=${pageSize}`
       );
       return data;
     } catch (error) {
