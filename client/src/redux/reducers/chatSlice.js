@@ -32,12 +32,14 @@ export const chatSlice = createSlice({
       state.allChats = null;
       state.currentChat = null;
       state.socketChat = null;
+      state.newMessageNotification = [];
     },
     chatCloseConnection(state, actions) {
       state.guest = null;
       state.chatMessages = null;
       state.currentMessage = null;
       state.currentChat = null;
+      state.newMessageNotification = [];
     },
     setSocketChat(state, action) {
       state.socketChat = action.payload;

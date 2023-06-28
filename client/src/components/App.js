@@ -42,9 +42,9 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          debug: function (str) {
-            console.log(str);
-          },
+          // debug: function (str) {
+          //   console.log(str);
+          // },
         });
         const stompClient = stompClientRef.current;
 
@@ -79,13 +79,13 @@ export const App = () => {
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          console.log('Received message:', message.body);
+          // console.log('Received message:', message.body);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 
         // set notification to redux
         const onNotificationReceived = (notification) => {
-          console.log('Received notification:', notification.body);
+          // console.log('Received notification:', notification.body);
           dispatch(setSocketNotification(JSON.parse(notification.body)));
         };
 
