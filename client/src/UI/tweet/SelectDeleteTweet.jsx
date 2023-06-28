@@ -1,19 +1,52 @@
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { FormControl, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, useTheme } from '@mui/material';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFollowings } from 'src/redux/thunk/getFollowings';
+import { subscribeUser } from 'src/redux/thunk/subscribeUser';
 import { deleteTweet } from 'src/redux/thunk/tweets/deleteTweet';
+import { unsubscribeUser } from 'src/redux/thunk/unsubscribeUser';
 
-export const SelectDeleteTweet = ({ id }) => {
+export const SelectDeleteTweet = ({ id, tweet }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user) || "";
   const theme = useTheme();
+  const userId = tweet.user.id;
+  const { followings } = useSelector((state) => state.followings);
+  const compairUser =
+    followings.content && followings.content.some((item) => item.id === userId);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
+  useEffect(() => {
+    dispatch(getFollowings('profile'));
+  }, [dispatch]);
+
+
+
   const deleteTweetUser = () => {
-    dispatch(deleteTweet({ id }));
+    if (user.id === tweet.user.id) {
+      console.log('del!');
+      dispatch(deleteTweet({ id }));
+    } else if (compairUser) {
+      console.log('unsubscribeUser');
+      dispatch(unsubscribeUser(userId));
+    } else if (!compairUser) {
+      console.log('SubscribeUser');
+      dispatch(subscribeUser(userId));
+    }
     setAnchorEl(null);
+  }
+
+  let primaryText = '';
+
+  if (user.id === tweet.user.id) {
+    primaryText = 'Delete';
+  } else if (compairUser) {
+    primaryText = 'Unfollow';
+  } else if (!compairUser) {
+    primaryText = 'Follow';
   }
 
   // const handleChange = (event) => {
@@ -30,10 +63,10 @@ export const SelectDeleteTweet = ({ id }) => {
   };
 
 
+
   return (
     <FormControl sx={{
       '&:hover': {
-        // fill: 'rgb(139. 152. 165)',
         backgroundColor: `rgba(29, 155, 240, 0.15)`,
         borderRadius: '50%',
       }
@@ -44,7 +77,7 @@ export const SelectDeleteTweet = ({ id }) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon sx={{
+        <MoreHorizIcon fontSize="small" sx={{
           color: `${theme.palette.text.primary}`,}}/>
       </IconButton>
       <Menu
@@ -61,18 +94,14 @@ export const SelectDeleteTweet = ({ id }) => {
               <ListItemIcon>
                 <DeleteForeverOutlinedIcon sx={{color: `${theme.palette.text.primary}`}}/>
               </ListItemIcon>
-              <ListItemText primary="Delete"
+              <ListItemText primary={primaryText}
                 sx={{
                   'span': {
-
                     color: `${theme.palette.text.primary}`,
                   }
-
-
-                }} />
+                }}/>
             </MenuItem>
-
       </Menu>
-    </FormControl >
+    </FormControl>
   )
 }

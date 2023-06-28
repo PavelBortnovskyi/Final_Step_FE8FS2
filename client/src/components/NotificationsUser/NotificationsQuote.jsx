@@ -27,6 +27,17 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   }
 }))
 
+const NavLinkStyle = styled(NavLink)(({ theme }) => ({
+  marginLeft: '56px',
+  width: '100%',
+  padding: '16px',
+  border: `1px solid ${theme.palette.border.main}`,
+  borderRadius: '30px',
+  '&:hover': {
+    backgroundColor: `rgba(29, 155, 240, 0.15)`,
+  }
+}))
+
 
 export const NotificationsQuote = ({ notification }) => {
   const theme = useTheme();
@@ -88,9 +99,6 @@ export const NotificationsQuote = ({ notification }) => {
         <NavLink to={`/tweet/${notification.tweet.id}`}>
           <Box sx={{
             paddingLeft: '56px',
-            '&:hover > *:last-child': {
-              textDecoration: 'underline',
-            },
           }}>
             <Typography variant='body2'
               sx={{
@@ -119,17 +127,7 @@ export const NotificationsQuote = ({ notification }) => {
               color: `${theme.palette.text.primary}`,
             }}
           >
-            <Box sx={{
-              marginLeft: '56px',
-              width: '100%',
-              p: '16px',
-              border: `1px solid ${theme.palette.border.main}`,
-              borderRadius: '30px',
-              '&:hover': {
-                backgroundColor: `rgba(29, 155, 240, 0.15)`,
-              }
-            }}>
-
+            <NavLinkStyle to={`/tweet/${notification.tweet.parentTweet.id}`}>
               <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -157,22 +155,19 @@ export const NotificationsQuote = ({ notification }) => {
                 </Box>
               </Box>
 
-
-
               <Box sx={{ paddingLeft: '56px' }}>
-                <NavLink to={`/tweet/${notification.tweet.parentTweet.id}`}>
-                  <Typography variant='body2'
-                    sx={{
-                      color: `${theme.palette.text.secondary}`,
-                    }}>
-                    {TextPreviewUser}
-                  </Typography>
-                  <NotificationsBoxImg Images={ImagesUser} />
-                </NavLink>
+                <Typography variant='body2'
+                  sx={{
+                    color: `${theme.palette.text.secondary}`,
+                  }}>
+                  {TextPreviewUser}
+                </Typography>
+                <NotificationsBoxImg Images={ImagesUser} />
               </Box>
-            </Box>
+            </NavLinkStyle>
           </Box>
         )}
     </StyledBox>
   )
 }
+
