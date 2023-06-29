@@ -32,7 +32,6 @@ import static org.passay.AllowedCharacterRule.ERROR_CODE;
 
 @Log4j2
 @Component
-@CrossOrigin(originPatterns = {"http://localhost", "https://final-step-fe-8-fs-2.vercel.app"})
 @RequiredArgsConstructor
 public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 

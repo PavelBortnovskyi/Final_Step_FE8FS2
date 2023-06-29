@@ -69,7 +69,7 @@ public class SecurityConfiguration {
       .and()
       .oauth2Login()
       .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app/") //TODO: need to change on deploy
-      .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
+      //.loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
       .successHandler(oAuth2SuccessLoginHandler)
@@ -90,18 +90,18 @@ public class SecurityConfiguration {
 
 
     //CORS config
-     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-     configuration.addAllowedOriginPattern("http://localhost:3000");
-     configuration.addAllowedOriginPattern("http://localhost:3000/**");
-     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
-     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
-     configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
-     configuration.addAllowedMethod(HttpMethod.GET);
-     configuration.addAllowedMethod(HttpMethod.POST);
-     configuration.addAllowedMethod(HttpMethod.PUT);
-     configuration.addAllowedMethod(HttpMethod.DELETE);
-     configuration.addAllowedMethod(HttpMethod.OPTIONS);
-    httpSec.cors().disable();
+//     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+//     configuration.addAllowedOriginPattern("http://localhost:3000");
+//     configuration.addAllowedOriginPattern("http://localhost:3000/**");
+//     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
+//     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
+//     configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
+//     configuration.addAllowedMethod(HttpMethod.GET);
+//     configuration.addAllowedMethod(HttpMethod.POST);
+//     configuration.addAllowedMethod(HttpMethod.PUT);
+//     configuration.addAllowedMethod(HttpMethod.DELETE);
+//     configuration.addAllowedMethod(HttpMethod.OPTIONS);
+//    httpSec.cors().disable();
 
     return httpSec.build();
   }
