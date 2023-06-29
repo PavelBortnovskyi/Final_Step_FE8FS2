@@ -2,7 +2,11 @@ import { TextField } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 
 const RedditTextField = styled((props) => (
-  <TextField InputProps={{ disableUnderline: true }} {...props} />
+  <TextField
+    InputProps={{ disableUnderline: true }}
+    {...props}
+    autoComplete="off"
+  />
 ))(({ theme }) => ({
   '& .MuiFilledInput-root': {
     color: `${theme.palette.text.primary}`,
@@ -32,6 +36,11 @@ export function EditInput({ field, ...props }) {
         {...field}
         {...props}
         placeholder={props.label}
+        InputProps={{
+          inputProps: {
+            max: new Date().toISOString().split('T')[0],
+          },
+        }}
       />
     </>
   );
