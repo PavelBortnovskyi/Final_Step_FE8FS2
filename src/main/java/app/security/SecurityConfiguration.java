@@ -66,7 +66,7 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("http://localhost") //TODO: need to change on deploy
+      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app/") //TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
