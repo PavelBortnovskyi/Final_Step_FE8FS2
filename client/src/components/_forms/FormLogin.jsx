@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,12 @@ import {
 
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+
+// google auth
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
+import { myAxios } from 'src/utils/axiosSetup.js';
+import axios from 'axios';
 
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -87,6 +93,17 @@ export const FormLogin = () => {
   //   password: '',
   // };
 
+  //*** GOOGLE AUTH ********************************************/
+  const sendData = async (credentialResponse) => {
+    const response = await axios.post(
+      'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google',
+      credentialResponse
+    );
+
+    console.log(response);
+  };
+  //***********************************************/
+
   return (
     <>
       {message && (
@@ -149,6 +166,23 @@ export const FormLogin = () => {
           </Form>
         )}
       </Formik>
+
+      <GoogleOAuthProvider clientId="833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com">
+        <GoogleLogin
+          redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
+          onSuccess={(credentialResponse) => {
+            console.log('google', credentialResponse);
+
+            const decode = jwt_decode(credentialResponse.credential);
+            console.log('decode', decode);
+
+            // sendData(credentialResponse);
+          }}
+          onError={() => {
+            console.log('login error');
+          }}
+        />
+      </GoogleOAuthProvider>
     </>
   );
 };
