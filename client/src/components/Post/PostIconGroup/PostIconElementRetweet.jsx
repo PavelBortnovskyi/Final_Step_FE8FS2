@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import { deleteTweet } from 'src/redux/thunk/tweets/deleteTweet';
-import {
-  getAllTweets,
-  subscriptionsTweets,
-} from 'src/redux/selectors/selectors';
+import { getAllTweets, subscriptionsTweets } from 'src/redux/selectors/selectors';
 
 export const PostIconElementRetweet = ({
   icon,
@@ -18,20 +15,22 @@ export const PostIconElementRetweet = ({
 }) => {
   const dispatch = useDispatch();
   let allTweets = useSelector(getAllTweets);
-  let subscriptionUserTweets = useSelector(subscriptionsTweets);
-  let tweetsInState = allTweets.allTweets.length
-    ? allTweets.allTweets
-    : subscriptionUserTweets.subscriptionsTweets;
+  let subscriptionUserTweets = useSelector(subscriptionsTweets)
+console.log(allTweets.allTweets);
+console.log(subscriptionUserTweets.subscriptionsTweets);
+let tweetsInState = allTweets.allTweets.length ? allTweets.allTweets : subscriptionUserTweets.subscriptionsTweets
 
   const handleRetweet = () => {
     console.log(isRetweet);
     if (isRetweet) {
-      tweetsInState.map((tweet) => {
-        tweet.tweetType === 'RETWEET' && console.log(tweet);
-
+      tweetsInState.map( tweet => {
+        tweet.tweetType === "RETWEET" && (
+          console.log(tweet)
+        )
+        
         // tweet.parentTweet.id === id && dispatch(deleteTweet({ tweet.id }))
-      });
-      //
+      })
+      // 
       console.log('delete');
       console.log(id);
     } else {

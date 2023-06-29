@@ -7,24 +7,19 @@ import { useMode } from 'src/styles/_materialTheme';
 import { UserLikes } from 'src/pages/UserLikes';
 import { UserReplisePage } from 'src/pages/UserReplisePage';
 import { UserTweetPage } from 'src/pages/UserTweetPage';
-import { useSelector } from 'react-redux';
-import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 
 export function UserAction({ idUser, setTabIndex }) {
   const theme = useMode();
   const [value, setValue] = React.useState('1');
-
-  const userLikesIsLoading = useSelector((state) => state.userLikes.isLoading);
-  const replyIsLoading = useSelector((state) => state.userReplise.isLoading);
-  const userTweetsIsLoading = useSelector(
-    (state) => state.userTweets.isLoading
-  );
 
   const handleChange = (event, newValue) => {
     setTabIndex(newValue);
     setValue(newValue);
   };
 
+  // const handleTabChange = (event, newTabIndex) => {
+  //   setTabIndex(newTabIndex);
+  // };
   return (
     <Box sx={{ borderBottom: `1px solid ${theme.palette.border.main}` }}>
       <TabContext value={value}>
@@ -48,22 +43,15 @@ export function UserAction({ idUser, setTabIndex }) {
             />
           </TabList>
         </Box>
-        {userLikesIsLoading || replyIsLoading || userTweetsIsLoading ? (
-          <LoaderSkeleton quantity={10} />
-        ) : (
-          <>
-            {' '}
-            <TabPanel sx={{ padding: '0', minHeight: '100vh' }} value="1">
-              <UserTweetPage idUser={idUser} />
-            </TabPanel>
-            <TabPanel sx={{ padding: '0', minHeight: '100vh' }} value="2">
-              <UserReplisePage />
-            </TabPanel>
-            <TabPanel sx={{ padding: '0', minHeight: '100vh' }} value="3">
-              <UserLikes />
-            </TabPanel>
-          </>
-        )}
+        <TabPanel sx={{ padding: '0', minHeight: '100vh' }} value="1">
+          <UserTweetPage idUser={idUser} />
+        </TabPanel>
+        <TabPanel sx={{ padding: '0', minHeight: '100vh' }} value="2">
+          <UserReplisePage />
+        </TabPanel>
+        <TabPanel sx={{ padding: '0', minHeight: '100vh' }} value="3">
+          <UserLikes />
+        </TabPanel>
       </TabContext>
     </Box>
   );

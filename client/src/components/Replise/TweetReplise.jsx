@@ -73,7 +73,7 @@ export const TweetReplise = ({
           </Box>
         </Link>
         <Box display={'flex'} justifyContent={'center'} width={'100%'}>
-          {/* <PostIconList
+          <PostIconList
             likes={paren.countLikes}
             reply={paren.countReply}
             retweet={paren.countRetweets}
@@ -82,45 +82,6 @@ export const TweetReplise = ({
             isRetweet={paren.countRetweets}
             isComment={paren.countReplays}
             isBookmark={paren.countBookmarks}
-          /> */}
-          <PostIconList
-            isLiked={paren.currUserLiked}
-            isQuoted={paren.currUserQuoted}
-            isComment={paren.currUserCommented}
-            isRetweet={paren.currUserRetweeted}
-            likes={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countLikes
-                : paren.countLikes
-            }
-            reply={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countReplies
-                : paren.countReplies
-            }
-            retweet={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countRetweets
-                : paren.countRetweets
-            }
-            id={
-              paren.attachmentImages === undefined ? paren.tweet.id : paren.id
-            }
-            quote={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countQuoteTweets
-                : paren.countQuoteTweets
-            }
-            isBookmarks={
-              paren.attachmentImages === undefined
-                ? paren.tweet.currUserBookmarked
-                : paren.currUserBookmarked
-            }
-            bookmarks={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countBookmarks
-                : paren.countBookmarks
-            }
           />
         </Box>
       </Box>
