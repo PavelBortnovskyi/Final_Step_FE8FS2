@@ -1,28 +1,37 @@
 import { useSelector } from 'react-redux';
 import { alpha, Avatar, Box, styled, Typography } from '@mui/material';
 
-import { getMessages, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import UserNames from 'src/UI/UserNames';
-import { Link } from 'react-router-dom';
-import { useTheme } from '@emotion/react';
+import { NavLink } from 'react-router-dom';
+import { getUserData } from 'src/redux/selectors/selectors';
 
 const BoxSearchPerson = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: '12px',
+  padding: '8px',
+  borderBottom: ` 1px solid ${theme.palette.border.main}`,
+
   '&:hover': {
     backgroundColor: alpha(theme.palette.text.primary, 0.1),
-    cursor: 'pointer',
+    // cursor: 'pointer',
   },
 }));
 
+const NavLinkStyle = styled(NavLink)(({ theme }) => ({
+  color: `${theme.palette.text.primary}`,
+  underline: "none",
+}))
+
 export const SearchPeople = () => {
-  const { isLoading, findUser } = useSelector(getUserData);
-  const theme = useTheme();
+  const { user } = useSelector(getUserData);
+  const { isLoading, searchUser } = useSelector(state => state.searchUser);
 
   // return hello-string if searchStr is empty
-  if ((!findUser || findUser.searchStr === '') && !isLoading)
+  if ((!searchUser || searchUser.searchStr === '') && !isLoading)
     return (
       <Typography sx={{ margin: '16px' }}>
-        Try searching for people or messages
+        Try searching for people
       </Typography>
     );
 
@@ -30,7 +39,7 @@ export const SearchPeople = () => {
   if (isLoading) return <Loading size={34} />;
 
   // check data not empty
-  const isResult = findUser?.content?.length ? true : false;
+  const isResult = searchUser?.content?.length ? true : false;
 
   // return content after loading
   return (
@@ -45,44 +54,40 @@ export const SearchPeople = () => {
           </Typography>
         </Box>
       ) : (
-        <Box
-          sx={{
-            marginTop: '16px',
-            display: 'flex',
-            gap: '8px',
-            flexDirection: 'column',
-            width: '100%',
-          }}
-        >
-          {findUser.content.map(
-            ({ id, fullName, avatarImgUrl, verified, userTag }) => (
-              <Link
-                to={`/user/${id}`}
-                style={{ color: `${theme.palette.text.primary}` }}
-                underline="none"
-                key={id}
-              >
-                <BoxSearchPerson
-                  sx={{ display: 'flex', gap: '12px', padding: '8px' }}
+        <Box>
+          {searchUser.content.filter((find) => find.id !== user.id)
+            .map((user) => (
+              /* <NavLinkStyle
+                to={`/user/${user.id}`}
+                key={user.id}
+              > */
+              <BoxSearchPerson key={user.id}>
+                <NavLinkStyle
+                  to={`/user/${user.id}`}
+                  key={user.id}
                 >
                   <Avatar
                     sx={{ width: 56, height: 56 }}
-                    alt={fullName}
-                    src={avatarImgUrl && 'img/avatar/empty-avatar.png'}
+                    alt={user.fullName}
+                    src={user.avatarImgUrl || 'img/avatar/empty-avatar.png'}
                   />
-                  <UserNames
-                    fullName={fullName}
-                    verified={verified}
-                    userTag={userTag}
-                    text={
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ...'
-                    }
-                  />
-                </BoxSearchPerson>
-              </Link>
-            )
-          )}
+                </NavLinkStyle>
+                <UserNames
+                  fullName={user.fullName}
+                  isVerified={user.verified}
+                  userTag={user.userTag}
+                  text={
+                    '...found this user'
+                  }
+                  userId={user.id}
+                  id={user.id}
+                />
+
+              </BoxSearchPerson>
+              /* </NavLinkStyle> */
+            ))}
         </Box>
+
       )}
     </>
   );

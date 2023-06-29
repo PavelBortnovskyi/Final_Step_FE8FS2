@@ -52,6 +52,7 @@ function TweetPost({ tweet }) {
                 </Box>
               </Link>
               <UserNames
+              tweet1={tweet}
                 userId={tweet.id}
                 id={tweet.id}
                 isVerified={tweet.user.isVerified}
