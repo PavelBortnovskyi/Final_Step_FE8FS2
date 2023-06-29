@@ -5,8 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import debounce from 'lodash.debounce';
-
-import { findUser } from 'src/redux/thunk/findUser';
+import { findUserRightSection } from 'src/redux/thunk/findUserRightSection';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,21 +58,21 @@ export const SearchField = () => {
   // clear search input
   const handleClear = () => {
     setSearchText('');
-    dispatch(findUser({ search: '' }));
+    dispatch(findUserRightSection({ search: '' }));
     inputRef.current.focus();
   };
 
   // set debounce on send request search string
   const sendSearchString = useCallback(
     debounce((searchString) => {
-      dispatch(findUser({ search: searchString }));
+      dispatch(findUserRightSection({ search: searchString }));
     }, 500),
     []
   );
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      dispatch(findUser({ search: searchText }));
+      dispatch(findUserRightSection({ search: searchText }));
     }
   };
 
@@ -94,7 +93,7 @@ export const SearchField = () => {
           value={searchText}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Search Direct Messages"
+          placeholder="Search Users"
           inputProps={{ 'aria-label': 'search' }}
         />
         <Box
