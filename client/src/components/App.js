@@ -8,12 +8,13 @@ import {
 } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
 import { getTokens } from 'src/utils/tokens';
+import { notAuthenticated } from 'src/redux/reducers/authSlice';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
+import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
 // import Stomp from 'stompjs';
 import { Stomp, Client } from '@stomp/stompjs';
 // import SockJS from 'sockjs-client';
-import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
 // url socket server
 export const socketUrl = 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws';
@@ -127,9 +128,12 @@ export const App = () => {
   //*********************************************************/
 
   useEffect(() => {
-    if (accessToken && !user) {
-      // console.log('App auth, token:', isAuthenticated, accessToken);
-      dispatch(getUser());
+    if (accessToken) {
+      if (!user) {
+        dispatch(getUser());
+      }
+    } else {
+      dispatch(notAuthenticated());
     }
   }, [dispatch, accessToken, user]);
 

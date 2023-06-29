@@ -16,6 +16,7 @@ export const getAllTweetsThunk = createAsyncThunk(
       thunkAPI.dispatch(setPage(page));
       thunkAPI.dispatch(setTotalPages(totalPages));
       thunkAPI.dispatch(setTotalElements(totalElements));
+      console.log(data.content);
       return data.content;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

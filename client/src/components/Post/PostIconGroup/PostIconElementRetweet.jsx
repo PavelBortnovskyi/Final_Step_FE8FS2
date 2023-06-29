@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import { deleteTweet } from 'src/redux/thunk/tweets/deleteTweet';
-import { getAllTweets, subscriptionsTweets } from 'src/redux/selectors/selectors';
+import {
+  getAllTweets,
+  subscriptionsTweets,
+} from 'src/redux/selectors/selectors';
 
 export const PostIconElementRetweet = ({
   icon,
@@ -25,14 +28,12 @@ let tweetsInState = allTweets.allTweets.length ? allTweets.allTweets : subscript
   const handleRetweet = () => {
     console.log(isRetweet);
     if (isRetweet) {
-      tweetsInState.map( tweet => {
-        tweet.tweetType === "RETWEET" && (
-          console.log(tweet)
-        )
-        
+      tweetsInState.map((tweet) => {
+        tweet.tweetType === 'RETWEET' && console.log(tweet);
+
         // tweet.parentTweet.id === id && dispatch(deleteTweet({ tweet.id }))
-      })
-      // 
+      });
+      //
       console.log('delete');
       console.log(id);
     } else {

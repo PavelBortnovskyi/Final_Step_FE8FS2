@@ -2,6 +2,7 @@ import app.model.Notification;
 import app.repository.UserRepository;
 import app.repository.NotificationModelRepository;
 import app.service.NotificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,9 @@ class NotificationServiceTest {
   private UserRepository userRepository = mock(UserRepository.class);
   private SimpMessagingTemplate template = mock(SimpMessagingTemplate.class);
   private ModelMapper modelMapper = mock(ModelMapper.class);
-  private NotificationService notificationService = new NotificationService(notificationRepository, userRepository, template ,modelMapper);
+
+  private ObjectMapper objectMapper = mock(ObjectMapper.class);
+  private NotificationService notificationService = new NotificationService(notificationRepository, userRepository, template ,modelMapper, objectMapper);
 
   @Test
   void testGetUserNotifications() {

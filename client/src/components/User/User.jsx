@@ -43,11 +43,12 @@ export const User = ({
 
   ///Call different actions depends on tab
   useEffect(() => {
-    if (tabIndex === 1) {
+    if (tabIndex == 1) {
       dispatch(getUserTweetsThunk({ idUser: idUser, page: page, size: 10 }));
-    } else if (tabIndex === 2) {
+    } else if (tabIndex == 2) {
       dispatch(getUserReplise({ page: page, size: 10, id: idUser }));
-    } else if (tabIndex === 3) {
+    } else if (tabIndex == 3) {
+      console.log('inside dispatch like');
       dispatch(getUserLikes({ page: page, size: 10, id: idUser }));
     }
   }, [dispatch, tabIndex, page, idUser]);
@@ -115,7 +116,6 @@ export const User = ({
         <Box
           ref={containerRef}
           sx={{
-            backgroundColor: '#fff',
             height: '100px',
           }}
         ></Box>
