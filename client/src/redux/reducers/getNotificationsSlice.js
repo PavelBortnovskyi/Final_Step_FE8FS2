@@ -3,7 +3,7 @@ import { getNotifications } from '../thunk/getNotifications.js';
 
 const initialState = {
   userNotifications: [],
-  socketNotification: null,
+  socketNotification: [],
   isLoading: false,
   error: '',
 };
@@ -14,7 +14,10 @@ const getNotificationsSlice = createSlice({
 
   reducers: {
     setSocketNotification(state, action) {
-      state.socketNotification = action.payload;
+      state.socketNotification = [...state.socketNotification, action.payload];
+    },
+    clearSocketNotification(state) {
+      state.socketNotification = [];
     },
   },
 
@@ -36,5 +39,5 @@ const getNotificationsSlice = createSlice({
   },
 });
 
-export const { setSocketNotification } = getNotificationsSlice.actions;
+export const { setSocketNotification, clearSocketNotification } = getNotificationsSlice.actions;
 export default getNotificationsSlice.reducer;

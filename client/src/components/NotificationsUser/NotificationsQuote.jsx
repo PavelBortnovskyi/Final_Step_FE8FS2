@@ -56,7 +56,6 @@ export const NotificationsQuote = ({ notification }) => {
   const ImagesInitiator = notification.tweet.attachmentImages || [];
   const ImagesUser = notification.tweet.parentTweet.attachmentImages || [];
 
-  console.log(notification);
   return (
     <StyledBox>
       <Box sx={{

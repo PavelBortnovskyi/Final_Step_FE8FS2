@@ -10,10 +10,7 @@ import {
 } from '@mui/material';
 import { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink, useLoaderData, useLocation } from 'react-router-dom';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import WifiIcon from '@mui/icons-material/Wifi';
-import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+import { NavLink, useLocation } from 'react-router-dom';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { getChats } from 'src/redux/selectors/selectors';
@@ -62,6 +59,11 @@ export const MainMenuSidebar = ({ navElement }) => {
   const location = useLocation();
   //************************************/
 
+  // TODO: notification badge of new notification\
+  const socketNotification = useSelector(state => state.userNotifications.socketNotification);
+  const [isNewNotification, setIsNewNotification] = useState(false);
+  //************************************/
+
   const handleMouseDown = (ev) => {
     setIsSwappedIcon(true);
     linkRef.current.click();
@@ -99,10 +101,29 @@ export const MainMenuSidebar = ({ navElement }) => {
     location.pathname,
     navElement.newMessageNotification,
     navElement.route,
-    newMessageNotification,
+    newMessageNotification, // из редакс
   ]);
   //*****************************************/
 
+  // checking if the user has a new Notification
+  useEffect(() => {
+    if (
+      navElement.newNotificationBadge &&
+      socketNotification.length &&
+      location.pathname !== `/${navElement.route}`
+    ) {
+      setIsNewNotification(true);
+    } else {
+      setIsNewNotification(false);
+    }
+  }, [
+    location.pathname,
+    navElement.newNotificationBadge,
+    navElement.route,
+    socketNotification, // из редакс
+  ]);
+  //*****************************************/
+  
   return (
     <Link
       to={navElement.route}
@@ -133,6 +154,12 @@ export const MainMenuSidebar = ({ navElement }) => {
               <ErrorIcon />
             </IconNotificationWrap>
           )}
+          {isNewNotification && (
+            <IconNotificationWrap>
+              <ErrorIcon />
+            </IconNotificationWrap>
+          )}
+
 
           <ListItemIconStyled>
             {isSwappedIcon ? (
