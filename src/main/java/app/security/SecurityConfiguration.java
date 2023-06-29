@@ -66,7 +66,7 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("/login") //TODO: need to change on deploy
+      //.loginPage("/login") //TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
