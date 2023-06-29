@@ -17,11 +17,13 @@ export const PostIconElementRetweet = ({
   isRetweet,
 }) => {
   const dispatch = useDispatch();
+  const userTweets1 = useSelector(state => state.userTweets.userTweets)
+  // console.log(userTweets1);
   let allTweets = useSelector(getAllTweets);
-  let subscriptionUserTweets = useSelector(subscriptionsTweets);
-  let tweetsInState = allTweets.allTweets.length
-    ? allTweets.allTweets
-    : subscriptionUserTweets.subscriptionsTweets;
+  let subscriptionUserTweets = useSelector(subscriptionsTweets)
+// console.log(allTweets.allTweets);
+// console.log(subscriptionUserTweets.subscriptionsTweets);
+let tweetsInState = allTweets.allTweets.length ? allTweets.allTweets : subscriptionUserTweets.subscriptionsTweets
 
   const handleRetweet = () => {
     console.log(isRetweet);

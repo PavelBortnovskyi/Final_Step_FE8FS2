@@ -20,6 +20,7 @@ import userReplise from 'src/redux/reducers/userRepliseSlice';
 import quoteSlice from 'src/redux/reducers/quoteSlice';
 import tweetsNoAuth from 'src/redux/reducers/getTweetsNoAuthSlicer';
 import paginationReducer from 'src/redux/reducers/pagination/paginationSlice.js';
+import searchUser from 'src/redux/reducers/findUserRightSectionSlice';
 
 const rootReducer = {
   auth,
@@ -42,6 +43,7 @@ const rootReducer = {
   userReplise,
   quoteSlice,
   tweetsNoAuth,
+  searchUser,
   pagination: paginationReducer,
 };
 

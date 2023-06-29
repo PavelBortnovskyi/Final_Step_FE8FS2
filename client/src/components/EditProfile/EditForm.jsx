@@ -1,4 +1,4 @@
-import { Field, Form } from 'formik';
+import { Field, Form, ErrorMessage } from 'formik';
 
 import { EditFormHeder } from './EditFormHeder';
 import { UserPageFoto } from '../User/UserPageFoto';
@@ -15,8 +15,20 @@ import { useSelector } from 'react-redux';
 
 export function EditForm() {
   const userHederFoto = useSelector((state) => state.user.user) || '';
+  const dateOfBirth = useSelector((state) => state.user.user) || '';
+  const dateBirth = dateOfBirth.birthDate;
+  const birth = new Date(dateBirth);
+  const dayOfBirth = birth.getDate();
+  const monthOfBirth = birth.toLocaleString('default', { month: 'long' });
+  const yearOfBirth = birth.getFullYear();
+
+  const firstLetter = monthOfBirth.charAt(0).toUpperCase();
+  const restOfLetters = monthOfBirth.slice(1).toLowerCase();
+
+  const birthDate = `${firstLetter}${restOfLetters} ${dayOfBirth} ${yearOfBirth}`;
+
   return (
-    <Form>
+    <Form aautoComplete="off">
       <EditFormHeder />
       <Box
         sx={{
@@ -63,6 +75,7 @@ export function EditForm() {
           '& label': { color: 'white' },
         }}
       >
+        <ErrorMessage name="fullName" component="div" />
         <Field name="fullName" type="text" label="Name" component={EditInput} />
 
         <Field name="bio" type="text" label="Bio" component={EditInput} />
@@ -74,21 +87,20 @@ export function EditForm() {
           component={EditInput}
         />
 
-        {/* <Box>
+        <Box>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
-            <Typography style={{ color: "rgb(139, 152, 165)" }}>
+            <Typography style={{ color: 'rgb(139, 152, 165)' }}>
               Birth date
             </Typography>
             <EditBirthDate />
           </Box>
-
-          <Typography>Birth date</Typography>
-        </Box> */}
+          {dateBirth && <Typography>{birthDate}</Typography>}
+        </Box>
       </Box>
     </Form>
   );
