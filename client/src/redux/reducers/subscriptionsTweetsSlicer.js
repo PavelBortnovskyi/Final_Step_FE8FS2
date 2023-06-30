@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 import { getSubscriptionsTweets } from '../thunk/tweets/getSubscriptionsTweets.js';
 import { likePost } from '../thunk/tweets/likeTweet.js';
 import { createTweet } from '../thunk/tweets/createTweet.js';
@@ -49,17 +48,17 @@ export const getUserTweetsSlice = createSlice({
         );
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
-        const retweetTweet = action.payload.parentTweet;
+        const retweetTweet = action.payload;
         state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === retweetTweet.id ? retweetTweet : tweet
         );
       })
-      // .addCase(deleteTweet.fulfilled, (state, action) => {
-      //   const deleteTweet = action.payload;
-      //   state.subscriptionsTweets = state.subscriptionsTweets.filter(
-      //     (tweet) => tweet.id !== deleteTweet.id
-      //   );
-      // })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweet = action.payload;
+        state.subscriptionsTweets = state.subscriptionsTweets.filter(
+          (tweet) => tweet.id !== deleteTweet.id
+        );
+      })
 
       .addCase(addQuote.fulfilled, (state, action) => {
         const quoteTweet = action.payload;
@@ -81,12 +80,6 @@ export const getUserTweetsSlice = createSlice({
         const bookmarkTweet = action.payload;
         state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-        );
-      })
-      .addCase(deleteTweet.fulfilled, (state, action) => {
-        const deleteRetweet = action.payload.parentTweet;
-        state.allTweets = state.allTweets?.map((retweet) =>
-        retweet.id === deleteRetweet.id ? deleteRetweet : retweet
         );
       })
   },

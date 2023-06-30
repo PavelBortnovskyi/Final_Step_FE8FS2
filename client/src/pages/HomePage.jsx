@@ -27,7 +27,7 @@ export const HomePage = () => {
   const subscriptions = useSelector(subscriptionsTweets);
   const subscriptionsLoading = subscriptions.isLoading;
   const subscriptionsArray = subscriptions.subscriptionsTweets;
-console.log(subscriptionsArray);
+
   const allTweetsState = useSelector(getAllTweets);
   const allTweetsLoading = allTweetsState.isLoading;
   const allTweetsArray = allTweetsState.allTweets;
