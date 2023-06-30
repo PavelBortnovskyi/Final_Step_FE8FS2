@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Validated
@@ -84,8 +86,9 @@ public class TweetController {
 
   @DeleteMapping("{id}")
   @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}.  Только свои можно удалять.")
-  public void deleteTweet(@PathVariable(name = "id") @Positive Long tweetId) {
+  public Map<String, Long> deleteTweet(@PathVariable(name = "id") @Positive Long tweetId) {
     tweetFacade.deleteTweet(authUserService.getCurrUserId(), tweetId);
+    return new HashMap<>(){{put("id", tweetId);}};
   }
 
 
