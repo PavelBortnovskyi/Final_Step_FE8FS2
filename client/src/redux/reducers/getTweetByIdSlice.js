@@ -7,6 +7,7 @@ import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   singleTweet: [],
@@ -56,7 +57,11 @@ export const tweetByIdSlice = createSlice({
       .addCase(addQuote.fulfilled, (state, action) => {
         const createdQuote = action.payload.data.parentTweet;
         state.singleTweet = createdQuote;
-      });
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteRetweet = action.payload;
+        state.singleTweet = deleteRetweet;
+      })
   },
 });
 export default tweetByIdSlice.reducer;
