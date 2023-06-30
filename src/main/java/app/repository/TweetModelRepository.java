@@ -58,4 +58,6 @@ public interface TweetModelRepository extends RepositoryInterface<Tweet> {
 
   boolean existsByUserAndParentTweetAndTweetType(UserModel currUser, Tweet tweet, TweetType tweetType);
 
+  Optional<Tweet> findByTweetTypeAndUserAndParentTweet(TweetType tweetType, UserModel user, Tweet parentTweet);
+
 }

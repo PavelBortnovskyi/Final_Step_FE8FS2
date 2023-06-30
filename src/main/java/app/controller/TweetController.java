@@ -56,11 +56,13 @@ public class TweetController {
   }
 
 
+  // returns the parent tweet 
   @PostMapping("{id}/retweet")
-  @ApiOperation("Create RETWEET from tweet with {id}")
-  public ResponseEntity<TweetResponseDTO> createRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId) {
-    return ResponseEntity.ok(tweetFacade.createTweet(authUserService.getCurrUserId(),
-      "", new MultipartFile[0], TweetType.RETWEET, tweetId));
+  @ApiOperation("Create or delete RETWEET from tweet with {id}")
+  public ResponseEntity<TweetResponseDTO> createOrDeleteRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId) {
+    //return ResponseEntity.ok(tweetFacade.createTweet(authUserService.getCurrUserId(),
+     // "", new MultipartFile[0], TweetType.RETWEET, tweetId));
+    return ResponseEntity.ok(tweetFacade.createOrDeleteRetweet(authUserService.getCurrUserId(), tweetId));
   }
 
 
