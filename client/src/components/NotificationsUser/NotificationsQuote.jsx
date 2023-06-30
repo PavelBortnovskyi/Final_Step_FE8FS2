@@ -67,20 +67,20 @@ export const NotificationsQuote = ({ notification }) => {
           alignItems: 'center',
           paddingBottom: '6px',
         }}>
-          <Link
+          <LinkStyle
             key={notification.tweet.id}
-            to={`/user/${notification.tweet.id}`}
+            to={`/user/${notification.initiator.id}`}
             onClick={() => {
               dispatch(getUserBiId(notification.initiator.id));
             }}
           >
             <Avatar src={notification.initiator.avatarImgUrl} sx={{ width: '40px', height: '40px' }} />
-          </Link>
+          </LinkStyle>
 
           <Box sx={{ display: 'flex', alignItems: 'end', paddingLeft: '16px' }}>
             <LinkStyle
               key={notification.tweet.id}
-              to={`/user/${notification.tweet.id}`}
+              to={`/user/${notification.initiator.id}`}
               onClick={() => {
                 dispatch(getUserBiId(notification.initiator.id));
               }}
