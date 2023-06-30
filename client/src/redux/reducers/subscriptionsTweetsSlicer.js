@@ -54,12 +54,12 @@ export const getUserTweetsSlice = createSlice({
           tweet.id === retweetTweet.id ? retweetTweet : tweet
         );
       })
-      .addCase(deleteTweet.fulfilled, (state, action) => {
-        const deleteTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.filter(
-          (tweet) => tweet.id !== deleteTweet.id
-        );
-      })
+      // .addCase(deleteTweet.fulfilled, (state, action) => {
+      //   const deleteTweet = action.payload;
+      //   state.subscriptionsTweets = state.subscriptionsTweets.filter(
+      //     (tweet) => tweet.id !== deleteTweet.id
+      //   );
+      // })
 
       .addCase(addQuote.fulfilled, (state, action) => {
         const quoteTweet = action.payload;
@@ -82,7 +82,13 @@ export const getUserTweetsSlice = createSlice({
         state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
-      });
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteRetweet = action.payload.parentTweet;
+        state.allTweets = state.allTweets?.map((retweet) =>
+        retweet.id === deleteRetweet.id ? deleteRetweet : retweet
+        );
+      })
   },
 });
 
