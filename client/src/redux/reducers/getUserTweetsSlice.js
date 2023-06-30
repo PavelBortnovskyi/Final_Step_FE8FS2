@@ -54,7 +54,7 @@ export const getUserTweetsSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
-        const retweetTweet = action.payload.parentTweet;
+        const retweetTweet = action.payload;
         state.userTweets = state.userTweets.map((tweet) =>
           tweet.id === retweetTweet.id ? retweetTweet : tweet
         );

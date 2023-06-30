@@ -9,11 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.tomcat.websocket.server.WsServerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
@@ -57,6 +53,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   private final SpringSecurityAuditorAware auditorAware;
 
   private TaskScheduler messageBrokerTaskScheduler;
+
   @Autowired
   public void setMessageBrokerTaskScheduler(@Lazy TaskScheduler taskScheduler) {
     this.messageBrokerTaskScheduler = taskScheduler;
@@ -70,7 +67,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.enableSimpleBroker("/topic/chats", "/topic/notifications")
-      .setHeartbeatValue(new long[] {10000, 10000})
+      .setHeartbeatValue(new long[]{10000, 10000})
       .setTaskScheduler(messageBrokerTaskScheduler);
     registry.setApplicationDestinationPrefixes("/api");
   }

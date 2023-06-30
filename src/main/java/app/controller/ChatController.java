@@ -44,7 +44,7 @@ public class ChatController {
   @Validated({Marker.ChatDetails.class})
   @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ChatResponseDTO> handleGetChat(@RequestBody @JsonView(Marker.ChatDetails.class)
-                                                           @PathVariable(name = "id") Long chatId) {
+                                                       @PathVariable(name = "id") Long chatId) {
     return ResponseEntity.ok(chatFacade.getChatById(chatId));
   }
 

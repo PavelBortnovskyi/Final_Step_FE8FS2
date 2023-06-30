@@ -5,9 +5,9 @@ import { likePost } from '../thunk/tweets/likeTweet.js';
 import { createTweet } from '../thunk/tweets/createTweet.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
-import { getAllTweetsThunkNoAuth } from '../thunk/tweets/getAllTweetsThunkNoAuth.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   allTweets: [],
@@ -73,7 +73,13 @@ const getAllTweetsSlice = createSlice({
         state.allTweets = state.allTweets.map((tweet) =>
           tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
-      });
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteRetweet = action.payload;
+        state.allTweets = state.allTweets?.map((retweet) =>
+        retweet.id === deleteRetweet.id ? deleteRetweet : retweet
+        );
+      })
   },
 });
 

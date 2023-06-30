@@ -30,7 +30,7 @@ public class WebSocketExceptionHandler {
   private final ObjectMapper objectMapper;
 
   @ExceptionHandler(BadRequestException.class)
-  public void handleException(Exception ex, WebSocketSession session){
+  public void handleException(Exception ex, WebSocketSession session) {
     log.info(ex.getMessage());
     this.sendErrorInfo(session, "400", ex.getMessage());
   }
@@ -57,6 +57,9 @@ public class WebSocketExceptionHandler {
     try {
       String errorInfoJson = objectMapper.writeValueAsString(new SocketErrorInfo(code, message));
       session.sendMessage(new TextMessage(errorInfoJson));
-    } catch (IOException e) {log.info("Websocket IOExcepion " + e.getMessage());};
+    } catch (IOException e) {
+      log.info("Websocket IOExcepion " + e.getMessage());
+    }
+    ;
   }
 }

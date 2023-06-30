@@ -11,10 +11,8 @@ function PostElementBookmarks({ icon, quantity, color, id, isBookmarks }) {
   const handleBookmarks = () => {
     if (isBookmarks) {
       dispatch(deleteBookmark({ id }));
-      console.log('delete');
     } else {
       dispatch(addBookmark({ id }));
-      console.log('add');
     }
   };
 

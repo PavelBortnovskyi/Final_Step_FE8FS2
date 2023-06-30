@@ -19,10 +19,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Validated
@@ -56,11 +57,13 @@ public class TweetController {
   }
 
 
+  // returns the parent tweet
   @PostMapping("{id}/retweet")
-  @ApiOperation("Create RETWEET from tweet with {id}")
-  public ResponseEntity<TweetResponseDTO> createRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId) {
-    return ResponseEntity.ok(tweetFacade.createTweet(authUserService.getCurrUserId(),
-      "", new MultipartFile[0], TweetType.RETWEET, tweetId));
+  @ApiOperation("Create or delete RETWEET from tweet with {id}")
+  public ResponseEntity<TweetResponseDTO> createOrDeleteRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId) {
+    //return ResponseEntity.ok(tweetFacade.createTweet(authUserService.getCurrUserId(),
+    // "", new MultipartFile[0], TweetType.RETWEET, tweetId));
+    return ResponseEntity.ok(tweetFacade.createOrDeleteRetweet(authUserService.getCurrUserId(), tweetId));
   }
 
 
@@ -83,8 +86,9 @@ public class TweetController {
 
   @DeleteMapping("{id}")
   @ApiOperation("Delete TWEET/RETWEET/QUOTE_TWEET/REPLY with {id}.  Только свои можно удалять.")
-  public void deleteTweet(@PathVariable(name = "id") @Positive Long tweetId) {
+  public Map<String, Long> deleteTweet(@PathVariable(name = "id") @Positive Long tweetId) {
     tweetFacade.deleteTweet(authUserService.getCurrUserId(), tweetId);
+    return new HashMap<>(){{put("id", tweetId);}};
   }
 
 
