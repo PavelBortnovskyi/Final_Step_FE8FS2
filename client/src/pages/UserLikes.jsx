@@ -13,6 +13,7 @@ export const UserLikes = () => {
   return (
     likes &&
     likes.map((like) => {
+      // console.log(like.tweet);
       return (
         <Box
           key={like.id}

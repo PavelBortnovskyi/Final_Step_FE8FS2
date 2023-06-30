@@ -7,6 +7,7 @@ export const addBookmark = createAsyncThunk(
   async ({ id }, thunkAPI) => {
     try {
       const { data } = await myAxios.post(`/tweet/${id}/bookmark`);
+      console.log(data);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

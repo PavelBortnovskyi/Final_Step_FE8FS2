@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserLikes } from '../thunk/getUserLikes.js';
 import { unLikePost } from '../thunk/tweets/unlike.js';
+import { likePost } from '../thunk/tweets/likeTweet.js';
+import { addQuote } from '../thunk/tweets/addQuote.js';
+import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
+import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 
 const initialState = {
   userLikes: [],
@@ -36,6 +40,24 @@ export const userLikesSlice = createSlice({
         const unLikedTweet = action.payload;
         state.userLikes = state.userLikes.filter(
           (post) => post.tweet.id !== unLikedTweet.id
+        );
+      })
+      // .addCase(addQuote.fulfilled, (state, action) => {
+      //   const quoteTweet = action.payload;
+      //   state.userLikes = state.allTweets.map((tweet) =>
+      //     tweet.id === quoteTweet.id ? quoteTweet : tweet
+      //   );
+      // })
+      .addCase(addBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.userLikes = state.userLikes.map((tweet) =>
+          tweet.tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
+        );
+      })
+      .addCase(deleteBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.userLikes = state.userLikes.map((tweet) =>
+          tweet.tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
       });
   },
