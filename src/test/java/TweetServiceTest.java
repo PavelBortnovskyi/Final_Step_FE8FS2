@@ -78,7 +78,4 @@ public class TweetServiceTest {
     when(tweetRepository.findTweetById(1L)).thenReturn(Optional.of(tweet));
     assertThat(tweetService.getTweet(1L)).isEqualTo(tweet);
   }
-
-
-
 }

@@ -62,13 +62,10 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/api/v1/tweet/top**").permitAll()
       .antMatchers("/chat-ws").permitAll()
-      //.antMatchers("/chat-ws/*").permitAll()
-      //.antMatchers("/api/v1/message").permitAll()
-      //.antMatchers("/api/v1/message/**").permitAll()
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app/") //TODO: need to change on deploy
+      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app/").loginPage("/login") //TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
