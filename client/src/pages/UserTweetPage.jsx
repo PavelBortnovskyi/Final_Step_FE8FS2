@@ -6,7 +6,6 @@ import { UserAllTypeTweets } from 'src/components/User/UserAllTypeTweets/UserAll
 
 export const UserTweetPage = ({ idUser }) => {
   const userTweets = useSelector((state) => state.userTweets.userTweets) || [];
-
   return (
     userTweets && (
       <Box>

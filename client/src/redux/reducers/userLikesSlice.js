@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserLikes } from '../thunk/getUserLikes.js';
+import { unLikePost } from '../thunk/tweets/unlike.js';
 
 const initialState = {
   userLikes: [],
@@ -30,6 +31,12 @@ export const userLikesSlice = createSlice({
       .addCase(getUserLikes.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(unLikePost.fulfilled, (state, action) => {
+        const unLikedTweet = action.payload;
+        state.userLikes = state.userLikes.filter(
+          (post) => post.tweet.id !== unLikedTweet.id
+        );
       });
   },
 });

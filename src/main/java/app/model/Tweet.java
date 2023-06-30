@@ -4,8 +4,6 @@ import app.enums.TweetType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -30,7 +28,7 @@ public class Tweet extends BaseEntityModel {
   @JoinColumn(name = "user_id")
   private UserModel user;
 
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne   //(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "parent_tweet")
   private Tweet parentTweet;
 

@@ -1,13 +1,11 @@
 package app.service;
 
-import app.dto.rs.TweetResponseDTONEmini;
 import app.model.RatingModel;
 import app.model.Tweet;
 import app.repository.RatingModelRepository;
 import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +13,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -57,7 +54,6 @@ public class ScheduleAlgoService {
     // создаем параметр сравнения и сортируем по рейтингу
     Comparator<RatingModel> ratingModelComparator = Comparator.comparingDouble(RatingModel::getTweetRating);
     Collections.sort(tweetsRatingSorted, ratingModelComparator);
-
 
 
     //записываем отсортированые твиты по рейтингу первые 50 или до 50
