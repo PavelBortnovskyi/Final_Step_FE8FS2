@@ -17,6 +17,8 @@ export const PostIconElementRetweet = ({
   isRetweet,
 }) => {
   const dispatch = useDispatch();
+  const retweets = useSelector(state => state.retweet.retweetData)
+  console.log(retweets);
   const userTweets1 = useSelector(state => state.userTweets.userTweets)
   // console.log(userTweets1);
   let allTweets = useSelector(getAllTweets);
@@ -28,8 +30,8 @@ let tweetsInState = allTweets.allTweets.length ? allTweets.allTweets : subscript
   const handleRetweet = () => {
     console.log(isRetweet);
     if (isRetweet) {
-      tweetsInState.map((tweet) => {
-        tweet.tweetType === 'RETWEET' && console.log(tweet);
+      retweets.map((retweet) => {
+        retweet.tweetType === 'RETWEET' && console.log(retweet);
 
         // tweet.parentTweet.id === id && dispatch(deleteTweet({ tweet.id }))
       });
