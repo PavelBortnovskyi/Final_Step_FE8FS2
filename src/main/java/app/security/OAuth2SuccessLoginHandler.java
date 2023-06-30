@@ -95,7 +95,8 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
 //    response.setStatus(200);
 //    outputStream.flush();
 //    outputStream.close();
-    String oauthUrl = String.format("https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/oauth?accessToken=%s&refreshToken=%s", tokenResponse.get("ACCESS_TOKEN"), tokenResponse.get("REFRESH_TOKEN"));
+    String oauthUrl = String.format("https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/oauth?accessToken=%s&refreshToken=%s",
+      tokenResponse.get("ACCESS_TOKEN"), tokenResponse.get("REFRESH_TOKEN"));
     response.sendRedirect(oauthUrl);
     super.onAuthenticationSuccess(request, response, authentication);
   }
