@@ -39,6 +39,7 @@ export const mainSidebarElements = [
     iconActive: NotificationsRoundedIcon,
     label: 'Notifications',
     route: 'notifications',
+    newNotificationBadge: true,
   },
   {
     id: 3,
