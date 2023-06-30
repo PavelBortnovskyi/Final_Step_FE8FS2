@@ -10,10 +10,8 @@ import app.model.Notification;
 import app.model.Tweet;
 import app.repository.NotificationModelRepository;
 import app.repository.UserRepository;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -98,33 +96,33 @@ public class NotificationService extends GeneralService<Notification> {
    * Method sends notificationResponseDto to tweet author in websocket topic/notification/username
    */
   public Tweet sendNotification(Tweet tweet, Long senderUserId, TweetActionType tweetActionType) throws JsonProcessingException {
-      NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
-        .setInitiatorUserId(senderUserId)
-        .setTweetId(tweet.getId());
+    NotificationRequestDTO notificationRequestDTO = new NotificationRequestDTO()
+      .setInitiatorUserId(senderUserId)
+      .setTweetId(tweet.getId());
 
-      if (!tweet.getUser().getId().equals(senderUserId) && notificationRepository.getLikeNotification(senderUserId, tweet.getId()).isEmpty()
-        && tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
-        notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
-          .setNotificationType(NotificationType.LIKE);
-      }
+    if (!tweet.getUser().getId().equals(senderUserId) && notificationRepository.getLikeNotification(senderUserId, tweet.getId()).isEmpty()
+      && tweetActionType != null && tweetActionType.equals(TweetActionType.LIKE)) {
+      notificationRequestDTO.setReceiverUserId(tweet.getUser().getId())
+        .setNotificationType(NotificationType.LIKE);
+    }
 
-      if (tweetActionType == null && !tweet.getTweetType().equals(TweetType.TWEET)
-        && tweet.getParentTweet() != null && !tweet.getParentTweet().getUser().getId().equals(senderUserId)) {
-        notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
-        switch (tweet.getTweetType()) {
-          case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
-          case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
-          case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
-        }
+    if (tweetActionType == null && !tweet.getTweetType().equals(TweetType.TWEET)
+      && tweet.getParentTweet() != null && !tweet.getParentTweet().getUser().getId().equals(senderUserId)) {
+      notificationRequestDTO.setReceiverUserId(tweet.getParentTweet().getUser().getId());
+      switch (tweet.getTweetType()) {
+        case QUOTE_TWEET -> notificationRequestDTO.setNotificationType(NotificationType.QUOTE_TWEET);
+        case REPLY -> notificationRequestDTO.setNotificationType(NotificationType.REPLY);
+        case RETWEET -> notificationRequestDTO.setNotificationType(NotificationType.RETWEET);
       }
-      if (notificationRequestDTO.getReceiverUserId() != null) {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        objectMapper.setConfig(objectMapper.getSerializationConfig().withView(Marker.Preview.class));
-        converter.setObjectMapper(objectMapper);
-        template.setMessageConverter(converter);
-        template.convertAndSend( "/topic/notifications/" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
-          modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
-      }
+    }
+    if (notificationRequestDTO.getReceiverUserId() != null) {
+      MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+      objectMapper.setConfig(objectMapper.getSerializationConfig().withView(Marker.Preview.class));
+      converter.setObjectMapper(objectMapper);
+      template.setMessageConverter(converter);
+      template.convertAndSend("/topic/notifications/" + userRepository.findById(notificationRequestDTO.getReceiverUserId()).get().getEmail(),
+        modelMapper.map(notificationRepository.save(modelMapper.map(notificationRequestDTO, Notification.class)), NotificationResponseDTO.class));
+    }
     return tweet;
   }
 }

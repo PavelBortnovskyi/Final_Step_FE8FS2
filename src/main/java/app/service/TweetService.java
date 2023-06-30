@@ -104,4 +104,15 @@ public class TweetService extends GeneralService<Tweet> {
   public boolean isUserTweetedTweet(UserModel currUser, Tweet tweet, TweetType tweetType) {
     return tweetRepository.existsByUserAndParentTweetAndTweetType(currUser, tweet, tweetType);
   }
+
+
+  @Transactional
+  public Tweet createOrDeleteRetweet(Long userId, Long tweetId) {
+    return tweetRepository.findByTweetTypeAndUserAndParentTweet(TweetType.RETWEET, userService.getUser(userId), getTweet(tweetId))
+      .map(retweet -> {
+        delete(retweet);
+        return retweet.getParentTweet();
+      })
+      .orElseGet(() -> createTweet(userId, "", new MultipartFile[0], TweetType.RETWEET, tweetId).getParentTweet());
+  }
 }
