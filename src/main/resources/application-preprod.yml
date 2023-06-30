@@ -58,6 +58,7 @@ spring:
             clientId: ${FACEBOOK_CLIENT_ID}
             clientSecret: ${FACEBOOK_CLIENT_SECRET}
             redirectUri: "{baseUrl}/api/v1/auth/login/oauth2/code/facebook"
+            authorization-state-lenient: true
             scope:
               - email
               - public_profile
