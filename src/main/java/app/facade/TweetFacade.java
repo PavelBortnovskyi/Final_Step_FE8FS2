@@ -107,7 +107,7 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
   }
 
 
-  public TweetResponseDTO createOrDeleteRetweet(Long userId, Long tweetId){
+  public TweetResponseDTO createOrDeleteRetweet(Long userId, Long tweetId) {
     return convertToDto(tweetService.createOrDeleteRetweet(userId, tweetId));
   }
 

@@ -19,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -56,12 +55,12 @@ public class TweetController {
   }
 
 
-  // returns the parent tweet 
+  // returns the parent tweet
   @PostMapping("{id}/retweet")
   @ApiOperation("Create or delete RETWEET from tweet with {id}")
   public ResponseEntity<TweetResponseDTO> createOrDeleteRetweetTweet(@PathVariable(name = "id") @Positive Long tweetId) {
     //return ResponseEntity.ok(tweetFacade.createTweet(authUserService.getCurrUserId(),
-     // "", new MultipartFile[0], TweetType.RETWEET, tweetId));
+    // "", new MultipartFile[0], TweetType.RETWEET, tweetId));
     return ResponseEntity.ok(tweetFacade.createOrDeleteRetweet(authUserService.getCurrUserId(), tweetId));
   }
 
