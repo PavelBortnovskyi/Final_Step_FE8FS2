@@ -82,7 +82,7 @@ public class SecurityConfiguration {
       //.and()
       //.tokenEndpoint().accessTokenResponseClient(customAccessTokenResponseClient)
       //.and()
-      //.loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
+      .loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
