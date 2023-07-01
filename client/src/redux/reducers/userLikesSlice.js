@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserLikes } from '../thunk/getUserLikes.js';
 import { unLikePost } from '../thunk/tweets/unlike.js';
-import { likePost } from '../thunk/tweets/likeTweet.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
+import { addRetweet } from '../thunk/tweets/addRetweet.js';
+import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 
 const initialState = {
   userLikes: [],
@@ -42,23 +43,39 @@ export const userLikesSlice = createSlice({
           (post) => post.tweet.id !== unLikedTweet.id
         );
       })
-      // .addCase(addQuote.fulfilled, (state, action) => {
-      //   const quoteTweet = action.payload;
-      //   state.userLikes = state.allTweets.map((tweet) =>
-      //     tweet.id === quoteTweet.id ? quoteTweet : tweet
-      //   );
-      // })
       .addCase(addBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
         state.userLikes = state.userLikes.map((tweet) =>
-          tweet.tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
+          tweet.tweet.id === bookmarkTweet.id ? { tweet: bookmarkTweet } : tweet
         );
       })
       .addCase(deleteBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
         state.userLikes = state.userLikes.map((tweet) =>
-          tweet.tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
+          tweet.tweet.id === bookmarkTweet.id ? { tweet: bookmarkTweet } : tweet
         );
+      })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        const retweetTweet = action.payload;
+        state.userLikes = state.userLikes.map((tweet) =>
+          tweet.tweet.id === retweetTweet.id ? { tweet: retweetTweet } : tweet
+        );
+      })
+      .addCase(createTweetReply.fulfilled, (state, action) => {
+        const commentedTweet = action.payload.data.parentTweet;
+        state.userLikes = state.userLikes.map((tweet) =>
+          tweet.tweet.id === commentedTweet.id
+            ? { tweet: commentedTweet }
+            : tweet
+        );
+        state.isLoading = false;
+      })
+      .addCase(addQuote.fulfilled, (state, action) => {
+        const quotedTweet = action.payload.data.parentTweet;
+        state.userLikes = state.userLikes.map((tweet) =>
+          tweet.tweet.id === quotedTweet.id ? { tweet: quotedTweet } : tweet
+        );
+        state.isLoading = false;
       });
   },
 });
