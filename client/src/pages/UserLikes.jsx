@@ -10,9 +10,11 @@ export const UserLikes = () => {
   const userLikes = useSelector((state) => state.userLikes.userLikes) || [];
   const theme = useTheme();
   const likes = userLikes;
+
   return (
     likes &&
     likes.map((like) => {
+      const likedTweet = like.tweet;
       return (
         <Box
           key={like.id}
@@ -27,40 +29,40 @@ export const UserLikes = () => {
           <TweetPost tweet={like.tweet} />
           <Box display={'flex'} justifyContent={'center'} sx={{ my: '10px' }}>
             <PostIconList
-              isLiked={like.tweet.currUserLiked}
-              isQuoted={like.tweet.currUserQuoted}
-              isComment={like.tweet.currUserCommented}
-              isRetweet={like.tweet.currUserRetweeted}
+              isLiked={likedTweet.currUserLiked}
+              isQuoted={likedTweet.currUserQuoted}
+              isComment={likedTweet.currUserCommented}
+              isRetweet={likedTweet.currUserRetweeted}
               likes={
-                like.tweet.attachmentImages === undefined
-                  ? like.tweet.countLikes
-                  : like.tweet.countLikes
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.countLikes
+                  : likedTweet.countLikes
               }
               reply={
-                like.tweet.attachmentImages === undefined
-                  ? like.tweet.countReplies
-                  : like.tweet.countReplies
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.countReplies
+                  : likedTweet.countReplies
               }
               retweet={
-                like.tweet.attachmentImages === undefined
-                  ? like.tweet.countRetweets
-                  : like.tweet.countRetweets
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.countRetweets
+                  : likedTweet.countRetweets
               }
               id={like.attachmentImages === undefined ? like.tweet.id : like.id}
               quote={
-                like.tweet.attachmentImages === undefined
-                  ? like.tweet.countQuoteTweets
-                  : like.tweet.countQuoteTweets
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.countQuoteTweets
+                  : likedTweet.countQuoteTweets
               }
               isBookmarks={
-                like.tweet.attachmentImages === undefined
-                  ? like.tweet.currUserBookmarked
-                  : like.tweet.currUserBookmarked
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.currUserBookmarked
+                  : likedTweet.currUserBookmarked
               }
               bookmarks={
-                like.tweet.attachmentImages === undefined
-                  ? like.tweet.countBookmarks
-                  : like.tweet.countBookmarks
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.countBookmarks
+                  : likedTweet.countBookmarks
               }
             />
           </Box>
