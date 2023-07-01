@@ -72,6 +72,8 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/tweet/top**").permitAll()
       .antMatchers("/chat-ws").permitAll()
       .antMatchers("/api/v1/auth/oauth/error").permitAll()
+      .antMatchers("/oauth2/authorization/google").permitAll()
+      .antMatchers("/oauth2/authorization/facebook").permitAll()
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
