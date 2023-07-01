@@ -42,41 +42,13 @@ export const UserLikes = () => {
               isQuoted={likedTweet.currUserQuoted}
               isComment={likedTweet.currUserCommented}
               isRetweet={likedTweet.currUserRetweeted}
-              likes={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.countLikes
-                  : likedTweet.countLikes
-              }
-              reply={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.countReplies
-                  : likedTweet.countReplies
-              }
-              retweet={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.countRetweets
-                  : likedTweet.countRetweets
-              }
-              id={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.tweet.id
-                  : likedTweet.id
-              }
-              quote={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.countQuoteTweets
-                  : likedTweet.countQuoteTweets
-              }
-              isBookmarks={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.currUserBookmarked
-                  : likedTweet.currUserBookmarked
-              }
-              bookmarks={
-                likedTweet.attachmentImages === undefined
-                  ? likedTweet.countBookmarks
-                  : likedTweet.countBookmarks
-              }
+              likes={likedTweet.countLikes}
+              reply={likedTweet.countReplies}
+              retweet={likedTweet.countRetweets}
+              id={likedTweet.id}
+              quote={likedTweet.countQuoteTweets}
+              isBookmarks={likedTweet.currUserBookmarked}
+              bookmarks={likedTweet.countBookmarks}
             />
           </Box>
         </Box>

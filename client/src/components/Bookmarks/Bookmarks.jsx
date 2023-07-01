@@ -32,6 +32,18 @@ export const Bookmarks = () => {
     dispatch(getBookmarks({ page: 0, pageSize: 20 }));
   }, [dispatch]);
 
+  const newArr = [];
+  const changedArray = (arr) => {
+    arr.map((obj) => {
+      if (obj.tweet) {
+        newArr.push(obj.tweet);
+      } else {
+        newArr.push(obj);
+      }
+    });
+  };
+  changedArray(Bookmarks);
+
   const deleteAllBookmarks = () => {
     Bookmarks.map((bookmark) => {
       const id = bookmark.tweet.id;
@@ -86,7 +98,7 @@ export const Bookmarks = () => {
       {bookmarksIsLoading && <LoaderSkeleton />}
 
       {Bookmarks.length ? (
-        <TweetList tweets={Bookmarks} />
+        <TweetList tweets={newArr} />
       ) : (
         <Box
           sx={{

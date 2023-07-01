@@ -88,39 +88,13 @@ export const TweetReplise = ({
             isQuoted={paren.currUserQuoted}
             isComment={paren.currUserCommented}
             isRetweet={paren.currUserRetweeted}
-            likes={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countLikes
-                : paren.countLikes
-            }
-            reply={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countReplies
-                : paren.countReplies
-            }
-            retweet={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countRetweets
-                : paren.countRetweets
-            }
-            id={
-              paren.attachmentImages === undefined ? paren.tweet.id : paren.id
-            }
-            quote={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countQuoteTweets
-                : paren.countQuoteTweets
-            }
-            isBookmarks={
-              paren.attachmentImages === undefined
-                ? paren.tweet.currUserBookmarked
-                : paren.currUserBookmarked
-            }
-            bookmarks={
-              paren.attachmentImages === undefined
-                ? paren.tweet.countBookmarks
-                : paren.countBookmarks
-            }
+            likes={paren.countLikes}
+            reply={paren.countReplies}
+            retweet={paren.countRetweets}
+            id={paren.id}
+            quote={paren.countQuoteTweets}
+            isBookmarks={paren.currUserBookmarked}
+            bookmarks={paren.countBookmarks}
           />
         </Box>
       </Box>

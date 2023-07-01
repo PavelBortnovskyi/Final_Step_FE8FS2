@@ -88,7 +88,9 @@ export const Layout = () => {
           </Grid>
         </Grid>
 
-        <Box
+{
+  isAuthenticated && (
+    <Box
           sx={{
             borderTop: `1px solid ${theme.palette.border.main}`,
             display: { xs: 'flex', sm: 'none' },
@@ -104,6 +106,7 @@ export const Layout = () => {
             zIndex: '10',
           }}
         >
+
           <Box
             sx={{
               position: 'absolute',
@@ -141,6 +144,9 @@ export const Layout = () => {
             </Link>
           ))}
         </Box>
+  )
+}
+        
 
         {!isAuthenticated && <BottomToolbar />}
 
