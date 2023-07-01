@@ -30,6 +30,8 @@ public class SecurityConfiguration {
   private final OAuth2UserServiceImpl oAuth2UserService;
   private final OAuth2SuccessLoginHandler oAuth2SuccessLoginHandler;
 
+  private final OAuth2FailureLoginHandler oAuth2FailureLoginHandler;
+
 //  @Autowired
 //  @Qualifier("delegatedAuthenticationEntryPoint")
 //  AuthenticationEntryPoint authEntryPoint;
@@ -62,11 +64,12 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app") //TODO: need to change on deploy
+      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
-      .successHandler(oAuth2SuccessLoginHandler).failureUrl("/oauth/error")
+      .successHandler(oAuth2SuccessLoginHandler)
+      .failureHandler(oAuth2FailureLoginHandler)
       .and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 

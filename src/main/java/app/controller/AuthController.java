@@ -86,4 +86,11 @@ public class AuthController {
   public ResponseEntity<HashMap<String, String>> handleRefresh(HttpServletRequest request) {
     return this.authFacade.makeRefresh(request);
   }
+
+  @GetMapping("/oauth/error")
+  public String error(HttpServletRequest request) {
+    String message = (String) request.getSession().getAttribute("error.message");
+    request.getSession().removeAttribute("error.message");
+    return message;
+  }
 }
