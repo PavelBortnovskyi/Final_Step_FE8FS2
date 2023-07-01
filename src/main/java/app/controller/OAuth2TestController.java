@@ -25,12 +25,4 @@ public class OAuth2TestController {
   @GetMapping("/oauth2/authorization/facebook")
   private void handleFBOAuth() {;
   }
-
-  @PostMapping("/oauth2/authorization/google")
-  private void handleGoogleOAuth2() {;
-  }
-
-  @PostMapping("/oauth2/authorization/facebook")
-  private void handleFBOAuth2() {;
-  }
 }

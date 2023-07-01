@@ -93,4 +93,8 @@ public class AuthController {
     request.getSession().removeAttribute("error.message");
     return message;
   }
+
+  @GetMapping("/oauth2/tokens")
+  public void token (HttpServletRequest request) {
+  }
 }
