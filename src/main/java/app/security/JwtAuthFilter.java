@@ -75,7 +75,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       new AntPathRequestMatcher("/api/v1/tweet/top", requestMethod),
       new AntPathRequestMatcher("/test/**", requestMethod),
       new AntPathRequestMatcher("/chat-ws", HttpMethod.GET.name()),
-      new AntPathRequestMatcher("/chat-ws/**", HttpMethod.GET.name())
+      new AntPathRequestMatcher("/chat-ws/**", HttpMethod.GET.name()),
+      new AntPathRequestMatcher("/api/v1/auth/oauth/error", HttpMethod.GET.name())
     };
 
     for (AntPathRequestMatcher matcher : matchers) {

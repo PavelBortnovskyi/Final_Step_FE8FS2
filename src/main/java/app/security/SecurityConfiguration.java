@@ -61,6 +61,7 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/api/v1/tweet/top**").permitAll()
       .antMatchers("/chat-ws").permitAll()
+      .antMatchers("/api/v1/auth/oauth/error").permitAll()
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
