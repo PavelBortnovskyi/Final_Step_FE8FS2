@@ -75,9 +75,9 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .authorizationEndpoint().baseUri("/")
+      //.authorizationEndpoint().baseUri("/")
       //.authorizationRequestRepository(lenientAuthorizationRequestRepository())
-      .and()
+      //.and()
       //.tokenEndpoint().accessTokenResponseClient(customAccessTokenResponseClient)
       //.and()
       //.loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
