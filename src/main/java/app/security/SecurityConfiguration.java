@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,6 +34,8 @@ public class SecurityConfiguration {
   private final OAuth2SuccessLoginHandler oAuth2SuccessLoginHandler;
 
   private final OAuth2FailureLoginHandler oAuth2FailureLoginHandler;
+
+  private final CustomAccessTokenResponseClient customAccessTokenResponseClient;
 
 //  @Autowired
 //  @Qualifier("delegatedAuthenticationEntryPoint")
@@ -65,7 +70,10 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
+      .authorizationEndpoint().baseUri("/").and()
+      //.tokenEndpoint().accessTokenResponseClient(customAccessTokenResponseClient)
+      //.and()
+      //.loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
