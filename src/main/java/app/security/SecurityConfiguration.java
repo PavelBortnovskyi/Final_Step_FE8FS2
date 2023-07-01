@@ -66,7 +66,7 @@ public class SecurityConfiguration {
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
-      .successHandler(oAuth2SuccessLoginHandler)
+      .successHandler(oAuth2SuccessLoginHandler).failureUrl("/oauth/error")
       .and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
