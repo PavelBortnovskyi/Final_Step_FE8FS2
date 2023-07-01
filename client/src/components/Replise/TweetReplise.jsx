@@ -68,6 +68,7 @@
 //               <Typography color={'rgb(139, 152, 165)'}> {date}</Typography>
 //             </Box>
 
+// <<<<<<< HEAD
 //             <Typography>{body}</Typography>
 //             <PostImages images={images} quantity={images.length} />
 //           </Box>
@@ -127,3 +128,38 @@
 //     </Box>
 //   );
 // };
+// =======
+//             <Typography>{body}</Typography>
+//             <PostImages images={images} quantity={images.length} />
+//           </Box>
+//         </Link>
+//         <Box display={'flex'} justifyContent={'center'} width={'100%'}>
+//           {/* <PostIconList
+//             likes={paren.countLikes}
+//             reply={paren.countReply}
+//             retweet={paren.countRetweets}
+//             id={paren.id}
+//             isLiked={paren.currUserLiked}
+//             isRetweet={paren.countRetweets}
+//             isComment={paren.countReplays}
+//             isBookmark={paren.countBookmarks}
+//           /> */}
+//           <PostIconList
+//             isLiked={paren.currUserLiked}
+//             isQuoted={paren.currUserQuoted}
+//             isComment={paren.currUserCommented}
+//             isRetweet={paren.currUserRetweeted}
+//             likes={paren.countLikes}
+//             reply={paren.countReplies}
+//             retweet={paren.countRetweets}
+//             id={paren.id}
+//             quote={paren.countQuoteTweets}
+//             isBookmarks={paren.currUserBookmarked}
+//             bookmarks={paren.countBookmarks}
+//           />
+//         </Box>
+//       </Box>
+//     </Box>
+//   );
+// };
+// >>>>>>> origin/main
