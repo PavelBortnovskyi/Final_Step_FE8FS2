@@ -5,8 +5,8 @@ import { useMode } from 'src/styles/_materialTheme';
 import TweetPost from './tweet/TweetPost';
 
 export const TweetList = ({ tweets }) => {
+  const tweet = tweets || tweets.tweet;
   const theme = useMode();
-
   return (
     <Box sx={{ pb: '60px' }}>
       {tweets !== false &&
@@ -24,9 +24,7 @@ export const TweetList = ({ tweets }) => {
           >
             <Box>
               <TweetPost
-                tweet={
-                  tweet.attachmentImages === undefined ? tweet.tweet : tweet
-                }
+                tweet={ tweet}
               />
             </Box>
             <Box
@@ -41,41 +39,13 @@ export const TweetList = ({ tweets }) => {
                 isQuoted={tweet.currUserQuoted}
                 isComment={tweet.currUserCommented}
                 isRetweet={tweet.currUserRetweeted}
-                likes={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countLikes
-                    : tweet.countLikes
-                }
-                reply={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countReplies
-                    : tweet.countReplies
-                }
-                retweet={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countRetweets
-                    : tweet.countRetweets
-                }
-                id={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.id
-                    : tweet.id
-                }
-                quote={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countQuoteTweets
-                    : tweet.countQuoteTweets
-                }
-                isBookmarks={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.currUserBookmarked
-                    : tweet.currUserBookmarked
-                }
-                bookmarks={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countBookmarks
-                    : tweet.countBookmarks
-                }
+                likes={tweet.countLikes}
+                reply={tweet.countReplies}
+                retweet={tweet.countRetweets}
+                id={tweet.id}
+                quote={tweet.countQuoteTweets}
+                isBookmarks={tweet.currUserBookmarked}
+                bookmarks={tweet.countBookmarks}
               />
             </Box>
           </Box>

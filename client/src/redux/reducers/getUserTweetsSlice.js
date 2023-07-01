@@ -42,7 +42,7 @@ export const getUserTweetsSlice = createSlice({
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
+        state.userTweets = state.userTweets.map((tweet) => 
           tweet.id === likedTweet.id ? likedTweet : tweet
         );
       })
