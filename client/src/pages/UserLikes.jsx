@@ -1,5 +1,3 @@
-// UserLikes
-
 import { useTheme } from '@emotion/react';
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -9,15 +7,25 @@ import TweetPost from 'src/UI/tweet/TweetPost';
 export const UserLikes = () => {
   const userLikes = useSelector((state) => state.userLikes.userLikes) || [];
   const theme = useTheme();
-  const likes = userLikes;
+  const newArr = [];
+
+  const changedArray = (arr) => {
+    arr.map((obj) => {
+      if (obj.tweet) {
+        newArr.push(obj.tweet);
+      } else {
+        newArr.push(obj);
+      }
+    });
+  };
+  changedArray(userLikes);
 
   return (
-    likes &&
-    likes.map((like) => {
-      const likedTweet = like.tweet;
+    newArr &&
+    newArr.map((likedTweet) => {
       return (
         <Box
-          key={like.id}
+          key={likedTweet.id}
           sx={{
             mb: '20px',
             '&:hover': {
@@ -26,7 +34,8 @@ export const UserLikes = () => {
             },
           }}
         >
-          <TweetPost tweet={like.tweet} />
+          <TweetPost tweet={likedTweet} />
+
           <Box display={'flex'} justifyContent={'center'} sx={{ my: '10px' }}>
             <PostIconList
               isLiked={likedTweet.currUserLiked}
@@ -48,7 +57,11 @@ export const UserLikes = () => {
                   ? likedTweet.countRetweets
                   : likedTweet.countRetweets
               }
-              id={like.attachmentImages === undefined ? like.tweet.id : like.id}
+              id={
+                likedTweet.attachmentImages === undefined
+                  ? likedTweet.tweet.id
+                  : likedTweet.id
+              }
               quote={
                 likedTweet.attachmentImages === undefined
                   ? likedTweet.countQuoteTweets
