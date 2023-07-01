@@ -40,7 +40,7 @@ export const HomePage = () => {
         dispatch(getSubscriptionsTweets({ page: page, size: 10 }));
       }
     } else {
-      dispatch(getAllTweetsThunkNoAuth({ page: page, size: 20 }));
+      dispatch(getAllTweetsThunkNoAuth({ page: 0, size: 20 }));
     }
   }, [dispatch, isAuthenticated, tabIndex, page]);
 
