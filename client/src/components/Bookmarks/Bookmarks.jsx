@@ -14,13 +14,12 @@ import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 export const Bookmarks = () => {
   const theme = useTheme();
   const { isAuthenticated } = useSelector(getAuthorizationData);
-  const user = useSelector((state) => state.user.user) || "";
-  const userBookmarks = useSelector(state => state.userBookmarks);
+  const user = useSelector((state) => state.user.user) || '';
+  const userBookmarks = useSelector((state) => state.userBookmarks);
   const bookmarksIsLoading = userBookmarks.isLoading;
   const Bookmarks = userBookmarks.userBookmarks || [];
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   // send user to home if not authorization
   useEffect(() => {
@@ -33,38 +32,36 @@ export const Bookmarks = () => {
     dispatch(getBookmarks({ page: 0, pageSize: 20 }));
   }, [dispatch]);
 
-
-
   const deleteAllBookmarks = () => {
-    Bookmarks.map(bookmark => {
+    Bookmarks.map((bookmark) => {
       const id = bookmark.tweet.id;
       dispatch(deleteBookmark({ id }));
-    })
-  }
+    });
+  };
 
   return (
     <Box sx={{ paddingTop: '4px' }}>
-
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backdropFilter: 'blur(15px)',
-        width: '100%',
-        pb: '2px',
-        px: '16px',
-        position: 'sticky',
-        top: '0',
-        zIndex: 13,
-        borderBottom: `1px solid ${theme.palette.border.main}`
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          backdropFilter: 'blur(15px)',
+          width: '100%',
+          pb: '2px',
+          px: '16px',
+          position: 'sticky',
+          top: '0',
+          zIndex: 13,
+          borderBottom: `1px solid ${theme.palette.border.main}`,
+        }}
+      >
         <Box sx={{ display: 'flex' }}>
           <ArrowBack />
           <Box>
             <Typography variant="h5">Bookmarks</Typography>
             <UserNick userTag={user.userTag} />
           </Box>
-
         </Box>
         <Button
           onClick={deleteAllBookmarks}
@@ -79,8 +76,11 @@ export const Bookmarks = () => {
             '&:hover': {
               background: `${theme.palette.background.hover}`,
               borderRadius: '30px',
-            }
-          }}>Delete all</Button>
+            },
+          }}
+        >
+          Delete all
+        </Button>
       </Box>
 
       {bookmarksIsLoading && <LoaderSkeleton />}
