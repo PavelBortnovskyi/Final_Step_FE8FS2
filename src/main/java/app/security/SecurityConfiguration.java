@@ -13,10 +13,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Log4j2
@@ -35,7 +40,7 @@ public class SecurityConfiguration {
 
   private final OAuth2FailureLoginHandler oAuth2FailureLoginHandler;
 
-  private final CustomAccessTokenResponseClient customAccessTokenResponseClient;
+  //private final CustomAccessTokenResponseClient customAccessTokenResponseClient;
 
 //  @Autowired
 //  @Qualifier("delegatedAuthenticationEntryPoint")
@@ -70,7 +75,9 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .authorizationEndpoint().baseUri("/").and()
+      .authorizationEndpoint().baseUri("/")
+      //.authorizationRequestRepository(lenientAuthorizationRequestRepository())
+      .and()
       //.tokenEndpoint().accessTokenResponseClient(customAccessTokenResponseClient)
       //.and()
       //.loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
@@ -116,5 +123,22 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
   }
+
+//  @Bean
+//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest> lenientAuthorizationRequestRepository() {
+//    return new HttpSessionOAuth2AuthorizationRequestRepository() {
+//      @Override
+//      public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+//        OAuth2AuthorizationRequest authorizationRequest = super.loadAuthorizationRequest(request);
+//        if (authorizationRequest != null) {
+//          // Удалите проверку параметра state
+//          authorizationRequest = OAuth2AuthorizationRequest.from(authorizationRequest)
+//            .state(null)
+//            .build();
+//        }
+//        return authorizationRequest;
+//      }
+//    };
+//  }
 }
 
