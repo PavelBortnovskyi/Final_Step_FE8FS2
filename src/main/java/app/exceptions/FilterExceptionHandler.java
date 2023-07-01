@@ -4,6 +4,7 @@ import app.exceptions.authError.JwtAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -66,7 +67,8 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
       new AntPathRequestMatcher("/chat-ws", requestMethod),
       new AntPathRequestMatcher("/chat-ws/**", requestMethod),
       new AntPathRequestMatcher("/notifications-ws", requestMethod),
-      new AntPathRequestMatcher("/notifications-ws/**", requestMethod)
+      new AntPathRequestMatcher("/notifications-ws/**", requestMethod),
+      new AntPathRequestMatcher("/api/v1/auth/oauth/error", HttpMethod.GET.name())
     };
 
     for (AntPathRequestMatcher matcher : matchers) {
