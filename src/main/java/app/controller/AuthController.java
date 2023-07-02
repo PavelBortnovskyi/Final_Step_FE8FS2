@@ -98,9 +98,9 @@ public class AuthController {
 
   @GetMapping("/oauth2/tokens")
   public ResponseEntity<HashMap<String, String>> token(@RequestParam("accessToken")
-                                                       @NotNull @Positive String accessToken,
+                                                       @NotNull String accessToken,
                                                        @RequestParam("refreshToken")
-                                                       @NotNull @Positive String refreshToken) {
+                                                       @NotNull String refreshToken) {
     return ResponseEntity.ok(new HashMap<>() {{
       put("ACCESS_TOKEN", accessToken);
       put("REFRESH_TOKEN", refreshToken);
