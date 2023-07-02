@@ -9,7 +9,6 @@ export const UserLikes = () => {
   const userLikes = useSelector((state) => state.userLikes.userLikes) || [];
   const theme = useTheme();
   const newArr = [];
-  console.log(userLikes.length);
   const changedArray = (arr) => {
     arr.map((obj) => {
       if (obj.tweet) {

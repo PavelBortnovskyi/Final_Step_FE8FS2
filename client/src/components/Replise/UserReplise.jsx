@@ -10,7 +10,7 @@ export const UserReplise = ({ replise }) => {
   //робить масив унікальних батьківських id твітів
   const nestedIds = [];
   userReplise.forEach((obj) => {
-    const parentTweet = obj.parentTweet;
+    const parentTweet = obj?.parentTweet;
     if (parentTweet && parentTweet.id) {
       nestedIds.push(parentTweet.id);
     }
@@ -22,7 +22,7 @@ export const UserReplise = ({ replise }) => {
     const uniqueParentTweets = [];
 
     tweets.forEach(function (tweet) {
-      addUniqueParentTweet(tweet.parentTweet);
+      addUniqueParentTweet(tweet?.parentTweet);
     });
 
     function addUniqueParentTweet(parentTweet) {
@@ -57,8 +57,9 @@ export const UserReplise = ({ replise }) => {
   function toObjTweet(parentId, userReplise) {
     return userReplise.map((replise) => {
       let parentTrue;
-      if (replise.parentTweet !== null) {
-        parentTrue = findparent(replise.parentTweet, parentId);
+
+      if (replise?.parentTweet !== null) {
+        parentTrue = findparent(replise?.parentTweet, parentId);
         if (parentTrue) {
           return (
             <Box
