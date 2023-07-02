@@ -7,6 +7,7 @@ import app.repository.TweetModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @EnableScheduling
@@ -25,8 +27,8 @@ public class ScheduleAlgoService {
   private final TweetActionService tweetActionService;
   private final TweetService tweetService;
 
-  @Scheduled(fixedRate = 3600000L) // Выполнять каждый час
-  //@Scheduled(fixedRate = 10000L) // Выполнять каждые 10 сек
+  //@Scheduled(fixedRate = 3600000L) // Выполнять каждый час
+  @Scheduled(fixedRate = 10000L) // Выполнять каждые 10 сек
   public void ratingAlgorithm() {
     Map<Long, Double> tweetsRating = new HashMap<>();
     //получаем последние созданые 50 твитов
@@ -40,7 +42,12 @@ public class ScheduleAlgoService {
     //    .forEach(t -> tweetsRating.put(t.getId(), setRating(t)));
 
     // получаем предыдущие твиты, которые попали в рейтинг
-    ratingModelRepository.findAll().forEach(r -> tweetsRating.put(r.getTweetID(), setRating(tweetService.getTweet(r.getTweetID()))));
+    ratingModelRepository.findAll().forEach(r -> {
+      Tweet tweet = r.getTweet();
+      if (tweet != null) {
+        tweetsRating.put(tweet.getId(), setRating(tweetService.getTweet(r.getTweetID())));
+      }
+    });
 
     //добавляем все твиты в один список и удаляем повторы
     LinkedList<RatingModel> tweetsRatingSorted = new LinkedList<>();

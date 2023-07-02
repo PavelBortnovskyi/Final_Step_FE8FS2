@@ -81,6 +81,7 @@ create table tweets (
              tweet_type varchar(255) not null,
              parent_tweet bigint,
              user_id bigint,
+             rating_model_id bigint,
              primary key (id)
 );
 
