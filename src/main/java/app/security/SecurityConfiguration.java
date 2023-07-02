@@ -73,6 +73,7 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/api/v1/tweet/top**").permitAll()
       .antMatchers("/chat-ws").permitAll()
+      .antMatchers("/chat-ws/*").permitAll()
       .antMatchers("/api/v1/auth/oauth2/error").permitAll()
       .antMatchers("/api/v1/auth/oauth2/tokens").permitAll()
       .antMatchers("/api/v1/auth/oauth2/tokens/*").permitAll()
