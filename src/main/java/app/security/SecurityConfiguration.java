@@ -120,7 +120,7 @@ public class SecurityConfiguration {
 //     configuration.addAllowedMethod(HttpMethod.PUT);
 //     configuration.addAllowedMethod(HttpMethod.DELETE);
 //     configuration.addAllowedMethod(HttpMethod.OPTIONS);
-//    httpSec.cors().disable();
+    httpSec.cors().disable();
 
     return httpSec.build();
   }
