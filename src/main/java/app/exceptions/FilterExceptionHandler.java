@@ -69,6 +69,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
       new AntPathRequestMatcher("/notifications-ws", requestMethod),
       new AntPathRequestMatcher("/notifications-ws/**", requestMethod),
       new AntPathRequestMatcher("/api/v1/auth/oauth/error", HttpMethod.GET.name()),
+      new AntPathRequestMatcher("/api/v1/auth/oauth/tokens", HttpMethod.GET.name()),
       new AntPathRequestMatcher("/oauth2/authorization/google", requestMethod),
       new AntPathRequestMatcher("/oauth2/authorization/facebook", requestMethod)
     };

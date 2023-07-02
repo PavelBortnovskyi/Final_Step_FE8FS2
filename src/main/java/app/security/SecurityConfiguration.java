@@ -74,6 +74,8 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/tweet/top**").permitAll()
       .antMatchers("/chat-ws").permitAll()
       .antMatchers("/api/v1/auth/oauth/error").permitAll()
+      .antMatchers("/api/v1/auth/oauth/tokens").permitAll()
+      .antMatchers("/api/v1/auth/oauth/tokens/*").permitAll()
       .antMatchers("/oauth2/authorization/google").permitAll()
       .antMatchers("/oauth2/authorization/facebook").permitAll()
       .anyRequest().authenticated()
@@ -107,17 +109,17 @@ public class SecurityConfiguration {
 
 
     //CORS config
-     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-     configuration.addAllowedOriginPattern("http://localhost:3000");
-     configuration.addAllowedOriginPattern("http://localhost:3000/**");
-     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
-     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
-     configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
-     configuration.addAllowedMethod(HttpMethod.GET);
-     configuration.addAllowedMethod(HttpMethod.POST);
-     configuration.addAllowedMethod(HttpMethod.PUT);
-     configuration.addAllowedMethod(HttpMethod.DELETE);
-     configuration.addAllowedMethod(HttpMethod.OPTIONS);
+//     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+//     configuration.addAllowedOriginPattern("http://localhost:3000");
+//     configuration.addAllowedOriginPattern("http://localhost:3000/**");
+//     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
+//     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
+//     configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
+//     configuration.addAllowedMethod(HttpMethod.GET);
+//     configuration.addAllowedMethod(HttpMethod.POST);
+//     configuration.addAllowedMethod(HttpMethod.PUT);
+//     configuration.addAllowedMethod(HttpMethod.DELETE);
+//     configuration.addAllowedMethod(HttpMethod.OPTIONS);
 //    httpSec.cors().disable();
 
     return httpSec.build();
