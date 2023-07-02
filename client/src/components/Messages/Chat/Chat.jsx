@@ -24,7 +24,6 @@ import { ChatSender } from './ChatSender';
 const ChatContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  /* flex: 1 0 auto; */
   width: '100%',
   gap: '8px',
   padding: '0 24px 30px',
