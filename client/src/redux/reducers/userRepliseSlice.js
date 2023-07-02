@@ -55,18 +55,6 @@ export const userRepliseSlice = createSlice({
           tweet.id === quoteTweet.id ? quoteTweet : tweet
         );
       });
-    // .addCase(addBookmark.fulfilled, (state, action) => {
-    //   const bookmarkTweet = action.payload;
-    //   state.userReplise = state.userReplise.map((tweet) =>
-    //     tweet.parentTweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-    //   );
-    // })
-    // .addCase(deleteBookmark.fulfilled, (state, action) => {
-    //   const bookmarkTweet = action.payload;
-    //   state.userReplise = state.userReplise.parentTweet.map((tweet) =>
-    //     tweet.parentTweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-    //   );
-    // });
   },
 });
 export default userRepliseSlice.reducer;
