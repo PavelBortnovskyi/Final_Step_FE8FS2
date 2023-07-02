@@ -24,7 +24,6 @@ export const UserAllTypeTweets = ({ tweets }) => {
       return userTweet.id;
     }
   }
-  console.log();
 
   function parentRetweet(userTweet) {
     if (userTweet.parentTweet !== null) {
