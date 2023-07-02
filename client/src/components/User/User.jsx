@@ -48,7 +48,6 @@ export const User = ({
     } else if (tabIndex == 2) {
       dispatch(getUserReplise({ page: page, size: 10, id: idUser }));
     } else if (tabIndex == 3) {
-      console.log('inside dispatch like');
       dispatch(getUserLikes({ page: page, size: 10, id: idUser }));
     }
   }, [dispatch, tabIndex, page, idUser]);
