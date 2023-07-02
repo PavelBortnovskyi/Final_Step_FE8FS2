@@ -16,7 +16,13 @@ const initialState = {
 export const bookmarksSlise = createSlice({
   name: 'userBookmarks',
   initialState,
-  reducers: {},
+  reducers: {
+    resetBookmarksState(state) {
+      state.userBookmarks = [];
+      state.isLoading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getBookmarks.pending, (state) => {
@@ -80,6 +86,6 @@ export const bookmarksSlise = createSlice({
 });
 
 export default bookmarksSlise.reducer;
-
+export const { resetBookmarksState } = bookmarksSlise.actions;
 
 

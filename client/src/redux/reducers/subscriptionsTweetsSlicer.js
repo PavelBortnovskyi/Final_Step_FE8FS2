@@ -41,11 +41,23 @@ export const getUserTweetsSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      // .addCase(likePost.fulfilled, (state, action) => {
+      //   const likedTweet = action.payload;
+      //   state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
+      //     tweet.id === likedTweet.id ? likedTweet : tweet
+      //   );
+      // })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
-          tweet.id === likedTweet.id ? likedTweet : tweet
-        );
+        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === likedTweet.id ? likedTweet : tweet;
+          } else {
+            return tweet.parentTweet && tweet.parentTweet.id === likedTweet.id
+              ? { ...tweet, parentTweet: likedTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
         const retweetTweet = action.payload;
@@ -60,11 +72,26 @@ export const getUserTweetsSlice = createSlice({
         );
       })
 
+      // .addCase(addQuote.fulfilled, (state, action) => {
+      //   const quoteTweet = action.payload;
+      //   state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
+      //     tweet.id === quoteTweet.id ? quoteTweet : tweet
+      //   );
+      // })
       .addCase(addQuote.fulfilled, (state, action) => {
-        const quoteTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
-          tweet.id === quoteTweet.id ? quoteTweet : tweet
-        );
+        const quoteTweet = action.payload.data.parentTweet;
+        state.subscriptionsTweets = [
+          action.payload.data,
+          ...state.subscriptionsTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? quoteTweet
+                : tweet;
+            }
+          }),
+        ];
       })
       .addCase(addBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
@@ -81,7 +108,7 @@ export const getUserTweetsSlice = createSlice({
         state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
           tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
-      })
+      });
   },
 });
 

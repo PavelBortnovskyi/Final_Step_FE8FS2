@@ -49,6 +49,16 @@ export const UserAllTypeTweets = ({ tweets }) => {
               isBookmarks={userTweet.currUserBookmarked}
               bookmarks={userTweet.countBookmarks}
             />
+            {/* <PostIconList
+              likes={userTweet.countLikes}
+              reply={userTweet.countReply}
+              retweet={userTweet.countRetweets}
+              id={userTweet.id}
+              isLiked={userTweet.currUserLiked}
+              isRetweet={userTweet.countRetweets}
+              isComment={userTweet.countReplays}
+              isBookmark={userTweet.countBookmarks}
+            /> */}
           </Box>
         </Box>
       );
