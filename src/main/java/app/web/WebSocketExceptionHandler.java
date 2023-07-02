@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,7 +30,7 @@ public class WebSocketExceptionHandler {
   private final ObjectMapper objectMapper;
 
   @ExceptionHandler(BadRequestException.class)
-  public void handleException(Exception ex, WebSocketSession session){
+  public void handleException(Exception ex, WebSocketSession session) {
     log.info(ex.getMessage());
     this.sendErrorInfo(session, "400", ex.getMessage());
   }
@@ -58,6 +57,9 @@ public class WebSocketExceptionHandler {
     try {
       String errorInfoJson = objectMapper.writeValueAsString(new SocketErrorInfo(code, message));
       session.sendMessage(new TextMessage(errorInfoJson));
-    } catch (IOException e) {log.info("Websocket IOExcepion " + e.getMessage());};
+    } catch (IOException e) {
+      log.info("Websocket IOExcepion " + e.getMessage());
+    }
+    ;
   }
 }

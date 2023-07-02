@@ -20,7 +20,6 @@ export const getUserLikes = createAsyncThunk(
       thunkAPI.dispatch(setPage(page));
       thunkAPI.dispatch(setTotalPages(totalPages));
       thunkAPI.dispatch(setTotalElements(totalElements));
-
       return content;
     } catch (error) {
       // set message error from server

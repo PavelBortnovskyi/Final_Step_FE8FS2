@@ -106,4 +106,10 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
     return scheduleAlgoService.getTopTweets(pageable).map(this::convertToDto);
   }
 
+
+  public TweetResponseDTO createOrDeleteRetweet(Long userId, Long tweetId) {
+    return convertToDto(tweetService.createOrDeleteRetweet(userId, tweetId));
+  }
+
+
 }

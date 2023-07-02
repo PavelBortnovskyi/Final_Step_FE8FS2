@@ -92,41 +92,13 @@ function TweetPage() {
                 // isBookmarks={tweet.currUserBookmarked}
                 isComment={tweet.currUserCommented}
                 isRetweet={tweet.currUserRetweeted}
-                likes={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countLikes
-                    : tweet.countLikes
-                }
-                reply={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countReplies
-                    : tweet.countReplies
-                }
-                retweet={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countRetweets
-                    : tweet.countRetweets
-                }
-                id={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.id
-                    : tweet.id
-                }
-                quote={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countQuoteTweets
-                    : tweet.countQuoteTweets
-                }
-                isBookmarks={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.currUserBookmarked
-                    : tweet.currUserBookmarked
-                }
-                bookmarks={
-                  tweet.attachmentImages === undefined
-                    ? tweet.tweet.countBookmarks
-                    : tweet.countBookmarks
-                }
+                likes={tweet.countLikes}
+                reply={tweet.countReplies}
+                retweet={tweet.countRetweets}
+                id={tweet.id}
+                quote={tweet.countQuoteTweets}
+                isBookmarks={tweet.currUserBookmarked}
+                bookmarks={tweet.countBookmarks}
               />
             )}
           </Grid>

@@ -12,6 +12,7 @@ import { NotificationsEmpty } from './NotificationsEmpty';
 import { NotificationsQuote } from './NotificationsQuote';
 import { SidebarMobile } from '../SidebarMobile/SidebarMobile';
 import LoaderSkeleton from 'src/UI/LoaderSkeleton';
+import { clearSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
 const CustomTab = styled(Tab)((props) => ({
   fontWeight: '800',
@@ -31,9 +32,9 @@ export const NotificationsUser = () => {
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const [tabIndex, setTabIndex] = useState(0);
   const theme = useTheme();
-  const userNotifications = useSelector(state => state.userNotifications);
-  const Notifications = userNotifications.userNotifications;
-  const IsLoadingNotifications = userNotifications.isLoading;
+  const userNotificationsTweets = useSelector(state => state.userNotifications);
+  const Notifications = userNotificationsTweets.userNotifications;
+  const IsLoadingNotifications = userNotificationsTweets.isLoading;
 
 
   // send user to home if not authorization
@@ -45,6 +46,10 @@ export const NotificationsUser = () => {
 
   useEffect(() => {
     dispatch(getNotifications({ page: 0, pageSize: 100 }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(clearSocketNotification());
   }, [dispatch]);
 
   const handleTabChange = (event, newTabIndex) => {
@@ -97,7 +102,7 @@ export const NotificationsUser = () => {
         alignItems: 'center',
 
       }}>
-      {IsLoadingNotifications && <LoaderSkeleton />}
+        {IsLoadingNotifications && <LoaderSkeleton />}
         <NotificationsEmpty userNotifications={Notifications} tabIndex={tabIndex} />
 
         {

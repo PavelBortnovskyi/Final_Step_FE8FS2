@@ -1,4 +1,4 @@
-import { Box, Avatar, Typography, } from '@mui/material';
+import { Box, Avatar, Typography } from '@mui/material';
 import React from 'react';
 import UserNames from '../UserNames';
 import TranslatedText from '../TranslatedText/TranslatedText';
@@ -52,6 +52,7 @@ function TweetPost({ tweet }) {
                 </Box>
               </Link>
               <UserNames
+              tweet1={tweet}
                 userId={tweet.id}
                 id={tweet.id}
                 isVerified={tweet.user.isVerified}
@@ -63,16 +64,16 @@ function TweetPost({ tweet }) {
               />
             </Box>
 
-            <SelectDeleteTweet id={tweet.id} tweet={tweet}/>
+            <SelectDeleteTweet id={tweet.id} tweet={tweet} />
           </Box>
 
           <NavLink to={`/tweet/${tweet.id}`}>
             <Box
               padding={1}
               sx={{
-                ml: '50px',
+                ml: { sm: '5px', md: '50px' },
                 color: `${theme.palette.text.primary}`,
-                width: '90%',
+                width: { sm: '100%', md: '90%' },
               }}
             >
               <Typography variant="body" sx={{ fontSize: '15px', mb: '20px' }}>

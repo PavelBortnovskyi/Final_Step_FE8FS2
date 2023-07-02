@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -66,7 +65,7 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("/login") //TODO: need to change on deploy
+      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app/") //TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
@@ -88,18 +87,18 @@ public class SecurityConfiguration {
 
 
     //CORS config
-    // CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-    // configuration.addAllowedOriginPattern("http://localhost:3000");
-    // configuration.addAllowedOriginPattern("http://localhost:3000/**");
-    // configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
-    // configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
-    // configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
-    // configuration.addAllowedMethod(HttpMethod.GET);
-    // configuration.addAllowedMethod(HttpMethod.POST);
-    // configuration.addAllowedMethod(HttpMethod.PUT);
-    // configuration.addAllowedMethod(HttpMethod.DELETE);
-    // configuration.addAllowedMethod(HttpMethod.OPTIONS);
-    //httpSec.cors().disable();
+//     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+//     configuration.addAllowedOriginPattern("http://localhost:3000");
+//     configuration.addAllowedOriginPattern("http://localhost:3000/**");
+//     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app");
+//     configuration.addAllowedOriginPattern("https://final-step-fe-8-fs-2.vercel.app/**");
+//     configuration.addAllowedOriginPattern("*"); //TODO: need to change on deploy
+//     configuration.addAllowedMethod(HttpMethod.GET);
+//     configuration.addAllowedMethod(HttpMethod.POST);
+//     configuration.addAllowedMethod(HttpMethod.PUT);
+//     configuration.addAllowedMethod(HttpMethod.DELETE);
+//     configuration.addAllowedMethod(HttpMethod.OPTIONS);
+//    httpSec.cors().disable();
 
     return httpSec.build();
   }
