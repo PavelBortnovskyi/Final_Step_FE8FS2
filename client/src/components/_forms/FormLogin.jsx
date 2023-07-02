@@ -23,9 +23,6 @@ import {
 } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 
-import { FacebookLoginButton } from './FacebookLoginButton';
-
-import { LoginSocialGoogle, LoginSocialFacebook } from 'reactjs-social-login';
 import axios from 'axios';
 // import {
 //   FacebookLoginButton,
