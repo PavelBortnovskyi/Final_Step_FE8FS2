@@ -35,13 +35,13 @@ export const Layout = () => {
 
   // get resolution browser window
   const matches = {
-    xs: useMediaQuery(theme.breakpoints.down('xs')),
+    mobile: useMediaQuery(theme.breakpoints.between('xs', 'md')),
+    xs: useMediaQuery(theme.breakpoints.between('xs', 'sm')),
     sm: useMediaQuery(theme.breakpoints.between('sm', 'md')),
     md: useMediaQuery(theme.breakpoints.between('md', 'lg')),
     lg: useMediaQuery(theme.breakpoints.between('lg', 'xl')),
     xl: useMediaQuery(theme.breakpoints.up('xl')),
   };
-  // console.log(matches);
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,69 +93,65 @@ export const Layout = () => {
             }}
           >
             {/* for chat */}
-            <RightRoutes />
+            <RightRoutes mobile={matches.mobile} />
           </Grid>
         </Grid>
 
-{
-  isAuthenticated && (
-    <Box
-          sx={{
-            borderTop: `1px solid ${theme.palette.border.main}`,
-            display: { xs: 'flex', sm: 'none' },
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            // background: `${theme.palette.background.default}`,
-            backdropFilter: 'blur(25px)',
-            height: '50px',
-            width: '100%',
-            zIndex: '10',
-          }}
-        >
-
+        {isAuthenticated && (
           <Box
             sx={{
-              position: 'absolute',
-              top: '-84px',
-              right: '28px',
+              borderTop: `1px solid ${theme.palette.border.main}`,
+              display: { xs: 'flex', sm: 'none' },
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              // background: `${theme.palette.background.default}`,
+              backdropFilter: 'blur(25px)',
+              height: '50px',
+              width: '100%',
+              zIndex: '10',
             }}
           >
-            <Link
-              to="/modal/tweet"
-              state={{ background: location }}
-              component={NavLink}
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '-84px',
+                right: '28px',
+              }}
             >
-              <SmallBtnTweet />
-            </Link>
-          </Box>
-          {mainSidebarElementsMobile.map((navElement) => (
-            <Link
-              to={navElement.route}
-              underline="none"
-              key={navElement.id}
-              component={NavLink}
-            >
-              <ListItemIcon
-                sx={{
-                  fontSize: 30,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: `${theme.palette.text.primary}`,
-                  zIndex: '11',
-                }}
+              <Link
+                to="/modal/tweet"
+                state={{ background: location }}
+                component={NavLink}
               >
-                <navElement.icon sx={{ fontSize: 30 }} />
-              </ListItemIcon>
-            </Link>
-          ))}
-        </Box>
-  )
-}
-        
+                <SmallBtnTweet />
+              </Link>
+            </Box>
+            {mainSidebarElementsMobile.map((navElement) => (
+              <Link
+                to={navElement.route}
+                underline="none"
+                key={navElement.id}
+                component={NavLink}
+              >
+                <ListItemIcon
+                  sx={{
+                    fontSize: 30,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: `${theme.palette.text.primary}`,
+                    zIndex: '11',
+                  }}
+                >
+                  <navElement.icon sx={{ fontSize: 30 }} />
+                </ListItemIcon>
+              </Link>
+            ))}
+          </Box>
+        )}
 
         {!isAuthenticated && <BottomToolbar />}
 

@@ -134,6 +134,8 @@ export const ChatSender = () => {
         body: messageText,
       };
 
+      console.log(message);
+
       // send event about new message to Socket server
       try {
         //********* Connect with SockJS (http://final-step ....) */

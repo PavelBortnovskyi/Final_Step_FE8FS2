@@ -153,11 +153,11 @@ export const modalRoutes = () => {
   ];
 };
 
-export const rightRoutes = () => {
+export const rightRoutes = (mobile) => {
   return [
     {
       path: '/messages',
-      element: <Chat />,
+      element: mobile ? <></> : <Chat />,
     },
     {
       path: '*',

@@ -27,6 +27,7 @@ const ChatContainer = styled(Box)`
   /* flex: 1 0 auto; */
   width: 100%;
   gap: 8px;
+  padding-bottom: 30px;
 `;
 
 const ChatHeader = styled(Box)`

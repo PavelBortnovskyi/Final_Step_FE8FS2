@@ -43,9 +43,9 @@ export const App = () => {
         stompClientRef.current = new Client({
           brokerURL: socketUrl,
           connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
+          debug: function (str) {
+            console.log(str);
+          },
         });
         const stompClient = stompClientRef.current;
 
@@ -80,7 +80,7 @@ export const App = () => {
 
         // set received messages to redux
         const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
+          console.log('Received message:', message);
           dispatch(setCurrentMessage(JSON.parse(message.body)));
         };
 
