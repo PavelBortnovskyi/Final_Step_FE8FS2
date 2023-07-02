@@ -4,26 +4,27 @@ import {
   Container,
   Grid,
   ListItemIcon,
-  // useMediaQuery,
+  useMediaQuery,
 } from '@mui/material';
+
 import { useSelector } from 'react-redux';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { Sidebar } from 'src/components/Sidebar/Sidebar';
 import { BottomToolbar } from 'src/components/BottomToolbar/BottomToolbar';
 import { MainRoutes } from 'src/routes/MainRoutes';
 import { ModalRoutes } from 'src/routes/ModalRoutes';
-// import { TempBottomToolbar } from 'src/components/BottomToolbar/TempBottomToolbar';
-// import { Main } from 'src/components/Main/Main';
-// import { Modal } from 'src/components/Modal/Modal';
 
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { useMode } from 'src/styles/_materialTheme';
-import { RightRoutes } from './../routes/RightRoutes';
+import { RightRoutes } from 'src/routes/RightRoutes';
 import { mainSidebarElementsMobile } from 'src/components/SidebarMobile/SidebarMobileElements';
 import SmallBtnTweet from 'src/components/Sidebar/SmallBtnTweet/SmallBtnTweet';
+import { useMode } from 'src/styles/_materialTheme';
 
 export const Layout = () => {
+  // const theme = useTheme();
+  const theme = useMode();
+
   // get Authentication
   const { isAuthenticated } = useSelector(getAuthorizationData);
 
@@ -32,7 +33,15 @@ export const Layout = () => {
   // background from BottomToolbar where state={{ background: location }}
   const background = location.state && location.state.background;
 
-  const theme = useMode();
+  // get resolution browser window
+  const matches = {
+    xs: useMediaQuery(theme.breakpoints.down('xs')),
+    sm: useMediaQuery(theme.breakpoints.between('sm', 'md')),
+    md: useMediaQuery(theme.breakpoints.between('md', 'lg')),
+    lg: useMediaQuery(theme.breakpoints.between('lg', 'xl')),
+    xl: useMediaQuery(theme.breakpoints.up('xl')),
+  };
+  // console.log(matches);
 
   return (
     <ThemeProvider theme={theme}>

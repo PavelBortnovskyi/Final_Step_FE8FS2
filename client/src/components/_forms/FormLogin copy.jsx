@@ -16,21 +16,10 @@ import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 // google auth
-import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-  googleLogout,
-} from '@react-oauth/google';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-
-import { FacebookLoginButton } from './FacebookLoginButton';
-
-import { LoginSocialGoogle, LoginSocialFacebook } from 'reactjs-social-login';
+import { myAxios } from 'src/utils/axiosSetup.js';
 import axios from 'axios';
-// import {
-//   FacebookLoginButton,
-//   GoogleLoginButton,
-// } from 'react-social-login-buttons';
 
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -105,33 +94,16 @@ export const FormLogin = () => {
   // };
 
   //*** GOOGLE AUTH ********************************************/
+  const sendData = async (credentialResponse) => {
+    // redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
 
-  const handleLogin = () => {
-    const googleLoginUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const clientId =
-      '833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com';
-    const redirectUri =
-      'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google';
-    // 'http://localhost:3000';
-    const scope = 'email profile';
-
-    const authUrl = `${googleLoginUrl}?client_id=${clientId}&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&scope=${encodeURIComponent(scope)}&response_type=code`;
-
-    window.location.href = authUrl;
-  };
-
-  ////////////////////////////////
-
-  const googleConnect = async () => {
-    const response = await axios.get(
-      'https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google'
+    const response = await myAxios.post(
+      'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google',
+      credentialResponse
     );
 
-    console.log('google', response);
+    console.log(response);
   };
-
   //***********************************************/
 
   return (
@@ -196,11 +168,8 @@ export const FormLogin = () => {
           </Form>
         )}
       </Formik>
-      {/* <GoogleOAuthProvider
-        clientId="833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com"
-        redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
-        scope="profile email"
-      >
+
+      <GoogleOAuthProvider clientId="833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             console.log('google', credentialResponse);
@@ -213,17 +182,8 @@ export const FormLogin = () => {
           onError={() => {
             console.log('login error');
           }}
-          redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
         />
-      </GoogleOAuthProvider> */}
-      <br />
-      <button onClick={handleLogin}>Login with Google</button>
-      <br />
-      <button onClick={googleConnect}>Get to server login</button>
-      <br />
-      <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
-        Link to server login
-      </Link>
+      </GoogleOAuthProvider>
     </>
   );
 };
