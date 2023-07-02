@@ -66,7 +66,6 @@ export const getUserTweetsSlice = createSlice({
       //     }
       //   });
       // })
-
       .addCase(addQuote.fulfilled, (state, action) => {
         const quoteTweet = action.payload.data.parentTweet;
         state.userTweets = [
