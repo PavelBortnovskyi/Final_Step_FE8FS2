@@ -16,6 +16,7 @@ import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 import ModalCommentPage from 'src/pages/ModalCommentPage';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 import { ModalQuotePage } from 'src/pages/ModalQuotePage';
+import { SearchUserPage } from 'src/pages/SearchUserPage';
 
 export const mainRoutes = () => {
   return [
@@ -120,6 +121,10 @@ export const mainRoutes = () => {
     {
       path: '/:id/followings',
       element: <FollowingsPage />,
+    },
+    {
+      path: '/search-user',
+      element: <SearchUserPage />
     },
   ];
 };

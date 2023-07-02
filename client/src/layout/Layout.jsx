@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useParams } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -114,21 +114,24 @@ export const Layout = () => {
               zIndex: '10',
             }}
           >
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '-84px',
-                right: '28px',
-              }}
-            >
-              <Link
-                to="/modal/tweet"
-                state={{ background: location }}
-                component={NavLink}
+            {location.pathname !== '/messages' && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '-84px',
+                  right: '28px',
+                }}
               >
-                <SmallBtnTweet />
-              </Link>
-            </Box>
+                <Link
+                  to="/modal/tweet"
+                  state={{ background: location }}
+                  component={NavLink}
+                >
+                  <SmallBtnTweet />
+                </Link>
+              </Box>
+            )}
+
             {mainSidebarElementsMobile.map((navElement) => (
               <Link
                 to={navElement.route}
