@@ -18,7 +18,7 @@ export const HomePage = () => {
   const currentPage = useSelector((state) => state.pagination.currentPage);
   const totalPages = useSelector((state) => state.pagination.totalPages);
   let containerRef = useRef(null);
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const [page, setPage] = useState(currentPage);
   const isScreenSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { isAuthenticated } = useSelector(getAuthorizationData);

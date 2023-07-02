@@ -19,7 +19,6 @@ export const getUserReplise = createAsyncThunk(
       thunkAPI.dispatch(setPage(page));
       thunkAPI.dispatch(setTotalPages(totalPages));
       thunkAPI.dispatch(setTotalElements(totalElements));
-      console.log(content);
       return content;
     } catch (error) {
       // set message error from server

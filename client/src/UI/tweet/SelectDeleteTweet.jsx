@@ -1,6 +1,14 @@
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { FormControl, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, useTheme } from '@mui/material';
+import {
+  FormControl,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  useTheme,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
@@ -11,38 +19,33 @@ import { unsubscribeUser } from 'src/redux/thunk/unsubscribeUser';
 
 export const SelectDeleteTweet = ({ id, tweet }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user) || "";
+  const user = useSelector((state) => state.user.user) || '';
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const theme = useTheme();
   const userId = tweet.user.id;
   const { followings } = useSelector((state) => state.followings);
   const compairUser =
     followings.content && followings.content.some((item) => item.id === userId);
- 
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     dispatch(getFollowings('profile'));
   }, [dispatch]);
 
-
-
   const deleteTweetUser = () => {
     // if(isAuthenticated) {
-      
+
     // }
     if (user.id === tweet.user.id) {
-      console.log('del!');
       dispatch(deleteTweet({ id }));
     } else if (compairUser) {
-      console.log('unsubscribeUser');
       dispatch(unsubscribeUser(userId));
     } else if (!compairUser) {
-      console.log('SubscribeUser');
       dispatch(subscribeUser(userId));
     }
     setAnchorEl(null);
-  }
+  };
 
   let primaryText = '';
 
@@ -67,23 +70,27 @@ export const SelectDeleteTweet = ({ id, tweet }) => {
     setAnchorEl(null);
   };
 
-
-
   return (
-    <FormControl sx={{
-      '&:hover': {
-        backgroundColor: `rgba(29, 155, 240, 0.15)`,
-        borderRadius: '50%',
-      }
-    }}>
+    <FormControl
+      sx={{
+        '&:hover': {
+          backgroundColor: `rgba(29, 155, 240, 0.15)`,
+          borderRadius: '50%',
+        },
+      }}
+    >
       <IconButton
         aria-label="More options"
         aria-controls="custom-menu"
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreHorizIcon fontSize="small" sx={{
-          color: `${theme.palette.text.primary}`,}}/>
+        <MoreHorizIcon
+          fontSize="small"
+          sx={{
+            color: `${theme.palette.text.primary}`,
+          }}
+        />
       </IconButton>
       <Menu
         id="custom-menu"
@@ -92,21 +99,26 @@ export const SelectDeleteTweet = ({ id, tweet }) => {
         onClose={handleClose}
         sx={{
           '& .MuiMenu-list': {
-            backgroundColor: `${theme.palette.background.default}`
-          }}}
-            >
-            <MenuItem onClick={deleteTweetUser}>
-              <ListItemIcon>
-                <DeleteForeverOutlinedIcon sx={{color: `${theme.palette.text.primary}`}}/>
-              </ListItemIcon>
-              <ListItemText primary={primaryText}
-                sx={{
-                  'span': {
-                    color: `${theme.palette.text.primary}`,
-                  }
-                }}/>
-            </MenuItem>
+            backgroundColor: `${theme.palette.background.default}`,
+          },
+        }}
+      >
+        <MenuItem onClick={deleteTweetUser}>
+          <ListItemIcon>
+            <DeleteForeverOutlinedIcon
+              sx={{ color: `${theme.palette.text.primary}` }}
+            />
+          </ListItemIcon>
+          <ListItemText
+            primary={primaryText}
+            sx={{
+              span: {
+                color: `${theme.palette.text.primary}`,
+              },
+            }}
+          />
+        </MenuItem>
       </Menu>
     </FormControl>
-  )
-}
+  );
+};

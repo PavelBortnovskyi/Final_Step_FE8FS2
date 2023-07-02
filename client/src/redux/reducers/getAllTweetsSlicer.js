@@ -8,6 +8,7 @@ import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
+import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 
 const initialState = {
   allTweets: [],
@@ -18,6 +19,12 @@ const initialState = {
 const getAllTweetsSlice = createSlice({
   name: 'allTweets',
   initialState,
+  reducers: {
+    resetAllTweets(state) {
+      state.allTweets = [];
+    },
+  },
+
   extraReducers: (builder) => {
     builder
 
@@ -39,12 +46,6 @@ const getAllTweetsSlice = createSlice({
       .addCase(getAllTweetsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      })
-      .addCase(addRetweet.fulfilled, (state, action) => {
-        const retweetTweet = action.payload;
-        state.allTweets = state.allTweets.map((tweet) =>
-          tweet.id === retweetTweet.id ? retweetTweet : tweet
-        );
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
@@ -109,8 +110,36 @@ const getAllTweetsSlice = createSlice({
         state.allTweets = state.allTweets?.map((retweet) =>
           retweet.id === deleteRetweet.id ? deleteRetweet : retweet
         );
+      })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        const retweetTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) => {
+          if (tweet.tweetType === 'RETWEET') {
+            return tweet.parentTweet.id === retweetTweet.id
+              ? { ...tweet, parentTweet: retweetTweet }
+              : tweet;
+          } else {
+            return tweet.id === retweetTweet.id ? retweetTweet : tweet;
+          }
+        });
+      })
+      .addCase(createTweetReply.fulfilled, (state, action) => {
+        const quoteTweet = action.payload.data.parentTweet;
+        state.allTweets = [
+          action.payload.data,
+          ...state.allTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? { ...tweet, parentTweet: quoteTweet }
+                : tweet;
+            }
+          }),
+        ];
       });
   },
 });
 
 export default getAllTweetsSlice.reducer;
+export const { resetAllTweets } = getAllTweetsSlice.actions;

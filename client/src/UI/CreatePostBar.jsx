@@ -22,7 +22,7 @@ function CreatePostBar({ handleFileSelect, handleEmojiSelect, isPicker }) {
     >
       <AddImage handleFileSelect={handleFileSelect} hover={hoverColor} />
 
-      <Gif hover={hoverColor} />
+      {/* <Gif hover={hoverColor} /> */}
 
       <Emoji
         isPicker={isPicker}
