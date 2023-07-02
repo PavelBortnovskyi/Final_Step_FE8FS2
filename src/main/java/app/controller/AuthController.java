@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.HashMap;
 
 @CrossOrigin(originPatterns = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
@@ -95,6 +97,13 @@ public class AuthController {
   }
 
   @GetMapping("/oauth2/tokens")
-  public void token (HttpServletRequest request) {
+  public ResponseEntity<HashMap<String, String>> token(@RequestParam("accessToken")
+                                                       @NotNull @Positive String accessToken,
+                                                       @RequestParam("refreshToken")
+                                                       @NotNull @Positive String refreshToken) {
+    return ResponseEntity.ok(new HashMap<>() {{
+      put("ACCESS_TOKEN", accessToken);
+      put("REFRESH_TOKEN", refreshToken);
+    }});
   }
 }
