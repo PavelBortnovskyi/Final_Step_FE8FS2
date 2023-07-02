@@ -61,7 +61,14 @@ export const UserReplise = ({ replise }) => {
         parentTrue = findparent(replise.parentTweet, parentId);
         if (parentTrue) {
           return (
-            <Box key={replise.id}>
+            <Box
+              key={replise.id}
+              sx={{
+                '&:hover': {
+                  background: `${theme.palette.background.hover}`,
+                },
+              }}
+            >
               <TweetPost tweet={replise} />
               <Box display={'flex'} justifyContent={'center'}>
                 <PostIconList
@@ -124,7 +131,14 @@ export const UserReplise = ({ replise }) => {
       if (parentTweet?.id === tweetId) {
         return (
           parentTweet && (
-            <Box key={parentTweet.id}>
+            <Box
+              key={parentTweet.id}
+              sx={{
+                '&:hover': {
+                  background: `${theme.palette.background.hover}`,
+                },
+              }}
+            >
               <TweetPost tweet={parentTweet} />
               <Box display={'flex'} justifyContent={'center'}>
                 <PostIconList
