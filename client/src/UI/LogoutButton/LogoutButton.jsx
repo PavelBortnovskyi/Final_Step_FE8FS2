@@ -2,6 +2,9 @@ import { Button, useTheme } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from 'src/redux/thunk/logoutUser';
 import { useNavigate } from 'react-router-dom';
+import { resetBookmarksState } from 'src/redux/reducers/bookmarksSlise.js'
+import { clearSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
+
 
 export const LogoutButton = () => {
   const navigate = useNavigate();
@@ -10,6 +13,8 @@ export const LogoutButton = () => {
 
   const handleClick = () => {
     dispatch(logoutUser());
+    dispatch(resetBookmarksState());
+    dispatch(clearSocketNotification());
     navigate('/');
   };
   return (

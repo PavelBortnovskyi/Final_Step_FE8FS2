@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useParams } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -27,13 +27,15 @@ export const Layout = () => {
   // get Authentication
   const { isAuthenticated } = useSelector(getAuthorizationData);
 
+
+
   // create location for MainRoutes
   const location = useLocation();
   // background from BottomToolbar where state={{ background: location }}
   const background = location.state && location.state.background;
 
   const theme = useMode();
-
+  console.log(location.pathname);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -88,65 +90,67 @@ export const Layout = () => {
           </Grid>
         </Grid>
 
-{
-  isAuthenticated && (
-    <Box
-          sx={{
-            borderTop: `1px solid ${theme.palette.border.main}`,
-            display: { xs: 'flex', sm: 'none' },
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            // background: `${theme.palette.background.default}`,
-            backdropFilter: 'blur(25px)',
-            height: '50px',
-            width: '100%',
-            zIndex: '10',
-          }}
-        >
+        {
+          isAuthenticated && (
+            <Box
+              sx={{
+                borderTop: `1px solid ${theme.palette.border.main}`,
+                display: { xs: 'flex', sm: 'none' },
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                // background: `${theme.palette.background.default}`,
+                backdropFilter: 'blur(25px)',
+                height: '50px',
+                width: '100%',
+                zIndex: '10',
+              }}
+            >
+              {location.pathname !== '/messages' &&
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '-84px',
+                    right: '28px',
+                  }}
+                >
+                  <Link
+                    to="/modal/tweet"
+                    state={{ background: location }}
+                    component={NavLink}
+                  >
+                    <SmallBtnTweet />
+                  </Link>
+                </Box>
+              }
 
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '-84px',
-              right: '28px',
-            }}
-          >
-            <Link
-              to="/modal/tweet"
-              state={{ background: location }}
-              component={NavLink}
-            >
-              <SmallBtnTweet />
-            </Link>
-          </Box>
-          {mainSidebarElementsMobile.map((navElement) => (
-            <Link
-              to={navElement.route}
-              underline="none"
-              key={navElement.id}
-              component={NavLink}
-            >
-              <ListItemIcon
-                sx={{
-                  fontSize: 30,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: `${theme.palette.text.primary}`,
-                  zIndex: '11',
-                }}
-              >
-                <navElement.icon sx={{ fontSize: 30 }} />
-              </ListItemIcon>
-            </Link>
-          ))}
-        </Box>
-  )
-}
-        
+              {mainSidebarElementsMobile.map((navElement) => (
+                <Link
+                  to={navElement.route}
+                  underline="none"
+                  key={navElement.id}
+                  component={NavLink}
+                >
+                  <ListItemIcon
+                    sx={{
+                      fontSize: 30,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      color: `${theme.palette.text.primary}`,
+                      zIndex: '11',
+                    }}
+                  >
+                    <navElement.icon sx={{ fontSize: 30 }} />
+                  </ListItemIcon>
+                </Link>
+              ))}
+            </Box>
+          )
+        }
+
 
         {!isAuthenticated && <BottomToolbar />}
 
