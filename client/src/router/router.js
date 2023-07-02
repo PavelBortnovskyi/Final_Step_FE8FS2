@@ -19,6 +19,7 @@ import { Bookmarks } from 'src/components/Bookmarks/Bookmarks';
 import ModalCommentPage from 'src/pages/ModalCommentPage';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 import { ModalQuotePage } from 'src/pages/ModalQuotePage';
+import { SearchUserPage } from 'src/pages/SearchUserPage';
 
 export const router = createBrowserRouter([
   {
@@ -155,6 +156,10 @@ export const router = createBrowserRouter([
       {
         path: '/modal/quote',
         element: <ModalQuotePage />,
+      },
+      {
+        path: '/search-user',
+        element: <SearchUserPage />
       },
     ],
   },

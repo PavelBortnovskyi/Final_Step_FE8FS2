@@ -9,10 +9,8 @@ import {
   MenuItem,
   useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthorizationData } from 'src/redux/selectors/selectors';
-import { getFollowings } from 'src/redux/thunk/getFollowings';
 import { subscribeUser } from 'src/redux/thunk/subscribeUser';
 import { deleteTweet } from 'src/redux/thunk/tweets/deleteTweet';
 import { unsubscribeUser } from 'src/redux/thunk/unsubscribeUser';
@@ -20,23 +18,16 @@ import { unsubscribeUser } from 'src/redux/thunk/unsubscribeUser';
 export const SelectDeleteTweet = ({ id, tweet }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user) || '';
-  const { isAuthenticated } = useSelector(getAuthorizationData);
   const theme = useTheme();
   const userId = tweet.user.id;
   const { followings } = useSelector((state) => state.followings);
+
   const compairUser =
     followings.content && followings.content.some((item) => item.id === userId);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  useEffect(() => {
-    dispatch(getFollowings('profile'));
-  }, [dispatch]);
-
-  const deleteTweetUser = () => {
-    // if(isAuthenticated) {
-
-    // }
+  const deleteTweetUser = (tweet) => {
     if (user.id === tweet.user.id) {
       dispatch(deleteTweet({ id }));
     } else if (compairUser) {
@@ -58,7 +49,6 @@ export const SelectDeleteTweet = ({ id, tweet }) => {
   }
 
   // const handleChange = (event) => {
-  //   console.log('handleChange', event.target.value);
   //   setAge(event.target.value);
   // };
 
@@ -103,7 +93,7 @@ export const SelectDeleteTweet = ({ id, tweet }) => {
           },
         }}
       >
-        <MenuItem onClick={deleteTweetUser}>
+        <MenuItem onClick={() => deleteTweetUser(tweet)}>
           <ListItemIcon>
             <DeleteForeverOutlinedIcon
               sx={{ color: `${theme.palette.text.primary}` }}

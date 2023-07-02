@@ -90,7 +90,7 @@ export const HomePage = () => {
     >
       <MainPageHeader tabIndex={tabIndex} setTabIndex={setTabIndex} />
       {!isScreenSmall && isAuthenticated ? <TweetBox /> : null}
-
+ 
       {isAuthenticated ? (
         <UserAllTypeTweets
           tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}

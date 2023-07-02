@@ -49,13 +49,13 @@ export const mainSidebarElements = [
     route: 'messages',
     newMessageNotification: true,
   },
-  {
-    id: 35,
-    icon: ListAltOutlinedIcon,
-    iconActive: BallotRoundedIcon,
-    label: 'Lists',
-    route: 'lists',
-  },
+  // {
+  //   id: 35,
+  //   icon: ListAltOutlinedIcon,
+  //   iconActive: BallotRoundedIcon,
+  //   label: 'Lists',
+  //   route: 'lists',
+  // },
   {
     id: 4,
     icon: BookmarkBorderOutlinedIcon,
@@ -63,13 +63,13 @@ export const mainSidebarElements = [
     label: 'Bookmarks',
     route: 'bookmarks',
   },
-  {
-    id: 5,
-    icon: TwitterIcon,
-    iconActive: StormIcon,
-    label: 'Twitter Blue',
-    route: 'twitter_blue',
-  },
+  // {
+  //   id: 5,
+  //   icon: TwitterIcon,
+  //   iconActive: StormIcon,
+  //   label: 'Twitter Blue',
+  //   route: 'twitter_blue',
+  // },
   // {
   //     id: 6,
   //     icon: VerifiedOutlinedIcon,

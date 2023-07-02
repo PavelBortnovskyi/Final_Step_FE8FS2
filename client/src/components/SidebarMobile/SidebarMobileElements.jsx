@@ -24,7 +24,7 @@ export const mainSidebarElementsMobile = [
         id: 1,
         icon: SearchOutlinedIcon,
         label: 'Search',
-        route: 'search',
+        route: 'search-user',
     },
     {
         id: 2,
