@@ -26,11 +26,11 @@ myAxios.interceptors.response.use(
       setRefreshToken();
     } else if (error.response.status === 401) {
       // if 401 error from /auth/refresh
-      // if (
-      //   originalRequest.url === '/auth/refresh' &&
-      //   error.response.status === 401
-      // )
-      //   return;
+      if (
+        originalRequest.url === '/auth/refresh' &&
+        error.response.status === 401
+      )
+        return;
 
       originalRequest._retry = true;
 

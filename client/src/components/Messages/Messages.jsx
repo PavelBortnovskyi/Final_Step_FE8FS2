@@ -14,7 +14,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 
 import { ChatSidebar } from './Chat/ChatSidebar';
-import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import { getAuthorizationData, getChats } from 'src/redux/selectors/selectors';
 import { getAllChats } from 'src/redux/thunk/getAllChats';
 import { Chat } from './Chat/Chat';
 
@@ -26,6 +26,9 @@ export const Messages = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
 
+  const { guest } = useSelector(getChats);
+
+  // set browser mobile size flag
   const mobile = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
   // send user to home if not authorization
@@ -74,10 +77,10 @@ export const Messages = () => {
         </Box>
 
         {/* Search */}
-        <ChatSidebar />
+        {mobile ? !guest && <ChatSidebar /> : <ChatSidebar />}
 
         {/* mobile size browser */}
-        {mobile && <Chat />}
+        {mobile && guest && <Chat />}
       </Container>
     </Box>
   );

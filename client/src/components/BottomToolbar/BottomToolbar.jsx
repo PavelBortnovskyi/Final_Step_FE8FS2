@@ -1,5 +1,20 @@
-import { AppBar, Grid, Toolbar, Button, Typography, Link } from '@mui/material';
+import {
+  AppBar,
+  Grid,
+  Toolbar,
+  Button,
+  Typography,
+  Link,
+  styled,
+} from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  fontWeight: 'bold',
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
 
 export const BottomToolbar = () => {
   const location = useLocation();
@@ -7,20 +22,24 @@ export const BottomToolbar = () => {
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
         <Grid container spacing={1}>
-          <Grid item xs={0} md={3}></Grid>
-          <Grid item xs={6} md={5}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              Stay up to date
-            </Typography>
-            <Typography variant="span">
+          <Grid item xs={0} sm={0} md={3}></Grid>
+          <Grid item xs={0} sm={7} md={5}>
+            <StyledTypography variant="h5">Stay up to date</StyledTypography>
+            <StyledTypography variant="span">
               Chatter users are the first to know the news
-            </Typography>
+            </StyledTypography>
           </Grid>
           <Grid
             item
-            xs={5}
+            xs={11}
+            sm={4}
             md={4}
-            sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+            }}
           >
             <Link
               component={NavLink}
@@ -29,7 +48,11 @@ export const BottomToolbar = () => {
               color="inherit"
               underline="none"
             >
-              <Button variant="outlined" color="transparent">
+              <Button
+                variant="outlined"
+                color="transparent"
+                sx={{ whiteSpace: 'nowrap' }}
+              >
                 Log in
               </Button>
             </Link>
@@ -40,7 +63,11 @@ export const BottomToolbar = () => {
               color="inherit"
               underline="none"
             >
-              <Button variant="outlined" color="gray">
+              <Button
+                variant="outlined"
+                color="gray"
+                sx={{ whiteSpace: 'nowrap' }}
+              >
                 Sign up
               </Button>
             </Link>

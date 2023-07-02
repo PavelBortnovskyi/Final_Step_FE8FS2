@@ -39,17 +39,7 @@ export const App = () => {
           Origin: 'client',
         };
 
-        // create connect to socket
-        stompClientRef.current = new Client({
-          brokerURL: socketUrl,
-          connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
-        });
-        const stompClient = stompClientRef.current;
-
-        // after activate connect
+        // connect socket
         const connectCallback = () => {
           console.log('Connected to STOMP server');
 
@@ -67,16 +57,31 @@ export const App = () => {
             headers
           );
 
-          //  user/topic/chats-${username}
-          // stompClient.subscribe(
-          //   `/user/topic/chats-${user.email}`,
-          //   onMessageReceived,
-          //   headers
-          // );
-
           // set socket connection to redux
           dispatch(setSocketChat(stompClient));
         };
+
+        // error socket
+        const errorCallback = (error) => {
+          console.error('*** Error:', error.headers.message);
+          if (error.headers.message.includes('UNAUTHORIZED')) {
+            console.error('*** Error: token is wrong');
+          }
+        };
+
+        // create socket connect to server
+        stompClientRef.current = new Client({
+          brokerURL: socketUrl,
+          connectHeaders: headers,
+          heartbeatIncoming: 25000,
+          heartbeatOutgoing: 25000,
+          onConnect: connectCallback,
+          onStompError: errorCallback,
+          // debug: function (str) {
+          //   console.log(str);
+          // },
+        });
+        const stompClient = stompClientRef.current;
 
         // set received messages to redux
         const onMessageReceived = (message) => {
@@ -89,17 +94,6 @@ export const App = () => {
           // console.log('Received notification:', notification.body);
           dispatch(setSocketNotification(JSON.parse(notification.body)));
         };
-
-        // error socket
-        const errorCallback = (error) => {
-          console.error('*** Error:', error.headers.message);
-          if (error.headers.message.includes('UNAUTHORIZED')) {
-            console.error('*** Error: token is wrong');
-          }
-        };
-
-        stompClient.onConnect = connectCallback;
-        stompClient.onStompError = errorCallback;
 
         // activate connect
         stompClient.activate();

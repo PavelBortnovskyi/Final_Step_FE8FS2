@@ -61,13 +61,9 @@ export const TabMessages = () => {
     dispatch(setGuest(guest));
   };
 
-  console.log('mess', convertedFindMessages);
-  console.log('res', resultFindMessages);
-
   // set chat
   useEffect(() => {
     if (findMessage?.content?.length) {
-      console.log('yes');
       //*********** Convert findMessage.content to obj for viewing
       setConvertedFindMessages(
         findMessage.content.reduce((tempArr, item) => {

@@ -158,8 +158,8 @@ export const FormLogin = () => {
               flexDirection: 'column',
               position: 'relative',
               gap: '18px',
-              margin: '20px',
-              width: '300px',
+              margin: '20px 0px',
+              width: 'clamp(200px, 60vw, 300px)',
               maxWidth: '300px',
             }}
             autoComplete="off"
