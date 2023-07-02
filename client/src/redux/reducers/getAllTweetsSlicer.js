@@ -48,38 +48,68 @@ const getAllTweetsSlice = createSlice({
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
-        state.allTweets = state.allTweets.map((tweet) =>
-          tweet.id === likedTweet.id ? likedTweet : tweet
-        );
+        state.allTweets = state.allTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === likedTweet.id ? likedTweet : tweet;
+          } else {
+            return tweet.parentTweet && tweet.parentTweet.id === likedTweet.id
+              ? { ...tweet, parentTweet: likedTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(addQuote.fulfilled, (state, action) => {
-        const quoteTweet = action.payload;
-        state.allTweets = state.allTweets.map((tweet) =>
-          tweet.id === quoteTweet.id ? quoteTweet : tweet
-        );
+        const quoteTweet = action.payload.data.parentTweet;
+        state.allTweets = [
+          action.payload.data,
+          ...state.allTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? quoteTweet
+                : tweet;
+            }
+          }),
+        ];
       })
       .addCase(addBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
-        state.allTweets = state.allTweets.map((tweet) =>
-          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-        );
+        state.allTweets = state.allTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet;
+          } else {
+            return tweet.parentTweet &&
+              tweet.parentTweet.id === bookmarkTweet.id
+              ? { ...tweet, parentTweet: bookmarkTweet }
+              : tweet;
+          }
+        });
+      })
+      .addCase(deleteBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.allTweets = state.allTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet;
+          } else {
+            return tweet.parentTweet &&
+              tweet.parentTweet.id === bookmarkTweet.id
+              ? { ...tweet, parentTweet: bookmarkTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(createTweet.fulfilled, (state, action) => {
         const newTweet = action.payload;
         state.allTweets = [newTweet, ...state.allTweets];
       })
-      .addCase(deleteBookmark.fulfilled, (state, action) => {
-        const bookmarkTweet = action.payload;
-        state.allTweets = state.allTweets.map((tweet) =>
-          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-        );
-      })
+
       .addCase(deleteTweet.fulfilled, (state, action) => {
         const deleteRetweet = action.payload;
         state.allTweets = state.allTweets?.map((retweet) =>
-        retweet.id === deleteRetweet.id ? deleteRetweet : retweet
+          retweet.id === deleteRetweet.id ? deleteRetweet : retweet
         );
-      })
+      });
   },
 });
 
