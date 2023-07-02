@@ -21,14 +21,15 @@ import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { ChatSender } from './ChatSender';
 
 // ************ STYLE ************
-const ChatContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
+const ChatContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
   /* flex: 1 0 auto; */
-  width: 100%;
-  gap: 8px;
-  padding-bottom: 30px;
-`;
+  width: '100%',
+  gap: '8px',
+  paddingBottom: '30px',
+  [theme.breakpoints.between('xs', 'md')]: { paddingBottom: '100px' },
+}));
 
 const ChatHeader = styled(Box)`
   display: flex;

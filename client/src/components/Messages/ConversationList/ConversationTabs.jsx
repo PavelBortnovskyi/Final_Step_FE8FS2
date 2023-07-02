@@ -28,6 +28,11 @@ const TabSearch = styled(Tab)(({ theme }) => ({
 const TabHeader = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.border.main}`,
 }));
+
+const BoxItemStyled = styled(Box)(({ theme }) => ({
+  padding: 'clamp(2px, 1.4vw, 22px)',
+}));
+
 // ************ STYLE ************
 
 // ************ TabPanel ************
@@ -42,11 +47,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Box>{children}</Box>
-        </Box>
-      )}
+      {value === index && <BoxItemStyled>{children}</BoxItemStyled>}
     </div>
   );
 }
