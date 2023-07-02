@@ -8,7 +8,7 @@ import {
   setGuest,
   setNewMessageNotification,
 } from 'src/redux/reducers/chatSlice';
-import { getChats } from 'src/redux/selectors/selectors';
+import { getChats, getUserData } from 'src/redux/selectors/selectors';
 
 // ************ STYLE ************
 const BoxContactGuest = styled(Box)(({ theme }) => ({
@@ -41,6 +41,8 @@ export const ContactGuest = ({ guestData }) => {
   const dispatch = useDispatch();
   const { id, fullName, avatarImgUrl, userTag, messages } = guestData;
 
+  const { user } = useSelector(getUserData);
+
   // notification of new message
   const { newMessageNotification, currentChat, currentMessage, guest } =
     useSelector(getChats);
@@ -53,7 +55,9 @@ export const ContactGuest = ({ guestData }) => {
       currentMessage &&
       currentChat[0].chatId === currentMessage.chatId
     ) {
-      const newArr = newMessageNotification.filter((item) => item !== guest.id);
+      const newArr = newMessageNotification.filter(
+        (item) => item !== user.id && item !== guest.id
+      );
       dispatch(setNewMessageNotification(newArr));
     }
   }, [dispatch, currentChat, currentMessage, guest]);
