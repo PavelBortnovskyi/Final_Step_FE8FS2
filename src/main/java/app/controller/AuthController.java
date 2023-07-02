@@ -87,7 +87,7 @@ public class AuthController {
     return this.authFacade.makeRefresh(request);
   }
 
-  @GetMapping("/oauth/error")
+  @GetMapping("/oauth2/error")
   public String error(HttpServletRequest request) {
     String message = (String) request.getSession().getAttribute("error.message");
     request.getSession().removeAttribute("error.message");
