@@ -24,6 +24,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
       return userTweet.id;
     }
   }
+  // console.log('inside component ', tweets);
 
   function parentRetweet(userTweet) {
     if (userTweet.parentTweet !== null) {
@@ -49,6 +50,16 @@ export const UserAllTypeTweets = ({ tweets }) => {
               isBookmarks={userTweet.currUserBookmarked}
               bookmarks={userTweet.countBookmarks}
             />
+            {/* <PostIconList
+              likes={userTweet.countLikes}
+              reply={userTweet.countReply}
+              retweet={userTweet.countRetweets}
+              id={userTweet.id}
+              isLiked={userTweet.currUserLiked}
+              isRetweet={userTweet.countRetweets}
+              isComment={userTweet.countReplays}
+              isBookmark={userTweet.countBookmarks}
+            /> */}
           </Box>
         </Box>
       );

@@ -43,7 +43,7 @@ export const tweetByIdSlice = createSlice({
         state.singleTweet = createdReplyTweet;
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
-        const retweetedTweet = action.payload.parentTweet;
+        const retweetedTweet = action.payload;
         state.singleTweet = retweetedTweet;
       })
       .addCase(addBookmark.fulfilled, (state, action) => {
@@ -61,7 +61,7 @@ export const tweetByIdSlice = createSlice({
       .addCase(deleteTweet.fulfilled, (state, action) => {
         const deleteRetweet = action.payload;
         state.singleTweet = deleteRetweet;
-      })
+      });
   },
 });
 export default tweetByIdSlice.reducer;
