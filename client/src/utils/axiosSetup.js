@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getTokens, setAuthToken, setRefreshToken } from 'src/utils/tokens';
-import { notAuthenticated } from 'src/redux/reducers/authSlice.js';
 
 // TODO: myAxios нужно импортировать вместо - axios из библиотеки
 // Server default URL

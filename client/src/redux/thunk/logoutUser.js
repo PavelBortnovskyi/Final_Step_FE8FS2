@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
 import { chatLogout } from '../reducers/chatSlice.js';
-import { notAuthenticated } from '../reducers/authSlice.js';
+import { setAuthenticated } from '../reducers/authSlice.js';
 
 export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
@@ -11,7 +11,7 @@ export const logoutUser = createAsyncThunk(
 
       // clear redux store
       dispatch(chatLogout());
-      dispatch(notAuthenticated());
+      dispatch(setAuthenticated(false));
 
       window.localStorage.removeItem('accessToken');
 

@@ -52,6 +52,12 @@ export const themeSettings = (colorTheme) => {
             logo: {
               main: '#FFF',
             },
+            google: {
+              main: '#C94130',
+            },
+            facebook: {
+              main: '#3A63BE',
+            },
           }
         : {
             primary: {
@@ -94,6 +100,12 @@ export const themeSettings = (colorTheme) => {
             },
             logo: {
               main: 'rgb(30, 155, 240)',
+            },
+            google: {
+              main: '#ff9083',
+            },
+            facebook: {
+              main: '#7593d5',
             },
           }),
     },
