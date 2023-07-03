@@ -36,8 +36,8 @@ export const BottomToolbar = () => {
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
         <Grid container spacing={1}>
-          <Grid item xs={0} sm={2} md={2}></Grid>
-          <Grid item xs={0} sm={6} md={5}>
+          <Grid item xs={0} sm={2} md={2} lg={3}></Grid>
+          <Grid item xs={0} sm={6} md={5} lg={5}>
             <StyledTypographyTitle variant="h5">
               Stay up to date
             </StyledTypographyTitle>
@@ -50,10 +50,11 @@ export const BottomToolbar = () => {
             xs={11}
             sm={4}
             md={5}
+            lg={4}
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'start',
               gap: '10px',
             }}
           >
