@@ -44,6 +44,9 @@ public class Tweet extends BaseEntityModel {
   @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
 
+  @OneToOne(mappedBy = "tweet", cascade = CascadeType.REMOVE)
+  private RatingModel ratingModel;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

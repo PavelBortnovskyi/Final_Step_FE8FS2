@@ -17,6 +17,10 @@ public class RatingModel {
   @Column(name = "rating")
   private double tweetRating;
 
+  @OneToOne
+  @JoinColumn(name = "tweet_id")
+  private Tweet tweet;
+
   public RatingModel(Long id, double rating) {
     this.tweetID = id;
     this.tweetRating = rating;
