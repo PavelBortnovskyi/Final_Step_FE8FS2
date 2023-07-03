@@ -21,13 +21,14 @@ import { getCurrentChat } from 'src/redux/thunk/getCurrentChat';
 import { ChatSender } from './ChatSender';
 
 // ************ STYLE ************
-const ChatContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  /* flex: 1 0 auto; */
-  width: 100%;
-  gap: 8px;
-`;
+const ChatContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  gap: '8px',
+  padding: '0 24px 30px',
+  [theme.breakpoints.between('xs', 'md')]: { padding: '0 0 100px 0' },
+}));
 
 const ChatHeader = styled(Box)`
   display: flex;
@@ -103,47 +104,45 @@ export const Chat = () => {
   // ************** CHAT FROM DB ***************
 
   return (
-    <Container sx={{ display: 'flex' }}>
-      <ChatContainer>
-        {!guest ? (
-          <ChatHeader>
-            <Typography variant="h6">Chat</Typography>
-            <WelcomeMessage>
-              Choose from your existing conversations, start a new one, or just
-              keep swimming.
-            </WelcomeMessage>
-          </ChatHeader>
-        ) : (
-          <>
-            <GuestInfo>
-              <Tooltip title="Close connection">
-                <IconButton
-                  onClick={handleCloseConnection}
-                  sx={{
-                    color: `${theme.palette.text.primary}`,
-                    alignSelf: 'flex-start',
-                  }}
-                >
-                  <ArrowBackIcon sx={{ fontSize: 20 }} />
-                </IconButton>
-              </Tooltip>
-              <Avatar
-                sx={{ width: 56, height: 56, marginBottom: '8px' }}
-                alt={guest.fullName}
-                src={guest.avatarImgUrl || 'img/avatar/empty-avatar.png'}
-              />
-              <Typography sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-                {guest.fullName}
-              </Typography>
-              <Typography>{guest.userTag}</Typography>
-            </GuestInfo>
+    <ChatContainer>
+      {!guest ? (
+        <ChatHeader>
+          <Typography variant="h6">Chat</Typography>
+          <WelcomeMessage>
+            Choose from your existing conversations, start a new one, or just
+            keep swimming.
+          </WelcomeMessage>
+        </ChatHeader>
+      ) : (
+        <>
+          <GuestInfo>
+            <Tooltip title="Close chat">
+              <IconButton
+                onClick={handleCloseConnection}
+                sx={{
+                  color: `${theme.palette.text.primary}`,
+                  alignSelf: 'flex-start',
+                }}
+              >
+                <ArrowBackIcon sx={{ fontSize: 20 }} />
+              </IconButton>
+            </Tooltip>
+            <Avatar
+              sx={{ width: 56, height: 56, marginBottom: '8px' }}
+              alt={guest.fullName}
+              src={guest.avatarImgUrl || 'img/avatar/empty-avatar.png'}
+            />
+            <Typography sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+              {guest.fullName}
+            </Typography>
+            <Typography>{guest.userTag}</Typography>
+          </GuestInfo>
 
-            {/* Chat */}
-            <ChatBody />
-            <ChatSender />
-          </>
-        )}
-      </ChatContainer>
-    </Container>
+          {/* Chat */}
+          <ChatBody />
+          <ChatSender />
+        </>
+      )}
+    </ChatContainer>
   );
 };

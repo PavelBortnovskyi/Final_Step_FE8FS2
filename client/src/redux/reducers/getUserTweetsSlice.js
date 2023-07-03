@@ -18,6 +18,11 @@ const initialState = {
 export const getUserTweetsSlice = createSlice({
   name: 'userTweets',
   initialState,
+  reducers: {
+    resetUserTweets(state) {
+      state.userTweets = [];
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -52,20 +57,19 @@ export const getUserTweetsSlice = createSlice({
           }
         });
       })
-      // .addCase(addRetweet.fulfilled, (state, action) => {
-      //   const retweetTweet = action.payload;
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        const retweetTweet = action.payload;
+        state.userTweets = state.userTweets.map((tweet) => {
+          if (tweet.tweetType === 'RETWEET') {
+            return tweet.parentTweet.id === retweetTweet.id
+              ? { ...tweet, parentTweet: retweetTweet }
+              : tweet;
+          } else {
+            return tweet.id === retweetTweet.id ? retweetTweet : tweet;
+          }
+        });
+      })
 
-      //   state.userTweets = state.userTweets.map((tweet) => {
-      //     if (tweet.tweetType !== 'RETWEET') {
-      //       console.log('first case');
-      //       return tweet.id === retweetTweet.id ? retweetTweet : tweet;
-      //     } else {
-      //       if (tweet.parentTweet && tweet.parentTweet.currUserRetweeted) {
-      //         return tweet.parentTweet.id == retweetTweet.id ? tweet
-      //       }
-      //     }
-      //   });
-      // })
       .addCase(addQuote.fulfilled, (state, action) => {
         const quoteTweet = action.payload.data.parentTweet;
         state.userTweets = [
@@ -110,8 +114,24 @@ export const getUserTweetsSlice = createSlice({
       .addCase(createTweet.fulfilled, (state, action) => {
         const newTweet = action.payload;
         state.userTweets = [newTweet, ...state.userTweets];
+      })
+      .addCase(createTweetReply.fulfilled, (state, action) => {
+        const quoteTweet = action.payload.data.parentTweet;
+        state.userTweets = [
+          action.payload.data,
+          ...state.userTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? { ...tweet, parentTweet: quoteTweet }
+                : tweet;
+            }
+          }),
+        ];
       });
   },
 });
 
 export default getUserTweetsSlice.reducer;
+export const { resetUserTweets } = getUserTweetsSlice.actions;

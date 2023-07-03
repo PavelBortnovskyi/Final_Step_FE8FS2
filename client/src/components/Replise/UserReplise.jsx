@@ -47,7 +47,6 @@ export const UserReplise = ({ replise }) => {
 
   function findparent(parent, parentId) {
     if (parent?.parentTweet !== null) {
-      console.log(parent.parentTweet);
       return findparent(parent.parentTweet);
     } else if (parent.parentTweet === null && parent.id === parentId) {
       return parent;
@@ -110,7 +109,6 @@ export const UserReplise = ({ replise }) => {
           );
         }
       } else if (replise.parentTweet === null && replise.id === parentId) {
-        return console.log(replise.id);
       }
     });
   }
