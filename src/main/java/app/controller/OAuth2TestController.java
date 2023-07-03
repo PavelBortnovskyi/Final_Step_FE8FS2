@@ -18,10 +18,14 @@ public class OAuth2TestController {
     return new ModelAndView("login");
   }
 
+
+  //http://localhost:8080/oauth2/authorization/google
+  //https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google
   @GetMapping("/oauth2/authorization/google")
   private void handleGoogleOAuth() {;
   }
 
+  //https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/facebook
   @GetMapping("/oauth2/authorization/facebook")
   private void handleFBOAuth() {;
   }

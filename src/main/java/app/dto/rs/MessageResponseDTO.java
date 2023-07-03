@@ -25,4 +25,7 @@ public class MessageResponseDTO {
 
   @JsonView(Marker.ChatDetails.class)
   private Timestamp sent;
+
+  @JsonView(Marker.ChatDetails.class)
+  private String serverMark;
 }

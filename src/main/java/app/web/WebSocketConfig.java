@@ -61,14 +61,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-    registration.setMessageSizeLimit(128 * 1024);
+    registration.setSendBufferSizeLimit(1024*1024);
+    registration.setMessageSizeLimit(512 * 1024);
+    registration.setSendTimeLimit(10000);
   }
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/topic/chats", "/topic/notifications");
-    //.setHeartbeatValue(new long[]{25000, 25000})
-    //.setTaskScheduler(messageBrokerTaskScheduler);
+    registry.enableSimpleBroker("/topic/chats", "/topic/notifications")
+    .setHeartbeatValue(new long[]{25000, 25000})
+    .setTaskScheduler(messageBrokerTaskScheduler);
     registry.setApplicationDestinationPrefixes("/api");
   }
 
