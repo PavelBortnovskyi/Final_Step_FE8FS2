@@ -163,7 +163,7 @@ export const router = createBrowserRouter([
         element: <SearchUserPage />,
       },
       {
-        path: '/google-login',
+        path: '/social-login',
         element: <GoogleLogin />,
       },
     ],
