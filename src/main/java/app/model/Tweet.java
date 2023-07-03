@@ -28,7 +28,7 @@ public class Tweet extends BaseEntityModel {
   @JoinColumn(name = "user_id")
   private UserModel user;
 
-  @ManyToOne   //(cascade = CascadeType.REMOVE)
+  @ManyToOne
   @JoinColumn(name = "parent_tweet")
   private Tweet parentTweet;
 

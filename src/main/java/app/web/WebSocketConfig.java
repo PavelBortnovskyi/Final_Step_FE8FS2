@@ -67,8 +67,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.enableSimpleBroker("/topic/chats", "/topic/notifications");
-      //.setHeartbeatValue(new long[]{25000, 25000})
-      //.setTaskScheduler(messageBrokerTaskScheduler);
+    //.setHeartbeatValue(new long[]{25000, 25000})
+    //.setTaskScheduler(messageBrokerTaskScheduler);
     registry.setApplicationDestinationPrefixes("/api");
   }
 
@@ -147,6 +147,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
           log.info("User: " + auth.getName() + " authorized");
           accessor.getSessionAttributes()
             .put("userId", jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
+          accessor.getSessionAttributes()
+            .put("userEmail", jwtTokenService.extractUserEmailFromClaims(jwtTokenService.extractClaimsFromToken(token, TokenType.ACCESS).get()).get());
         });
     } catch (Exception e) {
       throw new JwtAuthenticationException("Websocket authentication failed with: " + e.getMessage());
