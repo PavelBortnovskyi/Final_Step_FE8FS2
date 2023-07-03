@@ -29,4 +29,5 @@ export const likedTweetSlice = createSlice({
       })
   },
 });
+
 export default likedTweetSlice.reducer;
