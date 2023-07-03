@@ -50,6 +50,7 @@ public class WebSocketController {
 
     if (currUserId.equals(messageDTO.getUserId())) {
       MessageResponseDTO finalFreshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
+      finalFreshMessage.setServerMark("Final Step TWFE8FS2 accepted");
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
         .forEach(email -> template.convertAndSend("/topic/chats/" + email, finalFreshMessage));
     } else
