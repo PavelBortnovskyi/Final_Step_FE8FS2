@@ -10,10 +10,12 @@ export const loginUser = createAsyncThunk(
       const { email, password } = user;
 
       // request for server
-      const data = await myAxios.post('/auth/login', {
+      const { data } = await myAxios.post('/auth/login', {
         email,
         password,
       });
+
+      console.log(data);
 
       // if a token is received, store it in localStorage
       if (data.ACCESS_TOKEN) {
@@ -24,7 +26,7 @@ export const loginUser = createAsyncThunk(
       }
       return data;
     } catch (error) {
-      console.log(error);
+      console.log({ error });
       // set message error from server
       const errorMessage = error.response.data || error.message;
       return rejectWithValue(errorMessage);

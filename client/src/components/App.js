@@ -91,9 +91,9 @@ export const App = () => {
           heartbeatOutgoing: 25000,
           onConnect: connectCallback,
           onStompError: errorCallback,
-          debug: function (str) {
-            console.log(str);
-          },
+          // debug: function (str) {
+          //   console.log(str);
+          // },
         });
         const stompClient = stompClientRef.current;
 
