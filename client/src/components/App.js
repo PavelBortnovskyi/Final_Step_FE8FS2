@@ -139,6 +139,7 @@ export const App = () => {
     if (accessToken) {
       if (!user) {
         dispatch(getUser());
+        dispatch(setAuthenticated(true));
       }
     } else {
       dispatch(setAuthenticated(false));
