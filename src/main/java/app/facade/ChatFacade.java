@@ -40,7 +40,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
    */
   public ChatResponseDTO getChatById(Long chatId, Long currUserId) {
     return chatService.findById(chatId).filter(chat -> chat.getInitiatorUser().getId().equals(currUserId)
-        || chatService.getChatMemberIds(chatId).contains(currUserId))
+        || chatService.getChatMemberIds(chat.getId()).contains(currUserId))
       .map(this::convertToDto)
       .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " for user with id:" + currUserId + " not found"));
   }

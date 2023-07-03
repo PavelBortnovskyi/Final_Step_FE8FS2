@@ -30,18 +30,18 @@ import java.util.stream.Collectors;
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(UnAuthorizedException.class)
-  public ErrorInfo handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo2 handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.setHeader("ERROR", ex.getMessage());
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+    return new ErrorInfo2(new ErrorInfo3("401", ex.getMessage()));
   }
 
   @ExceptionHandler(BadRequestException.class)
   @MessageExceptionHandler(BadRequestException.class)
-  public ErrorInfo handleBadRequestException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo2 handleBadRequestException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     response.setHeader("ERROR", ex.getMessage());
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+    return new ErrorInfo2(new ErrorInfo3("400", ex.getMessage()));
   }
 
   // -------- SPRING ---------
@@ -49,11 +49,11 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler({AuthenticationException.class})
   @MessageExceptionHandler(AuthenticationException.class)
   @ResponseBody
-  public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+  public ErrorInfo2 handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.setHeader("ERROR", ex.getMessage());
     log.error("Wrong login or password!");
-    return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
+    return new ErrorInfo2(new ErrorInfo3("401", ex.getMessage()));
   }
 
   @ResponseBody
