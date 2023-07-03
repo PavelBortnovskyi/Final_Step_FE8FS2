@@ -59,10 +59,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     this.messageBrokerTaskScheduler = taskScheduler;
   }
 
-  @Override
-  public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-    registration.setMessageSizeLimit(128 * 1024);
-  }
+//  @Override
+//  public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+//    registration.setMessageSizeLimit(128 * 1024);
+//  }
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
