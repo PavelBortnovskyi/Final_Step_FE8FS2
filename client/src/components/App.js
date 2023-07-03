@@ -59,6 +59,20 @@ export const App = () => {
 
           // set socket connection to redux
           dispatch(setSocketChat(stompClient));
+
+          // send message
+          // stompClient.publish({
+          //   destination: '/api/v1/message',
+          //   body: JSON.stringify({
+          //     userId: 1,
+          //     chatId: 2,
+          //     body: 'test message',
+          //   }),
+          //   headers: {
+          //     Authorization: `Bearer ${accessToken}`,
+          //     Origin: 'client',
+          //   },
+          // });
         };
 
         // error socket
@@ -77,9 +91,9 @@ export const App = () => {
           heartbeatOutgoing: 25000,
           onConnect: connectCallback,
           onStompError: errorCallback,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
+          debug: function (str) {
+            console.log(str);
+          },
         });
         const stompClient = stompClientRef.current;
 

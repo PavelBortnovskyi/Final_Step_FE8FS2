@@ -124,6 +124,7 @@ export const FormLogin = () => {
   const googleConnect = async () => {
     const response = await axios.get(
       'https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google'
+      // 'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/oauth2'
     );
 
     console.log('google', response);
@@ -214,9 +215,9 @@ export const FormLogin = () => {
         />
       </GoogleOAuthProvider> */}
       <br />
-      <button onClick={handleLogin}>Login with Google</button>
+      {/* <button onClick={handleLogin}>Login with Google</button> */}
       <br />
-      <button onClick={googleConnect}>Get to server login</button>
+      {/* <button onClick={googleConnect}>Get to server login</button> */}
       <br />
       <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
         Link to server login
