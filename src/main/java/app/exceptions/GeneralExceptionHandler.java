@@ -32,6 +32,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(UnAuthorizedException.class)
   public ErrorInfo handleLoginException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setHeader("ERROR", ex.getMessage());
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
@@ -39,6 +40,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   @MessageExceptionHandler(BadRequestException.class)
   public ErrorInfo handleBadRequestException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    response.setHeader("ERROR", ex.getMessage());
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
 
@@ -49,6 +51,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
   @ResponseBody
   public ErrorInfo handleAuthException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setHeader("ERROR", ex.getMessage());
     log.error("Wrong login or password!");
     return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), ex.getMessage());
   }
