@@ -63,10 +63,9 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
     String registrationId = oauth2User.getOauth2ClientName();
 
     //Check presence in DB
-    if (this.userService.isEmailPresentInDB(email)){
+    if (this.userService.isEmailPresentInDB(email)) {
       tokenResponse = this.jwtTokenService.generateTokenPair(this.userService.getUser(email));
-    }
-    else {
+    } else {
       UserModel freshUser = new UserModel();
 
       freshUser.setEmail(email);
@@ -100,9 +99,9 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
 //    outputStream.flush();
 //    outputStream.close();
 
-    String oauthUrl = String.format("https://final-step-fe-8-fs-2.vercel.app?accessToken=%s&refreshToken=%s",
+    String oauthUrl = String.format("https://final-step-fe-8-fs-2.vercel.app/social-login?accessToken=%s&refreshToken=%s",
       tokenResponse.get("ACCESS_TOKEN"), tokenResponse.get("REFRESH_TOKEN"));
-    String login = String.format("/api/v1/auth/login?email=%s&password=%s", email, userService.getUser(email).getPassword());
+    //String login = String.format("/api/v1/auth/login?email=%s&password=%s", email, userService.getUser(email).getPassword());
     response.sendRedirect(oauthUrl);
 
     super.onAuthenticationSuccess(request, response, authentication);
