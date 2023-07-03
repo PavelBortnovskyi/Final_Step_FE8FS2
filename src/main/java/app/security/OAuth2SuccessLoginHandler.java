@@ -1,9 +1,11 @@
 package app.security;
 
+import app.dto.rq.UserRequestDTO;
 import app.model.UserModel;
 import app.service.EmailService;
 import app.service.JwtTokenService;
 import app.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +35,7 @@ import static org.passay.AllowedCharacterRule.ERROR_CODE;
 @Log4j2
 @Component
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = {"http://localhost:3000", "https://final-step-fe-8-fs-2.vercel.app"})
 public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
   private final JwtTokenService jwtTokenService;
@@ -59,8 +63,9 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
     String registrationId = oauth2User.getOauth2ClientName();
 
     //Check presence in DB
-    if (this.userService.isEmailPresentInDB(email))
+    if (this.userService.isEmailPresentInDB(email)){
       tokenResponse = this.jwtTokenService.generateTokenPair(this.userService.getUser(email));
+    }
     else {
       UserModel freshUser = new UserModel();
 
@@ -88,14 +93,18 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
       tokenResponse = this.jwtTokenService.generateTokenPair(this.userService.save(freshUser));
     }
 
-    objectMapper.writeValue(outputStream, tokenResponse);
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
-    response.setStatus(200);
-    outputStream.flush();
-    outputStream.close();
+//    objectMapper.writeValue(outputStream, tokenResponse);
+//    response.setContentType("application/json");
+//    response.setCharacterEncoding("UTF-8");
+//    response.setStatus(200);
+//    outputStream.flush();
+//    outputStream.close();
 
-    //response.sendRedirect("/signup_g");
+    String oauthUrl = String.format("/api/v1/auth/oauth2/tokens?accessToken=%s&refreshToken=%s",
+      tokenResponse.get("ACCESS_TOKEN"), tokenResponse.get("REFRESH_TOKEN"));
+    String login = String.format("/api/v1/auth/login?email=%s&password=%s", email, userService.getUser(email).getPassword());
+    response.sendRedirect(oauthUrl);
+
     super.onAuthenticationSuccess(request, response, authentication);
   }
 

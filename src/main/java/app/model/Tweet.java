@@ -47,6 +47,14 @@ public class Tweet extends BaseEntityModel {
   @OneToOne(mappedBy = "tweet", cascade = CascadeType.REMOVE)
   private RatingModel ratingModel;
 
+//  @OneToOne(cascade = CascadeType.REMOVE)
+//  @JoinTable(
+//    name = "rating_tweets",
+//    joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"),
+//    inverseJoinColumns = @JoinColumn(name = "id", referencedColumnName = "tweet_id")
+//  )
+//  private Tweet ratingTweet;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

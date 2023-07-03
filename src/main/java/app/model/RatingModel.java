@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class RatingModel {
   @Id
   @Column(name = "tweet_id")
-  private Long tweetID;
+  private Long id;
   @Column(name = "rating")
   private double tweetRating;
 
@@ -21,7 +21,7 @@ public class RatingModel {
   private Tweet tweet;
 
   public RatingModel(Long id, double rating) {
-    this.tweetID = id;
+    this.id = id;
     this.tweetRating = rating;
   }
 }

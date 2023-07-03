@@ -8,8 +8,6 @@ import app.exceptions.httpError.BadRequestException;
 import app.facade.ChatFacade;
 import app.facade.MessageFacade;
 import app.facade.NotificationFacade;
-import app.facade.UserFacade;
-import app.service.AuthUserService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -36,13 +34,9 @@ public class WebSocketController {
 
   private final ChatFacade chatFacade;
 
-  private final UserFacade userFacade;
-
   private final NotificationFacade notificationFacade;
 
   private final SimpMessagingTemplate template;
-
-  private final AuthUserService authUserService;
 
   @Validated({Marker.New.class})
   @MessageMapping("/v1/message")

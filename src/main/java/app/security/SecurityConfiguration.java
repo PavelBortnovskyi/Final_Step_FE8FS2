@@ -5,15 +5,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Log4j2
@@ -29,6 +39,10 @@ public class SecurityConfiguration {
 
   private final OAuth2UserServiceImpl oAuth2UserService;
   private final OAuth2SuccessLoginHandler oAuth2SuccessLoginHandler;
+
+  private final OAuth2FailureLoginHandler oAuth2FailureLoginHandler;
+
+  //private final CustomAccessTokenResponseClient customAccessTokenResponseClient;
 
 //  @Autowired
 //  @Qualifier("delegatedAuthenticationEntryPoint")
@@ -59,17 +73,26 @@ public class SecurityConfiguration {
       .antMatchers("/api/v1/auth/password/reset/**").permitAll()
       .antMatchers("/api/v1/tweet/top**").permitAll()
       .antMatchers("/chat-ws").permitAll()
-      //.antMatchers("/chat-ws/*").permitAll()
-      //.antMatchers("/api/v1/message").permitAll()
-      //.antMatchers("/api/v1/message/**").permitAll()
+      .antMatchers("/chat-ws/*").permitAll()
+      .antMatchers("/api/v1/auth/oauth2/error").permitAll()
+      .antMatchers("/api/v1/auth/oauth2/tokens").permitAll()
+      .antMatchers("/api/v1/auth/oauth2/tokens/*").permitAll()
+      .antMatchers("/oauth2/authorization/google").permitAll()
+      .antMatchers("/oauth2/authorization/facebook").permitAll()
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      .loginPage("http://localhost").loginPage("https://final-step-fe-8-fs-2.vercel.app/") //TODO: need to change on deploy
+      //.authorizationEndpoint().baseUri("/")
+      //.authorizationRequestRepository(lenientAuthorizationRequestRepository())
+      //.and()
+      //.tokenEndpoint().accessTokenResponseClient(customAccessTokenResponseClient)
+      //.and()
+      .loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()
       .successHandler(oAuth2SuccessLoginHandler)
+      .failureHandler(oAuth2FailureLoginHandler)
       .and()
       .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
@@ -98,7 +121,7 @@ public class SecurityConfiguration {
 //     configuration.addAllowedMethod(HttpMethod.PUT);
 //     configuration.addAllowedMethod(HttpMethod.DELETE);
 //     configuration.addAllowedMethod(HttpMethod.OPTIONS);
-//    httpSec.cors().disable();
+//     httpSec.cors().disable();
 
     return httpSec.build();
   }
@@ -107,5 +130,22 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
   }
+
+//  @Bean
+//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest> lenientAuthorizationRequestRepository() {
+//    return new HttpSessionOAuth2AuthorizationRequestRepository() {
+//      @Override
+//      public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+//        OAuth2AuthorizationRequest authorizationRequest = super.loadAuthorizationRequest(request);
+//        if (authorizationRequest != null) {
+//          // Удалите проверку параметра state
+//          authorizationRequest = OAuth2AuthorizationRequest.from(authorizationRequest)
+//            .state(null)
+//            .build();
+//        }
+//        return authorizationRequest;
+//      }
+//    };
+//  }
 }
 

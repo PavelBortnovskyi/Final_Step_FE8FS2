@@ -66,16 +66,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/topic/chats", "/topic/notifications")
-      .setHeartbeatValue(new long[]{10000, 10000})
-      .setTaskScheduler(messageBrokerTaskScheduler);
+    registry.enableSimpleBroker("/topic/chats", "/topic/notifications");
+      //.setHeartbeatValue(new long[]{25000, 25000})
+      //.setTaskScheduler(messageBrokerTaskScheduler);
     registry.setApplicationDestinationPrefixes("/api");
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/chat-ws").setAllowedOriginPatterns("http://localhost:3000", "http://localhost:3000/**", //TODO: need to change on deploy
-      "http://localhost:8080", "http://localhost:8080/**",
       "https://final-step-fe-8-fs-2.vercel.app", "https://final-step-fe-8-fs-2.vercel.app/**");
   }
 
