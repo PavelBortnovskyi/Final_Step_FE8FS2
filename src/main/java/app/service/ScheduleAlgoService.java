@@ -40,7 +40,7 @@ public class ScheduleAlgoService {
     //    .forEach(t -> tweetsRating.put(t.getId(), setRating(t)));
 
     // получаем предыдущие твиты, которые попали в рейтинг
-    ratingModelRepository.findAll().forEach(r -> tweetsRating.put(r.getTweetID(), setRating(tweetService.getTweet(r.getTweetID()))));
+    ratingModelRepository.findAll().forEach(r -> tweetsRating.put(r.getId(), setRating(tweetService.getTweet(r.getId()))));
 
     //добавляем все твиты в один список и удаляем повторы
     LinkedList<RatingModel> tweetsRatingSorted = new LinkedList<>();
@@ -69,7 +69,7 @@ public class ScheduleAlgoService {
 
   //вывод рейтинговых твитов
   public Page<Tweet> getTopTweets(Pageable pageable) {
-    return ratingModelRepository.findAllByOrderByTweetRatingDesc(pageable).map(t -> tweetService.getTweet(t.getTweetID()));
+    return ratingModelRepository.findAllByOrderByTweetRatingDesc(pageable).map(t -> tweetService.getTweet(t.getId()));
   }
 
   //расчет коефициента рейтинга для твитов

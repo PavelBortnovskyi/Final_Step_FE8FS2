@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
+  Box,
   Button,
   Snackbar,
   TextField,
@@ -18,6 +19,11 @@ import {
 
 import { registerUser } from 'src/redux/thunk/registerUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+
+import {
+  MyFacebookLoginButton,
+  MyGoogleLoginButton,
+} from '../SocialLogin/SocialBtn';
 
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -38,6 +44,39 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   borderRadius: '40px',
 }));
 
+const BoxStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'relative',
+
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    width: '200px',
+    height: '1px',
+    background: `linear-gradient(to right, rgba(0, 0, 0, 0), ${theme.palette.text.primary}, rgba(0, 0, 0, 0))`,
+    top: '10px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: '0',
+  },
+}));
+
+const BoxLiner = styled(Box)(({ theme }) => ({
+  padding: '0 0 10px',
+  textAlign: 'center',
+  position: 'relative',
+  zIndex: '1',
+
+  '& span': {
+    color: `${theme.palette.text.primary}`,
+    padding: '2px 6px',
+    backgroundColor: `${theme.palette.background.modal}`,
+    zIndex: '2',
+  },
+}));
+
 // for check email
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -53,7 +92,7 @@ const SignupSchema = Yup.object().shape({
   userTag: Yup.string()
     .min(2, 'must be more than 2 characters')
     .max(20, 'must be no more than 20 characters')
-    .matches(/^[0-9a-zA-Z_\-/.]+$/, 'only English letters and numbers')
+    .matches(/^[0-9a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ_\-/.]+$/, 'only letters and numbers')
     .required('required field'),
   password: Yup.string()
     .min(8, 'must be more than 8 characters')
@@ -138,8 +177,8 @@ export const FormRegistration = () => {
               flexDirection: 'column',
               position: 'relative',
               gap: '18px',
-              margin: '20px',
-              width: '300px',
+              margin: '20px 0px',
+              width: 'clamp(200px, 60vw, 300px)',
               maxWidth: '300px',
             }}
             autoComplete="off"
@@ -238,6 +277,21 @@ export const FormRegistration = () => {
           </Form>
         )}
       </Formik>
+      <BoxStyled>
+        <BoxLiner>
+          <span>OR</span>
+        </BoxLiner>
+      </BoxStyled>
+      <Box>
+        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
+          <MyGoogleLoginButton />
+        </Link>
+      </Box>
+      <Box>
+        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/facebook">
+          <MyFacebookLoginButton />
+        </Link>
+      </Box>
     </>
   );
 };

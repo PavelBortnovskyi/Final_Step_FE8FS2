@@ -19,7 +19,7 @@ export const UserLikes = () => {
     });
   };
   changedArray(userLikes);
-
+console.log(userLikes);
   return (
     (userLikes.length === 0 && <NoUserLikes />) ||
     (newArr &&

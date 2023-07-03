@@ -3,12 +3,12 @@ import { myAxios } from 'src/utils/axiosSetup';
 
 export const findMessage = createAsyncThunk(
   'messagesSlice/findMessage',
-  async ({ search, pageSize = 999, page = 0 }, { rejectWithValue }) => {
+  async ({ search, size = 999, page = 0 }, { rejectWithValue }) => {
     try {
       if (search.trim() === '') return { searchStr: search.trim() };
 
       const { data } = await myAxios.get(
-        `/chat/search?keyword=${search.trim()}&pageSize=${pageSize}&page=${page}`
+        `/chat/search?keyword=${search.trim()}&size=${size}&page=${page}`
       );
 
       return { ...data, searchStr: search.trim() };

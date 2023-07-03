@@ -9,7 +9,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -82,8 +87,21 @@ public class AuthController {
     return this.authFacade.makePasswordReset(passResetDto, request);
   }
 
+  /**
+   * This endpoint waiting for valid refresh token in request to return new token pair for refresh owner
+   */
   @GetMapping(path = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<HashMap<String, String>> handleRefresh(HttpServletRequest request) {
     return this.authFacade.makeRefresh(request);
+  }
+
+  /**
+   * This endpoint just to show OAuth2 authentication error
+   */
+  @GetMapping("/oauth2/error")
+  public String error(HttpServletRequest request) {
+    String message = (String) request.getSession().getAttribute("error.message");
+    request.getSession().removeAttribute("error.message");
+    return message;
   }
 }

@@ -8,7 +8,7 @@ import {
 } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
 import { getTokens } from 'src/utils/tokens';
-import { notAuthenticated } from 'src/redux/reducers/authSlice';
+import { setAuthenticated } from 'src/redux/reducers/authSlice';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
@@ -39,17 +39,7 @@ export const App = () => {
           Origin: 'client',
         };
 
-        // create connect to socket
-        stompClientRef.current = new Client({
-          brokerURL: socketUrl,
-          connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
-        });
-        const stompClient = stompClientRef.current;
-
-        // after activate connect
+        // connect socket
         const connectCallback = () => {
           console.log('Connected to STOMP server');
 
@@ -67,27 +57,22 @@ export const App = () => {
             headers
           );
 
-          //  user/topic/chats-${username}
-          // stompClient.subscribe(
-          //   `/user/topic/chats-${user.email}`,
-          //   onMessageReceived,
-          //   headers
-          // );
-
           // set socket connection to redux
           dispatch(setSocketChat(stompClient));
-        };
 
-        // set received messages to redux
-        const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
-          dispatch(setCurrentMessage(JSON.parse(message.body)));
-        };
-
-        // set notification to redux
-        const onNotificationReceived = (notification) => {
-          // console.log('Received notification:', notification.body);
-          dispatch(setSocketNotification(JSON.parse(notification.body)));
+          // send message
+          // stompClient.publish({
+          //   destination: '/api/v1/message',
+          //   body: JSON.stringify({
+          //     userId: 1,
+          //     chatId: 2,
+          //     body: 'test message',
+          //   }),
+          //   headers: {
+          //     Authorization: `Bearer ${accessToken}`,
+          //     Origin: 'client',
+          //   },
+          // });
         };
 
         // error socket
@@ -98,8 +83,31 @@ export const App = () => {
           }
         };
 
-        stompClient.onConnect = connectCallback;
-        stompClient.onStompError = errorCallback;
+        // create socket connect to server
+        stompClientRef.current = new Client({
+          brokerURL: socketUrl,
+          connectHeaders: headers,
+          heartbeatIncoming: 25000,
+          heartbeatOutgoing: 25000,
+          onConnect: connectCallback,
+          onStompError: errorCallback,
+          // debug: function (str) {
+          //   console.log(str);
+          // },
+        });
+        const stompClient = stompClientRef.current;
+
+        // set received messages to redux
+        const onMessageReceived = (message) => {
+          // console.log('Received message:', message);
+          dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
+
+        // set notification to redux
+        const onNotificationReceived = (notification) => {
+          // console.log('Received notification:', notification.body);
+          dispatch(setSocketNotification(JSON.parse(notification.body)));
+        };
 
         // activate connect
         stompClient.activate();
@@ -131,9 +139,10 @@ export const App = () => {
     if (accessToken) {
       if (!user) {
         dispatch(getUser());
+        dispatch(setAuthenticated(true));
       }
     } else {
-      dispatch(notAuthenticated());
+      dispatch(setAuthenticated(false));
     }
   }, [dispatch, accessToken, user]);
 

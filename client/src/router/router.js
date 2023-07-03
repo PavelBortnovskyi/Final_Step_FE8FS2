@@ -20,6 +20,7 @@ import ModalCommentPage from 'src/pages/ModalCommentPage';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 import { ModalQuotePage } from 'src/pages/ModalQuotePage';
 import { SearchUserPage } from 'src/pages/SearchUserPage';
+import { SocialLogin } from 'src/components/SocialLogin/SocialLogin';
 
 export const router = createBrowserRouter([
   {
@@ -159,7 +160,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/search-user',
-        element: <SearchUserPage />
+        element: <SearchUserPage />,
+      },
+      {
+        path: '/social-login',
+        element: <SocialLogin />,
       },
     ],
   },

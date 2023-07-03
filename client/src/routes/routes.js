@@ -17,6 +17,7 @@ import ModalCommentPage from 'src/pages/ModalCommentPage';
 import { NotificationsUser } from 'src/components/NotificationsUser/NotificationsUser';
 import { ModalQuotePage } from 'src/pages/ModalQuotePage';
 import { SearchUserPage } from 'src/pages/SearchUserPage';
+import { SocialLogin } from 'src/components/SocialLogin/SocialLogin';
 
 export const mainRoutes = () => {
   return [
@@ -124,7 +125,7 @@ export const mainRoutes = () => {
     },
     {
       path: '/search-user',
-      element: <SearchUserPage />
+      element: <SearchUserPage />,
     },
   ];
 };
@@ -155,15 +156,23 @@ export const modalRoutes = () => {
       path: '/modal/quote',
       element: <ModalQuotePage />,
     },
+    {
+      path: '/social-login',
+      element: <SocialLogin />,
+    },
   ];
 };
 
-export const rightRoutes = () => {
+export const rightRoutes = (mobile) => {
   return [
     {
       path: '/messages',
-      element: <Chat />,
+      element: mobile ? <></> : <Chat />,
     },
+    // {
+    //   path: '/social-login',
+    //   element: <SocialLogin />,
+    // },
     {
       path: '*',
       element: <RightSection />,

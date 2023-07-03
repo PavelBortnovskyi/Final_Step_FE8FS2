@@ -7,6 +7,7 @@ export const UserReplisePage = () => {
     useSelector((state) => state.userReplise.userReplise) || [];
   console.log(userReplise);
   const replise = userReplise;
+  console.log(replise);
   return (
     replise && (
       <Box>

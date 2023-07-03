@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
-  Box,
   Button,
   Snackbar,
   TextField,
@@ -15,10 +14,12 @@ import {
 
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
-import {
-  MyFacebookLoginButton,
-  MyGoogleLoginButton,
-} from '../SocialLogin/SocialBtn';
+
+// google auth
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
+import { myAxios } from 'src/utils/axiosSetup.js';
+import axios from 'axios';
 
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -38,39 +39,6 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   borderRadius: '40px',
 }));
 
-const BoxStyled = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'relative',
-
-  '&:after': {
-    content: '""',
-    position: 'absolute',
-    width: '200px',
-    height: '1px',
-    background: `linear-gradient(to right, rgba(0, 0, 0, 0), ${theme.palette.text.primary}, rgba(0, 0, 0, 0))`,
-    top: '10px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    zIndex: '0',
-  },
-}));
-
-const BoxLiner = styled(Box)(({ theme }) => ({
-  padding: '0 0 10px',
-  textAlign: 'center',
-  position: 'relative',
-  zIndex: '1',
-
-  '& span': {
-    color: `${theme.palette.text.primary}`,
-    padding: '2px 6px',
-    backgroundColor: `${theme.palette.background.modal}`,
-    zIndex: '2',
-  },
-}));
-
 // for check email
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -86,7 +54,7 @@ const SignupSchema = Yup.object().shape({
 
 // Formik form
 export const FormLogin = () => {
-  // const theme = useTheme();
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   // get message from server after authorization
@@ -125,6 +93,19 @@ export const FormLogin = () => {
   //   password: '',
   // };
 
+  //*** GOOGLE AUTH ********************************************/
+  const sendData = async (credentialResponse) => {
+    // redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
+
+    const response = await myAxios.post(
+      'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google',
+      credentialResponse
+    );
+
+    console.log(response);
+  };
+  //***********************************************/
+
   return (
     <>
       {message && (
@@ -149,8 +130,8 @@ export const FormLogin = () => {
               flexDirection: 'column',
               position: 'relative',
               gap: '18px',
-              margin: '20px 0px',
-              width: 'clamp(200px, 60vw, 300px)',
+              margin: '20px',
+              width: '300px',
               maxWidth: '300px',
             }}
             autoComplete="off"
@@ -187,21 +168,22 @@ export const FormLogin = () => {
           </Form>
         )}
       </Formik>
-      <BoxStyled>
-        <BoxLiner>
-          <span>OR</span>
-        </BoxLiner>
-      </BoxStyled>
-      <Box>
-        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
-          <MyGoogleLoginButton />
-        </Link>
-      </Box>
-      <Box>
-        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/facebook">
-          <MyFacebookLoginButton />
-        </Link>
-      </Box>
+
+      <GoogleOAuthProvider clientId="833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com">
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log('google', credentialResponse);
+
+            const decode = jwt_decode(credentialResponse.credential);
+            console.log('decode', decode);
+
+            // sendData(credentialResponse);s
+          }}
+          onError={() => {
+            console.log('login error');
+          }}
+        />
+      </GoogleOAuthProvider>
     </>
   );
 };
