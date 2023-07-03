@@ -25,9 +25,9 @@ export const GoogleLogin = () => {
     if (accessToken && refreshToken) {
       setAuthToken(accessToken);
       setRefreshToken(refreshToken);
-      navigate('/');
+      // navigate('/');
     }
   }, [navigate, queryParams]);
 
-  return <></>;
+  return <>test</>;
 };
