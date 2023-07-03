@@ -35,9 +35,14 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
     return this.chatService.createChat(userId, interlocutorId).stream().map(this::convertToDto).collect(Collectors.toSet());
   }
 
-  public ChatResponseDTO getChatById(Long chatId) {
-    return chatService.findById(chatId).map(this::convertToDto)
-      .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
+  /**
+   * Method returns chat by id with user participation in chat checking
+   */
+  public ChatResponseDTO getChatById(Long chatId, Long currUserId) {
+    return chatService.findById(chatId).filter(chat -> chat.getInitiatorUser().getId().equals(currUserId)
+        || chatService.getChatMemberIds(chatId).contains(currUserId))
+      .map(this::convertToDto)
+      .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " for user with id:" + currUserId + " not found"));
   }
 
   /**
