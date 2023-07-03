@@ -7,13 +7,15 @@ import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { unLikePost } from '../thunk/tweets/unlike.js';
-
+import { useDispatch } from 'react-redux';
+import { createTweetReply } from '../thunk/tweets/replyTweet.js';
+import { getUser } from '../thunk/getUser.js';
+import { getUserBiId } from '../thunk/getUserBiId.js';
 const initialState = {
   userReplise: [],
   isLoading: false,
   error: '',
 };
-
 export const userRepliseSlice = createSlice({
   name: 'userReply',
   initialState,
@@ -40,65 +42,148 @@ export const userRepliseSlice = createSlice({
         state.error = action.payload;
       })
 
-      // .addCase(addRetweet.fulfilled, (state, action) => {
-      //   const retweetTweet = action.payload;
-      //   state = state.userReplise.map((tweet) => {
-      //     function findeParent(tweet) {
-      //       if (tweet.id === retweetTweet.id) {
-      //         console.log(retweetTweet);
-      //         return { ...tweet, tweet: 'ok' };
-      //       } else if (tweet.parentTweet !== null) {
-      //         console.log('ok');
-      //         findeParent(tweet.parentTweet);
-      //       }
-      //     }
-
-      //     return findeParent(tweet);
-      //   });
-
-      // })
-
       .addCase(addRetweet.fulfilled, (state, action) => {
         const retweetTweet = action.payload;
-        state = state.userReplise.map((tweet) => {
-          const parentMatch = findeParent(tweet);
-          function findeParent(tweet) {
-            if (tweet.id === retweetTweet.id) {
-              // console.log(tweet);
+        state.userReplise = state.userReplise.map((tweet) => {
+          if (tweet.id === retweetTweet.id) {
+            return { id: tweet.id, ...retweetTweet };
+          } else if (retweetTweet.parentTweet === null) {
+            const updatedTweet = { ...tweet };
+            findAndReplaceParent(updatedTweet, retweetTweet);
+            return updatedTweet;
+          }
+          return tweet;
+        });
 
-              return tweet;
-            } else if (tweet.parentTweet !== null) {
-              // console.log('ok');
-              return findeParent(tweet.parentTweet);
+        function findAndReplaceParent(tweet, retweetTweet) {
+          if (tweet.parentTweet !== null) {
+            if (tweet.parentTweet.id === retweetTweet.id) {
+              tweet.parentTweet = retweetTweet;
             } else {
-              // console.log('we');
-              return false;
+              findAndReplaceParent(tweet.parentTweet, retweetTweet);
             }
           }
-
-          return parentMatch ? tweet : tweet;
-        });
+        }
       })
-
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
+        state.userReplise = state.userReplise.map((tweet) => {
+          if (tweet.id === likedTweet.id) {
+            console.log(likedTweet);
+            return { id: tweet.id, ...likedTweet };
+          } else if (likedTweet.parentTweet === null) {
+            const updatedTweet = { ...tweet };
+            findAndReplaceParent(updatedTweet, likedTweet);
+            return updatedTweet;
+          }
+          return tweet;
+        });
 
-        console.log(likedTweet);
-        state.userReplise = state.userReplise.map((tweet) =>
-          tweet.id === likedTweet.id ? likedTweet : tweet
-        );
+        function findAndReplaceParent(tweet, likedTweet) {
+          if (tweet.parentTweet !== null) {
+            if (tweet.parentTweet.id === likedTweet.id) {
+              tweet.parentTweet = likedTweet;
+            } else {
+              findAndReplaceParent(tweet.parentTweet, likedTweet);
+            }
+          }
+        }
       })
-      // .addCase(unLikePost.fulfilled, (state, action) => {
-      //   const unLikedTweet = action.payload;
-      // state.userReplise = state.userReplise.filter(
-      //   (post) => post.tweet.id !== unLikedTweet.id
-      // );
-      // })
+
+      .addCase(deleteBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.userReplise = state.userReplise.map((tweet) => {
+          if (tweet.id === bookmarkTweet.id) {
+            return { id: tweet.id, ...bookmarkTweet };
+          } else if (bookmarkTweet.parentTweet === null) {
+            const updatedTweet = { ...tweet };
+            findAndReplaceParent(updatedTweet, bookmarkTweet);
+            return updatedTweet;
+          }
+          return tweet;
+        });
+
+        function findAndReplaceParent(tweet, bookmarkTweet) {
+          if (tweet.parentTweet !== null) {
+            if (tweet.parentTweet.id === bookmarkTweet.id) {
+              tweet.parentTweet = bookmarkTweet;
+            } else {
+              findAndReplaceParent(tweet.parentTweet, bookmarkTweet);
+            }
+          }
+        }
+      })
+
+      .addCase(addBookmark.fulfilled, (state, action) => {
+        const bookmarkTweet = action.payload;
+        state.userReplise = state.userReplise.map((tweet) => {
+          if (tweet.id === bookmarkTweet.id) {
+            return { id: tweet.id, ...bookmarkTweet };
+          } else if (bookmarkTweet.parentTweet === null) {
+            const updatedTweet = { ...tweet };
+            findAndReplaceParent(updatedTweet, bookmarkTweet);
+            return updatedTweet;
+          }
+          return tweet;
+        });
+
+        function findAndReplaceParent(tweet, bookmarkTweet) {
+          if (tweet.parentTweet !== null) {
+            if (tweet.parentTweet.id === bookmarkTweet.id) {
+              tweet.parentTweet = bookmarkTweet;
+            } else {
+              findAndReplaceParent(tweet.parentTweet, bookmarkTweet);
+            }
+          }
+        }
+      })
+
       .addCase(addQuote.fulfilled, (state, action) => {
-        const quoteTweet = action.payload;
-        state.userReplise = state.userReplise.map((tweet) =>
-          tweet.id === quoteTweet.id ? quoteTweet : tweet
-        );
+        const quoteTweet = action.payload.data.parentTweet;
+        state.userReplise = state.userReplise.map((tweet) => {
+          if (tweet.id === quoteTweet.id) {
+            return { id: tweet.id, ...quoteTweet };
+          } else if (quoteTweet.parentTweet === null) {
+            const updatedTweet = { ...tweet };
+            findAndReplaceParent(updatedTweet, quoteTweet);
+            return updatedTweet;
+          }
+          return tweet;
+        });
+
+        function findAndReplaceParent(tweet, quoteTweet) {
+          if (tweet.parentTweet !== null) {
+            if (tweet.parentTweet.id === quoteTweet.id) {
+              tweet.parentTweet = quoteTweet;
+            } else {
+              findAndReplaceParent(tweet.parentTweet, quoteTweet);
+            }
+          }
+        }
+      })
+
+      .addCase(createTweetReply.fulfilled, (state, action) => {
+        const repliesTweet = action.payload.data.parentTweet;
+        state.userReplise = state.userReplise.map((tweet) => {
+          if (tweet.id === repliesTweet.id) {
+            return { id: tweet.id, ...repliesTweet };
+          } else if (repliesTweet.parentTweet === null) {
+            const updatedTweet = { ...tweet };
+            findAndReplaceParent(updatedTweet, repliesTweet);
+            return updatedTweet;
+          }
+          return tweet;
+        });
+
+        function findAndReplaceParent(tweet, repliesTweet) {
+          if (tweet.parentTweet !== null) {
+            if (tweet.parentTweet.id === repliesTweet.id) {
+              tweet.parentTweet = repliesTweet;
+            } else {
+              findAndReplaceParent(tweet.parentTweet, repliesTweet);
+            }
+          }
+        }
       });
   },
 });
