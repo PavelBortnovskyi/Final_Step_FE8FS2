@@ -15,7 +15,6 @@ export const addQuote = createAsyncThunk(
         formData.append(`attachmentImages`, image);
       });
       const data = await myAxios.post(`/tweet/${id}/quote`, formData);
-      console.log(data);
       return data;
     } catch (error) {
       const errorMessage = error.response.data || error.message;
