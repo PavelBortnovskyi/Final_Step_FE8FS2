@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Alert,
+  Box,
   Button,
   Snackbar,
   TextField,
@@ -14,20 +15,10 @@ import {
 
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
-
-// google auth
 import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-  googleLogout,
-} from '@react-oauth/google';
-import jwt_decode from 'jwt-decode';
-
-import axios from 'axios';
-// import {
-//   FacebookLoginButton,
-//   GoogleLoginButton,
-// } from 'react-social-login-buttons';
+  MyFacebookLoginButton,
+  MyGoogleLoginButton,
+} from '../SocialLogin/SocialBtn';
 
 const TextFieldWhite = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -47,6 +38,39 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
   borderRadius: '40px',
 }));
 
+const BoxStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'relative',
+
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    width: '200px',
+    height: '1px',
+    background: `linear-gradient(to right, rgba(0, 0, 0, 0), ${theme.palette.text.primary}, rgba(0, 0, 0, 0))`,
+    top: '10px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: '0',
+  },
+}));
+
+const BoxLiner = styled(Box)(({ theme }) => ({
+  padding: '0 0 10px',
+  textAlign: 'center',
+  position: 'relative',
+  zIndex: '1',
+
+  '& span': {
+    color: `${theme.palette.text.primary}`,
+    padding: '2px 6px',
+    backgroundColor: `${theme.palette.background.modal}`,
+    zIndex: '2',
+  },
+}));
+
 // for check email
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -62,7 +86,7 @@ const SignupSchema = Yup.object().shape({
 
 // Formik form
 export const FormLogin = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   const dispatch = useDispatch();
 
   // get message from server after authorization
@@ -100,37 +124,6 @@ export const FormLogin = () => {
   //   email: '',
   //   password: '',
   // };
-
-  //*** GOOGLE AUTH ********************************************/
-
-  const handleLogin = () => {
-    const googleLoginUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const clientId =
-      '833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com';
-    const redirectUri =
-      'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google';
-    // 'http://localhost:3000';
-    const scope = 'email profile';
-
-    const authUrl = `${googleLoginUrl}?client_id=${clientId}&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&scope=${encodeURIComponent(scope)}&response_type=code`;
-
-    window.location.href = authUrl;
-  };
-
-  ////////////////////////////////
-
-  const googleConnect = async () => {
-    const response = await axios.get(
-      'https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google'
-      // 'https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/oauth2'
-    );
-
-    console.log('google', response);
-  };
-
-  //***********************************************/
 
   return (
     <>
@@ -194,34 +187,21 @@ export const FormLogin = () => {
           </Form>
         )}
       </Formik>
-      {/* <GoogleOAuthProvider
-        clientId="833649741221-eijh9fedi04psm4e9pfvu3atkbarj3bg.apps.googleusercontent.com"
-        redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
-        scope="profile email"
-      >
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log('google', credentialResponse);
-
-            const decode = jwt_decode(credentialResponse.credential);
-            console.log('decode', decode);
-
-            // sendData(credentialResponse);s
-          }}
-          onError={() => {
-            console.log('login error');
-          }}
-          redirect_uri="https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/login/oauth2/code/google"
-        />
-      </GoogleOAuthProvider> */}
-      <br />
-      {/* <button onClick={handleLogin}>Login with Google</button> */}
-      <br />
-      {/* <button onClick={googleConnect}>Get to server login</button> */}
-      <br />
-      <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
-        Link to server login
-      </Link>
+      <BoxStyled>
+        <BoxLiner>
+          <span>OR</span>
+        </BoxLiner>
+      </BoxStyled>
+      <Box>
+        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
+          <MyGoogleLoginButton />
+        </Link>
+      </Box>
+      <Box>
+        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/facebook">
+          <MyFacebookLoginButton />
+        </Link>
+      </Box>
     </>
   );
 };

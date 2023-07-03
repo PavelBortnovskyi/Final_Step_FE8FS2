@@ -8,7 +8,7 @@ import {
 } from 'src/redux/selectors/selectors';
 import { getUser } from 'src/redux/thunk/getUser';
 import { getTokens } from 'src/utils/tokens';
-import { notAuthenticated } from 'src/redux/reducers/authSlice';
+import { setAuthenticated } from 'src/redux/reducers/authSlice';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
@@ -139,9 +139,10 @@ export const App = () => {
     if (accessToken) {
       if (!user) {
         dispatch(getUser());
+        dispatch(setAuthenticated(true));
       }
     } else {
-      dispatch(notAuthenticated());
+      dispatch(setAuthenticated(false));
     }
   }, [dispatch, accessToken, user]);
 

@@ -156,6 +156,10 @@ export const modalRoutes = () => {
       path: '/modal/quote',
       element: <ModalQuotePage />,
     },
+    {
+      path: '/social-login',
+      element: <SocialLogin />,
+    },
   ];
 };
 
@@ -165,10 +169,10 @@ export const rightRoutes = (mobile) => {
       path: '/messages',
       element: mobile ? <></> : <Chat />,
     },
-    {
-      path: '/social-login',
-      element: <SocialLogin />,
-    },
+    // {
+    //   path: '/social-login',
+    //   element: <SocialLogin />,
+    // },
     {
       path: '*',
       element: <RightSection />,
