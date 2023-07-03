@@ -10,7 +10,7 @@ export const loginUser = createAsyncThunk(
       const { email, password } = user;
 
       // request for server
-      const { data } = await myAxios.post('/auth/login', {
+      const data = await myAxios.post('/auth/login', {
         email,
         password,
       });
