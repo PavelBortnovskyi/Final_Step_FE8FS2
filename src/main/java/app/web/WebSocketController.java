@@ -59,6 +59,10 @@ public class WebSocketController {
                                      SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
 
+    String message = messageDTO.getBody();
+    message = "SomePrefix" + message;
+    messageDTO.setBody(message);
+
     if (messageFacade.changeMessage(currUserId, messageFacade.convertToEntity(messageDTO)))
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
         .forEach(email -> template.convertAndSend("/topic/chats/" + email, messageFacade.convertToDto(messageFacade.convertToEntity(messageDTO))));
