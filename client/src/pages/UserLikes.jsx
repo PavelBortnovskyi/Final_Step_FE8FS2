@@ -19,7 +19,7 @@ export const UserLikes = () => {
     });
   };
   changedArray(userLikes);
-
+console.log(userLikes);
   return (
     newArr &&
     newArr.map((likedTweet) => {

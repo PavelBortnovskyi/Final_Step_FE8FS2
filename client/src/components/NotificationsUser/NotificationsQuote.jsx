@@ -131,20 +131,23 @@ export const NotificationsQuote = ({ notification }) => {
                 display: 'flex',
                 alignItems: 'center',
               }}>
-                <Link
-                  key={notification.tweet.id}
-                  to={`/user/${notification.tweet.id}`}
-                  onClick={() => {
-                    dispatch(getUserBiId(notification.tweet.parentTweet.user.id));
-                  }}
-                >
-                  <Avatar src={notification.tweet.parentTweet.user.avatarImgUrl} />
-                </Link>
+                <Box>
+                  <Link
+                    key={notification.tweet.id}
+                    to={`/user/${notification.tweet.parentTweet.user.id}`}
+                    onClick={() => {
+                      dispatch(getUserBiId(notification.tweet.parentTweet.user.id));
+                    }}
+                  >
+                    <Avatar src={notification.tweet.parentTweet.user.avatarImgUrl} />
+                  </Link>
+                </Box>
+
 
                 <Box sx={{ display: 'flex', alignItems: 'end', paddingLeft: '16px' }}>
                   <LinkStyle
                     key={notification.tweet.id}
-                    to={`/user/${notification.tweet.id}`}
+                    to={`/user/${notification.tweet.parentTweet.user.id}`}
                     onClick={() => {
                       dispatch(getUserBiId(notification.tweet.parentTweet.user.id));
                     }}

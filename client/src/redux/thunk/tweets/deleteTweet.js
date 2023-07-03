@@ -7,6 +7,7 @@ export const deleteTweet = createAsyncThunk(
   async ({ id }, thunkAPI) => {
     try {
       const { data } = await myAxios.delete(`tweet/${id}`);
+      console.log(data);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

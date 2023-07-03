@@ -6,6 +6,7 @@ import { likePost } from '../thunk/tweets/likeTweet.js';
 import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   userReplise: [],
@@ -54,7 +55,17 @@ export const userRepliseSlice = createSlice({
         state.userReplise = state.userReplise.map((tweet) =>
           tweet.id === quoteTweet.id ? quoteTweet : tweet
         );
-      });
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweetUser = action.payload;
+        state.userReplise = state.userReplise.filter((tweet) => {
+          if (tweet.tweetType === "REPLY") {
+            return tweet.parentTweet.id !== deleteTweetUser.id
+          } else {
+            return tweet.id !== deleteTweetUser.id
+          }
+        })
+      })
   },
 });
 export default userRepliseSlice.reducer;

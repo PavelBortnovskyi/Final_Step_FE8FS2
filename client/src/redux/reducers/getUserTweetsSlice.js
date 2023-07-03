@@ -8,6 +8,7 @@ import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { createTweet } from '../thunk/tweets/createTweet.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   userTweets: [],
@@ -77,6 +78,8 @@ export const getUserTweetsSlice = createSlice({
           ...state.userTweets.map((tweet) => {
             if (tweet.parentTweet === null) {
               return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else if (tweet.tweetType === "RETWEET") {
+              return tweet.parentTweet.id === quoteTweet.id ? { ...tweet, parentTweet: quoteTweet } : tweet;
             } else {
               return tweet.parentTweet.id === quoteTweet.id
                 ? quoteTweet
@@ -114,6 +117,16 @@ export const getUserTweetsSlice = createSlice({
       .addCase(createTweet.fulfilled, (state, action) => {
         const newTweet = action.payload;
         state.userTweets = [newTweet, ...state.userTweets];
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweetUser = action.payload;
+        state.userTweets = state.userTweets.filter((tweet) => {
+          if (tweet.tweetType === "RETWEET") {
+            return tweet.parentTweet.id !== deleteTweetUser.id
+          } else {
+            return tweet.id !== deleteTweetUser.id
+          }
+        })
       })
       .addCase(createTweetReply.fulfilled, (state, action) => {
         const quoteTweet = action.payload.data.parentTweet;
