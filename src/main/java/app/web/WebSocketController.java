@@ -44,10 +44,7 @@ public class WebSocketController {
                                  SimpMessageHeaderAccessor accessor) {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
 
-    String message = messageDTO.getBody();
     if (messageDTO.getBody().length() > 2047) throw new BadRequestException("Message is too long (max size 2048 bytes)");
-    message = "SomePrefix" + message;
-    messageDTO.setBody(message);
 
     if (currUserId.equals(messageDTO.getUserId())) {
       MessageResponseDTO freshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
