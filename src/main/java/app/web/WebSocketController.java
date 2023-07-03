@@ -44,6 +44,10 @@ public class WebSocketController {
                                  SimpMessageHeaderAccessor accessor) {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
 
+    String message = messageDTO.getBody();
+    message = "SomePrefix" + message;
+    messageDTO.setBody(message);
+
     if (currUserId.equals(messageDTO.getUserId())) {
       MessageResponseDTO finalFreshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
@@ -58,10 +62,6 @@ public class WebSocketController {
                                      MessageRequestDTO messageDTO,
                                      SimpMessageHeaderAccessor accessor) {
     Long currUserId = Long.valueOf((String) accessor.getSessionAttributes().get("userId"));
-
-    String message = messageDTO.getBody();
-    message = "SomePrefix" + message;
-    messageDTO.setBody(message);
 
     if (messageFacade.changeMessage(currUserId, messageFacade.convertToEntity(messageDTO)))
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
