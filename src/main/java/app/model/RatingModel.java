@@ -9,16 +9,19 @@ import javax.persistence.*;
 @Table(name = "rating_tweets")
 @NoArgsConstructor
 @Data
-@SequenceGenerator(name = "custom_gen", sequenceName = "rating_tweets_id_seq", allocationSize = 1)
 public class RatingModel {
   @Id
   @Column(name = "tweet_id")
-  private Long tweetID;
+  private Long id;
   @Column(name = "rating")
   private double tweetRating;
 
+  @OneToOne
+  @JoinColumn(name = "tweet_id")
+  private Tweet tweet;
+
   public RatingModel(Long id, double rating) {
-    this.tweetID = id;
+    this.id = id;
     this.tweetRating = rating;
   }
 }
