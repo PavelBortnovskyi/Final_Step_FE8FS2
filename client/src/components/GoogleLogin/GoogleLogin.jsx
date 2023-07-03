@@ -11,23 +11,31 @@ export const GoogleLogin = () => {
   );
 
   console.log('queryParams', queryParams);
+  // Получение значения accessToken
+  const accessToken = queryParams.get('accessToken');
 
-  useEffect(() => {
-    // Получение значения accessToken
-    const accessToken = queryParams.get('accessToken');
+  // Получение значения refreshToken
+  const refreshToken = queryParams.get('refreshToken');
 
-    // Получение значения refreshToken
-    const refreshToken = queryParams.get('refreshToken');
+  console.log('access', accessToken);
+  console.log('refresh', refreshToken);
 
-    console.log('access', accessToken);
-    console.log('refresh', refreshToken);
+  // useEffect(() => {
+  //   // Получение значения accessToken
+  //   const accessToken = queryParams.get('accessToken');
 
-    if (accessToken && refreshToken) {
-      setAuthToken(accessToken);
-      setRefreshToken(refreshToken);
-      // navigate('/');
-    }
-  }, [navigate, queryParams]);
+  //   // Получение значения refreshToken
+  //   const refreshToken = queryParams.get('refreshToken');
+
+  //   console.log('access', accessToken);
+  //   console.log('refresh', refreshToken);
+
+  //   if (accessToken && refreshToken) {
+  //     setAuthToken(accessToken);
+  //     setRefreshToken(refreshToken);
+  //     // navigate('/');
+  //   }
+  // }, [navigate, queryParams]);
 
   return <>test</>;
 };
