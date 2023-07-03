@@ -10,7 +10,21 @@ import {
 import { NavLink, useLocation } from 'react-router-dom';
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    fontSize: '11px',
+    fontWeight: 'normal',
+  },
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
+
+const StyledTypographyTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '20px',
+    fontWeight: 'normal',
+  },
   [theme.breakpoints.down('sm')]: {
     display: 'none',
   },
@@ -22,9 +36,11 @@ export const BottomToolbar = () => {
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
         <Grid container spacing={1}>
-          <Grid item xs={0} sm={0} md={3}></Grid>
-          <Grid item xs={0} sm={7} md={5}>
-            <StyledTypography variant="h5">Stay up to date</StyledTypography>
+          <Grid item xs={0} sm={2} md={2}></Grid>
+          <Grid item xs={0} sm={6} md={5}>
+            <StyledTypographyTitle variant="h5">
+              Stay up to date
+            </StyledTypographyTitle>
             <StyledTypography variant="span">
               Chatter users are the first to know the news
             </StyledTypography>
@@ -33,7 +49,7 @@ export const BottomToolbar = () => {
             item
             xs={11}
             sm={4}
-            md={4}
+            md={5}
             sx={{
               display: 'flex',
               alignItems: 'center',

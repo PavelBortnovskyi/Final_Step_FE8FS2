@@ -15,8 +15,8 @@ export const authSlice = createSlice({
   initialState,
 
   reducers: {
-    notAuthenticated(state, actions) {
-      state.isAuthenticated = false;
+    setAuthenticated(state, actions) {
+      state.isAuthenticated = actions.payload;
     },
   },
 
@@ -24,6 +24,7 @@ export const authSlice = createSlice({
     // register
     builder.addCase(registerUser.pending, (state, action) => {
       state.isLoading = true;
+
       state.error = '';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
@@ -67,5 +68,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { notAuthenticated } = authSlice.actions;
+export const { setAuthenticated } = authSlice.actions;
 export default authSlice.reducer;
