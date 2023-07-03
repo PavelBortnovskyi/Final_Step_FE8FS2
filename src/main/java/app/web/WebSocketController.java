@@ -45,14 +45,15 @@ public class WebSocketController {
     Long currUserId = (Long) accessor.getSessionAttributes().get("userId");
 
     String message = messageDTO.getBody();
+    if (messageDTO.getBody().length() > 2047) throw new BadRequestException("Message is too long (max size 2048 bytes)");
     message = "SomePrefix" + message;
     messageDTO.setBody(message);
 
     if (currUserId.equals(messageDTO.getUserId())) {
-      MessageResponseDTO finalFreshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
-      finalFreshMessage.setServerMark("Final Step TWFE8FS2 accepted");
+      MessageResponseDTO freshMessage = this.messageFacade.save(this.messageFacade.convertToEntity(messageDTO));
+      freshMessage.setServerMark("Final Step TWFE8FS2 accepted");
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
-        .forEach(email -> template.convertAndSend("/topic/chats/" + email, finalFreshMessage));
+        .forEach(email -> template.convertAndSend("/topic/chats/" + email, freshMessage));
     } else
       throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d", messageDTO.getUserId(), currUserId));
   }
