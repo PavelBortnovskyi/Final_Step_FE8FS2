@@ -188,7 +188,11 @@ export const ChatSender = () => {
   return (
     <>
       {
-        <Snackbar open={!!errorSocket} autoHideDuration={5000}>
+        <Snackbar
+          open={!!errorSocket}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
           <Alert severity="error">{errorSocket}</Alert>
         </Snackbar>
       }

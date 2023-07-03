@@ -3,18 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Alert,
-  Box,
-  Button,
-  Snackbar,
-  TextField,
-  styled,
-  useTheme,
-} from '@mui/material';
+import { Alert, Box, Button, Snackbar, TextField, styled } from '@mui/material';
 
 import { loginUser } from 'src/redux/thunk/loginUser';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import { setErrorAuthenticated } from 'src/redux/reducers/authSlice';
 import {
   MyFacebookLoginButton,
   MyGoogleLoginButton,
@@ -88,19 +81,26 @@ const SignupSchema = Yup.object().shape({
 export const FormLogin = () => {
   // const theme = useTheme();
   const dispatch = useDispatch();
+  // navigate
+  const navigate = useNavigate();
 
   // get message from server after authorization
   const { error, message, isAuthenticated } = useSelector(getAuthorizationData);
 
-  // navigate
-  const navigate = useNavigate();
-
   // set view message from server after auth
   useEffect(() => {
-    // if (message) <Alert severity="success">{message}</Alert>;
-    // if (error) <Alert severity="error">{error}</Alert>;
     if (isAuthenticated) navigate('/');
   }, [navigate, isAuthenticated]);
+
+  // get error message
+  useEffect(() => {
+    if (error !== '') {
+      const timer = setTimeout(() => {
+        dispatch(setErrorAuthenticated(''));
+        clearTimeout(timer);
+      }, 5000);
+    }
+  }, [dispatch, error]);
 
   // send report and clear form
   const handleSubmit = async (values, actions) => {
@@ -133,7 +133,11 @@ export const FormLogin = () => {
         </Snackbar>
       )}
       {error && (
-        <Snackbar open={true} autoHideDuration={6000}>
+        <Snackbar
+          open={true}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
           <Alert severity="error">{error}</Alert>
         </Snackbar>
       )}

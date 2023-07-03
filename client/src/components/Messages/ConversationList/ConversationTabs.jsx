@@ -80,11 +80,11 @@ export const ConversationTabs = () => {
             label="Contacts"
             {...tabsProps(0)}
           />
-          <TabSearch
+          {/* <TabSearch
             icon={<MarkUnreadChatAltOutlinedIcon />}
             label="Chats"
             {...tabsProps(1)}
-          />
+          /> */}
         </Tabs>
       </TabHeader>
       <TabPanel value={value} index={0}>

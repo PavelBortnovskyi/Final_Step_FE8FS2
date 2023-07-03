@@ -24,7 +24,7 @@ export const SocialLogin = () => {
     if (accessToken && refreshToken) {
       setAuthToken(accessToken);
       setRefreshToken(refreshToken);
-      dispatch(setAuthenticated(true));
+      // dispatch(setAuthenticated(true));
       navigate('/');
     }
   }, [dispatch, navigate, queryParams]);
