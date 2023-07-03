@@ -24,7 +24,6 @@ export const authSlice = createSlice({
     // register
     builder.addCase(registerUser.pending, (state, action) => {
       state.isLoading = true;
-
       state.error = '';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
