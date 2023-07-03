@@ -9,22 +9,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createTweet } from 'src/redux/thunk/tweets/createTweet.js';
 import { useMode } from 'src/styles/_materialTheme';
 import { createTweetReply } from 'src/redux/thunk/tweets/replyTweet';
-import { useNavigate } from 'react-router-dom';
 
 function TweetBox({
   placeholder,
   fnc,
   userAvatar,
   id = false,
-  isOpen,
   setIsOpen,
   isPicker,
 }) {
   const theme = useMode();
-  const navigate = useNavigate();
 
   const [postInputText, setPostInputText] = useState('');
   const [postImages, setPostImages] = useState([]);
+
+  const [sizeError, setSizeError] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user) || '';
@@ -38,11 +37,17 @@ function TweetBox({
   };
 
   const handleFileSelect = (img) => {
-    setPostImages([...postImages, img]);
+    if (img && img.size > 1040000) {
+      setSizeError(true);
+    } else {
+      setSizeError(false);
+      setPostImages([...postImages, img]);
+    }
   };
   const handleDeleteImage = (index) => {
     const updatedImages = [...postImages];
     updatedImages.splice(index, 1);
+    setSizeError(false);
     setPostImages(updatedImages);
   };
 
@@ -66,6 +71,12 @@ function TweetBox({
           placeholder={placeholder || "What's happening?"}
           feature={handleInput}
         />
+        {sizeError && (
+          <Box sx={{ color: '#880808', ml: '10px' }}>
+            *Photo size is too large, select a photo up to 1 mb...
+          </Box>
+        )}
+
         {postImages.length > 0 && (
           <AddingFile
             quantity={postImages.length}
