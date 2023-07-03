@@ -26,7 +26,7 @@ export const likedTweetSlice = createSlice({
       .addCase(likePost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
   },
 });
 export default likedTweetSlice.reducer;

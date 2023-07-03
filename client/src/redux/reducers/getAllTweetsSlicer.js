@@ -66,6 +66,8 @@ const getAllTweetsSlice = createSlice({
           ...state.allTweets.map((tweet) => {
             if (tweet.parentTweet === null) {
               return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else if (tweet.tweetType === "RETWEET") {
+              return tweet.parentTweet.id === quoteTweet.id ? { ...tweet, parentTweet: quoteTweet } : tweet;
             } else {
               return tweet.parentTweet.id === quoteTweet.id
                 ? quoteTweet
@@ -106,10 +108,14 @@ const getAllTweetsSlice = createSlice({
       })
 
       .addCase(deleteTweet.fulfilled, (state, action) => {
-        const deleteRetweet = action.payload;
-        state.allTweets = state.allTweets?.map((retweet) =>
-          retweet.id === deleteRetweet.id ? deleteRetweet : retweet
-        );
+        const deleteTweetUser = action.payload;
+        state.allTweets = state.allTweets.filter(tweet => {
+          if (tweet.tweetType === "RETWEET") {
+            return tweet.parentTweet.id !== deleteTweetUser.id
+          } else {
+            return tweet.id !== deleteTweetUser.id
+          }
+        });
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
         const retweetTweet = action.payload;
