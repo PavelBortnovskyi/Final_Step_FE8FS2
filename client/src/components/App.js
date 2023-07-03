@@ -39,17 +39,7 @@ export const App = () => {
           Origin: 'client',
         };
 
-        // create connect to socket
-        stompClientRef.current = new Client({
-          brokerURL: socketUrl,
-          connectHeaders: headers,
-          // debug: function (str) {
-          //   console.log(str);
-          // },
-        });
-        const stompClient = stompClientRef.current;
-
-        // after activate connect
+        // connect socket
         const connectCallback = () => {
           console.log('Connected to STOMP server');
 
@@ -67,27 +57,8 @@ export const App = () => {
             headers
           );
 
-          //  user/topic/chats-${username}
-          // stompClient.subscribe(
-          //   `/user/topic/chats-${user.email}`,
-          //   onMessageReceived,
-          //   headers
-          // );
-
           // set socket connection to redux
           dispatch(setSocketChat(stompClient));
-        };
-
-        // set received messages to redux
-        const onMessageReceived = (message) => {
-          // console.log('Received message:', message.body);
-          dispatch(setCurrentMessage(JSON.parse(message.body)));
-        };
-
-        // set notification to redux
-        const onNotificationReceived = (notification) => {
-          // console.log('Received notification:', notification.body);
-          dispatch(setSocketNotification(JSON.parse(notification.body)));
         };
 
         // error socket
@@ -98,8 +69,31 @@ export const App = () => {
           }
         };
 
-        stompClient.onConnect = connectCallback;
-        stompClient.onStompError = errorCallback;
+        // create socket connect to server
+        stompClientRef.current = new Client({
+          brokerURL: socketUrl,
+          connectHeaders: headers,
+          heartbeatIncoming: 25000,
+          heartbeatOutgoing: 25000,
+          onConnect: connectCallback,
+          onStompError: errorCallback,
+          // debug: function (str) {
+          //   console.log(str);
+          // },
+        });
+        const stompClient = stompClientRef.current;
+
+        // set received messages to redux
+        const onMessageReceived = (message) => {
+          // console.log('Received message:', message);
+          dispatch(setCurrentMessage(JSON.parse(message.body)));
+        };
+
+        // set notification to redux
+        const onNotificationReceived = (notification) => {
+          // console.log('Received notification:', notification.body);
+          dispatch(setSocketNotification(JSON.parse(notification.body)));
+        };
 
         // activate connect
         stompClient.activate();
