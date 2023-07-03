@@ -15,7 +15,6 @@ import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 
 export const UserAllTypeTweets = ({ tweets }) => {
   const theme = useMode();
-console.log(tweets);
   // let parentTweetId
   function findeParentTweetId(userTweet) {
     if (userTweet.parentTweet !== null) {
