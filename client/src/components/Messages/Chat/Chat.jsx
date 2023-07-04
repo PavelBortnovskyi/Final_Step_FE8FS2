@@ -5,7 +5,6 @@ import {
   Tooltip,
   IconButton,
   styled,
-  Container,
   alpha,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -47,6 +46,7 @@ const BoxLoading = styled(Box)`
 
 const GuestInfo = styled(Box)(({ theme }) => ({
   width: '100%',
+  position: 'relative',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -67,6 +67,17 @@ const WelcomeMessage = styled(Box)(({ theme }) => ({
   paddingTop: '12px',
   borderTop: `1px solid ${theme.palette.border.main}`,
   color: alpha(theme.palette.text.primary, 0.5),
+}));
+
+const TooltipStyled = styled(Tooltip)(({ theme }) => ({
+  position: 'absolute',
+  top: '-2px',
+  background: alpha(theme.palette.border.main, 0.5),
+  borderRadius: '50%',
+
+  '&:hover': {
+    background: theme.palette.border.main,
+  },
 }));
 
 // ************ STYLE ************
@@ -116,7 +127,7 @@ export const Chat = () => {
       ) : (
         <>
           <GuestInfo>
-            <Tooltip title="Close chat">
+            <TooltipStyled title="Close chat">
               <IconButton
                 onClick={handleCloseConnection}
                 sx={{
@@ -124,9 +135,9 @@ export const Chat = () => {
                   alignSelf: 'flex-start',
                 }}
               >
-                <ArrowBackIcon sx={{ fontSize: 20 }} />
+                <ArrowBackIcon sx={{ fontSize: 30 }} />
               </IconButton>
-            </Tooltip>
+            </TooltipStyled>
             <Avatar
               sx={{ width: 56, height: 56, marginBottom: '8px' }}
               alt={guest.fullName}

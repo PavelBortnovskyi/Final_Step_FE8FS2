@@ -36,7 +36,7 @@ export function UserAction({ idUser, setTabIndex }) {
               sx={{ width: '33.33%', color: `${theme.palette.text.primary}` }}
             />
             <Tab
-              label="Replise"
+              label="Replies"
               value="2"
               sx={{ width: '33.33%', color: `${theme.palette.text.primary}` }}
             />

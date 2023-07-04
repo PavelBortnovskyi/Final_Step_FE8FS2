@@ -6,7 +6,6 @@ import {
   useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 
@@ -15,7 +14,6 @@ const DialogStyled = styled(Dialog)(({ theme }) => ({
     backgroundColor: 'transparent',
   },
 }));
-
 
 export const Modal = (props) => {
   const theme = useTheme();

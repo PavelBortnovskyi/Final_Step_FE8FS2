@@ -35,9 +35,14 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
     return this.chatService.createChat(userId, interlocutorId).stream().map(this::convertToDto).collect(Collectors.toSet());
   }
 
-  public ChatResponseDTO getChatById(Long chatId) {
-    return chatService.findById(chatId).map(this::convertToDto)
-      .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
+  /**
+   * Method returns chat by id with user participation in chat checking
+   */
+  public ChatResponseDTO getChatById(Long chatId, Long currUserId) {
+    return chatService.findById(chatId).filter(chat -> chat.getInitiatorUser().getId().equals(currUserId)
+        || chatService.getChatMemberIds(chat.getId()).contains(currUserId))
+      .map(this::convertToDto)
+      .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " for user with id:" + currUserId + " not found"));
   }
 
   /**
@@ -51,14 +56,14 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
    * Method for add new user to chat
    */
   public ChatResponseDTO addUserToChat(Long userId, Long chatId) {
-    return this.convertToDto(this.chatService.addUserToChat(userId, chatId));
+    return this.convertToDto(chatService.addUserToChat(userId, chatId));
   }
 
   /**
    * Method removes user from chat
    */
   public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) {
-    return this.chatService.removeUserFromChat(userToRemoveId, removeInitUserId, chatId);
+    return chatService.removeUserFromChat(userToRemoveId, removeInitUserId, chatId);
   }
 
   public Set<Long> getChatMemberIds(Long chatId) {
@@ -73,7 +78,7 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
    * Method returns page of user chat responses with last message to preview
    */
   public CustomPageImpl<ChatResponseDTO> getChatsForPreview(Long userId, Integer pageSize, Integer pageNumber) {
-    return this.chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber);
+    return chatService.getUserChatsWithLastMessage(userId, pageSize, pageNumber);
   }
 
   /**
@@ -84,20 +89,20 @@ public class ChatFacade extends GeneralFacade<Chat, ChatRequestDTO, ChatResponse
       .filter(chat -> chat.getUsers().contains(this.userService.findById(userId)
         .orElseThrow(() -> new UserNotFoundException(userId))) || chat.getInitiatorUser().getId().equals(userId))
       .orElseThrow(() -> new ChatNotFoundException(String.format("Chat id: %d for user with id: %d not found", chatId, userId)));
-    return this.chatService.getMessages(chatId, pageSize, pageNumber);
+    return chatService.getMessages(chatId, pageSize, pageNumber);
   }
 
   /**
    * Method returns page of message responses from user chat according to keyword matches
    */
   public Page<MessageResponseDTO> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.chatService.searchMessagesInChat(chatId, userId, pageSize, pageNumber, keyword);
+    return chatService.searchMessagesInChat(chatId, userId, pageSize, pageNumber, keyword);
   }
 
   /**
    * Method returns page of message responses from user chats according to keyword matches
    */
   public Page<MessageResponseDTO> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.chatService.searchMessagesInChats(userId, pageSize, pageNumber, keyword);
+    return chatService.searchMessagesInChats(userId, pageSize, pageNumber, keyword);
   }
 }

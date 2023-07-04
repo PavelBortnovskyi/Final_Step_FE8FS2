@@ -60,6 +60,5 @@ public class JwtUserDetails implements UserDetails, Serializable {
   public Long getId() {
     return this.id;
   }
-
 }
 

@@ -39,14 +39,14 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns created chat between 2 users
    */
   public Set<Chat> createChat(Long initiatorUserId, Long interlocutorUserId) throws UserNotFoundException {
-    UserModel initiator = this.userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
-    UserModel interlocutor = this.userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
+    UserModel initiator = userService.findById(initiatorUserId).orElseThrow(() -> new UserNotFoundException(initiatorUserId));
+    UserModel interlocutor = userService.findById(interlocutorUserId).orElseThrow(() -> new UserNotFoundException(interlocutorUserId));
 
-    Set<Chat> chats = this.chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
+    Set<Chat> chats = chatRepository.getChatByUsersIds(initiatorUserId, interlocutorUserId)
       .orElse(new HashSet<>());
 
     if (chats.isEmpty() || chats.stream().filter(chat -> chat.getUsers().size() < 2).findFirst().isEmpty()) {
-      Chat newChat = this.chatRepository.save(new Chat(initiator, new ArrayList<>(), new HashSet<>() {{
+      Chat newChat = chatRepository.save(new Chat(initiator, new ArrayList<>(), new HashSet<>() {{
         add(interlocutor);
       }}));
       chats.add(newChat);
@@ -56,20 +56,20 @@ public class ChatService extends GeneralService<Chat> {
   }
 
   public Optional<Set<Chat>> getChatByUsersIdPair(Long userId, Long interlocutorId) {
-    return this.chatRepository.getChatByUsersIds(userId, interlocutorId);
+    return chatRepository.getChatByUsersIds(userId, interlocutorId);
   }
 
   /**
    * Method returns boolean result of deleting operation
    */
   public boolean deleteChat(Long chatId, Long userId) {
-    this.chatRepository.findById(chatId)
+    chatRepository.findById(chatId)
       .filter(chat -> chat.getInitiatorUser().getId().equals(userId))
       .map(chat -> {
-        this.chatRepository.delete(chat);
+        chatRepository.delete(chat);
         return chat;
       }).orElseThrow(() -> new BadRequestException(String.format("Chat id: %d cannot be deleted by user with id: %d, it possible to remove only by chat initiator!", chatId, userId)));
-    return this.chatRepository.existsById(chatId);
+    return chatRepository.existsById(chatId);
   }
 
   /**
@@ -77,26 +77,24 @@ public class ChatService extends GeneralService<Chat> {
    */
 
   public Chat addUserToChat(Long userId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
-    return this.chatRepository
-      .save(this.chatRepository
-        .findById(chatId)
-        .map(chat -> {
-          chat.getUsers().add(this.userService.getUserO(userId)
-            .orElseThrow(() -> new UserNotFoundException(userId)));
-          return chat;
-        })
-        .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found")));
+    return chatRepository.save(chatRepository.findById(chatId)
+      .map(chat -> {
+        chat.getUsers().add(userService.getUserO(userId)
+          .orElseThrow(() -> new UserNotFoundException(userId)));
+        return chat;
+      })
+      .orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found")));
   }
 
   /**
    * Method returns boolean result of user deleting from chat operation
    */
   public ResponseEntity<String> removeUserFromChat(Long userToRemoveId, Long removeInitUserId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
-    Chat chat = this.chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
-    UserModel userToRemove = this.userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
+    Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatNotFoundException("Chat with id: " + chatId + " not found"));
+    UserModel userToRemove = userService.findById(userToRemoveId).orElseThrow(() -> new UserNotFoundException(userToRemoveId));
     if (!userToRemove.equals(chat.getInitiatorUser()) && userToRemove.equals(removeInitUserId) && chat.getUsers().contains(userToRemove)) {
       chat.getUsers().remove(userToRemove);
-      this.chatRepository.save(chat);
+      chatRepository.save(chat);
       return ResponseEntity.ok(String.format("User with id: %d was removed from chat id: %d by user with id: %d",
         userToRemoveId, chatId, removeInitUserId));
     } else
@@ -108,7 +106,7 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns pageable list of chat messages
    */
   public Page<MessageResponseDTO> getMessages(Long chatId, Integer pageSize, Integer pageNumber) {
-    return this.messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber))
+    return messageRepository.getMessagesFromChat(chatId, Pageable.ofSize(pageSize).withPage(pageNumber))
       .map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
@@ -116,7 +114,7 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns pageable chat list of user
    */
   public List<Chat> getChatList(Long userId, Integer pageSize, Integer pageNumber) {
-    return this.chatRepository.getChatList(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
+    return chatRepository.getChatList(userId, Pageable.ofSize(pageSize).withPage(pageNumber)).toList();
   }
 
   /**
@@ -129,7 +127,7 @@ public class ChatService extends GeneralService<Chat> {
       chat.setMessages(new ArrayList<>() {{
         add(lastMessage);
       }});
-      return this.modelMapper.map(chat, ChatResponseDTO.class);
+      return modelMapper.map(chat, ChatResponseDTO.class);
     }));
   }
 
@@ -137,8 +135,8 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns page of message responses from user chat according to keyword matches
    */
   public Page<MessageResponseDTO> searchMessagesInChat(Long chatId, Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    this.chatRepository.findById(chatId)
-      .filter(chat -> chat.getUsers().contains(this.userService.findById(userId).get()) || chat.getInitiatorUser().getId().equals(userId))
+    chatRepository.findById(chatId)
+      .filter(chat -> chat.getUsers().contains(userService.findById(userId).get()) || chat.getInitiatorUser().getId().equals(userId))
       .orElseThrow(() -> new BadRequestException(String.format("User with id: %d cannot search in chat with id: %d", userId, chatId)));
     return this.messageRepository.getSearchMessageInChat(chatId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
@@ -147,7 +145,7 @@ public class ChatService extends GeneralService<Chat> {
    * Method returns page of message responses from user chats according to keyword matches
    */
   public Page<MessageResponseDTO> searchMessagesInChats(Long userId, Integer pageSize, Integer pageNumber, String keyword) {
-    return this.messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
+    return messageRepository.getSearchMessages(userId, keyword, Pageable.ofSize(pageSize).withPage(pageNumber)).map(m -> modelMapper.map(m, MessageResponseDTO.class));
   }
 
   public Set<Long> getChatMemberIds(Long chatId) {

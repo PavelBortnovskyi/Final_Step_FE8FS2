@@ -23,11 +23,11 @@ public class MessageService extends GeneralService<Message> {
    * Method returns message after it added to chat
    */
   public Message addMessage(Message message) throws UserNotFoundException, ChatNotFoundException {
-    if (this.chatService.findById(message.getChat().getId())
-      .filter(chat -> chat.getUsers().contains(this.userService.getUser(message.getUser().getId()))
+    if (chatService.findById(message.getChat().getId())
+      .filter(chat -> chat.getUsers().contains(userService.getUser(message.getUser().getId()))
         || chat.getInitiatorUser().getId().equals(message.getUser().getId())
       ).isPresent())
-      return this.messageRepository.save(message);
+      return messageRepository.save(message);
     else
       throw new ChatNotFoundException(String.format("Chat with id: %d for user with id: %d not found", message.getChat().getId(), message.getUser().getId()));
   }
@@ -37,9 +37,9 @@ public class MessageService extends GeneralService<Message> {
    */
   public boolean changeMessage(Long userId, Message message) throws MessageNotFoundException, MessageException {
     if (userId.equals(message.getUser().getId())) {
-      this.messageRepository.findById(message.getId())
+      messageRepository.findById(message.getId())
         .map(m -> {
-          this.messageRepository.changeMessage(message.getId(), message.getBody());
+          messageRepository.changeMessage(message.getId(), message.getBody());
           return m;
         })
         .orElseThrow(() -> new MessageNotFoundException(String.format("Message with id: %d not found", message.getId())));
@@ -52,10 +52,10 @@ public class MessageService extends GeneralService<Message> {
    * Method for delete message (checks userId as author of message)
    */
   public boolean deleteMessage(Long userId, Long messageId) throws MessageNotFoundException, MessageException {
-    if (this.messageRepository.findById(messageId)
+    if (messageRepository.findById(messageId)
       .orElseThrow(() -> new MessageNotFoundException(String.format("Message with id: %d not found", messageId)))
       .getUser().getId().equals(userId)) {
-      this.messageRepository.deleteById(messageId);
+      messageRepository.deleteById(messageId);
       return true;
     } else
       throw new MessageException(String.format("User with id: %d is not the author of message with id: %d", userId, messageId));

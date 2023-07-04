@@ -23,26 +23,26 @@ public class NotificationFacade extends GeneralFacade<Notification, Notification
    * Method returns user notification responses in page format
    */
   public CustomPageImpl<NotificationResponseDTO> getAllUserNotifications(Long userId, Integer pageSize, Integer pageNumber) {
-    return new CustomPageImpl<>(this.notificationService.getUserNotifications(userId, pageSize, pageNumber).map(this::convertToDto));
+    return new CustomPageImpl<>(notificationService.getUserNotifications(userId, pageSize, pageNumber).map(this::convertToDto));
   }
 
   /**
    * Method returns user seen notification responses in page format
    */
   public CustomPageImpl<NotificationResponseDTO> getSeenUserNotifications(Long userId, Integer pageSize, Integer pageNumber) {
-    return new CustomPageImpl<>(this.notificationService.getUserSeenNotificationsList(userId, pageSize, pageNumber).map(this::convertToDto));
+    return new CustomPageImpl<>(notificationService.getUserSeenNotificationsList(userId, pageSize, pageNumber).map(this::convertToDto));
   }
 
   /**
    * Method returns user not seen notification responses in page format
    */
   public CustomPageImpl<NotificationResponseDTO> getUnseenUserNotifications(Long userId, Integer pageSize, Integer pageNumber) {
-    return new CustomPageImpl<>(this.notificationService.getUserUnreadNotificationsList(userId, pageSize, pageNumber).map(this::convertToDto));
+    return new CustomPageImpl<>(notificationService.getUserUnreadNotificationsList(userId, pageSize, pageNumber).map(this::convertToDto));
   }
 
   public boolean processNotification(NotificationRequestDTO notification) {
-    this.userService.getUserO(notification.getReceiverUserId()).map(user -> {
-        this.notificationService.save(this.convertToEntity(notification));
+    userService.getUserO(notification.getReceiverUserId()).map(user -> {
+        notificationService.save(this.convertToEntity(notification));
         return user;
       })
       .orElseThrow(() -> new UserNotFoundException("Failed to send notification to user id: " + notification.getReceiverUserId()));
