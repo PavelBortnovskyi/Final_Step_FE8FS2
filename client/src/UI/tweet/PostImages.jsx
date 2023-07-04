@@ -33,7 +33,7 @@ const TriplePhoto = styled(Box)({
   overflow: 'hidden',
   borderRadius: '20px',
   maxHeight: '290px',
-  width: '515px',
+  // width: '515px',
   display: 'grid',
   gridTemplateColumns: 'repeat(8, 1fr)',
   gridTemplateRows: 'repeat(8, 1fr)',

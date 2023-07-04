@@ -15,7 +15,6 @@ import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 
 export const UserAllTypeTweets = ({ tweets }) => {
   const theme = useMode();
-
   // let parentTweetId
   function findeParentTweetId(userTweet) {
     if (userTweet.parentTweet !== null) {
@@ -24,7 +23,6 @@ export const UserAllTypeTweets = ({ tweets }) => {
       return userTweet.id;
     }
   }
-  console.log();
 
   function parentRetweet(userTweet) {
     if (userTweet.parentTweet !== null) {
@@ -42,41 +40,13 @@ export const UserAllTypeTweets = ({ tweets }) => {
               isQuoted={userTweet.currUserQuoted}
               isComment={userTweet.currUserCommented}
               isRetweet={userTweet.currUserRetweeted}
-              likes={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.countLikes
-                  : userTweet.countLikes
-              }
-              reply={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.countReplies
-                  : userTweet.countReplies
-              }
-              retweet={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.countRetweets
-                  : userTweet.countRetweets
-              }
-              id={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.id
-                  : userTweet.id
-              }
-              quote={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.countQuoteTweets
-                  : userTweet.countQuoteTweets
-              }
-              isBookmarks={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.currUserBookmarked
-                  : userTweet.currUserBookmarked
-              }
-              bookmarks={
-                userTweet.attachmentImages === undefined
-                  ? userTweet.tweet.countBookmarks
-                  : userTweet.countBookmarks
-              }
+              likes={userTweet.countLikes}
+              reply={userTweet.countReplies}
+              retweet={userTweet.countRetweets}
+              id={userTweet.id}
+              quote={userTweet.countQuoteTweets}
+              isBookmarks={userTweet.currUserBookmarked}
+              bookmarks={userTweet.countBookmarks}
             />
             {/* <PostIconList
               likes={userTweet.countLikes}

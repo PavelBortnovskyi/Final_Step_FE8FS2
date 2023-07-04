@@ -6,8 +6,13 @@ import { User } from 'src/components/User/User';
 import { getUserBiId } from 'src/redux/thunk/getUserBiId';
 import { useParams } from 'react-router-dom';
 import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
+import { useNavigate } from 'react-router-dom';
+import { getAuthorizationData } from 'src/redux/selectors/selectors';
 
 export const UserBiIdPage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector(getAuthorizationData);
+
   const dispatch = useDispatch();
 
   const { id } = useParams();
@@ -22,11 +27,15 @@ export const UserBiIdPage = () => {
   } else {
     subscribe = <ButtonSubscribe userId={user.id} />;
   }
-
-  const lincToFollowings = `/${user.id}/followings`;
-  const lincToFollowers = `/${user.id}/followers`;
-
   const userId = user.id;
+  const lincToFollowings = `/${userId}/followings`;
+  const lincToFollowers = `/${userId}/followers`;
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     dispatch(getUserBiId(id));

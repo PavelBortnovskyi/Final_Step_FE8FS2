@@ -7,6 +7,7 @@ import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
+import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 
 const initialState = {
   subscriptionsTweets: [],
@@ -17,6 +18,11 @@ const initialState = {
 export const getUserTweetsSlice = createSlice({
   name: 'subscriptionsTweets',
   initialState,
+  reducers: {
+    resetSubscriptionsTweets(state) {
+      state.subscriptionsTweets = [];
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -43,28 +49,54 @@ export const getUserTweetsSlice = createSlice({
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
-          tweet.id === likedTweet.id ? likedTweet : tweet
-        );
+        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === likedTweet.id ? likedTweet : tweet;
+          } else {
+            return tweet.parentTweet && tweet.parentTweet.id === likedTweet.id
+              ? { ...tweet, parentTweet: likedTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
         const retweetTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
-          tweet.id === retweetTweet.id ? retweetTweet : tweet
-        );
+        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) => {
+          if (tweet.tweetType === 'RETWEET') {
+            return tweet.parentTweet.id === retweetTweet.id
+              ? { ...tweet, parentTweet: retweetTweet }
+              : tweet;
+          } else {
+            return tweet.id === retweetTweet.id ? retweetTweet : tweet;
+          }
+        });
       })
       .addCase(deleteTweet.fulfilled, (state, action) => {
-        const deleteTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.filter(
-          (tweet) => tweet.id !== deleteTweet.id
-        );
+        const deleteTweetUser = action.payload;
+        state.subscriptionsTweets = state.subscriptionsTweets.filter(tweet => {
+          if (tweet.tweetType === "RETWEET") {
+            return tweet.parentTweet.id !== deleteTweetUser.id
+          } else {
+            return tweet.id !== deleteTweetUser.id
+          }
+        });
       })
-
       .addCase(addQuote.fulfilled, (state, action) => {
-        const quoteTweet = action.payload;
-        state.subscriptionsTweets = state.subscriptionsTweets.map((tweet) =>
-          tweet.id === quoteTweet.id ? quoteTweet : tweet
-        );
+        const quoteTweet = action.payload.data.parentTweet;
+        state.subscriptionsTweets = [
+          action.payload.data,
+          ...state.subscriptionsTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else if (tweet.tweetType === "RETWEET") {
+              return tweet.parentTweet.id === quoteTweet.id ? { ...tweet, parentTweet: quoteTweet } : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? quoteTweet
+                : tweet;
+            }
+          }),
+        ];
       })
       .addCase(addBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
@@ -82,7 +114,23 @@ export const getUserTweetsSlice = createSlice({
           tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
         );
       })
+      .addCase(createTweetReply.fulfilled, (state, action) => {
+        const quoteTweet = action.payload.data.parentTweet;
+        state.subscriptionsTweets = [
+          action.payload.data,
+          ...state.subscriptionsTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? { ...tweet, parentTweet: quoteTweet }
+                : tweet;
+            }
+          }),
+        ];
+      });
   },
 });
 
 export default getUserTweetsSlice.reducer;
+export const { resetSubscriptionsTweets } = getUserTweetsSlice.actions;

@@ -35,7 +35,7 @@ export const QuoteTweet = ({
         marginRight: '16px',
       }}
     >
-      <Box display={'flex'} gap={'4px'} alignItems={'center'}>
+      <Box display={'flex'} gap={'12px'} alignItems={'center'}>
         <Link
           to={`/user/${userId}`}
           onClick={() => {

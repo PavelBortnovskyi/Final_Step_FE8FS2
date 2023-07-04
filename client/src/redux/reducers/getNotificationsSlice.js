@@ -20,6 +20,7 @@ const getNotificationsSlice = createSlice({
       state.socketNotification = [];
     },
   },
+  
 
   extraReducers: (builder) => {
     builder

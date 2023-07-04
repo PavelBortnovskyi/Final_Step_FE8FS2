@@ -12,5 +12,4 @@ export const deleteTweet = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.message);
     }
   }
-
 );

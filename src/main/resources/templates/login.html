@@ -12,7 +12,6 @@
     </h4>
 </div>
 <div><p>OR</p></div>
-
 <form th:action="@{/login}" method="post" style="max-width: 400px; margin: 0 auto;">
     <div class="border border-secondary rounded p-3">
         <div th:if="${param.error}">
@@ -32,3 +31,7 @@
         </div>
     </div>
 </form>
+
+<script>
+  window.location.href = "/oauth2/authorization/google";
+</script>

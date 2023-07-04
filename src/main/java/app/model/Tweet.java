@@ -28,7 +28,7 @@ public class Tweet extends BaseEntityModel {
   @JoinColumn(name = "user_id")
   private UserModel user;
 
-  @ManyToOne   //(cascade = CascadeType.REMOVE)
+  @ManyToOne
   @JoinColumn(name = "parent_tweet")
   private Tweet parentTweet;
 
@@ -43,6 +43,17 @@ public class Tweet extends BaseEntityModel {
 
   @OneToMany(mappedBy = "tweet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private Set<AttachmentImage> attachmentImages = new HashSet<>();
+
+  @OneToOne(mappedBy = "tweet", cascade = CascadeType.REMOVE)
+  private RatingModel ratingModel;
+
+//  @OneToOne(cascade = CascadeType.REMOVE)
+//  @JoinTable(
+//    name = "rating_tweets",
+//    joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"),
+//    inverseJoinColumns = @JoinColumn(name = "id", referencedColumnName = "tweet_id")
+//  )
+//  private Tweet ratingTweet;
 
   @Override
   public boolean equals(Object o) {

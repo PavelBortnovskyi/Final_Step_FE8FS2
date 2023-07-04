@@ -8,6 +8,7 @@ import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { createTweetReply } from '../thunk/tweets/replyTweet.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { createTweet } from '../thunk/tweets/createTweet.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   userTweets: [],
@@ -18,6 +19,11 @@ const initialState = {
 export const getUserTweetsSlice = createSlice({
   name: 'userTweets',
   initialState,
+  reducers: {
+    resetUserTweets(state) {
+      state.userTweets = [];
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -42,46 +48,103 @@ export const getUserTweetsSlice = createSlice({
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const likedTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
-          tweet.id === likedTweet.id ? likedTweet : tweet
-        );
-      })
-      .addCase(createTweetReply.fulfilled, (state, action) => {
-        state.userTweets = [
-          action.payload.data.parentTweet,
-          ...state.userTweets,
-        ];
-        state.isLoading = false;
+        state.userTweets = state.userTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === likedTweet.id ? likedTweet : tweet;
+          } else {
+            return tweet.parentTweet && tweet.parentTweet.id === likedTweet.id
+              ? { ...tweet, parentTweet: likedTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(addRetweet.fulfilled, (state, action) => {
         const retweetTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
-          tweet.id === retweetTweet.id ? retweetTweet : tweet
-        );
+        state.userTweets = state.userTweets.map((tweet) => {
+          if (tweet.tweetType === 'RETWEET') {
+            return tweet.parentTweet.id === retweetTweet.id
+              ? { ...tweet, parentTweet: retweetTweet }
+              : tweet;
+          } else {
+            return tweet.id === retweetTweet.id ? retweetTweet : tweet;
+          }
+        });
       })
+
       .addCase(addQuote.fulfilled, (state, action) => {
-        const quoteTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
-          tweet.id === quoteTweet.id ? quoteTweet : tweet
-        );
+        const quoteTweet = action.payload.data.parentTweet;
+        state.userTweets = [
+          action.payload.data,
+          ...state.userTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else if (tweet.tweetType === "RETWEET") {
+              return tweet.parentTweet.id === quoteTweet.id ? { ...tweet, parentTweet: quoteTweet } : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? quoteTweet
+                : tweet;
+            }
+          }),
+        ];
       })
       .addCase(addBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
-          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-        );
+        state.userTweets = state.userTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet;
+          } else {
+            return tweet.parentTweet &&
+              tweet.parentTweet.id === bookmarkTweet.id
+              ? { ...tweet, parentTweet: bookmarkTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(deleteBookmark.fulfilled, (state, action) => {
         const bookmarkTweet = action.payload;
-        state.userTweets = state.userTweets.map((tweet) =>
-          tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet
-        );
+        state.userTweets = state.userTweets.map((tweet) => {
+          if (tweet.tweetType !== 'RETWEET') {
+            return tweet.id === bookmarkTweet.id ? bookmarkTweet : tweet;
+          } else {
+            return tweet.parentTweet &&
+              tweet.parentTweet.id === bookmarkTweet.id
+              ? { ...tweet, parentTweet: bookmarkTweet }
+              : tweet;
+          }
+        });
       })
       .addCase(createTweet.fulfilled, (state, action) => {
         const newTweet = action.payload;
         state.userTweets = [newTweet, ...state.userTweets];
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweetUser = action.payload;
+        state.userTweets = state.userTweets.filter((tweet) => {
+          if (tweet.tweetType === "RETWEET") {
+            return tweet.parentTweet.id !== deleteTweetUser.id
+          } else {
+            return tweet.id !== deleteTweetUser.id
+          }
+        })
+      })
+      .addCase(createTweetReply.fulfilled, (state, action) => {
+        const quoteTweet = action.payload.data.parentTweet;
+        state.userTweets = [
+          action.payload.data,
+          ...state.userTweets.map((tweet) => {
+            if (tweet.parentTweet === null) {
+              return tweet.id === quoteTweet.id ? quoteTweet : tweet;
+            } else {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? { ...tweet, parentTweet: quoteTweet }
+                : tweet;
+            }
+          }),
+        ];
       });
   },
 });
 
 export default getUserTweetsSlice.reducer;
+export const { resetUserTweets } = getUserTweetsSlice.actions;

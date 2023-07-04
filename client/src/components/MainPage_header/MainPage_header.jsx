@@ -53,20 +53,30 @@ function MainPage_header({ tabIndex, setTabIndex }) {
           {isAuthenticated ? 'Home' : ' Explore'}
         </Box>
       </NavLink>
+
       <Box
         sx={{
           display: { xs: 'flex', sm: 'none' },
           marginTop: '10px',
           alignItems: 'center',
+          justifyContent: !isAuthenticated && 'center',
         }}
       >
-        <Avatar
-          src={user.avatarImgUrl}
-          sx={{ marginRight: '35%', marginLeft: '10px', cursor: 'pointer' }}
-          onClick={() => setIsOpen(true)}
-        />
+        {
+          isAuthenticated && (
+            <>
+              <Avatar
+                src={user.avatarImgUrl}
+                sx={{ marginRight: '35%', marginLeft: '10px', cursor: 'pointer' }}
+                onClick={() => setIsOpen(true)}
+              />
+              <SidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+            </>
 
-        <SidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+          )}
+
+
+
 
         <LogoTwitter />
       </Box>

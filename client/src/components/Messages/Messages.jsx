@@ -2,13 +2,21 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Container, IconButton, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  IconButton,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 
 import { ChatSidebar } from './Chat/ChatSidebar';
-import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import { getAuthorizationData, getChats } from 'src/redux/selectors/selectors';
 import { getAllChats } from 'src/redux/thunk/getAllChats';
+import { Chat } from './Chat/Chat';
 
 // ************ Messages ************
 export const Messages = () => {
@@ -17,6 +25,11 @@ export const Messages = () => {
 
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector(getAuthorizationData);
+
+  const { guest } = useSelector(getChats);
+
+  // set browser mobile size flag
+  const mobile = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
   // send user to home if not authorization
   useEffect(() => {
@@ -64,7 +77,10 @@ export const Messages = () => {
         </Box>
 
         {/* Search */}
-        <ChatSidebar />
+        {mobile ? !guest && <ChatSidebar /> : <ChatSidebar />}
+
+        {/* mobile size browser */}
+        {mobile && guest && <Chat />}
       </Container>
     </Box>
   );
