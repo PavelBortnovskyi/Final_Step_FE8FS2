@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class ErrorInfo {
   private final String url;
-  private final String error;
+  private final String info;
 
-  ErrorInfo(String url, String error) {
+  ErrorInfo(String url, String info) {
     this.url = url;
-    this.error = error;
+    this.info = info;
   }
 }

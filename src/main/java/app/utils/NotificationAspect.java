@@ -27,6 +27,9 @@ public class NotificationAspect {
 
   private final NotificationService notificationService;
 
+  /**
+   * Method intercepts method args, return value at pointcut and sends notification via websocket to author of content
+   */
   @AfterReturning(pointcut = "executeNotification()", returning = "returnValue")
   public void sendNotificationCall(JoinPoint joinPoint, Object returnValue) throws ExecutionException, InterruptedException, JsonProcessingException {
     String methodName = joinPoint.getSignature().getName();

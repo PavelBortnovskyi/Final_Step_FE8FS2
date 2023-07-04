@@ -15,15 +15,15 @@ public class MessageFacade extends GeneralFacade<Message, MessageRequestDTO, Mes
 
   public MessageResponseDTO addMessageToChat(Long userId, Message message) {
     if (message.getUser().getId().equals(userId))
-      return this.convertToDto(this.messageService.addMessage(message));
+      return this.convertToDto(messageService.addMessage(message));
     else throw new BadRequestException(String.format("Current user with id: %d is not the author of message ", userId));
   }
 
   public boolean changeMessage(Long userId, Message message) {
-    return this.messageService.changeMessage(userId, message);
+    return messageService.changeMessage(userId, message);
   }
 
   public boolean deleteMessage(Long userId, MessageRequestDTO message) {
-    return this.messageService.deleteMessage(userId, message.getId());
+    return messageService.deleteMessage(userId, message.getId());
   }
 }
