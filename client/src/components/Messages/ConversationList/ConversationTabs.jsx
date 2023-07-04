@@ -1,7 +1,6 @@
 // import PropTypes from 'prop-types';
 import { Box, Tab, Tabs, styled, alpha } from '@mui/material';
 import ContactEmergencyOutlinedIcon from '@mui/icons-material/ContactEmergencyOutlined';
-import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
 import { useState } from 'react';
 
 import { TabContacts } from './TabContacts';
@@ -80,6 +79,8 @@ export const ConversationTabs = () => {
             label="Contacts"
             {...tabsProps(0)}
           />
+
+          {/* for group chat */}
           {/* <TabSearch
             icon={<MarkUnreadChatAltOutlinedIcon />}
             label="Chats"

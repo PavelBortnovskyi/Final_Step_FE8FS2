@@ -1,11 +1,8 @@
-import { Box } from '@mui/material';
 import { SearchTabs } from '../Search/SearchTabs';
 import { SearchFieldMessages } from '../Search/SearchFieldMessages';
 import { useState } from 'react';
-import { Contacts } from '../ConversationList/TabContacts';
 import { ConversationTabs } from '../ConversationList/ConversationTabs';
 
-// ************ STYLE ************
 // ************ STYLE ************
 
 // ************ ChatSidebar ************

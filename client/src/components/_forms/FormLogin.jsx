@@ -115,15 +115,10 @@ export const FormLogin = () => {
     actions.resetForm();
   };
 
-  // default value for form
   const initialValues = {
-    email: 'uniqChat@chat.ua',
-    password: '12345678',
+    email: '',
+    password: '',
   };
-  // const initialValues = {
-  //   email: '',
-  //   password: '',
-  // };
 
   return (
     <>
