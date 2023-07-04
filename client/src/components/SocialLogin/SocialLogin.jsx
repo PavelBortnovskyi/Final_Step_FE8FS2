@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { setAuthenticated } from 'src/redux/reducers/authSlice';
+// import { setAuthenticated } from 'src/redux/reducers/authSlice';
 import { setAuthToken, setRefreshToken } from 'src/utils/tokens';
 import { useDispatch } from 'react-redux';
+import { getUser } from 'src/redux/thunk/getUser';
 
 export const SocialLogin = () => {
   const navigate = useNavigate();
@@ -22,10 +23,9 @@ export const SocialLogin = () => {
     const refreshToken = queryParams.get('refreshToken');
 
     if (accessToken && refreshToken) {
-      console.log('social');
-
       setAuthToken(accessToken);
       setRefreshToken(refreshToken);
+      dispatch(getUser());
       // dispatch(setAuthenticated(true));
       navigate('/');
     }

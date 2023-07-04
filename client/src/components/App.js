@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from 'src/layout/Layout';
@@ -114,14 +114,11 @@ export const App = () => {
   }, [dispatch, accessToken, isAuthenticated, user]);
   //*********************************************************/
 
-  console.log('app');
   useEffect(() => {
     if (accessToken) {
-      console.log('token');
       if (!user) {
-        console.log('user');
         dispatch(getUser());
-        dispatch(setAuthenticated(true));
+        // dispatch(setAuthenticated(true));
       }
     } else {
       dispatch(setAuthenticated(false));
