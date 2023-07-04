@@ -1,21 +1,15 @@
 //UserAllTypeTweets
 
 import { Box, Typography } from '@mui/material';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import TweetList from 'src/UI/TweetList';
+
 import TweetPost from 'src/UI/tweet/TweetPost';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import { QuoteTweet } from 'src/components/Replise/QuoteTweet';
 import { useMode } from 'src/styles/_materialTheme';
 import RepeatIcon from '@mui/icons-material/Repeat';
 
-import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
-
 export const UserAllTypeTweets = ({ tweets }) => {
   const theme = useMode();
-  // let parentTweetId
   function findeParentTweetId(userTweet) {
     if (userTweet.parentTweet !== null) {
       return findeParentTweetId(userTweet.parentTweet);
@@ -30,6 +24,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
     } else if (userTweet.parentTweet === null) {
       return (
         <Box
+          key={userTweet.id}
           borderBottom={`1px solid ${theme.palette.border.main}`}
           paddingBottom={'8px'}
         >
@@ -48,16 +43,6 @@ export const UserAllTypeTweets = ({ tweets }) => {
               isBookmarks={userTweet.currUserBookmarked}
               bookmarks={userTweet.countBookmarks}
             />
-            {/* <PostIconList
-              likes={userTweet.countLikes}
-              reply={userTweet.countReply}
-              retweet={userTweet.countRetweets}
-              id={userTweet.id}
-              isLiked={userTweet.currUserLiked}
-              isRetweet={userTweet.countRetweets}
-              isComment={userTweet.countReplays}
-              isBookmark={userTweet.countBookmarks}
-            /> */}
           </Box>
         </Box>
       );
@@ -68,10 +53,10 @@ export const UserAllTypeTweets = ({ tweets }) => {
     if (userTweet.tweetType === 'TWEET') {
       return (
         <Box
+          key={userTweet.id}
           borderBottom={`1px solid ${theme.palette.border.main}`}
           paddingBottom={'8px'}
         >
-          tweet
           <TweetPost tweet={userTweet} />
           <Box display={'flex'} justifyContent={'center'}>
             <PostIconList
@@ -121,12 +106,12 @@ export const UserAllTypeTweets = ({ tweets }) => {
     } else if (userTweet.tweetType === 'QUOTE_TWEET') {
       return (
         <Box
+          key={userTweet.id}
           borderBottom={`1px solid ${theme.palette.border.main}`}
           display={'flex'}
           flexDirection={'column'}
           paddingBottom={'8px'}
         >
-          QUOTE_TWEET
           <TweetPost tweet={userTweet} />
           <Box width={'90%'} alignSelf={'end'}>
             <QuoteTweet
@@ -191,7 +176,7 @@ export const UserAllTypeTweets = ({ tweets }) => {
       );
     } else if (userTweet.tweetType === 'RETWEET') {
       return (
-        <Box>
+        <Box key={userTweet.id}>
           <Box
             display={'flex'}
             alignItems={'center'}

@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 import { getUserReplise } from 'src/redux/thunk/getUserReplise';
 import { getUserLikes } from 'src/redux/thunk/getUserLikes';
+import { resetUserTweets } from 'src/redux/reducers/getUserTweetsSlice';
+import { resetUserReplise } from 'src/redux/reducers/userRepliseSlice';
+import { resetUserLikes } from 'src/redux/reducers/userLikesSlice';
 
 export const User = ({
   idUser,
@@ -40,7 +43,7 @@ export const User = ({
   const userTweetsIsLoading = useSelector(
     (state) => state.userTweets.isLoading
   );
-  console.log(typeof tabIndex);
+
   ///Call different actions depends on tab
   useEffect(() => {
     if (tabIndex == 1) {

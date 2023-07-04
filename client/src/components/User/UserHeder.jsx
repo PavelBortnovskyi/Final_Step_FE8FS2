@@ -1,6 +1,6 @@
 import { UserName } from './UserName';
 import { UserTweetsNumber } from './UserTweensNumber';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ArrowBack } from '../../UI/ArrowBack';
 
