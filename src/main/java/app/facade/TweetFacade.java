@@ -71,6 +71,10 @@ public class TweetFacade extends GeneralFacade<Tweet, Void, TweetResponseDTO> {
 
 
   public TweetResponseDTO createTweetAction(Long userId, Long tweetId, TweetActionType tweetActionType) {
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException ignored) {}
+
     return convertToDto(tweetActionService
       .createTweetAction(userId, tweetId, tweetActionType).getTweet());
   }
