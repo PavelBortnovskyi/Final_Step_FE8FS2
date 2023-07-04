@@ -80,7 +80,7 @@ export const HomePage = () => {
   const tweetsNoAuthState = useSelector((state) => state.tweetsNoAuth);
   const tweetsNoAuthLoading = tweetsNoAuthState.isLoading;
   const tweetsNoAuthArray = tweetsNoAuthState.tweetsNoAuth;
-
+ 
   return (
     <Box
       sx={{
