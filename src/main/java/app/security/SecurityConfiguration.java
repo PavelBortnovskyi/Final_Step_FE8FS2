@@ -5,26 +5,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-
-import javax.servlet.http.HttpServletRequest;
-
 
 @Log4j2
 @Configuration
@@ -43,10 +32,6 @@ public class SecurityConfiguration {
   private final OAuth2FailureLoginHandler oAuth2FailureLoginHandler;
 
   //private final CustomAccessTokenResponseClient customAccessTokenResponseClient;
-
-//  @Autowired
-//  @Qualifier("delegatedAuthenticationEntryPoint")
-//  AuthenticationEntryPoint authEntryPoint;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
@@ -105,7 +90,7 @@ public class SecurityConfiguration {
     //Filter for interception of JwtAuthenticationException from jwtAuthFilter
     httpSec.addFilterBefore(filterExceptionHandler, JwtAuthFilter.class);
 
-    //X-frame-Options for SockJS
+    //X-frame Options for SockJS
     //httpSec.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
 
