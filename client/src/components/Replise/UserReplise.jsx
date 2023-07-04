@@ -7,7 +7,7 @@ export const UserReplise = ({ replise }) => {
   const theme = useTheme();
   const userReplise = replise;
 
-  //робить масив унікальних батьківських id твітів
+  //робить масив батьківських id твітів
   const nestedIds = [];
   userReplise.forEach((obj) => {
     const parentTweet = obj.parentTweet;
@@ -15,7 +15,9 @@ export const UserReplise = ({ replise }) => {
       nestedIds.push(parentTweet.id);
     }
   });
+
   const uniqueNestedIds = Array.from(new Set(nestedIds));
+  console.log(uniqueNestedIds);
 
   //робить масив батьківських твітів
   function getUniqueParentTweets(tweets) {
@@ -56,54 +58,66 @@ export const UserReplise = ({ replise }) => {
   function toObjTweet(parentId, userReplise) {
     return userReplise.map((replise) => {
       let parentTrue;
-      if (replise.parentTweet !== null) {
-        parentTrue = findparent(replise.parentTweet, parentId);
+
+      if (replise?.parentTweet !== null) {
+        parentTrue = findparent(replise?.parentTweet, parentId);
         if (parentTrue) {
           return (
-            <Box key={replise.id}>
-              <TweetPost tweet={replise} />
-              <Box display={'flex'} justifyContent={'center'}>
-                <PostIconList
-                  isLiked={replise.currUserLiked}
-                  isQuoted={replise.currUserQuoted}
-                  isComment={replise.currUserCommented}
-                  isRetweet={replise.currUserRetweeted}
-                  likes={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.countLikes
-                      : replise.countLikes
-                  }
-                  reply={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.countReplies
-                      : replise.countReplies
-                  }
-                  retweet={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.countRetweets
-                      : replise.countRetweets
-                  }
-                  id={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.id
-                      : replise.id
-                  }
-                  quote={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.countQuoteTweets
-                      : replise.countQuoteTweets
-                  }
-                  isBookmarks={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.currUserBookmarked
-                      : replise.currUserBookmarked
-                  }
-                  bookmarks={
-                    replise.attachmentImages === undefined
-                      ? replise.tweet.countBookmarks
-                      : replise.countBookmarks
-                  }
-                />
+            <Box
+              key={replise.id}
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                '&:hover': {
+                  background: `${theme.palette.background.hover}`,
+                },
+              }}
+            >
+              <Box width={'90%'}>
+                <TweetPost tweet={replise} />
+                <Box display={'flex'} justifyContent={'center'}>
+                  <PostIconList
+                    isLiked={replise.currUserLiked}
+                    isQuoted={replise.currUserQuoted}
+                    isComment={replise.currUserCommented}
+                    isRetweet={replise.currUserRetweeted}
+                    likes={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.countLikes
+                        : replise.countLikes
+                    }
+                    reply={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.countReplies
+                        : replise.countReplies
+                    }
+                    retweet={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.countRetweets
+                        : replise.countRetweets
+                    }
+                    id={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.id
+                        : replise.id
+                    }
+                    quote={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.countQuoteTweets
+                        : replise.countQuoteTweets
+                    }
+                    isBookmarks={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.currUserBookmarked
+                        : replise.currUserBookmarked
+                    }
+                    bookmarks={
+                      replise.attachmentImages === undefined
+                        ? replise.tweet.countBookmarks
+                        : replise.countBookmarks
+                    }
+                  />
+                </Box>
               </Box>
             </Box>
           );
@@ -122,7 +136,14 @@ export const UserReplise = ({ replise }) => {
       if (parentTweet?.id === tweetId) {
         return (
           parentTweet && (
-            <Box key={parentTweet.id}>
+            <Box
+              key={parentTweet.id}
+              sx={{
+                '&:hover': {
+                  background: `${theme.palette.background.hover}`,
+                },
+              }}
+            >
               <TweetPost tweet={parentTweet} />
               <Box display={'flex'} justifyContent={'center'}>
                 <PostIconList

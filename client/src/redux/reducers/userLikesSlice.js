@@ -29,7 +29,6 @@ export const userLikesSlice = createSlice({
           (newTweet) =>
             !state.userLikes.some((tweet) => tweet.id === newTweet.id)
         );
-
         state.userLikes = [...state.userLikes, ...newTweets];
         state.isLoading = false;
         state.error = null;
