@@ -7,7 +7,7 @@ import {
 } from '../reducers/pagination/paginationSlice.js';
 
 export const getUserReplise = createAsyncThunk(
-  'user/likes',
+  'user/reply',
   async ({ id, page, size }, thunkAPI) => {
     const userId = id ? `/${id}` : '';
     try {

@@ -57,10 +57,10 @@ public class AuthFacade {
     User authUser = maybeAuthUser.orElseThrow(() -> new AuthErrorException("Something went wrong during authentication"));
 
     //User extraction from DB by security credentials from Authenticated User (email aka username)
-    Optional<UserModel> maybeCurrentUser = this.userService.getUserO(authUser.getUsername());
+    Optional<UserModel> maybeCurrentUser = userService.getUserO(authUser.getUsername());
     UserModel currentUser = maybeCurrentUser.orElseThrow(() -> new AuthErrorException("Authenticated user not found in DB! MAGIC!"));
 
-    return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(currentUser));
+    return ResponseEntity.ok(jwtTokenService.generateTokenPair(currentUser));
   }
 
   /**
@@ -68,26 +68,26 @@ public class AuthFacade {
    */
   public ResponseEntity<HashMap<String, String>> makeSighUp(UserRequestDTO signUpDTO) {
     //Email duplicate checking
-    if (this.userService.isEmailPresentInDB(signUpDTO.getEmail()))
+    if (userService.isEmailPresentInDB(signUpDTO.getEmail()))
       throw new UserAlreadyRegisteredException("email: " + signUpDTO.getEmail());
 
     //Tag duplicate checking
     signUpDTO.setUserTag("@" + signUpDTO.getUserTag());
-    if (this.userService.isUserTagPresentInDB(signUpDTO.getUserTag()))
+    if (userService.isUserTagPresentInDB(signUpDTO.getUserTag()))
       throw new UserAlreadyRegisteredException("tag: " + signUpDTO.getUserTag());
 
     //Saving new User to DB and getting user_id to freshUser       //Mapping signUpDTO -> UserModel
     signUpDTO.setPassword(encoder.encode(signUpDTO.getPassword()));
-    UserModel freshUser = this.userService.save(this.userFacade.convertToEntity(signUpDTO));
+    UserModel freshUser = userService.save(userFacade.convertToEntity(signUpDTO));
 
-    return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(freshUser));
+    return ResponseEntity.ok(jwtTokenService.generateTokenPair(freshUser));
   }
 
   /**
    * Method performs user logout by refresh token invalidation
    */
   public String makeLogOut(Long userId) {
-    this.jwtTokenService.changeRefreshTokenStatus(userId, true);
+    jwtTokenService.changeRefreshTokenStatus(userId, true);
     log.info("User id: " + userId + " logged out");
     return "User with Id: " + userId + " logged out";
   }
@@ -96,7 +96,7 @@ public class AuthFacade {
    * Method performs user password update operation with email-old password combination checking
    */
   public ResponseEntity<HashMap<String, String>> makePasswordUpdate(UserRequestDTO passwordUpdateDto) {
-    if (this.userService.updatePassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword(), passwordUpdateDto.getFreshPassword())) {
+    if (userService.updatePassword(passwordUpdateDto.getEmail(), passwordUpdateDto.getPassword(), passwordUpdateDto.getFreshPassword())) {
       return ResponseEntity.ok(new HashMap<>() {{
         put("MESSAGE", "Password for account: " + passwordUpdateDto.getEmail() + " was updated");
       }});
@@ -110,9 +110,9 @@ public class AuthFacade {
    */
   public ResponseEntity<String> sendPasswordResetTokenToEmail(UserRequestDTO passwordResetDto) {
     if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
-      String passwordResetToken = this.jwtTokenService.createToken(this.userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
+      String passwordResetToken = jwtTokenService.createToken(userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
       //TODO: change link according to front end mapping
-      String resetUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/user/password/reset/apply?token=" + passwordResetToken;
+      String resetUrl = "https://final-step-fe-8-fs-2.vercel.app//password/reset?token=" + passwordResetToken;
       emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
       return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
     } else
@@ -123,14 +123,14 @@ public class AuthFacade {
    * Method performs user password reset and update with validating reset token in request
    */
   public ResponseEntity<HashMap<String, String>> makePasswordReset(UserRequestDTO passwordResetDto, HttpServletRequest request) {
-    String resetPasswordToken = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException(" Please provide token for reset password!"));
-    if (this.jwtTokenService.validateToken(resetPasswordToken, TokenType.PASSWORD_RESET)) {
+    String resetPasswordToken = jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException(" Please provide token for reset password!"));
+    if (jwtTokenService.validateToken(resetPasswordToken, TokenType.PASSWORD_RESET)) {
 
-      Long userId = this.jwtTokenService.extractIdFromClaims(this.jwtTokenService.extractClaimsFromToken(resetPasswordToken, TokenType.PASSWORD_RESET).get()).get();
-      this.userService.updatePassword(userId, passwordResetDto.getFreshPassword());
-      UserModel currUser = this.userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+      Long userId = jwtTokenService.extractIdFromClaims(jwtTokenService.extractClaimsFromToken(resetPasswordToken, TokenType.PASSWORD_RESET).get()).get();
+      userService.updatePassword(userId, passwordResetDto.getFreshPassword());
+      UserModel currUser = userService.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
-      return ResponseEntity.ok(this.jwtTokenService.generateTokenPair(currUser));
+      return ResponseEntity.ok(jwtTokenService.generateTokenPair(currUser));
     } else return ResponseEntity.badRequest().body(new HashMap<>() {{
       put("ERROR", "Token is not valid to reset password");
     }});
@@ -140,10 +140,10 @@ public class AuthFacade {
    * Method send link with token pair to user email to verify email exist
    */
   public ResponseEntity<String> sendRegisterTokenToEmail(UserRequestDTO signUpDTO) {
-    if (this.userService.isEmailPresentInDB(signUpDTO.getEmail())) {
+    if (userService.isEmailPresentInDB(signUpDTO.getEmail())) {
       return ResponseEntity.badRequest().body("ERROR: " + signUpDTO.getEmail() + " is already registered");
     } else {
-      String registerToken = this.jwtTokenService.createToken(null, TokenType.REGISTER, "", signUpDTO.getEmail());
+      String registerToken = jwtTokenService.createToken(null, TokenType.REGISTER, "", signUpDTO.getEmail());
       //TODO: change link according to front end mapping
       String registerUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/register/apply?token=" + registerToken;
       emailService.sendEmail(signUpDTO.getEmail(), "Verify your email for FinalStepTW account",
@@ -153,9 +153,9 @@ public class AuthFacade {
   }
 
   public ResponseEntity<HashMap<String, String>> makeRefresh(HttpServletRequest request) {
-    String token = this.jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
-    if (this.jwtTokenService.validateToken(token, TokenType.REFRESH) && !this.jwtTokenService.checkRefreshTokenStatus(token)) {
-      UserModel currUser = this.userService.getUserByRefreshToken(token);
+    String token = jwtTokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+    if (jwtTokenService.validateToken(token, TokenType.REFRESH) && !jwtTokenService.checkRefreshTokenStatus(token)) {
+      UserModel currUser = userService.getUserByRefreshToken(token);
       return ResponseEntity.ok(jwtTokenService.generateTokenPair(currUser));
     } else return ResponseEntity.status(400).body(new HashMap<>());
   }

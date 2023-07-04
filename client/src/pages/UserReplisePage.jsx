@@ -5,8 +5,8 @@ import { UserReplise } from 'src/components/Replise/UserReplise';
 export const UserReplisePage = () => {
   const userReplise =
     useSelector((state) => state.userReplise.userReplise) || [];
+  console.log(userReplise);
   const replise = userReplise;
-  console.log(replise);
   return (
     replise && (
       <Box>

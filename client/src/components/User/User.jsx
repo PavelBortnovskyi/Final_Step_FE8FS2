@@ -40,7 +40,7 @@ export const User = ({
   const userTweetsIsLoading = useSelector(
     (state) => state.userTweets.isLoading
   );
-
+  console.log(typeof tabIndex);
   ///Call different actions depends on tab
   useEffect(() => {
     if (tabIndex == 1) {

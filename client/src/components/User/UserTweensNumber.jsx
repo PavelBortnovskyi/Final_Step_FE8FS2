@@ -1,14 +1,15 @@
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
 
 export function UserTweetsNumber({ tweetsCounter }) {
+  const coutTweet = tweetsCounter || '0';
   return (
-    tweetsCounter && (
+    coutTweet && (
       <Typography
         sx={{
-          color: "rgb(139, 152, 165)",
+          color: 'rgb(139, 152, 165)',
         }}
       >
-        {tweetsCounter} tweets
+        {coutTweet} tweets
       </Typography>
     )
   );

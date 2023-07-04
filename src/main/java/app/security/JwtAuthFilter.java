@@ -34,17 +34,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
    */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    String token = this.tokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
+    String token = tokenService.extractTokenFromRequest(request).orElseThrow(() -> new JwtAuthenticationException("Token not found!"));
 
     if (!token.isEmpty()) {
       //Try to validate token as access token
-      if (this.tokenService.validateToken(token, TokenType.ACCESS)) {
+      if (tokenService.validateToken(token, TokenType.ACCESS)) {
 
         log.info("Token is valid continue...");
         this.processRequestWithToken(request, token);
 
         //Add value of userId to request to more simple access to it in controllers
-        request.setAttribute("userId", this.tokenService.getIdFromRequest(request).get());
+        request.setAttribute("userId", tokenService.getIdFromRequest(request).get());
         doFilter(request, response, filterChain);
       } else {
         log.info("Token invalid!");
@@ -95,8 +95,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     try {
       this.tokenService.extractClaimsFromToken(token, TokenType.ACCESS)
         .flatMap(claims -> {
-          Long userId = this.tokenService.extractIdFromClaims(claims).get();
-          String username = this.tokenService.extractUserEmailFromClaims(claims).get();
+          Long userId = tokenService.extractIdFromClaims(claims).get();
+          String username = tokenService.extractUserEmailFromClaims(claims).get();
           return Optional.of(Pair.of(userId, username));
         })
         .map(pair -> new JwtUserDetails(pair.getLeft(), pair.getRight()))
