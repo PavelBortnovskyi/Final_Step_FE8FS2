@@ -31,12 +31,14 @@ export const mainSidebarElementsMobile = [
         icon: NotificationsNoneIcon,
         label: 'Notifications',
         route: 'notifications',
+        newNotificationBadge: true,
     },
     {
         id: 3,
         icon: MailOutlineIcon,
         label: 'Messages',
         route: 'messages',
+        newMessageNotification: true,
     },
     
 ]

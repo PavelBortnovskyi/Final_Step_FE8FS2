@@ -20,6 +20,7 @@ import { RightRoutes } from 'src/routes/RightRoutes';
 import { mainSidebarElementsMobile } from 'src/components/SidebarMobile/SidebarMobileElements';
 import SmallBtnTweet from 'src/components/Sidebar/SmallBtnTweet/SmallBtnTweet';
 import { useMode } from 'src/styles/_materialTheme';
+import { FooterMobileVersion } from 'src/components/FooterMobileVersion/FooterMobileVersion';
 
 export const Layout = () => {
   // const theme = useTheme();
@@ -42,6 +43,8 @@ export const Layout = () => {
     lg: useMediaQuery(theme.breakpoints.between('lg', 'xl')),
     xl: useMediaQuery(theme.breakpoints.up('xl')),
   };
+
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -133,25 +136,7 @@ export const Layout = () => {
             )}
 
             {mainSidebarElementsMobile.map((navElement) => (
-              <Link
-                to={navElement.route}
-                underline="none"
-                key={navElement.id}
-                component={NavLink}
-              >
-                <ListItemIcon
-                  sx={{
-                    fontSize: 30,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    color: `${theme.palette.text.primary}`,
-                    zIndex: '11',
-                  }}
-                >
-                  <navElement.icon sx={{ fontSize: 30 }} />
-                </ListItemIcon>
-              </Link>
+              <FooterMobileVersion navElement={navElement}/>
             ))}
           </Box>
         )}
