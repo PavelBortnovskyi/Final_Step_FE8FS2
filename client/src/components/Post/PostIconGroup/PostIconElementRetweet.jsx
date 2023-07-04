@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { addRetweet } from 'src/redux/thunk/tweets/addRetweet';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 
-
 export const PostIconElementRetweet = ({
   icon,
   quantity,
@@ -22,6 +21,7 @@ export const PostIconElementRetweet = ({
     <Box
       onClick={handleRetweet}
       display="flex"
+      fontSize="15px"
       color={isRetweet ? `${color}` : ''}
       sx={{
         gap: '10px',

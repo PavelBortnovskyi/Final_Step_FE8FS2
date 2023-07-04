@@ -5,9 +5,11 @@ import { styled } from '@mui/material/styles';
 const SinglePhoto = styled(Box)({
   mt: '10px',
   overflow: 'hidden',
-  // width: '90%',
+  maxHeight: '612px',
+  maxWidth: '612px',
   display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
   borderRadius: '20px',
   loading: 'lazy',
 });
@@ -15,7 +17,6 @@ const SinglePhoto = styled(Box)({
 const DoublePhoto = styled(Box)({
   mt: '10px',
   gap: '2px',
-  // width: '90%',
   overflow: 'hidden',
   borderRadius: '20px',
   display: 'grid',
@@ -29,11 +30,9 @@ const DoublePhoto = styled(Box)({
 const TriplePhoto = styled(Box)({
   mt: '10px',
   gap: '2px',
-  // width: '90%',
   overflow: 'hidden',
   borderRadius: '20px',
   maxHeight: '290px',
-  // width: '515px',
   display: 'grid',
   gridTemplateColumns: 'repeat(8, 1fr)',
   gridTemplateRows: 'repeat(8, 1fr)',
@@ -44,7 +43,6 @@ const QuadruplePhoto = styled(Box)({
   ml: { sm: '5px', md: '20px', xl: '64px' },
   mt: '10px',
   height: '515px',
-  // width: { sm: '100%', md: '90%' },
   gap: '2px',
   overflow: 'hidden',
   borderRadius: '20px',

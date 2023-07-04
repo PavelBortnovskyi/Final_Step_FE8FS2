@@ -1,9 +1,8 @@
 import { Box, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addQuote } from 'src/redux/thunk/tweets/addQuote';
+import { useDispatch } from 'react-redux';
 import { getTweetByIdThunk } from 'src/redux/thunk/tweets/getTweetByIdThunk';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 export const PostElementQuote = ({ icon, quantity, color, id, isQuoted }) => {
   const theme = useTheme();
@@ -19,6 +18,7 @@ export const PostElementQuote = ({ icon, quantity, color, id, isQuoted }) => {
     <Box
       onClick={() => setIsModalOpen(true)}
       display="flex"
+      fontSize="15px"
       color={isQuoted !== false ? `${color}` : `${theme.palette.text.primary}`}
       sx={{
         gap: '10px',
@@ -32,7 +32,7 @@ export const PostElementQuote = ({ icon, quantity, color, id, isQuoted }) => {
       }}
     >
       {isQuoted ? (
-        <BorderColorOutlinedIcon size="small" sx={{ color: { color } }} />
+        <EditOutlinedIcon size="small" sx={{ color: { color } }} />
       ) : (
         icon
       )}
