@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { myAxios } from 'src/utils/axiosSetup';
-import { setAuthenticated } from '../reducers/authSlice';
+import { setAuthenticated } from '../reducers/authSlice.js';
 
 export const getUser = createAsyncThunk(
   'user/getUser',
