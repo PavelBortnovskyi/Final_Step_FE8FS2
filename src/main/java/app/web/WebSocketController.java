@@ -51,9 +51,11 @@ public class WebSocketController {
     if (messageDTO.getBody().length() > 2047)
       throw new BadRequestException("Message is too long (max size 2048 bytes)");
 
+    MessageResponseDTO freshMessage = messageFacade.save(messageFacade.convertToEntity(messageDTO));
+
     if (currUserId.equals(messageDTO.getUserId())) {
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
-        .forEach(email -> template.convertAndSend("/topic/chats/" + email, messageFacade.save(messageFacade.convertToEntity(messageDTO))));
+        .forEach(email -> template.convertAndSend("/topic/chats/" + email, freshMessage));
     } else
       throw new BadRequestException(String.format("You cannot send message with user with id: %d as author from account of user id: %d",
         messageDTO.getUserId(), currUserId));
