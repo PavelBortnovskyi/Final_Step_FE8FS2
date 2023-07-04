@@ -22,6 +22,8 @@ export const SocialLogin = () => {
     const refreshToken = queryParams.get('refreshToken');
 
     if (accessToken && refreshToken) {
+      console.log('social');
+
       setAuthToken(accessToken);
       setRefreshToken(refreshToken);
       // dispatch(setAuthenticated(true));

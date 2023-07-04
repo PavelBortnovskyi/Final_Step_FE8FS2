@@ -114,6 +114,7 @@ export const App = () => {
   }, [dispatch, accessToken, isAuthenticated, user]);
   //*********************************************************/
 
+  console.log('app');
   useEffect(() => {
     if (accessToken) {
       console.log('token');
