@@ -10,6 +10,7 @@ export const getUser = createAsyncThunk(
       const { data } = await myAxios.get('/user/profile');
 
       console.log('getUser');
+
       dispatch(setAuthenticated(true));
       return data;
     } catch (error) {
