@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { getChats, getUserData } from 'src/redux/selectors/selectors';
 import { Loading } from 'src/UI/Loading';
 import { ContactGuest } from './ContactGuest';
-import { setGuest } from 'src/redux/reducers/chatSlice';
 import { timestampToDate } from 'src/utils/messages/convertToDate';
 
 // ************ STYLE ************
@@ -40,8 +39,6 @@ export const TabContacts = () => {
     const getAllGuests = () => {
       try {
         if (allChats) {
-          // console.log('all', allChats);
-
           const excludeGroup = allChats.content.filter(
             (chat) => chat.users.length === 1
           );

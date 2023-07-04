@@ -36,6 +36,8 @@ const BoxMessages = styled(Box)`
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  word-break: break-word;
+  overflow: hidden;
   gap: 6px;
 `;
 // ************ STYLE ************
