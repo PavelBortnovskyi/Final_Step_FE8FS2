@@ -18,6 +18,7 @@ import { NotificationsUser } from 'src/components/NotificationsUser/Notification
 import { ModalQuotePage } from 'src/pages/ModalQuotePage';
 import { SearchUserPage } from 'src/pages/SearchUserPage';
 import { SocialLogin } from 'src/components/SocialLogin/SocialLogin';
+import { TopTweets } from 'src/components/TopTweets/TopTweets';
 
 export const mainRoutes = () => {
   return [
@@ -33,7 +34,7 @@ export const mainRoutes = () => {
 
     {
       path: '/explore',
-      element: <PageDeveloping />,
+      element: <TopTweets/>,
     },
     {
       path: '/notifications',

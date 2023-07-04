@@ -30,7 +30,7 @@ export const mainSidebarElements = [
     id: 1,
     icon: TagIcon,
     iconActive: NumbersRoundedIcon,
-    label: 'Explore',
+    label: 'Top tweets',
     route: 'explore',
   },
   {

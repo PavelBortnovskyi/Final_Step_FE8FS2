@@ -12,6 +12,8 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import StormIcon from '@mui/icons-material/Storm';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import TagIcon from '@mui/icons-material/Tag';
+import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 
 export const mainSidebarElementsMobile = [
     {
@@ -58,13 +60,20 @@ export const SidebarMobileElements = [
         label: 'Twitter Blue',
         route: 'twitter_blue',
     },
+    // {
+    //     id: 2,
+    //     icon: ListAltOutlinedIcon,
+    //     iconActive: BallotRoundedIcon,
+    //     label: 'Lists',
+    //     route: 'lists',
+    // },
     {
         id: 2,
-        icon: ListAltOutlinedIcon,
-        iconActive: BallotRoundedIcon,
-        label: 'Lists',
-        route: 'lists',
-    },
+        icon: TagIcon,
+        iconActive: NumbersRoundedIcon,
+        label: 'Top tweets',
+        route: 'explore',
+      },
     {
         id: 3,
         icon: BookmarkBorderOutlinedIcon,
