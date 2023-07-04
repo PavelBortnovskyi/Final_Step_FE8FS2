@@ -12,25 +12,28 @@ const { accessToken } = getTokens();
 if (accessToken) setAuthToken(accessToken);
 
 myAxios.interceptors.response.use(
-  (r) => r,
+  (response) => response,
   async function (error) {
-    const { refreshToken } = getTokens();
     const originalRequest = error.config;
 
+    // *** ERROR ***
+    if (
+      originalRequest.url === '/auth/login' ||
+      originalRequest.url === '/auth/refresh'
+    ) {
+      return Promise.reject(error);
+    }
+    // *** *** *** ***
+
+    const { refreshToken } = getTokens();
+
     // if refresh token is empty
-    // if (!refreshToken) return;
+    // if (!refreshToken) return error;
 
     if (originalRequest._retry) {
       setAuthToken();
       setRefreshToken();
     } else if (error.response.status === 401) {
-      // if 401 error from /auth/refresh
-      if (
-        originalRequest.url === '/auth/refresh' &&
-        error.response.status === 401
-      )
-        return;
-
       originalRequest._retry = true;
 
       return await myAxios

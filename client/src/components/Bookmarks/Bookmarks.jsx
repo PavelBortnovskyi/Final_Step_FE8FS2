@@ -6,7 +6,6 @@ import { getBookmarks } from 'src/redux/thunk/thunkBookmarks/getBookmarks';
 import { useNavigate } from 'react-router-dom';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import TweetList from 'src/UI/TweetList';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { deleteBookmark } from 'src/redux/thunk/thunkBookmarks/deleteBookmark';
 import { ArrowBack } from 'src/UI/ArrowBack';
 import LoaderSkeleton from 'src/UI/LoaderSkeleton';

@@ -58,10 +58,8 @@ const EmojiEmotionOutlinedIconStyles = styled(EmojiEmotionOutlinedIcon)(
 const SendIconWrapper = styled(Box)(({ theme }) => ({
   padding: '6px',
   margin: '0 4px 0 0px',
-  // height: '100%',
   borderRadius: '50%',
   backgroundColor: alpha(theme.palette.primary.main, 0.8),
-  // pointerEvents: 'none',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
@@ -86,8 +84,6 @@ const SenderInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const BoxPicker = styled(Box)(({ theme }) => ({
-  // flexGrow: '1',
-  // display: 'flex',
   position: 'absolute',
   bottom: '4px',
   left: '0px',
@@ -133,8 +129,6 @@ export const ChatSender = () => {
         chatId: currentChat[0].chatId,
         body: messageText,
       };
-
-      // console.log(message);
 
       // send event about new message to Socket server
       try {
@@ -188,7 +182,11 @@ export const ChatSender = () => {
   return (
     <>
       {
-        <Snackbar open={!!errorSocket} autoHideDuration={5000}>
+        <Snackbar
+          open={!!errorSocket}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
           <Alert severity="error">{errorSocket}</Alert>
         </Snackbar>
       }
