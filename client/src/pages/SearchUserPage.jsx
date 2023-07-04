@@ -2,7 +2,6 @@ import { Box } from '@mui/material'
 import React from 'react'
 import { ArrowBack } from 'src/UI/ArrowBack'
 import { SearchField } from 'src/UI/SearchField'
-import { RightSection } from 'src/components/RightSection/RightSection'
 import { SearchPeople } from 'src/components/RightSection/SearchPeople'
 
 export const SearchUserPage = () => {

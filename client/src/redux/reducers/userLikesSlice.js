@@ -6,6 +6,7 @@ import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { addRetweet } from '../thunk/tweets/addRetweet.js';
 import { createTweetReply } from '../thunk/tweets/replyTweet.js';
+import { deleteTweet } from '../thunk/tweets/deleteTweet.js';
 
 const initialState = {
   userLikes: [],
@@ -28,7 +29,6 @@ export const userLikesSlice = createSlice({
           (newTweet) =>
             !state.userLikes.some((tweet) => tweet.id === newTweet.id)
         );
-
         state.userLikes = [...state.userLikes, ...newTweets];
         state.isLoading = false;
         state.error = null;
@@ -76,7 +76,13 @@ export const userLikesSlice = createSlice({
           tweet.tweet.id === quotedTweet.id ? { tweet: quotedTweet } : tweet
         );
         state.isLoading = false;
-      });
+      })
+      .addCase(deleteTweet.fulfilled, (state, action) => {
+        const deleteTweetUser = action.payload;
+        state.userLikes = state.userLikes.filter(
+          (tweet) => tweet.tweet.id !== deleteTweetUser.id
+        );
+      })
   },
 });
 export default userLikesSlice.reducer;
