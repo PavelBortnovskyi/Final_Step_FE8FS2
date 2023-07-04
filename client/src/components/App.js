@@ -121,7 +121,7 @@ export const App = () => {
       if (!user) {
         console.log('user');
         dispatch(getUser());
-        dispatch(setAuthenticated(true));
+        // dispatch(setAuthenticated(true));
       }
     } else {
       dispatch(setAuthenticated(false));
