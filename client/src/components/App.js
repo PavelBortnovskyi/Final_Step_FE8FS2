@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from 'src/layout/Layout';
@@ -12,8 +12,7 @@ import { setAuthenticated } from 'src/redux/reducers/authSlice';
 import { setCurrentMessage, setSocketChat } from 'src/redux/reducers/chatSlice';
 import { setSocketNotification } from 'src/redux/reducers/getNotificationsSlice';
 
-// import Stomp from 'stompjs';
-import { Stomp, Client } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 // import SockJS from 'sockjs-client';
 
 // url socket server
@@ -59,20 +58,6 @@ export const App = () => {
 
           // set socket connection to redux
           dispatch(setSocketChat(stompClient));
-
-          // send message
-          // stompClient.publish({
-          //   destination: '/api/v1/message',
-          //   body: JSON.stringify({
-          //     userId: 1,
-          //     chatId: 2,
-          //     body: 'test message',
-          //   }),
-          //   headers: {
-          //     Authorization: `Bearer ${accessToken}`,
-          //     Origin: 'client',
-          //   },
-          // });
         };
 
         // error socket
@@ -123,12 +108,6 @@ export const App = () => {
           //
         } catch (error) {
           console.error('Error deactivating STOMP connection:', error);
-
-          // TODO: work ??? If there is a connection error, try to reconnect.
-          if (error.message === 'Lost connection to server') {
-            console.log('Attempting to reconnect...');
-            stompClientRef.current.activate();
-          }
         }
       };
     }
@@ -139,7 +118,7 @@ export const App = () => {
     if (accessToken) {
       if (!user) {
         dispatch(getUser());
-        dispatch(setAuthenticated(true));
+        // dispatch(setAuthenticated(true));
       }
     } else {
       dispatch(setAuthenticated(false));

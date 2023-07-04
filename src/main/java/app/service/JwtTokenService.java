@@ -94,6 +94,9 @@ public class JwtTokenService {
       .compact();
   }
 
+  /**
+   * Method for JWT token creation with token type (Enum) reference
+   */
   public String createToken(Long userId, TokenType tokenType, String userTag, String userMail) {
     String signKey = this.getSignKey(tokenType);
     Date now = new Date();
@@ -223,17 +226,10 @@ public class JwtTokenService {
   }
 
   /**
-   * Method returns string value of authorization header from request
-   */
-  protected String resolveToken(HttpServletRequest request) {
-    return request.getHeader(authorizationHeader);
-  }
-
-  /**
    * Method returns authentication from access token
    */
   public Authentication getAuthentication(String accessToken) {
-    UserDetails userDetails = this.userDetailsService
+    UserDetails userDetails = userDetailsService
       .loadUserByUsername(this.extractUserEmailFromClaims(this.extractClaimsFromToken(accessToken, TokenType.ACCESS)
           .orElseThrow(() -> new AuthErrorException("Authentication error with access token: " + accessToken)))
         .orElseThrow(() -> new JwtAuthenticationException("Wrong token payload, email not found")));
@@ -251,21 +247,21 @@ public class JwtTokenService {
    * Method returns true if provided refresh Token is not used
    */
   public boolean checkRefreshTokenStatus(String refreshToken) {
-    return this.userService.checkRefreshTokenStatus(refreshToken);
+    return userService.checkRefreshTokenStatus(refreshToken);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(Long userId, boolean usedStatus) {
-    this.userService.changeRefreshTokenStatusById(userId, usedStatus);
+    userService.changeRefreshTokenStatusById(userId, usedStatus);
   }
 
   /**
    * Method changes refresh token refreshed status
    */
   public void changeRefreshTokenStatus(String token, boolean usedStatus) {
-    this.userService.changeTokenStatusByValue(token, usedStatus);
+    userService.changeTokenStatusByValue(token, usedStatus);
   }
 
   /**

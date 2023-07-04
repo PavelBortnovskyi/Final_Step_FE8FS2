@@ -15,8 +15,6 @@ export const loginUser = createAsyncThunk(
         password,
       });
 
-      console.log(data);
-
       // if a token is received, store it in localStorage
       if (data.ACCESS_TOKEN) {
         setAuthToken(data.ACCESS_TOKEN);
@@ -26,7 +24,6 @@ export const loginUser = createAsyncThunk(
       }
       return data;
     } catch (error) {
-      console.log({ error });
       // set message error from server
       const errorMessage = error.response.data || error.message;
       return rejectWithValue(errorMessage);

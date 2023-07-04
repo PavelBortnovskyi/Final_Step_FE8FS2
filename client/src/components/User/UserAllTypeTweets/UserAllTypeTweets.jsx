@@ -10,6 +10,7 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 
 export const UserAllTypeTweets = ({ tweets }) => {
   const theme = useMode();
+
   function findeParentTweetId(userTweet) {
     if (userTweet.parentTweet !== null) {
       return findeParentTweetId(userTweet.parentTweet);

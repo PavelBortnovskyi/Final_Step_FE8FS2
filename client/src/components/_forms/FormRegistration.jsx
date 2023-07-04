@@ -3,15 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Alert,
-  Box,
-  Button,
-  Snackbar,
-  TextField,
-  styled,
-  useTheme,
-} from '@mui/material';
+import { Alert, Box, Button, Snackbar, TextField, styled } from '@mui/material';
 
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -117,8 +109,6 @@ export const FormRegistration = () => {
 
   // set view message from server after auth
   useEffect(() => {
-    // if (message) toast.success(message);
-    // if (error) toast.error(error);
     if (isAuthenticated) navigate('/');
   }, [navigate, isAuthenticated]);
 
@@ -135,14 +125,6 @@ export const FormRegistration = () => {
     actions.resetForm();
   };
 
-  // default value for form
-  // const initialValues = {
-  //   email: 'user33@gmail.com',
-  //   fullName: 'Giltam Furios',
-  //   userTag: 'giltam33',
-  //   password: '11111111',
-  //   confirmPassword: '11111111',
-  // };
   const initialValues = {
     email: '',
     fullName: '',

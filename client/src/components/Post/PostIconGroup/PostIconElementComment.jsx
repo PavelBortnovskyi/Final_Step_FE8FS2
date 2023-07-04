@@ -26,6 +26,8 @@ function PostIconElementComment({ quantity, color, id }) {
     <Box
       onClick={() => setIsModalOpen(true)}
       display="flex"
+      fontSize="17px"
+      alignItems="center"
       sx={{
         color: `${theme.palette.text.primary}`,
         gap: '10px',
@@ -38,7 +40,7 @@ function PostIconElementComment({ quantity, color, id }) {
         },
       }}
     >
-      <ChatBubbleOutlineOutlinedIcon fontSize="small" />
+      <ChatBubbleOutlineOutlinedIcon sx={{ fontSize: '15px' }} />
       {quantity}
     </Box>
   );

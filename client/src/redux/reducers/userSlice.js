@@ -21,7 +21,6 @@ export const userSlice = createSlice({
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.isAuthenticated = true;
       state.isLoading = false;
     });
     builder.addCase(getUser.rejected, (state, action) => {

@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// import { getGuest } from '../thunk/getGuest.js';
-import { getCurrentChat } from '../thunk/getCurrentChat.js';
-import { getAllChats } from '../thunk/getAllChats.js';
-import { getChatMessages } from '../thunk/getChatMessages.js';
-import { getIdChat } from '../thunk/getIdChat.js';
-
 const initialState = {
   notification: null,
   isLoading: false,
