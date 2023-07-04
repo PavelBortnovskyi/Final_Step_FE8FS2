@@ -116,7 +116,9 @@ export const App = () => {
 
   useEffect(() => {
     if (accessToken) {
+      console.log('token');
       if (!user) {
+        console.log('user');
         dispatch(getUser());
         dispatch(setAuthenticated(true));
       }
