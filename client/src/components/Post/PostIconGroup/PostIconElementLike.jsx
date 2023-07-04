@@ -21,6 +21,7 @@ function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
     <Box
       onClick={handleLike}
       display="flex"
+      fontSize="15px"
       color={isLiked ? '#f9197f' : ''}
       sx={{
         gap: '10px',

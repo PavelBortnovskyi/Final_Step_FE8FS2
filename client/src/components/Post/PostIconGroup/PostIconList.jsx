@@ -2,7 +2,7 @@ import React from 'react';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PostIconElementLike from './PostIconElementLike';
 import PostIconElementComment from './PostIconElementComment';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -35,6 +35,7 @@ function PostIconList({
         display: 'flex',
         justifyContent: 'space-between',
         width: '90%',
+        maxWidth: '500px',
         color: `${theme.palette.text.primary}`,
       }}
     >
@@ -68,10 +69,10 @@ function PostIconList({
       >
         <PostElementQuote
           isQuoted={isQuoted}
-          icon={<BorderColorOutlinedIcon fontSize="small" />}
+          icon={<EditOutlinedIcon fontSize="small" />}
           quantity={quote}
           id={id}
-          color="#8D3256"
+          color="#FF92A5"
         />
       </NavLink>
       <PostElementBookmarks

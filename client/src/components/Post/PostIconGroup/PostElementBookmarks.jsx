@@ -20,6 +20,7 @@ function PostElementBookmarks({ icon, quantity, color, id, isBookmarks }) {
     <Box
       onClick={handleBookmarks}
       display="flex"
+      fontSize="15px"
       color={isBookmarks ? `${color}` : ''}
       sx={{
         gap: '10px',

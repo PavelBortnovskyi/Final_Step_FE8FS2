@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app", "*"}) //TODO: change on deploy
+@CrossOrigin(originPatterns = {"http://localhost:3000", "http://localhost:8080", "https://final-step-fe-8-fs-2.vercel.app"}) //TODO: change on deploy
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -50,9 +50,9 @@ public class WebSocketController {
 
     if (messageDTO.getBody().length() > 2047)
       throw new BadRequestException("Message is too long (max size 2048 bytes)");
-
+    log.info(messageDTO);
     MessageResponseDTO freshMessage = messageFacade.save(messageFacade.convertToEntity(messageDTO));
-
+    log.info(freshMessage);
     if (currUserId.equals(messageDTO.getUserId())) {
       chatFacade.getChatMemberEmails(messageDTO.getChatId())
         .forEach(email -> template.convertAndSend("/topic/chats/" + email, freshMessage));
