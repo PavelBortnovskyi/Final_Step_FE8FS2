@@ -7,7 +7,14 @@ import { unLikePost } from 'src/redux/thunk/tweets/unlike';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-function PostIconElementLike({ icon, quantity, color, id, isLiked, isLiking }) {
+function PostIconElementLike({
+  icon,
+  quantity,
+  color,
+  id,
+  isLiked,
+  isLiking = false,
+}) {
   const dispatch = useDispatch();
 
   const counter = isLiked ? quantity - 1 : quantity - 1;
@@ -36,8 +43,10 @@ function PostIconElementLike({ icon, quantity, color, id, isLiked, isLiking }) {
         },
       }}
     >
-      {isLiked || isLiking ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon}
-      {isLiking && counter >= 0 ? counter : quantity}
+      {/* {isLiked || isLiking ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon} */}
+      {/* {isLiking && counter >= 0 ? counter : quantity} */}
+      {isLiked ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon}
+      {quantity}
     </Box>
   );
 }
