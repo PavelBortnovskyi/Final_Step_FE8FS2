@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, LinearProgress, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import MainPageHeader from 'src/components/MainPage_header/MainPage_header';
 import TweetBox from 'src/components/TweetBox/TweetBox';
@@ -13,6 +13,7 @@ import {
 import { getAllTweetsThunkNoAuth } from 'src/redux/thunk/tweets/getAllTweetsThunkNoAuth';
 import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 import { UserAllTypeTweets } from 'src/components/User/UserAllTypeTweets/UserAllTypeTweets';
+import TweetPost from 'src/UI/tweet/TweetPost';
 
 export const HomePage = () => {
   const currentPage = useSelector((state) => state.pagination.currentPage);
@@ -23,6 +24,9 @@ export const HomePage = () => {
   const isScreenSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { isAuthenticated } = useSelector(getAuthorizationData);
   const dispatch = useDispatch();
+
+  const createPost = useSelector((state) => state.createPost);
+  const isCreatingPost = createPost.isLoading;
 
   const subscriptions = useSelector(subscriptionsTweets);
   const subscriptionsLoading = subscriptions.isLoading;
@@ -80,7 +84,7 @@ export const HomePage = () => {
   const tweetsNoAuthState = useSelector((state) => state.tweetsNoAuth);
   const tweetsNoAuthLoading = tweetsNoAuthState.isLoading;
   const tweetsNoAuthArray = tweetsNoAuthState.tweetsNoAuth;
- 
+
   return (
     <Box
       sx={{
@@ -89,16 +93,19 @@ export const HomePage = () => {
       }}
     >
       <MainPageHeader tabIndex={tabIndex} setTabIndex={setTabIndex} />
-      {!isScreenSmall && isAuthenticated ? <TweetBox /> : null}
- 
+      {!isScreenSmall && isAuthenticated ? <TweetBox /> : null}{' '}
+      {isCreatingPost && <LinearProgress />}
       {isAuthenticated ? (
         <UserAllTypeTweets
           tweets={tabIndex === 0 ? allTweetsArray : subscriptionsArray}
         />
       ) : (
-        <UserAllTypeTweets tweets={tweetsNoAuthArray} />
+        <>
+          {tweetsNoAuthArray.map((post) => (
+            <TweetPost key={post.id} tweet={post} />
+          ))}
+        </>
       )}
-
       {subscriptionsLoading || tweetsNoAuthLoading || allTweetsLoading ? (
         <LoaderSkeleton quantity={10} />
       ) : (

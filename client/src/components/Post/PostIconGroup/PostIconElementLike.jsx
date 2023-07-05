@@ -1,14 +1,16 @@
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { likePost } from 'src/redux/thunk/tweets/likeTweet';
 import { unLikePost } from 'src/redux/thunk/tweets/unlike';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
+function PostIconElementLike({ icon, quantity, color, id, isLiked, isLiking }) {
   const dispatch = useDispatch();
+
+  const counter = isLiked ? quantity - 1 : quantity - 1;
 
   const handleLike = () => {
     if (isLiked) {
@@ -34,8 +36,8 @@ function PostIconElementLike({ icon, quantity, color, id, isLiked }) {
         },
       }}
     >
-      {isLiked ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon}
-      {quantity}
+      {isLiked || isLiking ? <FavoriteIcon sx={{ color: '#f9197f' }} /> : icon}
+      {isLiking && counter >= 0 ? counter : quantity}
     </Box>
   );
 }
