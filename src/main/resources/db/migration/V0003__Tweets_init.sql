@@ -30,7 +30,6 @@ VALUES
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://pon.org.ua/uploads/posts/2022-03/1646311695_1fc5f435c3b935ac.jpg', 1),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://defence-ua.com/media/illustration/articles/9466300c0918bfff.jpg', 1),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://ecopolitic.com.ua/wp-content/uploads/2022/03/shutterstock_2119226741-750x500.jpg', 1),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://www.tripzaza.com/ru/destinations/wp-content/uploads/2018/06/1-Yosemite_Valley-e1528945436839.jpg', 2),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__text_with_image___twi_image/public/2021-01/Iguassu-Falls.jpg', 2),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.442202', null, TIMESTAMP '2023-05-30 18:45:31.442202', null, 'https://vandruy.by/wp-content/uploads/2018/08/201302121832369554-min.jpeg', 2),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.595203', null, TIMESTAMP '2023-05-30 18:45:31.595203', null, 'https://planetofhotels.com/guide/sites/default/files/styles/paragraph__text_with_image___twi_image/public/2021-01/Mu-Cang-Chai-2.jpg', 3),
