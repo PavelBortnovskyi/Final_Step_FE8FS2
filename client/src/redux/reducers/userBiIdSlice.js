@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { getUserBiId } from "../thunk/getUserBiId.js";
+import { getUserBiId } from '../thunk/getUserBiId.js';
 
 const initialState = {
-  userId: "",
+  userId: '',
   isLoading: false,
-  error: "",
+  error: '',
 };
 
 export const userBiIdSlice = createSlice({
-  name: "userId",
+  name: 'userId',
   initialState,
 
   extraReducers: (builder) => {

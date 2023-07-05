@@ -60,7 +60,6 @@ export const QuoteTweet = ({
           sx={{
             color: `${theme.palette.text.primary}`,
           }}
-          //  display={'flex'}
         >
           <Box padding={'0 12px'}>
             <Typography color={'white'}>{body}</Typography>

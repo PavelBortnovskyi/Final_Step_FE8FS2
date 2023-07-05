@@ -8,6 +8,11 @@ import { useParams } from 'react-router-dom';
 import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
 import { useNavigate } from 'react-router-dom';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
+import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
+import { getUserReplise } from 'src/redux/thunk/getUserReplise';
+import { resetUserTweets } from 'src/redux/reducers/getUserTweetsSlice';
+import { resetUserReplise } from 'src/redux/reducers/userRepliseSlice';
+import { resetUserLikes } from 'src/redux/reducers/userLikesSlice';
 
 export const UserBiIdPage = () => {
   const navigate = useNavigate();
@@ -39,6 +44,12 @@ export const UserBiIdPage = () => {
 
   useEffect(() => {
     dispatch(getUserBiId(id));
+    dispatch(resetUserTweets());
+    dispatch(resetUserReplise());
+    dispatch(resetUserLikes());
+
+    // dispatch(getUserTweetsThunk({ idUser: id, page: 0, size: 10 }));
+    // dispatch(getUserReplise({ idUser: id, page: 0, size: 10 }));
   }, [id, dispatch]);
 
   return (

@@ -27,6 +27,7 @@ export const getUserTweetsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+
       .addCase(getUserTweetsThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -78,8 +79,10 @@ export const getUserTweetsSlice = createSlice({
           ...state.userTweets.map((tweet) => {
             if (tweet.parentTweet === null) {
               return tweet.id === quoteTweet.id ? quoteTweet : tweet;
-            } else if (tweet.tweetType === "RETWEET") {
-              return tweet.parentTweet.id === quoteTweet.id ? { ...tweet, parentTweet: quoteTweet } : tweet;
+            } else if (tweet.tweetType === 'RETWEET') {
+              return tweet.parentTweet.id === quoteTweet.id
+                ? { ...tweet, parentTweet: quoteTweet }
+                : tweet;
             } else {
               return tweet.parentTweet.id === quoteTweet.id
                 ? quoteTweet
@@ -121,12 +124,12 @@ export const getUserTweetsSlice = createSlice({
       .addCase(deleteTweet.fulfilled, (state, action) => {
         const deleteTweetUser = action.payload;
         state.userTweets = state.userTweets.filter((tweet) => {
-          if (tweet.tweetType === "RETWEET") {
-            return tweet.parentTweet.id !== deleteTweetUser.id
+          if (tweet.tweetType === 'RETWEET') {
+            return tweet.parentTweet.id !== deleteTweetUser.id;
           } else {
-            return tweet.id !== deleteTweetUser.id
+            return tweet.id !== deleteTweetUser.id;
           }
-        })
+        });
       })
       .addCase(createTweetReply.fulfilled, (state, action) => {
         const quoteTweet = action.payload.data.parentTweet;

@@ -1,5 +1,4 @@
 import { Box, useTheme } from '@mui/material';
-import { TweetReplise } from './TweetReplise';
 import TweetPost from 'src/UI/tweet/TweetPost';
 import PostIconList from '../Post/PostIconGroup/PostIconList';
 
@@ -17,7 +16,6 @@ export const UserReplise = ({ replise }) => {
   });
 
   const uniqueNestedIds = Array.from(new Set(nestedIds));
-  console.log(uniqueNestedIds);
 
   //робить масив батьківських твітів
   function getUniqueParentTweets(tweets) {

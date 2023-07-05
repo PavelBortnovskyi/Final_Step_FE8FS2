@@ -12,7 +12,6 @@ import { SelectDeleteTweet } from './SelectDeleteTweet';
 function TweetPost({ tweet }) {
   const dispatch = useDispatch();
   const theme = useMode();
-
   return (
     <>
       {tweet && (
@@ -52,9 +51,9 @@ function TweetPost({ tweet }) {
                 </Box>
               </Link>
               <UserNames
-              tweet1={tweet}
-                userId={tweet.id}
-                id={tweet.id}
+                tweet1={tweet}
+                userId={tweet.user.id}
+                id={tweet.user.id}
                 isVerified={tweet.user.isVerified}
                 color={`${theme.palette.text.primary}`}
                 fullName={tweet.user.fullName}

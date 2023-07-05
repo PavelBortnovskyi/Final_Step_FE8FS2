@@ -17,7 +17,11 @@ const initialState = {
 export const userLikesSlice = createSlice({
   name: 'userLikes',
   initialState,
-
+  reducers: {
+    resetUserLikes(state) {
+      state.userLikes = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserLikes.pending, (state) => {
@@ -82,7 +86,8 @@ export const userLikesSlice = createSlice({
         state.userLikes = state.userLikes.filter(
           (tweet) => tweet.tweet.id !== deleteTweetUser.id
         );
-      })
+      });
   },
 });
 export default userLikesSlice.reducer;
+export const { resetUserLikes } = userLikesSlice.actions;

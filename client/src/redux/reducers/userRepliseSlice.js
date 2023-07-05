@@ -7,10 +7,7 @@ import { addQuote } from '../thunk/tweets/addQuote.js';
 import { addBookmark } from '../thunk/thunkBookmarks/addBookmark.js';
 import { deleteBookmark } from '../thunk/thunkBookmarks/deleteBookmark.js';
 
-import { unLikePost } from '../thunk/tweets/unlike.js';
-import { useDispatch } from 'react-redux';
 import { createTweetReply } from '../thunk/tweets/replyTweet.js';
-import { getUser } from '../thunk/getUser.js';
 import { getUserBiId } from '../thunk/getUserBiId.js';
 
 const initialState = {
@@ -21,10 +18,17 @@ const initialState = {
 export const userRepliseSlice = createSlice({
   name: 'userReply',
   initialState,
+  reducers: {
+    resetUserReplise(state) {
+      state.userReplise = [];
+    },
+  },
 
   extraReducers: (builder) => {
     builder
-
+      .addCase(getUserBiId.fulfilled, (state, action) => {
+        state.userReplise = [];
+      })
       .addCase(getUserReplise.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -190,3 +194,4 @@ export const userRepliseSlice = createSlice({
   },
 });
 export default userRepliseSlice.reducer;
+export const { resetUserReplise } = userRepliseSlice.actions;
