@@ -1,18 +1,18 @@
 INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
 VALUES
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.138204', null, TIMESTAMP '2023-05-30 18:45:31.138204', null, 'Вчора відвідав виставку фотографій. Талановитість безмежна!', 'TWEET', null, 1),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.392204', null, TIMESTAMP '2023-05-30 18:45:31.392204', null, 'Запланував відвідати музей цього тижня. Люблю історію!', 'TWEET', null, 1),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.537203', null, TIMESTAMP '2023-05-30 18:45:31.537203', null, 'Займаюсь новим хобі. Це так захоплююче!', 'TWEET', null, 1),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.608534', null, TIMESTAMP '2023-05-30 18:45:32.608534', null, 'Amazing!', 'QUOTE_TWEET', 1, 2),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.392204', null, TIMESTAMP '2023-05-30 18:45:31.392204', null, 'Nature is the best artist!', 'TWEET', null, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:31.537203', null, TIMESTAMP '2023-05-30 18:45:31.537203', null, 'Як вам ландшафтний дизайн?))', 'TWEET', null, 1),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.608534', null, TIMESTAMP '2023-05-30 18:45:32.608534', null, 'Kyiv! #Ukraine', 'QUOTE_TWEET', 1, 2),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:32.880577', null, TIMESTAMP '2023-05-30 18:45:32.880577', null, 'Want to join you!', 'REPLY', 1, 2),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.198836', null, TIMESTAMP '2023-05-30 18:45:33.198836', null, 'Just look at this!', 'RETWEET', 1, 2),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.485369', null, TIMESTAMP '2023-05-30 18:45:33.485369', null, 'Wow!', 'QUOTE_TWEET', 2, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.485369', null, TIMESTAMP '2023-05-30 18:45:33.485369', null, 'Love this castles!', 'QUOTE_TWEET', 2, 3),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.760847', null, TIMESTAMP '2023-05-30 18:45:33.760847', null, 'In Italy there is the highest mountain in Europe - Mont Blanc (a "white mountain"). This peak is located on the border between France and Germany in the Western Alps. There are only three active volcanoes In Europe: Etna, Stromboli and Vesuvius. All of them are located in south part of Italy. Moreover, Etna is the most active volcano in the world.  More than 40 million tourists visit Italy annually and the country is on the 4th place in the world according to this statistics. There are more than 3,000 museums throughout the country. The cello, the violin and the piano were invented there. The place is unique because on streetы there are no any homeless animals and orphanages in the country. There are two dwarfish states on its territory. The Italians are wine fans - the average resident of Italy drinks more than 26 liters of wine every year. The average life expectancy of the locals is 79.5 years.', 'REPLY', 2, 3),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:33.988499', null, TIMESTAMP '2023-05-30 18:45:33.988499', null, 'Nice!', 'RETWEET', 2, 3),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.300531', null, TIMESTAMP '2023-05-30 18:45:34.300531', null, 'Where is it?', 'QUOTE_TWEET', 4, 4),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.300531', null, TIMESTAMP '2023-05-30 18:45:34.300531', null, 'Love this colours!', 'QUOTE_TWEET', 4, 4),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.529247', null, TIMESTAMP '2023-05-30 18:45:34.529247', null, 'Tell me more about this!', 'REPLY', 4, 4),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:34.785908', null, TIMESTAMP '2023-05-30 18:45:34.785908', null, 'Saved)', 'RETWEET', 4, 4),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.065689', null, TIMESTAMP '2023-05-30 18:45:35.065689', null, 'Spent the day at the beach with friends. Perfect way to beat the heat! #SummerVibes', 'TWEET', null, 3),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.065689', null, TIMESTAMP '2023-05-30 18:45:35.065689', null, 'My beautifull country! Forward to victory! #StandWithUkraine', 'TWEET', null, 3),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.344603', null, TIMESTAMP '2023-05-30 18:45:35.344603', null, 'Just booked tickets for an upcoming music festival. Cant wait to dance all night! #FestivalGoer', 'TWEET', null, 3),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.734986', null, TIMESTAMP '2023-05-30 18:45:35.734986', null, 'Cant wait for the weekend! Planning a road trip with friends. #AdventureAwaits', 'TWEET', null, 4),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.932016', null, TIMESTAMP '2023-05-30 18:45:35.932016', null, 'Had an amazing time exploring a new hiking trail today. Nature is breathtaking! #OutdoorAdventures', 'TWEET', null, 4),
@@ -20,9 +20,9 @@ VALUES
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.356653', null, TIMESTAMP '2023-05-30 18:45:36.356653', null, 'Сьогодні провів весь день на природі. Так спокійно і красиво!', 'TWEET', null, 5),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.628961', null, TIMESTAMP '2023-05-30 18:45:36.628961', null, 'Подорожуючи, відкрив для себе нові країни та культури. Світ такий дивовижний!', 'TWEET', null, 5),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.969894', null, TIMESTAMP '2023-05-30 18:45:36.969894', null, 'Вчора відвідав технологічну конференцію. Багато нового інформації!', 'TWEET', null, 5),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.196665', null, TIMESTAMP '2023-05-30 18:45:37.196665', null, 'Вивчаю нову технологію штучного інтелекту. Неймовірно цікаво!', 'TWEET', null, 5),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.422815', null, TIMESTAMP '2023-05-30 18:45:37.422815', null, 'Завершив розробку мобільного додатку. Гордий своїми досягненнями!', 'TWEET', null, 5),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.645847', null, TIMESTAMP '2023-05-30 18:45:37.645847', null, 'Вчора відвідав хакатон. Знайомство з талановитими розробниками!', 'TWEET', null, 5);
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.196665', null, TIMESTAMP '2023-05-30 18:45:37.196665', null, 'Гарний краєвид! Але дуже недоречно сіли аккумулятори у коптері, тоже не зміг зафіксувати все те що хотів. Тількі у клітинах мозку залишилося)', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.422815', null, TIMESTAMP '2023-05-30 18:45:37.422815', null, 'Завітав до бабусі. Дуже скучив за нею.', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.645847', null, TIMESTAMP '2023-05-30 18:45:37.645847', null, 'Пасторальна картина, так би і залишився...', 'TWEET', null, 5);
 
 INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
 VALUES
