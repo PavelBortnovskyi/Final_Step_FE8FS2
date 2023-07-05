@@ -3,10 +3,12 @@ import React from 'react';
 import PostIconList from 'src/components/Post/PostIconGroup/PostIconList';
 import { useMode } from 'src/styles/_materialTheme';
 import TweetPost from './tweet/TweetPost';
+import { useSelector } from 'react-redux';
 
 export const TweetList = ({ tweets }) => {
   const tweet = tweets || tweets.tweet;
   const theme = useMode();
+  const isLiking = useSelector((state) => state.likedTweet.isLoading);
   return (
     <Box sx={{ pb: '60px' }}>
       {tweets !== false &&
@@ -23,9 +25,7 @@ export const TweetList = ({ tweets }) => {
             }}
           >
             <Box>
-              <TweetPost
-                tweet={ tweet}
-              />
+              <TweetPost tweet={tweet} />
             </Box>
             <Box
               sx={{
@@ -35,6 +35,7 @@ export const TweetList = ({ tweets }) => {
               }}
             >
               <PostIconList
+                isLiking={isLiking}
                 isLiked={tweet.currUserLiked}
                 isQuoted={tweet.currUserQuoted}
                 isComment={tweet.currUserCommented}
