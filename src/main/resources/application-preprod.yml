@@ -53,7 +53,6 @@ spring:
             scope:
               - email
               - profile
-            state-lenient: true
           facebook:
             clientId: ${FACEBOOK_CLIENT_ID}
             clientSecret: ${FACEBOOK_CLIENT_SECRET}
@@ -62,7 +61,6 @@ spring:
               - email
               - public_profile
               - user_birthday
-            state-lenient: true
         provider:
           facebook:
             user-info-uri: "https://graph.facebook.com/me?fields=name,email,picture,first_name,birthday"
