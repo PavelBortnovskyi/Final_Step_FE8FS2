@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 
 import React from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Tab } from '@mui/material';
+import { LinearProgress, Tab } from '@mui/material';
 import { useMode } from 'src/styles/_materialTheme';
 import { UserLikes } from 'src/pages/UserLikes';
 import { UserReplisePage } from 'src/pages/UserReplisePage';
@@ -13,6 +13,9 @@ import LoaderSkeleton from 'src/UI/LoaderSkeleton';
 export function UserAction({ idUser, setTabIndex }) {
   const theme = useMode();
   const [value, setValue] = React.useState('1');
+
+  const createPost = useSelector((state) => state.createPost);
+  const isCreatingPost = createPost.isLoading;
 
   const userLikesIsLoading = useSelector((state) => state.userLikes.isLoading);
   const replyIsLoading = useSelector((state) => state.userReplise.isLoading);
@@ -48,6 +51,7 @@ export function UserAction({ idUser, setTabIndex }) {
             />
           </TabList>
         </Box>
+        {isCreatingPost && <LinearProgress />}
         {userLikesIsLoading || replyIsLoading || userTweetsIsLoading ? (
           <LoaderSkeleton quantity={10} />
         ) : (

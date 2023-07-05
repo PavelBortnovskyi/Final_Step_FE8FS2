@@ -25,6 +25,7 @@ function PostIconList({
   isQuoted,
   quote,
   bookmarks,
+  isLiking,
 }) {
   const location = useLocation();
   const theme = useMode();
@@ -61,6 +62,7 @@ function PostIconList({
         color="red"
         id={id}
         isLiked={isLiked}
+        isLiking={isLiking}
       />
       <NavLink
         to="/modal/quote"
