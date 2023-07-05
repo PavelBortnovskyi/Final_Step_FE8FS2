@@ -4,7 +4,7 @@ import { UserHeder } from '../User/UserHeder';
 import { FollowersList } from './FollowersList';
 import { FollowTabs } from './FollowTabs';
 
-export const Followers = ({ follow, name }) => {
+export const Followers = ({ follow, name, countTweets }) => {
   return (
     <Box
       sx={{
@@ -12,7 +12,7 @@ export const Followers = ({ follow, name }) => {
       }}
     >
       <Box>
-        <UserHeder fullName={name} />
+        <UserHeder fullName={name} tweetsCounter={countTweets} />
         <FollowTabs />
       </Box>
       <FollowersList follow={follow} />

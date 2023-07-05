@@ -10,7 +10,8 @@ export const FollowersPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const follower = useSelector((state) => state.followers.followers) || [];
-  const name = useSelector((state) => state.userBiId.userId.fullName) || '';
+  const name = useSelector((state) => state.userBiId.userId) || '';
+
   useEffect(() => {
     dispatch(getUserBiId(id));
     dispatch(getFollowers(id));
@@ -24,7 +25,11 @@ export const FollowersPage = () => {
           direction: 'column',
         }}
       >
-        <Followers follow={follower.content} name={name} />
+        <Followers
+          follow={follower.content}
+          name={name.fullName}
+          countTweets={name.countUserTweets}
+        />
       </Box>
     )
   );
