@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
   private final JwtAuthFilter jwtAuthFilter;
@@ -67,12 +66,7 @@ public class SecurityConfiguration {
       .anyRequest().authenticated()
       .and()
       .oauth2Login()
-      //.authorizationEndpoint().baseUri("/")
-      //.authorizationRequestRepository(lenientAuthorizationRequestRepository())
-      //.and()
-      //.tokenEndpoint().accessTokenResponseClient(customAccessTokenResponseClient)
-      //.and()
-      .loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
+      //.loginPage("/login").loginPage("https://final-step-fe-8-fs-2.vercel.app")//TODO: need to change on deploy
       .loginProcessingUrl("/api/v1/auth/login/oauth2/code/*")
       .userInfoEndpoint().userService(oAuth2UserService)
       .and()

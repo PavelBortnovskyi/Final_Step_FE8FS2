@@ -19,10 +19,145 @@ VALUES
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.126192', null, TIMESTAMP '2023-05-30 18:45:36.126192', null, 'Запланував невелику екскурсію на вихідні. Трохи пригод і нових вражень!', 'TWEET', null, 5),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.356653', null, TIMESTAMP '2023-05-30 18:45:36.356653', null, 'Сьогодні провів весь день на природі. Так спокійно і красиво!', 'TWEET', null, 5),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.628961', null, TIMESTAMP '2023-05-30 18:45:36.628961', null, 'Подорожуючи, відкрив для себе нові країни та культури. Світ такий дивовижний!', 'TWEET', null, 5),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.969894', null, TIMESTAMP '2023-05-30 18:45:36.969894', null, 'Вчора відвідав технологічну конференцію. Багато нового інформації!', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.969894', null, TIMESTAMP '2023-05-30 18:45:36.969894', null, 'Вчора відвідав технологічну конференцію. Багато нової інформації!', 'TWEET', null, 5),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.196665', null, TIMESTAMP '2023-05-30 18:45:37.196665', null, 'Гарний краєвид! Але дуже недоречно сіли аккумулятори у коптері, тоже не зміг зафіксувати все те що хотів. Тількі у клітинах мозку залишилося)', 'TWEET', null, 5),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.422815', null, TIMESTAMP '2023-05-30 18:45:37.422815', null, 'Завітав до бабусі. Дуже скучив за нею.', 'TWEET', null, 5),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.645847', null, TIMESTAMP '2023-05-30 18:45:37.645847', null, 'Пасторальна картина, так би і залишився...', 'TWEET', null, 5);
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:37.645847', null, TIMESTAMP '2023-05-30 18:45:37.645847', null, 'Пасторальна картина, так би і залишився...', 'TWEET', null, 5),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:48:58.441442', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 11:48:58.441442', 'keller.a@ukr.net', 'Привіт, це мій перший твіт.', 'TWEET', null, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:51:06.034315', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:51:06.034315', 'bortnovskyi.pavlo@gmail.com', 'Завжди захоплювала краса цих металевих пташок. Але сумно що зазвичай людство створює такі речі для винищення собі подібних...', 'TWEET', null, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:52:34.964303', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:52:34.964303', 'bortnovskyi.pavlo@gmail.com', 'SCI-FI worlds beauty', 'TWEET', null, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:55:00.182298', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:55:00.182298', 'bortnovskyi.pavlo@gmail.com', 'Open space attraction)', 'TWEET', null, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:56:46.060389', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:56:46.060389', 'bortnovskyi.pavlo@gmail.com', 'Що нас чекає за горизонтом?)', 'TWEET', null, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:58:31.998713', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:58:31.998713', 'bortnovskyi.pavlo@gmail.com', 'Вітаю у нашому застосунку!', 'REPLY', 24, 6);
+
+    SELECT setval('public.tweets_id_seq', 39, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 12:36:53.436178', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 12:36:53.436178', 'art.shev00@gmail.com', '', 'TWEET', null, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 12:37:21.294648', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 12:37:21.294648', 'art.shev00@gmail.com', '', 'TWEET', null, 8);
+
+    SELECT setval('public.tweets_id_seq', 43, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:37:07.726130', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 13:37:07.726130', 'valanir.work@gmail.com', 'Welcone to twitter😊', 'TWEET', null, 10),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:39:39.581504', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:39:39.581504', 'art.shev00@gmail.com', 'Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks. These cyberattacks are usually aimed at accessing, changing, or destroying sensitive information; extorting money from users via ransomware; or interrupting normal business processes', 'TWEET', null, 8);
+
+    SELECT setval('public.tweets_id_seq', 47, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:42:54.562898', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:42:54.562898', 'art.shev00@gmail.com', 'Ransomware is a type of malicious software or malware. It encrypts a victim''s data, after which the attacker demands a ransom. Once the ransom is paid, the attacker sends a decryption key to restore access to the victim''s data. The ransom can range from a few hundred dollars to millions of dollars. Typically, payment is demanded in the form of a cryptocurrency, such as bitcoins.', 'REPLY', 45, 8);
+
+     SELECT setval('public.tweets_id_seq', 49, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:43:50.409197', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:43:50.409197', 'art.shev00@gmail.com', '', 'REPLY', 45, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:50:28.141601', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 13:50:28.141601', 'valanir.work@gmail.com', 'Дав угла на бричці', 'TWEET', null, 10);
+
+    SELECT setval('public.tweets_id_seq', 52, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:51:56.539001', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 13:51:56.539001', 'budanovKiril@gmail.com', 'Хлопчику, ти тут будеш мені розповідати про секретність ?😐 Не сміши людей', 'REPLY', 45, 11),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:56:24.888760', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:56:24.888760', 'bortnovskyi.pavlo@gmail.com', 'Ассоціації з картинкою)', 'REPLY', 45, 6);
+
+     SELECT setval('public.tweets_id_seq', 55, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:59:12.254490', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:59:12.254490', 'bortnovskyi.pavlo@gmail.com', 'Топ коммент)', 'REPLY', 53, 6);
+
+     SELECT setval('public.tweets_id_seq', 57, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:02:15.751357', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 14:02:15.751357', 'budanovKiril@gmail.com', 'Мені здається ти хочеш запропонувати офер шановним чоловікам які зробили цей сайт😑😑😑', 'TWEET', null, 11),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:13:11.237200', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 14:13:11.237200', 'budanovKiril@gmail.com', 'З бородою норм чи нє ? ', 'TWEET', null, 11);
+
+    SELECT setval('public.tweets_id_seq', 60, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:16:38.163060', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 14:16:38.163060', 'valanir.work@gmail.com', 'До захисту залишилося 2 години, надіюсь сервер не впаде', 'TWEET', null, 10);
+
+    SELECT setval('public.tweets_id_seq', 62, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:20:11.717704', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:20:11.717704', 'Joe@gmail.com', 'Дивись, в мене там є хлопці розумні, програмісти, треба їх пристроїти кудись, вони тобі і віндовс поставлять і принтер полагодять якщо треба, а я тобі за це F16 декілька привезу🫡', 'TWEET', null, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:26:04.046866', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:26:04.046866', 'Joe@gmail.com', 'Думаю купити франшизу і в нас АТБ відкрити', 'TWEET', null, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:30:56.247051', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:30:56.247051', 'Joe@gmail.com', 'Хочеш покажу як абрамс стріляє ?', 'TWEET', null, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:33:11.320091', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:33:11.320091', 'Joe@gmail.com', 'Кирилко, ну такий файний хлопчина був, воно тобі треба ? ', 'REPLY', 59, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:33:36.336981', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:33:36.336981', 'Joe@gmail.com', 'Хочеш покажу ?', 'REPLY', 28, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:52.396823', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:34:52.396823', 'Joe@gmail.com', 'А шо тут натискати? ', 'REPLY', 44, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:53.772600', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 14:34:53.772600', 'bortnovskyi.pavlo@gmail.com', 'Звісно)', 'REPLY', 67, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:40:10.041880', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:40:10.041880', 'keller.a@ukr.net', '', 'RETWEET', 63, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:40:13.616435', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:40:13.616435', 'keller.a@ukr.net', '', 'RETWEET', 65, 7);
+
+     SELECT setval('public.tweets_id_seq', 72, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:46:01.504311', 'panroman@gmail.com', TIMESTAMP '2023-07-05 14:46:01.504311', 'panroman@gmail.com', 'Закінчив курси розробника і програмного забезпечення, буду пробував якось помаленько, з Божою поміччю пропхатися туда в то ото айті', 'TWEET', null, 13);
+
+    SELECT setval('public.tweets_id_seq', 74, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:49:26.815850', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:49:26.815850', 'keller.a@ukr.net', '😀😂', 'REPLY', 58, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:50:34.563338', 'poplavok@gmail.com', TIMESTAMP '2023-07-05 14:50:34.563338', 'poplavok@gmail.com', 'Кому забацати корпоратив?', 'TWEET', null, 15),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:50:42.256213', 'poplavok@gmail.com', TIMESTAMP '2023-07-05 14:50:42.256213', 'poplavok@gmail.com', 'Кропива ти моя кропива', 'TWEET', null, 15),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:51:20.969954', 'poplavok@gmail.com', TIMESTAMP '2023-07-05 14:51:20.969954', 'poplavok@gmail.com', 'Юний орел. ти йди від джерел до джерел', 'TWEET', null, 15),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:51:35.291724', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:51:35.291724', 'keller.a@ukr.net', 'Не "надіюсь", а "сподіваюсь"', 'REPLY', 61, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:54:47.820348', 'panroman@gmail.com', TIMESTAMP '2023-07-05 14:54:47.820348', 'panroman@gmail.com', 'Ну я їм кажу, мені вже шістдєсять років, оформляйте зразу на сіньйора', 'TWEET', null, 13),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:55:35.117352', 'panroman@gmail.com', TIMESTAMP '2023-07-05 14:55:35.117352', 'panroman@gmail.com', 'Я перепрошую шановний, ти знаєш хто її чоловік ? ', 'REPLY', 65, 13),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:57:36.731156', 'panroman@gmail.com', TIMESTAMP '2023-07-05 14:57:36.731156', 'panroman@gmail.com', 'Пане Кирило, при всій повазі, але вас так до церкви на Великдень не впустять', 'REPLY', 59, 13);
+
+    SELECT setval('public.tweets_id_seq', 83, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 15:18:16.033169', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:18:16.033169', 'slavikovskyi.a@gmail.com', '', 'TWEET', null, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:19:45.274949', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:19:45.274949', 'slavikovskyi.a@gmail.com', 'тоді я тімлід', 'REPLY', 80, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:34:38.045827', 'panroman@gmail.com', TIMESTAMP '2023-07-05 15:34:38.045827', 'panroman@gmail.com', '', 'RETWEET', 84, 13),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:34:39.380337', 'portnov.dmitry1@gmail.com', TIMESTAMP '2023-07-05 15:34:39.380337', 'portnov.dmitry1@gmail.com', '', 'RETWEET', 84, 14),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:35:12.630832', 'portnov.dmitry1@gmail.com', TIMESTAMP '2023-07-05 15:35:12.630832', 'portnov.dmitry1@gmail.com', '', 'RETWEET', 63, 14),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:35:23.197006', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 15:35:23.197006', 'bortnovskyi.pavlo@gmail.com', 'Looking nice', 'REPLY', 84, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:38:26.826922', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:38:26.826922', 'slavikovskyi.a@gmail.com', 'Італія😁', 'TWEET', null, 9);
+
+    SELECT setval('public.tweets_id_seq', 91, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 15:42:42.192589', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:42:42.192589', 'slavikovskyi.a@gmail.com', 'Шо за хлопці нам допомогають😄', 'REPLY', 58, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:44:10.074643', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 15:44:10.074643', 'art.shev00@gmail.com', 'Чи можна мені в вашу команду??', 'REPLY', 58, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:44:21.489908', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 15:44:21.489908', 'bortnovskyi.pavlo@gmail.com', 'Дякую пане Кирил)', 'REPLY', 58, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 16:16:17.514116', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 16:16:17.514116', 'art.shev00@gmail.com', '', 'TWEET', null, 8);
+
+    SELECT setval('public.tweets_id_seq', 96, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:24.614141', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:27:24.614141', 'slavikovskyi.a@gmail.com', 'твіт 2', 'TWEET', null, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:43.847410', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 17:27:43.847410', 'art.shev00@gmail.com', '', 'RETWEET', 97, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:46.106613', 'portnov.dmitry1@gmail.com', TIMESTAMP '2023-07-05 17:27:46.106613', 'portnov.dmitry1@gmail.com', '', 'RETWEET', 97, 14),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:51.814244', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 17:27:51.814244', 'keller.a@ukr.net', '', 'RETWEET', 97, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:54.342839', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 17:27:54.342839', 'valanir.work@gmail.com', 'після війни одразу поїду', 'REPLY', 97, 10),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:28:28.991291', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 17:28:28.991291', 'keller.a@ukr.net', 'круть', 'REPLY', 97, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:28:40.828040', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:28:40.828040', 'slavikovskyi.a@gmail.com', '', 'TWEET', null, 9);
+
+    SELECT setval('public.tweets_id_seq', 104, true);
+
+INSERT INTO public.tweets (id, created_at, created_by, updated_at, updated_by, body, tweet_type, parent_tweet, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 17:29:08.482393', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:29:08.482393', 'slavikovskyi.a@gmail.com', '', 'RETWEET', 58, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:30:06.756536', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:30:06.756536', 'slavikovskyi.a@gmail.com', 'квот твіт', 'QUOTE_TWEET', 58, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:30:37.745682', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:30:37.745682', 'slavikovskyi.a@gmail.com', 'коментар', 'REPLY', 106, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:31:28.066322', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:31:28.066322', 'slavikovskyi.a@gmail.com', 'Олексій', 'REPLY', 58, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:32:19.821105', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:32:19.821105', 'slavikovskyi.a@gmail.com', '', 'RETWEET', 40, 9);
 
 INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
 VALUES
@@ -60,7 +195,54 @@ VALUES
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:35.547256', null, TIMESTAMP '2023-05-30 18:45:35.547256', null, 'https://images.unian.net/photos/2022_06/1656497134-7822.jpg', 18),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.216520', null, TIMESTAMP '2023-05-30 18:45:36.216520', null, 'https://images.unian.net/photos/2021_08/1629469199-3761.jpg', 21),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.445838', null, TIMESTAMP '2023-05-30 18:45:36.445838', null, 'https://images.unian.net/photos/2021_08/1629471815-9795.jpg', 22),
-    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.801664', null, TIMESTAMP '2023-05-30 18:45:36.801664', null, 'https://images.unian.net/photos/2020_11/1605089297-6848.jpg', 23);
+    (DEFAULT, TIMESTAMP '2023-05-30 18:45:36.801664', null, TIMESTAMP '2023-05-30 18:45:36.801664', null, 'https://images.unian.net/photos/2020_11/1605089297-6848.jpg', 23),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:51:07.314308', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:51:07.314308', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688557866/TWEETER_v1/user_id_6/tweets/tweet_id_25/img_1.jpg', 25),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:52:39.315217', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:52:39.315217', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688557955/TWEETER_v1/user_id_6/tweets/tweet_id_26/img_1.jpg', 26),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:52:39.342249', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:52:39.342249', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688557957/TWEETER_v1/user_id_6/tweets/tweet_id_26/img_3.jpg', 26),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:52:39.370051', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:52:39.370051', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688557958/TWEETER_v1/user_id_6/tweets/tweet_id_26/img_4.jpg', 26),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:52:39.397092', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:52:39.397092', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688557956/TWEETER_v1/user_id_6/tweets/tweet_id_26/img_2.jpg', 26),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:55:04.923735', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:55:04.923735', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688558100/TWEETER_v1/user_id_6/tweets/tweet_id_27/img_1.jpg', 27),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:55:04.949318', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:55:04.949318', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688558104/TWEETER_v1/user_id_6/tweets/tweet_id_27/img_4.jpg', 27),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:55:04.974578', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:55:04.974578', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688558101/TWEETER_v1/user_id_6/tweets/tweet_id_27/img_2.jpg', 27),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:55:04.999947', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:55:04.999947', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688558103/TWEETER_v1/user_id_6/tweets/tweet_id_27/img_3.jpg', 27),
+    (DEFAULT, TIMESTAMP '2023-07-05 11:56:47.143858', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 11:56:47.143858', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688558206/TWEETER_v1/user_id_6/tweets/tweet_id_28/img_1.jpg', 28);
+
+    SELECT setval('public.attachment_images_id_seq', 57, true);
+
+INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 12:36:54.455125', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 12:36:54.455125', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688560614/TWEETER_v1/user_id_8/tweets/tweet_id_40/img_1.jpg', 40),
+    (DEFAULT, TIMESTAMP '2023-07-05 12:37:22.141854', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 12:37:22.141854', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688560641/TWEETER_v1/user_id_8/tweets/tweet_id_41/img_1.jpg', 41);
+
+    SELECT setval('public.attachment_images_id_seq', 60, true);
+
+INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:39:40.693485', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:39:40.693485', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688564380/TWEETER_v1/user_id_8/tweets/tweet_id_45/img_1.jpg', 45),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:43:51.585107', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:43:51.585107', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688564630/TWEETER_v1/user_id_8/tweets/tweet_id_50/img_1.jpg', 50),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:50:29.437914', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 13:50:29.437914', 'valanir.work@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688565028/TWEETER_v1/user_id_10/tweets/tweet_id_51/img_1.jpg', 51);
+
+    SELECT setval('public.attachment_images_id_seq', 64, true);
+
+INSERT INTO public.attachment_images (id, created_at, created_by, updated_at, updated_by, img_url, tweet_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:56:25.947977', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:56:25.947977', 'bortnovskyi.pavlo@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688565385/TWEETER_v1/user_id_6/tweets/tweet_id_54/img_1.jpg', 54),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:02:17.297651', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 14:02:17.297651', 'budanovKiril@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688565736/TWEETER_v1/user_id_11/tweets/tweet_id_58/img_1.jpg', 58),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:13:12.138904', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 14:13:12.138904', 'budanovKiril@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688566391/TWEETER_v1/user_id_11/tweets/tweet_id_59/img_1.jpg', 59),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:20:12.780918', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:20:12.780918', 'Joe@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688566812/TWEETER_v1/user_id_12/tweets/tweet_id_63/img_1.jpg', 63),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:26:04.975597', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:26:04.975597', 'Joe@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688567164/TWEETER_v1/user_id_12/tweets/tweet_id_64/img_1.jpg', 64),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:30:57.373584', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:30:57.373584', 'Joe@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688567456/TWEETER_v1/user_id_12/tweets/tweet_id_65/img_1.jpg', 65),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:46:02.576388', 'panroman@gmail.com', TIMESTAMP '2023-07-05 14:46:02.576388', 'panroman@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688568362/TWEETER_v1/user_id_13/tweets/tweet_id_73/img_1.jpg', 73),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:51:21.924113', 'poplavok@gmail.com', TIMESTAMP '2023-07-05 14:51:21.924113', 'poplavok@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688568681/TWEETER_v1/user_id_15/tweets/tweet_id_78/img_1.jpg', 78),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:54:48.749653', 'panroman@gmail.com', TIMESTAMP '2023-07-05 14:54:48.749653', 'panroman@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688568888/TWEETER_v1/user_id_13/tweets/tweet_id_80/img_1.jpg', 80),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:18:17.713574', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:18:17.713574', 'slavikovskyi.a@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688570297/TWEETER_v1/user_id_9/tweets/tweet_id_84/img_1.jpg', 84),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:38:29.360219', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:38:29.360219', 'slavikovskyi.a@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688571507/TWEETER_v1/user_id_9/tweets/tweet_id_90/img_1.jpg', 90),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:38:29.386394', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:38:29.386394', 'slavikovskyi.a@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688571508/TWEETER_v1/user_id_9/tweets/tweet_id_90/img_2.jpg', 90),
+    (DEFAULT, TIMESTAMP '2023-07-05 16:16:20.637129', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 16:16:20.637129', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688573780/TWEETER_v1/user_id_8/tweets/tweet_id_95/img_3.jpg', 95),
+    (DEFAULT, TIMESTAMP '2023-07-05 16:16:20.668051', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 16:16:20.668051', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688573779/TWEETER_v1/user_id_8/tweets/tweet_id_95/img_2.jpg', 95),
+    (DEFAULT, TIMESTAMP '2023-07-05 16:16:20.698659', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 16:16:20.698659', 'art.shev00@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688573778/TWEETER_v1/user_id_8/tweets/tweet_id_95/img_1.jpg', 95),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:25.549049', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:27:25.549049', 'slavikovskyi.a@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688578045/TWEETER_v1/user_id_9/tweets/tweet_id_97/img_1.jpg', 97),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:28:42.000501', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:28:42.000501', 'slavikovskyi.a@gmail.com', 'http://res.cloudinary.com/dojrbfnaz/image/upload/v1688578121/TWEETER_v1/user_id_9/tweets/tweet_id_103/img_1.jpg', 103);
 
 INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
 VALUES
@@ -88,3 +270,95 @@ VALUES
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.629989', null, TIMESTAMP '2023-05-30 18:45:40.629989', null, 'LIKE', 22, 3),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:40.774380', null, TIMESTAMP '2023-05-30 18:45:40.774380', null, 'LIKE', 23, 4),
     (DEFAULT, TIMESTAMP '2023-05-30 18:45:41.465594', null, TIMESTAMP '2023-05-30 18:45:41.465594', null, 'LIKE', 23, 1);
+
+    SELECT setval('public.tweet_actions_id_seq', 52, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 11:49:05.979709', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 11:49:05.979709', 'keller.a@ukr.net', 'LIKE', 24, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 12:22:55.063900', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 12:22:55.063900', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 18, 6);
+
+    SELECT setval('public.tweet_actions_id_seq', 71, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 12:23:06.443348', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 12:23:06.443348', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 13, 6);
+
+    SELECT setval('public.tweet_actions_id_seq', 74, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:02:21.694117', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:02:21.694117', 'art.shev00@gmail.com', 'LIKE', 19, 8);
+
+    SELECT setval('public.tweet_actions_id_seq', 84, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:04:43.282746', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 13:04:43.282746', 'art.shev00@gmail.com', 'LIKE', 20, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:37:13.370963', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 13:37:13.370963', 'valanir.work@gmail.com', 'LIKE', 44, 10),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:37:16.826546', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 13:37:16.826546', 'valanir.work@gmail.com', 'BOOKMARK', 44, 10);
+
+    SELECT setval('public.tweet_actions_id_seq', 89, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:52:03.811638', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:52:03.811638', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 45, 6);
+
+SELECT setval('public.tweet_actions_id_seq', 91, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 13:52:59.366085', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 13:52:59.366085', 'budanovKiril@gmail.com', 'LIKE', 50, 11),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:54:43.826316', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 13:54:43.826316', 'budanovKiril@gmail.com', 'LIKE', 53, 11),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:56:35.619693', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:56:35.619693', 'bortnovskyi.pavlo@gmail.com', 'BOOKMARK', 45, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:56:54.624528', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:56:54.624528', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 41, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 13:58:45.093458', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 13:58:45.093458', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 53, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:03:39.451962', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 14:03:39.451962', 'valanir.work@gmail.com', 'LIKE', 58, 10);
+
+SELECT setval('public.tweet_actions_id_seq', 97, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:07:05.504342', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 14:07:05.504342', 'valanir.work@gmail.com', 'BOOKMARK', 51, 10),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:07:06.196637', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 14:07:06.196637', 'valanir.work@gmail.com', 'LIKE', 51, 10);
+
+SELECT setval('public.tweet_actions_id_seq', 100, true);
+
+INSERT INTO public.tweet_actions (id, created_at, created_by, updated_at, updated_by, action_type, tweet_id, user_id)
+VALUES
+    (DEFAULT, TIMESTAMP '2023-07-05 14:09:07.272519', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 14:09:07.272519', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 44, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:13:49.638062', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 14:13:49.638062', 'budanovKiril@gmail.com', 'LIKE', 45, 11),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:13:53.695072', 'budanovKiril@gmail.com', TIMESTAMP '2023-07-05 14:13:53.695072', 'budanovKiril@gmail.com', 'LIKE', 41, 11),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:28:04.960103', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 14:28:04.960103', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 63, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:33:02.905982', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 14:33:02.905982', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 64, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:33:07.284819', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 14:33:07.284819', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 65, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:15.256933', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:34:15.256933', 'Joe@gmail.com', 'LIKE', 61, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:18.223645', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:34:18.223645', 'Joe@gmail.com', 'LIKE', 59, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:21.756575', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:34:21.756575', 'Joe@gmail.com', 'LIKE', 58, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:25.664477', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:34:25.664477', 'Joe@gmail.com', 'LIKE', 51, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:34:30.864124', 'Joe@gmail.com', TIMESTAMP '2023-07-05 14:34:30.864124', 'Joe@gmail.com', 'LIKE', 45, 12),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:40:02.436480', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:40:02.436480', 'keller.a@ukr.net', 'LIKE', 65, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:40:05.714978', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:40:05.714978', 'keller.a@ukr.net', 'LIKE', 64, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:40:08.174040', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:40:08.174040', 'keller.a@ukr.net', 'LIKE', 63, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:40:32.726041', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:40:32.726041', 'keller.a@ukr.net', 'LIKE', 58, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:47:27.309000', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 14:47:27.309000', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 73, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 14:52:37.229145', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 14:52:37.229145', 'keller.a@ukr.net', 'LIKE', 29, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:17:16.662254', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:17:16.662254', 'slavikovskyi.a@gmail.com', 'BOOKMARK', 80, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:17:26.151057', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:17:26.151057', 'slavikovskyi.a@gmail.com', 'BOOKMARK', 78, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:17:30.305098', 'portnov.dmitry1@gmail.com', TIMESTAMP '2023-07-05 15:17:30.305098', 'portnov.dmitry1@gmail.com', 'LIKE', 80, 14),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:19:38.831450', 'panroman@gmail.com', TIMESTAMP '2023-07-05 15:19:38.831450', 'panroman@gmail.com', 'LIKE', 84, 13),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:19:49.410520', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 15:19:49.410520', 'slavikovskyi.a@gmail.com', 'LIKE', 80, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:35:01.611821', 'portnov.dmitry1@gmail.com', TIMESTAMP '2023-07-05 15:35:01.611821', 'portnov.dmitry1@gmail.com', 'LIKE', 58, 14),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:35:11.932056', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 15:35:11.932056', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 84, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 15:42:49.476506', 'bortnovskyi.pavlo@gmail.com', TIMESTAMP '2023-07-05 15:42:49.476506', 'bortnovskyi.pavlo@gmail.com', 'LIKE', 58, 6),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:22:55.263878', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:22:55.263878', 'slavikovskyi.a@gmail.com', 'BOOKMARK', 95, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:23:00.976316', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:23:00.976316', 'slavikovskyi.a@gmail.com', 'BOOKMARK', 63, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:39.441228', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 17:27:39.441228', 'valanir.work@gmail.com', 'LIKE', 97, 10),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:42.828861', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 17:27:42.828861', 'art.shev00@gmail.com', 'LIKE', 97, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:46.480293', 'art.shev00@gmail.com', TIMESTAMP '2023-07-05 17:27:46.480293', 'art.shev00@gmail.com', 'BOOKMARK', 97, 8),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:49.521159', 'portnov.dmitry1@gmail.com', TIMESTAMP '2023-07-05 17:27:49.521159', 'portnov.dmitry1@gmail.com', 'LIKE', 97, 14),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:27:52.719759', 'keller.a@ukr.net', TIMESTAMP '2023-07-05 17:27:52.719759', 'keller.a@ukr.net', 'LIKE', 97, 7),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:28:33.655024', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:28:33.655024', 'slavikovskyi.a@gmail.com', 'LIKE', 97, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:32:23.988211', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:32:23.988211', 'slavikovskyi.a@gmail.com', 'BOOKMARK', 40, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:32:31.862949', 'slavikovskyi.a@gmail.com', TIMESTAMP '2023-07-05 17:32:31.862949', 'slavikovskyi.a@gmail.com', 'LIKE', 40, 9),
+    (DEFAULT, TIMESTAMP '2023-07-05 17:33:06.041106', 'valanir.work@gmail.com', TIMESTAMP '2023-07-05 17:33:06.041106', 'valanir.work@gmail.com', 'LIKE', 41, 10);
