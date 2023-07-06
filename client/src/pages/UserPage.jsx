@@ -8,18 +8,32 @@ import { LinkToEditProfile } from 'src/components/User/LinkToEditProfile';
 import { getAuthorizationData } from 'src/redux/selectors/selectors';
 import { getUserTweetsThunk } from 'src/redux/thunk/tweets/getUserTweets';
 import { getUserReplise } from 'src/redux/thunk/getUserReplise';
+import { resetUserReplise } from 'src/redux/reducers/userRepliseSlice';
+import { resetUserTweets } from 'src/redux/reducers/getUserTweetsSlice';
+import { resetUserLikes } from 'src/redux/reducers/userLikesSlice';
+import { getUserLikes } from 'src/redux/thunk/getUserLikes';
 
 export const UserPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(getAuthorizationData);
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.user) || '';
+
   const lincToFollowings = '/profile/followings';
   const lincToFollowers = '/profile/followers';
   const editProfile = <LinkToEditProfile />;
   const userId = user.id;
   // send user to home if not authorization
+  useEffect(() => {
+    dispatch(resetUserTweets());
+    dispatch(resetUserReplise());
+    dispatch(resetUserLikes());
+
+    dispatch(getUserTweetsThunk({ idUser: user.id, page: 0, size: 10 }));
+    dispatch(getUserReplise({ idUser: user.id, page: 0, size: 10 }));
+    dispatch(getUserLikes({ page: 0, size: 10, id: user.id }));
+  }, [dispatch, user]);
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/');
