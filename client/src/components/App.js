@@ -16,7 +16,7 @@ import { Client } from '@stomp/stompjs';
 // import SockJS from 'sockjs-client';
 
 // url socket server
-export const socketUrl = 'wss://final-step-fe2fs8tw.herokuapp.com/chat-ws';
+export const socketUrl = 'ws://localhost:8080/chat-ws';
 
 export const App = () => {
   const dispatch = useDispatch();

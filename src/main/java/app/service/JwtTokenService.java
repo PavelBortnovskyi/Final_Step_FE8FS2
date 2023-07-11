@@ -5,6 +5,7 @@ import app.exceptions.authError.AuthErrorException;
 import app.exceptions.authError.JwtAuthenticationException;
 import app.model.UserModel;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,11 +26,11 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class JwtTokenService {
   private final UserDetailsService userDetailsService;
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
 
   @Value("${jwt.secret}")
   private String secretAccessKey;
@@ -60,12 +61,6 @@ public class JwtTokenService {
 
   private static final String BEARER = "Bearer ";
 
-  /**
-   * Class constructor with bean injection qualify to avoid NoUniqueBeanDefinitionException
-   */
-  public JwtTokenService(@Qualifier("userDetailsServiceImplementation") UserDetailsService userDetailsService) {
-    this.userDetailsService = userDetailsService;
-  }
 
   /**
    * Encoding of secrets

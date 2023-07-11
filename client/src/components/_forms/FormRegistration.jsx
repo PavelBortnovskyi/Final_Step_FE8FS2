@@ -265,12 +265,12 @@ export const FormRegistration = () => {
         </BoxLiner>
       </BoxStyled>
       <Box>
-        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/google">
+        <Link to="http://localhost:8080/oauth2/authorization/google">
           <MyGoogleLoginButton />
         </Link>
       </Box>
       <Box>
-        <Link to="https://final-step-fe2fs8tw.herokuapp.com/oauth2/authorization/facebook">
+        <Link to="http://localhost:8080/oauth2/authorization/facebook">
           <MyFacebookLoginButton />
         </Link>
       </Box>

@@ -94,7 +94,7 @@ public class OAuth2SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHan
     }
 
     //Assemble redirect url with tokens as params
-    String oauthUrl = String.format("https://final-step-fe-8-fs-2.vercel.app/social-login?accessToken=%s&refreshToken=%s",
+    String oauthUrl = String.format("http://localhost:3000/social-login?accessToken=%s&refreshToken=%s",
       tokenResponse.get("ACCESS_TOKEN"), tokenResponse.get("REFRESH_TOKEN"));
 
     //Send redirect to frontend

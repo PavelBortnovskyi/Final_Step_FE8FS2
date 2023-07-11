@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  backend:
+    container_name: rest-api-server
+    restart: unless-stopped
+    image: pavelbortnovskyi/final_step_fe8fs2-backend:latest
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./src/main/resources/application.yml:/app/application.yml
+    networks:
+      - spring-cloud-network
+    depends_on:
+      db:
+        condition: service_healthy
+  ######################################################################################################################
+  frontend:
+    container_name: react-frontend-client
+    restart: unless-stopped
+    image: pavelbortnovskyi/final_step_fe8fs2-frontend:latest
+    ports:
+      - '3000:3000'
+    networks:
+      - spring-cloud-network
+    depends_on:
+      - backend
+  ######################################################################################################################
+  db:
+    container_name: postgres-db
+    image: postgres:10
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: 'fe8fs2tw'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'dbTW1991'
+    ports:
+      - '5432:5432'
+    volumes:
+      - '../../../ro:/ro:ro'
+      - '../../../rw:/rw'
+      - '../../../Downloads:/dl:ro'
+      - '../.data/pg10:/var/lib/postgresql/data'
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    networks:
+      - spring-cloud-network
+  ######################################################################################################################
+networks:
+  spring-cloud-network:
+    driver: bridge

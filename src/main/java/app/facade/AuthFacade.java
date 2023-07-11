@@ -112,7 +112,7 @@ public class AuthFacade {
     if (this.userService.isEmailPresentInDB(passwordResetDto.getEmail())) {
       String passwordResetToken = jwtTokenService.createToken(userService.getUserO(passwordResetDto.getEmail()).get().getId(), TokenType.PASSWORD_RESET);
       //TODO: change link according to front end mapping
-      String resetUrl = "https://final-step-fe-8-fs-2.vercel.app//password/reset?token=" + passwordResetToken;
+      String resetUrl = "http://localhost:3000/password/reset?token=" + passwordResetToken;
       emailService.sendEmail(passwordResetDto.getEmail(), "Password Reset", "We have request to reset password on your FinalStepTW account if it was you please proceed to " + resetUrl);
       return ResponseEntity.ok("Was sent email to " + passwordResetDto.getEmail() + " with password reset link");
     } else
@@ -145,7 +145,7 @@ public class AuthFacade {
     } else {
       String registerToken = jwtTokenService.createToken(null, TokenType.REGISTER, "", signUpDTO.getEmail());
       //TODO: change link according to front end mapping
-      String registerUrl = "https://final-step-fe2fs8tw.herokuapp.com/api/v1/auth/register/apply?token=" + registerToken;
+      String registerUrl = "http://localhost:8080/api/v1/auth/register/apply?token=" + registerToken;
       emailService.sendEmail(signUpDTO.getEmail(), "Verify your email for FinalStepTW account",
         "We need to verify your email for FinalStepTW account please proceed to " + registerUrl);
       return ResponseEntity.ok("Was sent email to " + signUpDTO.getEmail() + " with register token");
