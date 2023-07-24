@@ -7,6 +7,7 @@ import app.exceptions.authError.JwtAuthenticationException;
 import app.exceptions.authError.UserAlreadyRegisteredException;
 import app.exceptions.userError.UserNotFoundException;
 import app.model.UserModel;
+import app.service.AuthUserService;
 import app.service.EmailService;
 import app.service.JwtTokenService;
 import app.service.UserService;
@@ -39,6 +40,8 @@ public class AuthFacade {
   private final UserFacade userFacade;
 
   private final UserService userService;
+
+  private final AuthUserService authUserService;
 
   private final PasswordEncoder encoder;
 
@@ -86,7 +89,8 @@ public class AuthFacade {
   /**
    * Method performs user logout by refresh token invalidation
    */
-  public String makeLogOut(Long userId) {
+  public String makeLogOut() {
+    Long userId = authUserService.getCurrUserId();
     jwtTokenService.changeRefreshTokenStatus(userId, true);
     log.info("User id: " + userId + " logged out");
     return "User with Id: " + userId + " logged out";

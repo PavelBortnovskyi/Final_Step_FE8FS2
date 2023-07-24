@@ -57,7 +57,7 @@ public class AuthController {
   @ApiOperation("Logout user")
   @GetMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> handleLogout(HttpServletRequest request) {
-    return ResponseEntity.ok(authFacade.makeLogOut((Long) request.getAttribute("userId")));
+    return ResponseEntity.ok(authFacade.makeLogOut());
   }
 
   /**

@@ -19,7 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -75,7 +79,6 @@ public class ChatService extends GeneralService<Chat> {
   /**
    * Method returns chat after adding new user to it
    */
-
   public Chat addUserToChat(Long userId, Long chatId) throws UserNotFoundException, ChatNotFoundException {
     return chatRepository.save(chatRepository.findById(chatId)
       .map(chat -> {

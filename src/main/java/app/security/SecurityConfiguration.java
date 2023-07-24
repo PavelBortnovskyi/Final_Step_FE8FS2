@@ -30,8 +30,6 @@ public class SecurityConfiguration {
 
   private final OAuth2FailureLoginHandler oAuth2FailureLoginHandler;
 
-  //private final CustomAccessTokenResponseClient customAccessTokenResponseClient;
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception {
     httpSec
@@ -109,22 +107,5 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
   }
-
-//  @Bean
-//  public AuthorizationRequestRepository<OAuth2AuthorizationRequest> lenientAuthorizationRequestRepository() {
-//    return new HttpSessionOAuth2AuthorizationRequestRepository() {
-//      @Override
-//      public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-//        OAuth2AuthorizationRequest authorizationRequest = super.loadAuthorizationRequest(request);
-//        if (authorizationRequest != null) {
-//          // Удалите проверку параметра state
-//          authorizationRequest = OAuth2AuthorizationRequest.from(authorizationRequest)
-//            .state(null)
-//            .build();
-//        }
-//        return authorizationRequest;
-//      }
-//    };
-//  }
 }
 
